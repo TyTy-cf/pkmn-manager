@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Entity;
+namespace App\Entity\Pokemon;
 
 
 use App\Entity\Infos\Genre;
@@ -13,16 +13,18 @@ use Doctrine\ORM\Mapping\OneToOne;
 /**
  * Class PokemonSheet
  * @package App\Entity
+ *
+ * @ORM\Table(name="pokemon_sheet")
  * @Entity
  */
 class PokemonSheet
 {
     /**
-     * @var string $id id de la sheet pokemon
+     * @var int $id id de la sheet pokemon
      *
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(name="id", type="string", length=6)
+     * @ORM\Column(name="id", type="integer", length=6)
      */
     private $id;
 
@@ -79,17 +81,17 @@ class PokemonSheet
     private $stats;
 
     /**
-     * @return string
+     * @return int
      */
-    public function getId(): string
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
-     * @param string $id
+     * @param int $id
      */
-    public function setId(string $id): void
+    public function setId(int $id): void
     {
         $this->id = $id;
     }

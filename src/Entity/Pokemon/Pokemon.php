@@ -1,9 +1,12 @@
 <?php
 
 
-namespace App\Entity;
+namespace App\Entity\Pokemon;
 
+use App\Entity\Infos\Talent;
+use App\Entity\Infos\Type;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\JoinColumn;
@@ -14,22 +17,23 @@ use Doctrine\ORM\Mapping\ManyToMany;
  * Class Pokemon
  * @package App\Entity
  *
+ * @ORM\Table(name="pokemon")
  * @Entity
  */
 class Pokemon
 {
     /**
-     * @var string $id l'id du pkmn en bdd
+     * @var int $id l'id du pkmn en bdd
      *
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(name="id", type="string", length=6)
+     * @ORM\Column(name="id", type="integer", length=6)
      */
     private $id;
 
     /**
-     * @var integer $nom le nom du pokemon
-     * @ORM\Column(name="nom", type="integer", length=3)
+     * @var string $nom le nom du pokemon
+     * @ORM\Column(name="nom", type="string", length=120)
      */
     private $nom;
 
@@ -70,49 +74,53 @@ class Pokemon
     private $base_spe;
 
     /**
-     * @ManyToMany(targetEntity="App\Entity\Infos\Talent")
-     * @JoinTable(name="pokemon_talents",
-     *      joinColumns={@JoinColumn(name="pokemon_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="talent_id", referencedColumnName="id")}
-     * )
+     * @ManyToMany(targetEntity="App\Entity\Infos\Talent", inversedBy="pokemons")
+     * @JoinTable(name="pokemon_talents")
      */
     private $talents;
+
+    /**
+     * @ManyToMany(targetEntity="App\Entity\Infos\Type", inversedBy="pokemons")
+     * @JoinTable(name="pokemon_talents")
+     */
+    private $types;
 
     /**
      * Pokemon constructor.
      */
     public function __construct() {
         $this->talents = new ArrayCollection();
-    }
-
-    /**
-     * @return string
-     */
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param string $id
-     */
-    public function setId(string $id): void
-    {
-        $this->id = $id;
+        $this->types = new ArrayCollection();
     }
 
     /**
      * @return int
      */
-    public function getNom(): int
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNom(): string
     {
         return $this->nom;
     }
 
     /**
-     * @param int $nom
+     * @param string $nom
      */
-    public function setNom(int $nom): void
+    public function setNom(string $nom): void
     {
         $this->nom = $nom;
     }
@@ -214,18 +222,38 @@ class Pokemon
     }
 
     /**
+     * @param Talent $talent
+     */
+    public function addTalent(Talent $talent): void
+    {
+        if ($this->talents->contains($talent)) {
+            $this->talents->add($talent);
+        }
+    }
+
+    /**
      * @return mixed
      */
-    public function getTalents()
+    public function getTalents(): Collection
     {
         return $this->talents;
     }
 
     /**
-     * @param mixed $talents
+     * @param Type $type
      */
-    public function setTalents($talents): void
+    public function addType(Type $type): void
     {
-        $this->talents = $talents;
+        if ($this->types->contains($type)) {
+            $this->types->add($type);
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTypes(): Collection
+    {
+        return $this->types;
     }
 }

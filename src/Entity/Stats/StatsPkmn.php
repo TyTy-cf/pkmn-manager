@@ -10,16 +10,17 @@ use Doctrine\ORM\Mapping\Entity;
  * Class StatsPkmn
  * @package App\Entity\Stats
  *
+ * @ORM\Table(name="stats_pkmn")
  * @Entity
  */
 class StatsPkmn
 {
     /**
-     * @var string $id id des evs
+     * @var int $id id des evs
      *
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(name="id", type="string", length=6)
+     * @ORM\Column(name="id", type="integer", length=6)
      */
     private $id;
 
@@ -66,17 +67,17 @@ class StatsPkmn
     private $stats_spe;
 
     /**
-     * @return string
+     * @return int
      */
-    public function getId(): string
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
-     * @param string $id
+     * @param int $id
      */
-    public function setId(string $id): void
+    public function setId(int $id): void
     {
         $this->id = $id;
     }

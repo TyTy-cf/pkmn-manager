@@ -2,16 +2,39 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="22b6774f-1922-4c2d-9080-248b57ed658b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Controller/MainController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Entity/Infos/Genre.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Entity/Infos/Nature.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Entity/Infos/Talent.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Entity/Infos/Type.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Entity/Pokemon.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Entity/PokemonSheet.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Entity/Stats/EvsPkmn.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Entity/Stats/IvsPkmn.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Entity/Stats/StatsPkmn.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/pkmn.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/styles/layout/footer.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/styles/layout/footer.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/styles/layout/footer.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/styles/layout/header.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/styles/layout/pkmn-mngt.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/styles/layout/pkmn-mngt.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/styles/layout/pkmn-mngt.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/styles/layout/variables.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/styles/layout/variables.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/styles/layout/variables.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/pkmn-management.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/pkmn-management.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/watcherTasks.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/styles/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/styles/app.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/styles/gobal.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/MainController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/MainController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataFixtures/AppFixtures.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataFixtures/AppFixtures.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Infos/Genre.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Infos/Genre.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Infos/Nature.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Infos/Nature.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Infos/Talent.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Infos/Talent.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Infos/Type.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Infos/Type.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Pokemon.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Pokemon/Pokemon.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/PokemonSheet.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Pokemon/PokemonSheet.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Stats/EvsPkmn.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Stats/EvsPkmn.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Stats/IvsPkmn.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Stats/IvsPkmn.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Stats/StatsPkmn.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Stats/StatsPkmn.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webpack.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/webpack.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +44,15 @@
   <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
     <execution />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+        <option value="Sass File" />
+        <option value="SCSS File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -131,21 +163,30 @@
       <path value="$PROJECT_DIR$/vendor/webmozart/assert" />
       <path value="$PROJECT_DIR$/vendor/symfony/webpack-encore-bundle" />
       <path value="$PROJECT_DIR$/vendor/fzaninotto/faker" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/doctrine-fixtures-bundle" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/data-fixtures" />
     </include_path>
   </component>
   <component name="ProjectId" id="1ipiCKlaDvA6BWM8mG15PJAFiYE" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/Entity/Infos" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/Entity/Pokemon" />
+    <property name="list.type.of.created.stylesheet" value="SCSS" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Developpement\Wamp\www\pkmn-management\src\Entity\Pokemon" />
+      <recent name="C:\Developpement\Wamp\www\pkmn-management\assets\styles\layout" />
       <recent name="C:\Developpement\Wamp\www\pkmn-management\src\Entity\Infos" />
     </key>
   </component>
@@ -160,12 +201,16 @@
       <workItem from="1602610806969" duration="1528000" />
       <workItem from="1602662887363" duration="618000" />
       <workItem from="1603716802658" duration="5268000" />
-      <workItem from="1603724738165" duration="6941000" />
+      <workItem from="1603724738165" duration="7262000" />
+      <workItem from="1603784632258" duration="8350000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="WindowStateProjectService">
     <state x="845" y="353" width="662" height="334" key="#File_Watchers" timestamp="1602612151074">
@@ -176,22 +221,22 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="746" y="0" key="#PHP/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1603722157420" />
-    <state x="753" y="228" key="#com.intellij.ide.util.MemberChooser" timestamp="1603727762387">
+    <state x="753" y="228" key="#com.intellij.ide.util.MemberChooser" timestamp="1603793834624">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="753" y="228" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1603727762387" />
-    <state x="697" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1603729969623">
+    <state x="753" y="228" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1603793834624" />
+    <state x="697" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1603788625742">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="697" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1603729969623" />
-    <state x="628" y="297" key="EditFileWatcherDialog" timestamp="1602612092680">
+    <state x="697" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1603788625742" />
+    <state x="628" y="297" key="EditFileWatcherDialog" timestamp="1603789282439">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="628" y="297" key="EditFileWatcherDialog/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1602612092680" />
-    <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1603723967466">
+    <state x="628" y="297" key="EditFileWatcherDialog/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1603789282439" />
+    <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1603789682728">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1603723967466" />
+    <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1603789682728" />
     <state x="704" y="242" key="NewPhpClassDialog" timestamp="1603726808546">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
