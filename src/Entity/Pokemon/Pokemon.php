@@ -32,10 +32,10 @@ class Pokemon
     private $id;
 
     /**
-     * @var string $nom le nom du pokemon
+     * @var string $nomEn le nom du pokemon en anglais
      * @ORM\Column(name="nom", type="string", length=120)
      */
-    private $nom;
+    private $nomEn;
 
     /**
      * @var integer $base_pv la base des pv du pokemon
@@ -112,17 +112,17 @@ class Pokemon
     /**
      * @return string
      */
-    public function getNom(): string
+    public function getNomEn(): string
     {
-        return $this->nom;
+        return $this->nomEn;
     }
 
     /**
-     * @param string $nom
+     * @param string $nomEn
      */
-    public function setNom(string $nom): void
+    public function setNomEn(string $nomEn): void
     {
-        $this->nom = $nom;
+        $this->nomEn = $nomEn;
     }
 
     /**
