@@ -41,6 +41,13 @@ class Nature
     private $statsPenalty;
 
     /**
+     * @var string $nameEn la stats "bonus" de la nature
+     *
+     * @ORM\Column(name="name_en", type="string", length=24)
+     */
+    private $nameEn;
+
+    /**
      * @return int
      */
     public function getId(): int
@@ -54,6 +61,22 @@ class Nature
     public function setId(int $id): void
     {
         $this->id = $id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNameEn(): string
+    {
+        return $this->nameEn;
+    }
+
+    /**
+     * @param string $nameEn
+     */
+    public function setNameEn(string $nameEn): void
+    {
+        $this->nameEn = $nameEn;
     }
 
     /**

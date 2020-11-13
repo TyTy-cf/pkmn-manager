@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20201113182127 extends AbstractMigration
+final class Version20201113185007 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -24,7 +24,7 @@ final class Version20201113182127 extends AbstractMigration
         $this->addSql('CREATE TABLE evs_pkmn (id INT AUTO_INCREMENT NOT NULL, hp INT NOT NULL, atk INT NOT NULL, def INT NOT NULL, spa INT NOT NULL, spd INT NOT NULL, spe INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE genre (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(8) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE ivs_pkmn (id INT AUTO_INCREMENT NOT NULL, hp INT NOT NULL, atk INT NOT NULL, def INT NOT NULL, spa INT NOT NULL, spd INT NOT NULL, spe INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE nature (id INT AUTO_INCREMENT NOT NULL, stats_bonus VARCHAR(12) DEFAULT NULL, stats_penalty VARCHAR(12) DEFAULT NULL, name VARCHAR(8) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE nature (id INT AUTO_INCREMENT NOT NULL, stats_bonus VARCHAR(12) DEFAULT NULL, stats_penalty VARCHAR(12) DEFAULT NULL, name_en VARCHAR(24) NOT NULL, name VARCHAR(8) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE pokemon (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(120) NOT NULL, hp INT NOT NULL, atk INT NOT NULL, def INT NOT NULL, spa INT NOT NULL, spd INT NOT NULL, spe INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE pokemons_abilities (pokemon_id INT NOT NULL, talent_id INT NOT NULL, INDEX IDX_AB1E5DBE2FE71C3E (pokemon_id), INDEX IDX_AB1E5DBE18777CEF (talent_id), PRIMARY KEY(pokemon_id, talent_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE pokemons_types (pokemon_id INT NOT NULL, type_id INT NOT NULL, INDEX IDX_B7FC4A102FE71C3E (pokemon_id), INDEX IDX_B7FC4A10C54C8C93 (type_id), PRIMARY KEY(pokemon_id, type_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
