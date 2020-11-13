@@ -7,16 +7,16 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
 
 /**
- * Class Genre *
+ * Class Gender *
  * @package App\Entity\Infos
  *
  * @ORM\Table(name="genre")
  * @Entity
  */
-class Genre
+class Gender
 {
     /**
-     * @var int $id id de l'abstract info
+     * @var int $id
      *
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -24,12 +24,7 @@ class Genre
      */
     private $id;
 
-    /**
-     * @var string $nom nom de l'abstract info
-     *
-     * @ORM\Column(name="nom", type="string", length=8)
-     */
-    private $nom;
+    use TraitName;
 
     /**
      * @return int
@@ -45,21 +40,5 @@ class Genre
     public function setId(int $id): void
     {
         $this->id = $id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getNom(): string
-    {
-        return $this->nom;
-    }
-
-    /**
-     * @param string $nom
-     */
-    public function setNom(string $nom): void
-    {
-        $this->nom = $nom;
     }
 }

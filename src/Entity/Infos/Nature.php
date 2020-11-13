@@ -24,26 +24,21 @@ class Nature
      */
     private $id;
 
-    /**
-     * @var string $nom nom de l'abstract info
-     *
-     * @ORM\Column(name="nom", type="string", length=12)
-     */
-    private $nom;
+    use TraitName;
 
     /**
      * @var string $statsBonus la stats "bonus" de la nature
      *
-     * @ORM\Column(name="statsBonus", type="string", length=12)
+     * @ORM\Column(name="stats_bonus", type="string", length=12, nullable=true)
      */
     private $statsBonus;
 
     /**
-     * @var string $statsMalus la stats "malus" de la nature
+     * @var string $statsPenalty
      *
-     * @ORM\Column(name="statsMalus", type="string", length=12)
+     * @ORM\Column(name="stats_penalty", type="string", length=12, nullable=true)
      */
-    private $statsMalus;
+    private $statsPenalty;
 
     /**
      * @return int
@@ -59,22 +54,6 @@ class Nature
     public function setId(int $id): void
     {
         $this->id = $id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getNom(): string
-    {
-        return $this->nom;
-    }
-
-    /**
-     * @param string $nom
-     */
-    public function setNom(string $nom): void
-    {
-        $this->nom = $nom;
     }
 
     /**
@@ -96,17 +75,17 @@ class Nature
     /**
      * @return string
      */
-    public function getStatsMalus(): string
+    public function getStatsPenalty(): string
     {
-        return $this->statsMalus;
+        return $this->statsPenalty;
     }
 
     /**
-     * @param string $statsMalus
+     * @param string $statsPenalty
      */
-    public function setStatsMalus(string $statsMalus): void
+    public function setStatsPenalty(string $statsPenalty): void
     {
-        $this->statsMalus = $statsMalus;
+        $this->statsPenalty = $statsPenalty;
     }
 
 }

@@ -4,7 +4,7 @@
 namespace App\Entity\Pokemon;
 
 
-use App\Entity\Infos\Genre;
+use App\Entity\Infos\Gender;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\JoinColumn;
@@ -30,31 +30,31 @@ class PokemonSheet
 
     /**
      * @ORM\OneToOne(targetEntity="pokemon")
-     * @ORM\JoinColumn(name="nom_pokemon_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="name_pokemon", referencedColumnName="id")
      */
-    private $nomPokemon;
+    private $namePokemon;
 
     /**
-     * @var string|null $surnom le surnom du pokemon
+     * @var string|null $nickname le surnom du pokemon
      *
-     * @ORM\Column(name="surnom", type="string", length=20, nullable=true)
+     * @ORM\Column(name="nickname", type="string", length=20, nullable=true)
      */
-    private $surnom;
+    private $nickname;
 
     /**
-     * @var Genre $surnom le genre du pokemon
+     * @var Gender $gender le genre du pokemon
      *
-     * @OneToOne(targetEntity="App\Entity\Infos\Genre")
-     * @JoinColumn(name="genre_id", referencedColumnName="id")
+     * @OneToOne(targetEntity="App\Entity\Infos\Gender")
+     * @JoinColumn(name="gender_id", referencedColumnName="id")
      */
-    private $genre;
+    private $gender;
 
     /**
-     * @var integer $niveau le niveau du pokemon
+     * @var integer $level le niveau du pokemon
      *
-     * @ORM\Column(name="niveau", type="integer", length=3)
+     * @ORM\Column(name="level", type="integer", length=3)
      */
-    private $niveau;
+    private $level;
 
     /**
      * @OneToOne(targetEntity="App\Entity\Infos\Nature")
@@ -99,65 +99,65 @@ class PokemonSheet
     /**
      * @return mixed
      */
-    public function getNomPokemon()
+    public function getNamePokemon()
     {
-        return $this->nomPokemon;
+        return $this->namePokemon;
     }
 
     /**
-     * @param mixed $nomPokemon
+     * @param mixed $namePokemon
      */
-    public function setNomPokemon($nomPokemon): void
+    public function setNamePokemon($namePokemon): void
     {
-        $this->nomPokemon = $nomPokemon;
+        $this->namePokemon = $namePokemon;
     }
 
     /**
      * @return string|null
      */
-    public function getSurnom(): ?string
+    public function getNickname(): ?string
     {
-        return $this->surnom;
+        return $this->nickname;
     }
 
     /**
-     * @param string|null $surnom
+     * @param string|null $nickname
      */
-    public function setSurnom(?string $surnom): void
+    public function setNickname(?string $nickname): void
     {
-        $this->surnom = $surnom;
+        $this->nickname = $nickname;
     }
 
     /**
-     * @return Genre
+     * @return Gender
      */
-    public function getGenre(): Genre
+    public function getGender(): Gender
     {
-        return $this->genre;
+        return $this->gender;
     }
 
     /**
-     * @param Genre $genre
+     * @param Gender $gender
      */
-    public function setGenre(Genre $genre): void
+    public function setGender(Gender $gender): void
     {
-        $this->genre = $genre;
+        $this->gender = $gender;
     }
 
     /**
      * @return int
      */
-    public function getNiveau(): int
+    public function getLevel(): int
     {
-        return $this->niveau;
+        return $this->level;
     }
 
     /**
-     * @param int $niveau
+     * @param int $level
      */
-    public function setNiveau(int $niveau): void
+    public function setLevel(int $level): void
     {
-        $this->niveau = $niveau;
+        $this->level = $level;
     }
 
     /**

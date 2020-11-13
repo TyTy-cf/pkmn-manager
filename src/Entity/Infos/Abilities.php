@@ -5,16 +5,15 @@ namespace App\Entity\Infos;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\ManyToMany;
 
 /**
- * Class Talent *
+ * Class Abilities *
  * @package App\Entity\Infos
  *
- * @ORM\Table(name="talent")
+ * @ORM\Table(name="abilities")
  * @Entity
  */
-class Talent
+class Abilities
 {
     /**
      * @var int $id id de l'abstract info
@@ -25,24 +24,14 @@ class Talent
      */
     private $id;
 
-    /**
-     * @var string $nom nom de l'abstract info
-     *
-     * @ORM\Column(name="nom", type="string", length=48)
-     */
-    private $nom;
+    use TraitName;
 
     /**
-     * @var string $description la description du talent
+     * @var string $description
      *
      * @ORM\Column(name="description", type="string", length=255)
      */
     private $description;
-
-    /**
-     * @ManyToMany(targetEntity="App\Entity\Pokemon\Pokemon", mappedBy="talents")
-     */
-    private $pokemons;
 
     /**
      * @return int
@@ -63,22 +52,6 @@ class Talent
     /**
      * @return string
      */
-    public function getNom(): string
-    {
-        return $this->nom;
-    }
-
-    /**
-     * @param string $nom
-     */
-    public function setNom(string $nom): void
-    {
-        $this->nom = $nom;
-    }
-
-    /**
-     * @return string
-     */
     public function getDescription(): string
     {
         return $this->description;
@@ -90,22 +63,6 @@ class Talent
     public function setDescription(string $description): void
     {
         $this->description = $description;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPokemons()
-    {
-        return $this->pokemons;
-    }
-
-    /**
-     * @param mixed $pokemons
-     */
-    public function setPokemons($pokemons): void
-    {
-        $this->pokemons = $pokemons;
     }
 
 }

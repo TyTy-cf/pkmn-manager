@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Infos\Talent;
+use App\Entity\Infos\Abilities;
 use App\Entity\Infos\Type;
 use App\Entity\Pokemon\Pokemon;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -12,11 +12,11 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        $talentIntimidation = new Talent();
+        $talentIntimidation = new Abilities();
         $talentIntimidation->setNom("Intimidation");
         $talentIntimidation->setDescription("Réduit d'un niveau l'attaque du pokemon adverse lorsque mis en combat");
         $manager->persist($talentIntimidation);
-        $talentImpudence = new Talent();
+        $talentImpudence = new Abilities();
         $talentImpudence->setNom("Impudence");
         $talentImpudence->setDescription("Augmente l'attaque du pokemon d'un niveau lorsqu'il met un KO");
         $manager->persist($talentImpudence);

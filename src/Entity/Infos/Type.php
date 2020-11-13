@@ -26,17 +26,8 @@ class Type
      */
     private $id;
 
-    /**
-     * @var string $nom nom de l'abstract info
-     *
-     * @ORM\Column(name="nom", type="string", length=24)
-     */
-    private $nom;
+    use TraitName;
 
-    /**
-     * @ManyToMany(targetEntity="App\Entity\Pokemon\Pokemon", mappedBy="types")
-     */
-    private $pokemons;
 
     /**
      * @return int
@@ -54,19 +45,4 @@ class Type
         $this->id = $id;
     }
 
-    /**
-     * @return string
-     */
-    public function getNom(): string
-    {
-        return $this->nom;
-    }
-
-    /**
-     * @param string $nom
-     */
-    public function setNom(string $nom): void
-    {
-        $this->nom = $nom;
-    }
 }

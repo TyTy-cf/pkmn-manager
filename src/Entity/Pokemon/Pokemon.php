@@ -3,8 +3,9 @@
 
 namespace App\Entity\Pokemon;
 
-use App\Entity\Infos\Talent;
+use App\Entity\Infos\Abilities;
 use App\Entity\Infos\Type;
+use App\Entity\Stats\TraitStatsPkmn;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -31,57 +32,29 @@ class Pokemon
      */
     private $id;
 
-    /**
-     * @var string $nomEn le nom du pokemon en anglais
-     * @ORM\Column(name="nom", type="string", length=120)
-     */
-    private $nomEn;
+    use TraitStatsPkmn;
 
     /**
-     * @var integer $base_pv la base des pv du pokemon
-     * @ORM\Column(name="base_hp", type="integer", length=3)
+     * @var string $name le nom du pokemon en anglais
+     * @ORM\Column(name="name", type="string", length=120)
      */
-    private $base_pv;
+    private $name;
 
     /**
-     * @var integer $base_atk la base d'atk du pokemon
-     * @ORM\Column(name="base_atk", type="integer", length=3)
+     * @ManyToMany(targetEntity="App\Entity\Infos\Abilities")
+     * @JoinTable(name="pokemons_abilities",
+     *      joinColumns={@JoinColumn(name="pokemon_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@JoinColumn(name="talent_id", referencedColumnName="id")}
+     *      )
      */
-    private $base_atk;
+    private $abilities;
 
     /**
-     * @var integer $base_def la base de def du pokemon
-     * @ORM\Column(name="base_def", type="integer", length=3)
-     */
-    private $base_def;
-
-    /**
-     * @var integer $base_spa la base d'atk spé du pokemon
-     * @ORM\Column(name="base_spa", type="integer", length=3)
-     */
-    private $base_spa;
-
-    /**
-     * @var integer $base_spd la base de defspe du pokemon
-     * @ORM\Column(name="base_spd", type="integer", length=3)
-     */
-    private $base_spd;
-
-    /**
-     * @var integer $base_spe la base de speed du pokemon
-     * @ORM\Column(name="base_spe", type="integer", length=3)
-     */
-    private $base_spe;
-
-    /**
-     * @ManyToMany(targetEntity="App\Entity\Infos\Talent", inversedBy="pokemons")
-     * @JoinTable(name="pokemon_talents")
-     */
-    private $talents;
-
-    /**
-     * @ManyToMany(targetEntity="App\Entity\Infos\Type", inversedBy="pokemons")
-     * @JoinTable(name="pokemon_talents")
+     * @ManyToMany(targetEntity="App\Entity\Infos\Type")
+     * @JoinTable(name="pokemons_types",
+     *      joinColumns={@JoinColumn(name="pokemon_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@JoinColumn(name="type_id", referencedColumnName="id")}
+     *      )
      */
     private $types;
 
@@ -89,7 +62,7 @@ class Pokemon
      * Pokemon constructor.
      */
     public function __construct() {
-        $this->talents = new ArrayCollection();
+        $this->abilities = new ArrayCollection();
         $this->types = new ArrayCollection();
     }
 
@@ -112,131 +85,35 @@ class Pokemon
     /**
      * @return string
      */
-    public function getNomEn(): string
+    public function getName(): string
     {
-        return $this->nomEn;
+        return $this->name;
     }
 
     /**
-     * @param string $nomEn
+     * @param string $name
      */
-    public function setNomEn(string $nomEn): void
+    public function setName(string $name): void
     {
-        $this->nomEn = $nomEn;
+        $this->name = $name;
     }
 
     /**
-     * @return int
+     * @param Abilities $abilities
      */
-    public function getBasePv(): int
+    public function addAbilities(Abilities $abilities): void
     {
-        return $this->base_pv;
-    }
-
-    /**
-     * @param int $base_pv
-     */
-    public function setBasePv(int $base_pv): void
-    {
-        $this->base_pv = $base_pv;
-    }
-
-    /**
-     * @return int
-     */
-    public function getBaseAtk(): int
-    {
-        return $this->base_atk;
-    }
-
-    /**
-     * @param int $base_atk
-     */
-    public function setBaseAtk(int $base_atk): void
-    {
-        $this->base_atk = $base_atk;
-    }
-
-    /**
-     * @return int
-     */
-    public function getBaseDef(): int
-    {
-        return $this->base_def;
-    }
-
-    /**
-     * @param int $base_def
-     */
-    public function setBaseDef(int $base_def): void
-    {
-        $this->base_def = $base_def;
-    }
-
-    /**
-     * @return int
-     */
-    public function getBaseSpa(): int
-    {
-        return $this->base_spa;
-    }
-
-    /**
-     * @param int $base_spa
-     */
-    public function setBaseSpa(int $base_spa): void
-    {
-        $this->base_spa = $base_spa;
-    }
-
-    /**
-     * @return int
-     */
-    public function getBaseSpd(): int
-    {
-        return $this->base_spd;
-    }
-
-    /**
-     * @param int $base_spd
-     */
-    public function setBaseSpd(int $base_spd): void
-    {
-        $this->base_spd = $base_spd;
-    }
-
-    /**
-     * @return int
-     */
-    public function getBaseSpe(): int
-    {
-        return $this->base_spe;
-    }
-
-    /**
-     * @param int $base_spe
-     */
-    public function setBaseSpe(int $base_spe): void
-    {
-        $this->base_spe = $base_spe;
-    }
-
-    /**
-     * @param Talent $talent
-     */
-    public function addTalent(Talent $talent): void
-    {
-        if ($this->talents->contains($talent)) {
-            $this->talents->add($talent);
+        if ($this->abilities->contains($abilities)) {
+            $this->abilities->add($abilities);
         }
     }
 
     /**
      * @return mixed
      */
-    public function getTalents(): Collection
+    public function getAbilities(): Collection
     {
-        return $this->talents;
+        return $this->abilities;
     }
 
     /**
