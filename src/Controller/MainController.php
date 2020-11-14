@@ -32,10 +32,9 @@ class MainController extends AbstractController
 
         $apiResponse = $response->toArray();
 
-        var_dump($apiResponse);
 
         return $this->render('base.html.twig', [
-            'apiResponse' => $apiResponse
+            'apiResponse' => $apiResponse,
         ]);
     }
 }
