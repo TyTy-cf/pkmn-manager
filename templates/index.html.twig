@@ -1,0 +1,6 @@
+{% extends 'base.html.twig' %}
+{% block title %}Catch 'em all{% endblock %}
+{% block body %}
+    <h1 class="text-center">Catch'em all !</h1>
+    <a class="btn btn-dark" href="{{ path('listing', {'offset': '0'}) }}">Voir tous les pokémons !</a>
+{% endblock %}

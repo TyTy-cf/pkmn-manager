@@ -2,44 +2,17 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Catch 'em all{% endblock %}</title>
-    {% block stylesheets %}
-        {{ encore_entry_link_tags('app') }}
-    {% endblock %}
+    <title>{% block title %}{% endblock %}</title>
+    {{ encore_entry_link_tags('app') }}
+    {% block stylesheets %}{% endblock %}
 </head>
 <body>
 {% block body %}
 
-    <h2>{{ apiResponse.forms.0.name|upper }}</h2>
-    <table>
-        <thead>
-        {# {% for i in 0..5 %} #}
-        <tr>{{ apiResponse.stats.0.stat.name }}</tr>
-        <tr>{{ apiResponse.stats.1.stat.name }}</tr>
-        <tr>{{ apiResponse.stats.2.stat.name }}</tr>
-        <tr>{{ apiResponse.stats.3.stat.name }}</tr>
-        <tr>{{ apiResponse.stats.4.stat.name }}</tr>
-        <tr>{{ apiResponse.stats.5.stat.name }}</tr>
-        {# {% endfor %} #}
-        </thead>
-        <tbody>
-        <tr>
-            {# {% for i in 0..5 %} #}
-            <td>{{ apiResponse.stats.0.base_stat }}</td>
-            <td>{{ apiResponse.stats.1.base_stat }}</td>
-            <td>{{ apiResponse.stats.2.base_stat }}</td>
-            <td>{{ apiResponse.stats.3.base_stat }}</td>
-            <td>{{ apiResponse.stats.4.base_stat }}</td>
-            <td>{{ apiResponse.stats.5.base_stat }}</td>
-            {# {% endfor %} #}
-        </tr>
-        </tbody>
-    </table>
 {% endblock %}
 
+{{ encore_entry_script_tags('app') }}
 {% block javascripts %}
-
-    {{ encore_entry_script_tags('app') }}
 {% endblock %}
 </body>
 </html>

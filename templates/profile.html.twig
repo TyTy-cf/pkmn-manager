@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Catch 'em all{% endblock %}</title>
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+</head>
+<body>
+{% block body %}
+    <h1 class="text-center mb-1 mt-3">Profil de {{ apiResponse.forms.0.name|capitalize }}</h1>
+    <hr>
+    <div class="row justify-content-center mb-3 mt-3">
+        <img src="{{ apiResponse.sprites.other.dream_world.front_default }}" width="200px"
+             alt="Image de {{ apiResponse.forms.0.name|capitalize }}">
+    </div>
+    <hr>
+    <div class="container">
+        <div class="row pt-2">
+            <div class="col-md-6">
+                <h2 class="text-center">Type</h2>
+                <ul>
+                    {% for i in apiResponse.types %}
+                        <li>{{ i.type.name|capitalize }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h2 class="text-center">Abilities</h2>
+                <ul>
+                    {% for i in apiResponse.abilities %}
+                        <li>{{ i.ability.name|capitalize }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <hr>
+            <div class="col-md-12 mt-3">
+                <h2 class="text-center mb-3">Spéciales Stats</h2>
+                <table class="table text-center">
+                    <thead>
+                    <tr>
+                        {% for i in apiResponse.stats %}
+                            <th scope="col">{{ i.stat.name|upper }}</th>
+                        {% endfor %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        {% for i in apiResponse.stats %}
+                            <td>{{ i.base_stat }}</td>
+                        {% endfor %}
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <hr>
+        <div class="row justify-content-center">
+            <a href="{{ path('listing', { offset: 0 }) }}" class="btn btn-danger">Retour</a>
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}
+</body>
+</html>
