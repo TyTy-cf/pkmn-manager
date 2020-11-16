@@ -21,7 +21,6 @@
             <div class="col-md-6">
                 <h2 class="text-center">Type</h2>
                 <ul>
-                    {% dump(pokemon) %}
                     {% for type in pokemon.types %}
                         <li>{{ type.name }}</li>
                     {% endfor %}
@@ -31,7 +30,6 @@
                 <h2 class="text-center">Abilities</h2>
                 <ul>
                     {% for ability in pokemon.abilities %}
-                        {% dump(ability) %}
                         <li>{{ ability.name|capitalize }}</li>
                     {% endfor %}
                 </ul>

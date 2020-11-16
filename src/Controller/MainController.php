@@ -145,6 +145,7 @@ class MainController extends AbstractController
                     $abilitie->setDescription('En attendant de trouver une description !');
 
                     $em->persist($abilitie);
+                    $pokemon->addAbility($abilitie);
                     $em->flush();
                 }
 
@@ -158,16 +159,14 @@ class MainController extends AbstractController
                     $type = new Type();
                     $type->setName($i['type']['name']);
 
-                    $pokemon->addType($type->getId());
-
                     $em->persist($type);
+                    $pokemon->addType($type);
                     $em->flush();
                 }
             }
 
             $em->persist($pokemon);
             $em->flush();
-
         }
 
         //Récupération des données dans la base
