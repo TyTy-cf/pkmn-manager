@@ -165,7 +165,7 @@ class MainController extends AbstractController
             //Vérification si les Abilitiés sont présents dans la BDD
             foreach ($apiResponse['abilities'] as $i) {
 
-                if ($abilitiesRepository->findBy(['name' => $i['ability']['name']]) === null) {
+                if ($abilitiesRepository->findBy(['name' => $i['ability']['name']]) == null) {
                     $abilitie = new Abilities();
                     $abilitie->setName($i['ability']['name']);
                     $abilitie->setDescription('En attendant de trouver une description !');
@@ -183,7 +183,7 @@ class MainController extends AbstractController
             //Vérification si les Types sont présents dans la BDD
             foreach ($apiResponse['types'] as $i) {
 
-                if ($typeRepository->findBy(['name' => $i['type']['name']]) === null) {
+                if ($typeRepository->findBy(['name' => $i['type']['name']]) == null) {
 
                     $type = new Type();
                     $type->setName($i['type']['name']);
@@ -208,4 +208,3 @@ class MainController extends AbstractController
         ]);
     }
 }
-
