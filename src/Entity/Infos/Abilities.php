@@ -11,7 +11,8 @@ use Doctrine\ORM\Mapping\Entity;
  * @package App\Entity\Infos
  *
  * @ORM\Table(name="abilities")
- * @Entity
+ * @ORM\Entity(repositoryClass="App\Repository\AbilitiesRepository")
+
  */
 class Abilities
 {

@@ -7,13 +7,14 @@ namespace App\Entity\Infos;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\ManyToMany;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Class Type *
  * @package App\Entity\Infos
  *
  * @ORM\Table(name="type")
- * @Entity
+ * @ORM\Entity(repositoryClass="App\Repository\TypeRepository")
  */
 class Type
 {

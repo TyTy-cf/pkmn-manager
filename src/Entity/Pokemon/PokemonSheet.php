@@ -5,6 +5,10 @@ namespace App\Entity\Pokemon;
 
 
 use App\Entity\Infos\Gender;
+use App\Entity\Infos\Nature;
+use App\Entity\Stats\EvsPkmn;
+use App\Entity\Stats\IvsPkmn;
+use App\Entity\Stats\StatsPkmn;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\JoinColumn;

@@ -3,6 +3,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Pokemon\Pokemon;
 use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpClient\HttpClient;
@@ -61,7 +62,6 @@ class MainController extends AbstractController
             $namesPokmn[] = $i['name'];
         }
 
-
         return $this->render('listing.html.twig', [
             'namesPokmn' => $namesPokmn,
             'offset' => $offset
@@ -81,9 +81,16 @@ class MainController extends AbstractController
      */
     function profile(Request $request): Response
     {
+        $nomPokmn = $request->get('pokeName');
+
+        $pokemon =
+
+
+
 
         $client = HttpClient::create();
-        $nomPokmn = $request->get('pokeName');
+
+
         $url = "https://pokeapi.co/api/v2/pokemon/${nomPokmn}";
 
         $response = $client->request('GET', $url);
@@ -113,6 +120,7 @@ class MainController extends AbstractController
             $namesSpecialStats[] = $i['stat']['name'];
             $valeursSpecialStats[] = $i['base_stat'];
         }
+
         return $this->render('profile.html.twig', [
             'apiResponse' => $apiResponse,
             'nomPokmn' => $nomPokmn,

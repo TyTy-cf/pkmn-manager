@@ -9,17 +9,20 @@ use App\Entity\Stats\TraitStatsPkmn;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\ManyToMany;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Class Pokemon
  * @package App\Entity
- *
+ * @ORM\Entity(repositoryClass="App\Repository\PokemonRepository")
  * @ORM\Table(name="pokemon")
- * @Entity
+ * @UniqueEntity(
+ *     fields={"name"},
+ *     message="Ce pokémon existe déjà !"
+ * )
  */
 class Pokemon
 {
@@ -132,5 +135,28 @@ class Pokemon
     public function getTypes(): Collection
     {
         return $this->types;
+    }
+
+    public function addAbility(Abilities $ability): self
+    {
+        if (!$this->abilities->contains($ability)) {
+            $this->abilities[] = $ability;
+        }
+
+        return $this;
+    }
+
+    public function removeAbility(Abilities $ability): self
+    {
+        $this->abilities->removeElement($ability);
+
+        return $this;
+    }
+
+    public function removeType(Type $type): self
+    {
+        $this->types->removeElement($type);
+
+        return $this;
     }
 }
