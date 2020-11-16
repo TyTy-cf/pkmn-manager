@@ -1,18 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>{% block title %}Catch 'em all{% endblock %}</title>
-    {% block stylesheets %}
-        {{ encore_entry_link_tags('app') }}
-    {% endblock %}
-</head>
-<body>
+{% extends 'base.html.twig' %}
+{% block title %}Catch 'em all{% endblock %}
 {% block body %}
     <h1 class="text-center mb-1 mt-3">Profil de {{ pokemon.name }}</h1>
     <hr>
     <div class="row justify-content-center mb-3 mt-3">
-        <img src="#" width="200px"
+        <img src="{{ pokemon.urlimg }}" width="200px"
              alt="Image de {{ pokemon.name|capitalize }}">
     </div>
     <hr>
@@ -67,8 +59,3 @@
         </div>
     </div>
 {% endblock %}
-{% block javascripts %}
-    {{ encore_entry_script_tags('app') }}
-{% endblock %}
-</body>
-</html>

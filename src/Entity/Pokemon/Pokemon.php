@@ -62,6 +62,11 @@ class Pokemon
     private $types;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $urlimg;
+
+    /**
      * Pokemon constructor.
      */
     public function __construct() {
@@ -122,7 +127,7 @@ class Pokemon
     /**
      * @param Type $type
      */
-    public function addType(Type $type): void
+    public function addTypes(Type $type): void
     {
         if ($this->types->contains($type)) {
             $this->types->add($type);
@@ -153,9 +158,30 @@ class Pokemon
         return $this;
     }
 
+    public function addType(Type $type): self
+    {
+        if(!$this->types->contains($type)) {
+            $this->types[] = $type;
+        }
+
+        return $this;
+    }
+
     public function removeType(Type $type): self
     {
         $this->types->removeElement($type);
+
+        return $this;
+    }
+
+    public function getUrlimg(): ?string
+    {
+        return $this->urlimg;
+    }
+
+    public function setUrlimg(?string $urlimg): self
+    {
+        $this->urlimg = $urlimg;
 
         return $this;
     }

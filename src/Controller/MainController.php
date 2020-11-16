@@ -10,7 +10,7 @@ use App\Repository\AbilitiesRepository;
 use App\Repository\PokemonRepository;
 use App\Repository\TypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use phpDocumentor\Reflection\Types\This;
+use Knp\Component\Pager\PaginatorInterface;
 use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpClient\HttpClient;
@@ -29,9 +29,15 @@ class MainController extends AbstractController
      * Affiche l'index
      * @Route (path="/", name="index")
      */
-    public function index()
+    public function index(Request $request, PokemonRepository $pokemonRepository, PaginatorInterface $paginator)
     {
-        return $this->render('index.html.twig');
+        $pokemons = $paginator->paginate(
+            $pokemonRepository->findby([],['id' => 'DESC']),
+        $request->query->getInt('page', '1'),
+        6);
+
+        return $this->render('index.html.twig',
+            ['pokemons' => $pokemons]);
     }
 
     /**
@@ -117,6 +123,7 @@ class MainController extends AbstractController
             //Création d'un nouvel objet
             $pokemon = new Pokemon();
             $pokemon->setName(ucfirst($nomPokmn));
+            $pokemon->setUrlimg($apiResponse['sprites']['other']['dream_world']['front_default']);
 
             //Récupération des statistiques spéciales
             foreach ($apiResponse['stats'] as $i) {
@@ -146,8 +153,10 @@ class MainController extends AbstractController
                     $em->persist($abilitie);
                     $pokemon->addAbility($abilitie);
                     $em->flush();
-//                } else {
-//                    $pokemon->addAbility($abilitie);
+
+                } else {
+                    $abilitie = $abilitiesRepository->findoneBy(['name' => $i['ability']['name']]);
+                    $pokemon->addAbility($abilitie);
                 }
             }
 
@@ -161,9 +170,9 @@ class MainController extends AbstractController
                     $em->persist($type);
                     $pokemon->addType($type);
                     $em->flush();
-//                } else {
-//                    $type = $typeRepository->findBy(['name' => $i['type']['name']]);
-//                    $pokemon->addType($type);
+                } else {
+                    $type = $typeRepository->findOneBy(['name' => $i['type']['name']]);
+                    $pokemon->addType($type);
                 }
             }
 

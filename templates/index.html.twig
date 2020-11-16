@@ -1,6 +1,35 @@
 {% extends 'base.html.twig' %}
 {% block title %}Catch 'em all{% endblock %}
 {% block body %}
-    <h1 class="text-center">Catch'em all !</h1>
-    <a class="btn btn-dark" href="{{ path('listing', {'offset': '0'}) }}">Voir tous les pokémons !</a>
+    <h2 class="text-center">Derniers Pokemons enregistrés</h2>
+    <hr>
+    <div class="container">
+        <form action="#" method="post">
+            <div class="form-group row">
+                <div class="col-md-5 m-auto text-center">
+                    <label for="pokeName" class="col-form-label text-right">Pokémon recherché :</label>
+                    <input class="form-control" type="search" name="pokeName" id="pokeName">
+                    <small id="pokeHelp" class="form-text text-muted">Inscrire un nom de pokémon</small>
+                    <button type="submit" class="btn btn-sm btn-danger mt-2">Rechercher !</button>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            {% for pokemon in pokemons %}
+                <div class="col-md-4 text-center mb-3">
+                    <h3><a href="{{ path('profile_pokemon', {pokeName: pokemon.name }) }}">{{ pokemon.name }}</h3>
+                    <a href="{{ path('profile_pokemon', {pokeName: pokemon.name }) }}">
+                        <img src="{{ pokemon.urlimg }}" alt="Image de {{ pokemon.name }}" width="200px">
+                    </a>
+
+                </div>
+            {% endfor %}
+        </div>
+        <div class="pagination justify-content-center">
+            {{ knp_pagination_render(pokemons) }}
+        </div>
+    </div>
+    <div class="text-center">
+        <a class="btn btn-dark" href="{{ path('listing', {'offset': '0'}) }}">Catalogue en ligne !</a>
+    </div>
 {% endblock %}
