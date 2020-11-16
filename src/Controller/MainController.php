@@ -33,15 +33,19 @@ class MainController extends AbstractController
      * @param PaginatorInterface $paginator
      * @return Response
      */
-    public function index(Request $request, PokemonRepository $pokemonRepository, PaginatorInterface $paginator): Response
-    {
+    public function index(
+        Request $request,
+        PokemonRepository $pokemonRepository,
+        PaginatorInterface $paginator
+    ): Response {
         $pokemons = $paginator->paginate(
-            $pokemonRepository->findby([],['id' => 'DESC']),
-        $request->query->getInt('page', '1'),
-        8);
+            $pokemonRepository->findby([], ['id' => 'DESC']),
+            $request->query->getInt('page', '1'),
+            8);
 
-        return $this->render('index.html.twig',
-            ['pokemons' => $pokemons]);
+        return $this->render('index.html.twig', [
+            'pokemons' => $pokemons
+        ]);
     }
 
     /**
@@ -78,13 +82,14 @@ class MainController extends AbstractController
         $apiResponse = $response->toArray();
 
         //Récupération du pokéName
+        $namesPokmn = [];
         foreach ($apiResponse['results'] as $i) {
             $namesPokmn[] = $i['name'];
         }
 
         return $this->render('listing.html.twig', [
             'namesPokmn' => $namesPokmn,
-            'offset' => $offset
+            'offset' => $offset,
         ]);
     }
 
@@ -134,25 +139,33 @@ class MainController extends AbstractController
 
             //Récupération des statistiques spéciales
             foreach ($apiResponse['stats'] as $i) {
-                if ($i['stat']['name'] == 'hp') {
-                    $pokemon->setHp($i['base_stat']);
-                } elseif ($i['stat']['name'] == 'attack') {
-                    $pokemon->setAtk($i['base_stat']);
-                } elseif ($i['stat']['name'] == 'defense') {
-                    $pokemon->setDef($i['base_stat']);
-                } elseif ($i['stat']['name'] == 'special-attack') {
-                    $pokemon->setSpa($i['base_stat']);
-                } elseif ($i['stat']['name'] == 'special-defense') {
-                    $pokemon->seSpd($i['base_stat']); // / ! \ SeSpd à corriger !
-                } elseif ($i['stat']['name'] == 'speed') {
-                    $pokemon->setSpe($i['base_stat']);
+
+                switch ($i['stat']['name']) {
+                    case 'hp':
+                        $pokemon->setHp($i['base_stat']);
+                        break;
+                    case 'attack':
+                        $pokemon->setAtk($i['base_stat']);
+                        break;
+                    case 'defense':
+                        $pokemon->setDef($i['base_stat']);
+                        break;
+                    case 'special-attack':
+                        $pokemon->setSpa($i['base_stat']);
+                        break;
+                    case 'special-defense':
+                        $pokemon->seSpd($i['base_stat']); // / ! \ SeSpd à corriger !
+                        break;
+                    case 'speed':
+                        $pokemon->setSpe($i['base_stat']);
+
                 }
             }
 
             //Vérification si les Abilitiés sont présents dans la BDD
             foreach ($apiResponse['abilities'] as $i) {
 
-                if ($abilitiesRepository->findBy(['name' => $i['ability']['name']]) == null) {
+                if ($abilitiesRepository->findBy(['name' => $i['ability']['name']]) === null) {
                     $abilitie = new Abilities();
                     $abilitie->setName($i['ability']['name']);
                     $abilitie->setDescription('En attendant de trouver une description !');
@@ -162,7 +175,7 @@ class MainController extends AbstractController
                     $em->flush();
 
                 } else {
-                    $abilitie = $abilitiesRepository->findoneBy(['name' => $i['ability']['name']]);
+                    $abilitie = $abilitiesRepository->findOneBy(['name' => $i['ability']['name']]);
                     $pokemon->addAbility($abilitie);
                 }
             }
@@ -170,7 +183,7 @@ class MainController extends AbstractController
             //Vérification si les Types sont présents dans la BDD
             foreach ($apiResponse['types'] as $i) {
 
-                if ($typeRepository->findBy(['name' => $i['type']['name']]) == null) {
+                if ($typeRepository->findBy(['name' => $i['type']['name']]) === null) {
 
                     $type = new Type();
                     $type->setName($i['type']['name']);
