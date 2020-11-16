@@ -3,15 +3,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Infos\Abilities;
-use App\Entity\Infos\Type;
-use App\Entity\Pokemon\Pokemon;
 use App\Manager\AbilitiesManager;
 use App\Manager\PokemonManager;
 use App\Manager\TypeManager;
-use App\Repository\AbilitiesRepository;
-use App\Repository\PokemonRepository;
-use App\Repository\TypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use RuntimeException;

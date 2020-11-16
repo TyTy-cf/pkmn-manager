@@ -7,8 +7,9 @@
     {% block stylesheets %}{% endblock %}
 </head>
 <body>
-<h1 class="text-center"><a href="{{ path('index') }}">Catch'em all !</a></h1>
-<hr>
+<header>
+    {% include 'nav.html.twig' %}
+</header>
 {% block body %}
 
 
