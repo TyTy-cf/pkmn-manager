@@ -23,15 +23,16 @@
     </a>
     <hr>
     <div class="row">
-        {% for i in apiResponse.results %}
+        {% for namePokmn in namesPokmn %}
             <div class="col-md-4 col-sm-6 text-center border pb-2">
-                <h5 class="mt-2"><a
-                            href="{{ path('profile_pokemon', {pokeName: i.name }) }}">{{ i.name|capitalize }}</a></h5>
+                <h5 class="mt-2">
+                    <a href="{{ path('profile_pokemon', {pokeName: namePokmn }) }}">{{ namePokmn|capitalize }}</a>
+                </h5>
                 <hr>
                 {# <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/{{ loop.index }}.svg" #}
                 {# width="150px" height="150px" alt=""><br> #}
                 <hr>
-                <a href="{{ path('profile_pokemon', {pokeName: i.name }) }}" class="btn btn-sm btn-dark">Voir plus</a>
+                <a href="{{ path('profile_pokemon', {pokeName: namePokmn }) }}" class="btn btn-sm btn-dark">Voir plus</a>
             </div>
         {% endfor %}
     </div>

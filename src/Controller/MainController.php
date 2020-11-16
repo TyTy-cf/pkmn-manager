@@ -3,7 +3,6 @@
 
 namespace App\Controller;
 
-use Knp\Component\Pager\PaginatorInterface;
 use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpClient\HttpClient;
@@ -22,7 +21,8 @@ class MainController extends AbstractController
      * Affiche l'index
      * @Route (path="/", name="index")
      */
-    public function index() {
+    public function index()
+    {
         return $this->render('index.html.twig');
     }
 
@@ -56,8 +56,14 @@ class MainController extends AbstractController
 
         $apiResponse = $response->toArray();
 
+        //Récupération du pokéName
+        foreach ($apiResponse['results'] as $i) {
+            $namesPokmn[] = $i['name'];
+        }
+
+
         return $this->render('listing.html.twig', [
-            'apiResponse' => $apiResponse,
+            'namesPokmn' => $namesPokmn,
             'offset' => $offset
         ]);
     }
@@ -88,8 +94,33 @@ class MainController extends AbstractController
 
         $apiResponse = $response->toArray();
 
+        //Stockage des données souhaitées
+        //Image
+        $imgPokmn = $apiResponse['sprites']['other']['dream_world']['front_default'];
+
+        //Abilities
+        foreach ($apiResponse['abilities'] as $i) {
+            $abilityNames[] = $i['ability']['name'];
+        }
+
+        //Types
+        foreach ($apiResponse['types'] as $i) {
+            $typeNames[] = $i['type']['name'];
+        }
+
+        //Spéciales statistiques
+        foreach ($apiResponse['stats'] as $i) {
+            $namesSpecialStats[] = $i['stat']['name'];
+            $valeursSpecialStats[] = $i['base_stat'];
+        }
         return $this->render('profile.html.twig', [
             'apiResponse' => $apiResponse,
+            'nomPokmn' => $nomPokmn,
+            'imgPokmn' => $imgPokmn,
+            'abilityNames' => $abilityNames,
+            'typeNames' => $typeNames,
+            'namesSpecialStats' => $namesSpecialStats,
+            'valeursSpecialStats' => $valeursSpecialStats,
         ]);
     }
 }
