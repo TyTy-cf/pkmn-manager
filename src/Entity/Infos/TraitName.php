@@ -11,7 +11,7 @@ trait TraitName
     /**
      * @var string $name
      *
-     * @ORM\Column(name="name", type="string", length=8)
+     * @ORM\Column(name="name", type="string", length=15)
      */
     private $name;
 

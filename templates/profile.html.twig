@@ -9,11 +9,11 @@
 </head>
 <body>
 {% block body %}
-    <h1 class="text-center mb-1 mt-3">Profil de {{ nomPokmn|upper }}</h1>
+    <h1 class="text-center mb-1 mt-3">Profil de {{ pokemon.name }}</h1>
     <hr>
     <div class="row justify-content-center mb-3 mt-3">
-        <img src="{{ imgPokmn }}" width="200px"
-             alt="Image de {{ nomPokmn|capitalize }}">
+        <img src="#" width="200px"
+             alt="Image de {{ pokemon.name|capitalize }}">
     </div>
     <hr>
     <div class="container">
@@ -21,16 +21,18 @@
             <div class="col-md-6">
                 <h2 class="text-center">Type</h2>
                 <ul>
-                    {% for typeName in typeNames %}
-                        <li>{{ typeName|capitalize }}</li>
+                    {% dump(pokemon) %}
+                    {% for type in pokemon.types %}
+                        <li>{{ type.name }}</li>
                     {% endfor %}
                 </ul>
             </div>
             <div class="col-md-6">
                 <h2 class="text-center">Abilities</h2>
                 <ul>
-                    {% for abilityName in abilityNames %}
-                        <li>{{ abilityName|capitalize }}</li>
+                    {% for ability in pokemon.abilities %}
+                        {% dump(ability) %}
+                        <li>{{ ability.name|capitalize }}</li>
                     {% endfor %}
                 </ul>
             </div>
@@ -39,18 +41,24 @@
                 <h2 class="text-center mb-3">Spéciales Stats</h2>
                 <table class="table text-center">
                     <thead>
-                    <tr>
-                        {% for nameSpecialStats in namesSpecialStats %}
-                            <th scope="col">{{ nameSpecialStats|upper }}</th>
-                        {% endfor %}
-                    </tr>
+                        <tr>
+                            <th scope="col">HP</th>
+                            <th scope="col">ATK</th>
+                            <th scope="col">DEF</th>
+                            <th scope="col">SPA</th>
+                            <th scope="col">SPD</th>
+                            <th scope="col">SPE</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        {% for valeurSpecialStats in valeursSpecialStats %}
-                            <td>{{ valeurSpecialStats }}</td>
-                        {% endfor %}
-                    </tr>
+                        <tr>
+                            <td>{{ pokemon.hp }}</td>
+                            <td>{{ pokemon.atk }}</td>
+                            <td>{{ pokemon.def }}</td>
+                            <td>{{ pokemon.spa }}</td>
+                            <td>{{ pokemon.spd }}</td>
+                            <td>{{ pokemon.spe }}</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
