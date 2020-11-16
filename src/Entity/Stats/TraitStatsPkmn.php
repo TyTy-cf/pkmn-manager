@@ -126,7 +126,7 @@ trait TraitStatsPkmn
     /**
      * @param int $spd
      */
-    public function seSpd(int $spd): void
+    public function setSpd(int $spd): void
     {
         $this->spd = $spd;
     }

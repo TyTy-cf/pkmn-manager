@@ -4,6 +4,7 @@
 namespace App\Entity\Pokemon;
 
 use App\Entity\Infos\Abilities;
+use App\Entity\Infos\TraitNames;
 use App\Entity\Infos\Type;
 use App\Entity\Stats\TraitStatsPkmn;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -37,23 +38,19 @@ class Pokemon
 
     use TraitStatsPkmn;
 
-    /**
-     * @var string $name le nom du pokemon en anglais
-     * @ORM\Column(name="name", type="string", length=120)
-     */
-    private $name;
+    use TraitNames;
 
     /**
-     * @ManyToMany(targetEntity="App\Entity\Infos\Abilities")
+     * @ManyToMany(targetEntity="App\Entity\Infos\Abilities", inversedBy="pokemons", cascade={"persist"})
      * @JoinTable(name="pokemons_abilities",
      *      joinColumns={@JoinColumn(name="pokemon_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="talent_id", referencedColumnName="id")}
+     *      inverseJoinColumns={@JoinColumn(name="ability_id", referencedColumnName="id")}
      *      )
      */
     private $abilities;
 
     /**
-     * @ManyToMany(targetEntity="App\Entity\Infos\Type")
+     * @ManyToMany(targetEntity="App\Entity\Infos\Type", inversedBy="pokemons", cascade={"persist"})
      * @JoinTable(name="pokemons_types",
      *      joinColumns={@JoinColumn(name="pokemon_id", referencedColumnName="id")},
      *      inverseJoinColumns={@JoinColumn(name="type_id", referencedColumnName="id")}
@@ -62,9 +59,9 @@ class Pokemon
     private $types;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(name="url_img", type="string", length=255, nullable=true)
      */
-    private $urlimg;
+    private $urlImg;
 
     /**
      * Pokemon constructor.
@@ -91,19 +88,19 @@ class Pokemon
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName(): string
+    public function getUrlimg(): ?string
     {
-        return $this->name;
+        return $this->urlImg;
     }
 
     /**
-     * @param string $name
+     * @param string $urlimg
      */
-    public function setName(string $name): void
+    public function setUrlimg(?string $urlimg)
     {
-        $this->name = $name;
+        $this->urlImg = $urlimg;
     }
 
     /**
@@ -111,7 +108,7 @@ class Pokemon
      */
     public function addAbilities(Abilities $abilities): void
     {
-        if ($this->abilities->contains($abilities)) {
+        if (!$this->abilities->contains($abilities)) {
             $this->abilities->add($abilities);
         }
     }
@@ -125,11 +122,21 @@ class Pokemon
     }
 
     /**
+     * @param Abilities $ability
+     */
+    public function removeAbility(Abilities $ability)
+    {
+        if ($this->abilities->contains($ability)) {
+            $this->abilities->removeElement($ability);
+        }
+    }
+
+    /**
      * @param Type $type
      */
     public function addTypes(Type $type): void
     {
-        if ($this->types->contains($type)) {
+        if (!$this->types->contains($type)) {
             $this->types->add($type);
         }
     }
@@ -142,47 +149,13 @@ class Pokemon
         return $this->types;
     }
 
-    public function addAbility(Abilities $ability): self
+    /**
+     * @param Type $type
+     */
+    public function removeType(Type $type)
     {
-        if (!$this->abilities->contains($ability)) {
-            $this->abilities[] = $ability;
+        if ($this->types->contains($type)) {
+            $this->types->removeElement($type);
         }
-
-        return $this;
-    }
-
-    public function removeAbility(Abilities $ability): self
-    {
-        $this->abilities->removeElement($ability);
-
-        return $this;
-    }
-
-    public function addType(Type $type): self
-    {
-        if(!$this->types->contains($type)) {
-            $this->types[] = $type;
-        }
-
-        return $this;
-    }
-
-    public function removeType(Type $type): self
-    {
-        $this->types->removeElement($type);
-
-        return $this;
-    }
-
-    public function getUrlimg(): ?string
-    {
-        return $this->urlimg;
-    }
-
-    public function setUrlimg(?string $urlimg): self
-    {
-        $this->urlimg = $urlimg;
-
-        return $this;
     }
 }

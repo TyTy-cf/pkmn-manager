@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 {% block title %}Catch 'em all{% endblock %}
 {% block body %}
-    <h1 class="text-center mb-1 mt-3">Profil de {{ pokemon.name }}</h1>
+    <h1 class="text-center mb-1 mt-3">Profil de {{ pokemon.nameEn }}</h1>
     <hr>
     <div class="row justify-content-center mb-3 mt-3">
         <img src="{{ pokemon.urlimg }}" width="200px"
-             alt="Image de {{ pokemon.name|capitalize }}">
+             alt="Image de {{ pokemon.nameEn|capitalize }}">
     </div>
     <hr>
     <div class="container">
@@ -14,7 +14,7 @@
                 <h2 class="text-center">Type</h2>
                 <ul>
                     {% for type in pokemon.types %}
-                        <li>{{ type.name|capitalize }}</li>
+                        <li>{{ type.nameEn|capitalize }}</li>
                     {% endfor %}
                 </ul>
             </div>
@@ -22,7 +22,7 @@
                 <h2 class="text-center">Abilities</h2>
                 <ul>
                     {% for ability in pokemon.abilities %}
-                        <li>{{ ability.name|capitalize }}</li>
+                        <li>{{ ability.nameEn|capitalize }}</li>
                     {% endfor %}
                 </ul>
             </div>

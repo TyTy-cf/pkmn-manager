@@ -27,8 +27,12 @@ class Type
      */
     private $id;
 
-    use TraitName;
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Pokemon\Pokemon", mappedBy="abilities")
+     */
+    private $pokemons;
 
+    use TraitNames;
 
     /**
      * @return int
@@ -44,6 +48,34 @@ class Type
     public function setId(int $id): void
     {
         $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPokemons()
+    {
+        return $this->pokemons;
+    }
+
+    /**
+     * @param $pokemon
+     */
+    public function addPokemons($pokemon): void
+    {
+        if (!$this->pokemons->contains($pokemon)) {
+            $this->pokemons->add($pokemon);
+        }
+    }
+
+    /**
+     * @param $pokemon
+     */
+    public function removePokemons($pokemon): void
+    {
+        if ($this->pokemons->contains($pokemon)) {
+            $this->pokemons->remove($pokemon);
+        }
     }
 
 }

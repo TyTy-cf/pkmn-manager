@@ -24,7 +24,7 @@ class Gender
      */
     private $id;
 
-    use TraitName;
+    use TraitNames;
 
     /**
      * @return int

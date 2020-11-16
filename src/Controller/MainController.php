@@ -6,6 +6,9 @@ namespace App\Controller;
 use App\Entity\Infos\Abilities;
 use App\Entity\Infos\Type;
 use App\Entity\Pokemon\Pokemon;
+use App\Manager\AbilitiesManager;
+use App\Manager\PokemonManager;
+use App\Manager\TypeManager;
 use App\Repository\AbilitiesRepository;
 use App\Repository\PokemonRepository;
 use App\Repository\TypeRepository;
@@ -25,27 +28,59 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class MainController extends AbstractController
 {
-    /**
-     * Affiche l'index et les derniers pokémons enregistrés dans la base de données
-     * @Route (path="/", name="index")
-     * @param Request $request
-     * @param PokemonRepository $pokemonRepository
-     * @param PaginatorInterface $paginator
-     * @return Response
-     */
-    public function index(Request $request, PokemonRepository $pokemonRepository, PaginatorInterface $paginator): Response
-    {
-        $pokemons = $paginator->paginate(
-            $pokemonRepository->findby([],['id' => 'DESC']),
-        $request->query->getInt('page', '1'),
-        8);
 
-        return $this->render('index.html.twig',
-            ['pokemons' => $pokemons]);
+    /**
+     * @var AbilitiesManager $abilitiesManager
+     */
+    private $abilitiesManager;
+
+    /**
+     * @var TypeManager
+     */
+    private $typeManager;
+
+    /**
+     * @var PokemonManager
+     */
+    private $pokemonManager;
+
+    /**
+     * AlbumManager constructor.
+     *
+     * @param AbilitiesManager $abilitiesManager
+     * @param TypeManager $typeManager
+     * @param PokemonManager $pokemonManager
+     */
+    public function __construct(AbilitiesManager $abilitiesManager, TypeManager $typeManager, PokemonManager $pokemonManager)
+    {
+        $this->abilitiesManager = $abilitiesManager;
+        $this->typeManager = $typeManager;
+        $this->pokemonManager = $pokemonManager;
     }
 
     /**
-     * Affiche la liste des pokémons consultables en ligne
+     * Display the last pokemon add in the database
+     *
+     * @Route (path="/", name="index")
+     * @param Request $request
+     * @param PaginatorInterface $paginator
+     * @return Response
+     */
+    public function index(Request $request, PaginatorInterface $paginator): Response
+    {
+        $pokemons = $paginator->paginate(
+            $this->pokemonManager->findby(['id' => 'DESC']),
+            $request->query->getInt('page', '1'),
+            8
+        );
+        return $this->render('index.html.twig', [
+            'pokemons' => $pokemons,
+        ]);
+    }
+
+    /**
+     * Display pokemon list
+     *
      * @Route(path="/listing/{offset}", name="listing")
      * @param Request $request
      * @return Response
@@ -89,12 +124,11 @@ class MainController extends AbstractController
     }
 
     /**
-     * Affiche les caractéristiques d'un pokemon
+     * Display the characteristic for one pokemon
+     *
      * @Route(path="/pokemon/{pokeName}", name="profile_pokemon")
+     *
      * @param Request $request
-     * @param PokemonRepository $pokemonRepository
-     * @param AbilitiesRepository $abilitiesRepository
-     * @param TypeRepository $typeRepository
      * @param EntityManagerInterface $em
      * @return Response
      * @throws ClientExceptionInterface
@@ -105,90 +139,29 @@ class MainController extends AbstractController
      */
     function profile(
         Request $request,
-        PokemonRepository $pokemonRepository,
-        AbilitiesRepository $abilitiesRepository,
-        TypeRepository $typeRepository,
         EntityManagerInterface $em
     ): Response {
-        $nomPokmn = $request->get('pokeName');
 
-        //Vérification si le Pokémon est présent dans la base de données
-        if ($pokemonRepository->findBy(['name' => $nomPokmn]) == null) {
+        $pokemonName = $request->get('pokeName');
 
-            //Si absent de la BDD => Récupếération des données via l'API
+        // Check if the pokemon exists inside the database
+        if (($pokemon = $this->pokemonManager->findByName($pokemonName)) == null) {
+
+            // not existing, we are looking for it in the API
             $client = HttpClient::create();
-            $url = "https://pokeapi.co/api/v2/pokemon/${nomPokmn}";
+            $url = "https://pokeapi.co/api/v2/pokemon/".$pokemonName;
             $response = $client->request('GET', $url);
 
             if (200 !== $response->getStatusCode()) {
                 throw new RuntimeException(sprintf('The API return an error.'));
             }
 
-            //Stockage des données dans variable
+            // save the Json
             $apiResponse = $response->toArray();
 
-            //Création d'un nouvel objet
-            $pokemon = new Pokemon();
-            $pokemon->setName(ucfirst($nomPokmn));
-            $pokemon->setUrlimg($apiResponse['sprites']['other']['dream_world']['front_default']);
-
-            //Récupération des statistiques spéciales
-            foreach ($apiResponse['stats'] as $i) {
-                if ($i['stat']['name'] == 'hp') {
-                    $pokemon->setHp($i['base_stat']);
-                } elseif ($i['stat']['name'] == 'attack') {
-                    $pokemon->setAtk($i['base_stat']);
-                } elseif ($i['stat']['name'] == 'defense') {
-                    $pokemon->setDef($i['base_stat']);
-                } elseif ($i['stat']['name'] == 'special-attack') {
-                    $pokemon->setSpa($i['base_stat']);
-                } elseif ($i['stat']['name'] == 'special-defense') {
-                    $pokemon->seSpd($i['base_stat']); // / ! \ SeSpd à corriger !
-                } elseif ($i['stat']['name'] == 'speed') {
-                    $pokemon->setSpe($i['base_stat']);
-                }
-            }
-
-            //Vérification si les Abilitiés sont présents dans la BDD
-            foreach ($apiResponse['abilities'] as $i) {
-
-                if ($abilitiesRepository->findBy(['name' => $i['ability']['name']]) == null) {
-                    $abilitie = new Abilities();
-                    $abilitie->setName($i['ability']['name']);
-                    $abilitie->setDescription('En attendant de trouver une description !');
-
-                    $em->persist($abilitie);
-                    $pokemon->addAbility($abilitie);
-                    $em->flush();
-
-                } else {
-                    $abilitie = $abilitiesRepository->findoneBy(['name' => $i['ability']['name']]);
-                    $pokemon->addAbility($abilitie);
-                }
-            }
-
-            //Vérification si les Types sont présents dans la BDD
-            foreach ($apiResponse['types'] as $i) {
-
-                if ($typeRepository->findBy(['name' => $i['type']['name']]) == null) {
-
-                    $type = new Type();
-                    $type->setName($i['type']['name']);
-                    $em->persist($type);
-                    $pokemon->addType($type);
-                    $em->flush();
-                } else {
-                    $type = $typeRepository->findOneBy(['name' => $i['type']['name']]);
-                    $pokemon->addType($type);
-                }
-            }
-
-            $em->persist($pokemon);
-            $em->flush();
+            // Create the new pokemon
+            $pokemon = $this->pokemonManager->saveNewPokemon($apiResponse, $pokemonName);
         }
-
-        //Récupération des données dans la base
-        $pokemon = $pokemonRepository->findOneBy(['name' => $nomPokmn]);
 
         return $this->render('profile.html.twig', [
             'pokemon' => $pokemon,

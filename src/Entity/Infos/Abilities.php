@@ -25,12 +25,17 @@ class Abilities
      */
     private $id;
 
-    use TraitName;
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Pokemon\Pokemon", mappedBy="abilities")
+     */
+    private $pokemons;
+
+    use TraitNames;
 
     /**
      * @var string $description
      *
-     * @ORM\Column(name="description", type="string", length=255)
+     * @ORM\Column(name="description", type="string", length=255, nullable=true)
      */
     private $description;
 
@@ -64,6 +69,34 @@ class Abilities
     public function setDescription(string $description): void
     {
         $this->description = $description;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPokemons()
+    {
+        return $this->pokemons;
+    }
+
+    /**
+     * @param $pokemon
+     */
+    public function addPokemons($pokemon): void
+    {
+        if (!$this->pokemons->contains($pokemon)) {
+            $this->pokemons->add($pokemon);
+        }
+    }
+
+    /**
+     * @param $pokemon
+     */
+    public function removePokemons($pokemon): void
+    {
+        if ($this->pokemons->contains($pokemon)) {
+            $this->pokemons->remove($pokemon);
+        }
     }
 
 }

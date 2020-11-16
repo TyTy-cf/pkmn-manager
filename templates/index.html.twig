@@ -18,9 +18,9 @@
         <div class="row">
             {% for pokemon in pokemons %}
                 <div class="col-md-3 text-center mb-3">
-                    <h3><a href="{{ path('profile_pokemon', {pokeName: pokemon.name }) }}">{{ pokemon.name }}</h3>
-                    <a href="{{ path('profile_pokemon', {pokeName: pokemon.name }) }}">
-                        <img src="{{ pokemon.urlimg }}" alt="Image de {{ pokemon.name }}" width="200px" height="200px">
+                    <h3><a href="{{ path('profile_pokemon', {pokeName: pokemon.nameEn }) }}">{{ pokemon.nameEn }}</h3>
+                    <a href="{{ path('profile_pokemon', {pokeName: pokemon.nameEn }) }}">
+                        <img src="{{ pokemon.urlimg }}" alt="Image de {{ pokemon.nameEn }}" width="200px" height="200px">
                     </a>
 
                 </div>
