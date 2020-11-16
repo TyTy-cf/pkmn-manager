@@ -102,7 +102,7 @@ class MainController extends AbstractController
         //Vérification si le Pokémon est présent dans la base de données
         if ($pokemonRepository->findBy(['name' => $nomPokmn]) == null) {
 
-            //Si absent =>Connexion à l'API
+            //Si absent de la BDD => Récupếération des données via l'API
             $client = HttpClient::create();
             $url = "https://pokeapi.co/api/v2/pokemon/${nomPokmn}";
             $response = $client->request('GET', $url);
@@ -139,7 +139,6 @@ class MainController extends AbstractController
             foreach ($apiResponse['abilities'] as $i) {
 
                 if ($abilitiesRepository->findBy(['name' => $i['ability']['name']]) == null) {
-
                     $abilitie = new Abilities();
                     $abilitie->setName($i['ability']['name']);
                     $abilitie->setDescription('En attendant de trouver une description !');
@@ -147,8 +146,9 @@ class MainController extends AbstractController
                     $em->persist($abilitie);
                     $pokemon->addAbility($abilitie);
                     $em->flush();
+//                } else {
+//                    $pokemon->addAbility($abilitie);
                 }
-
             }
 
             //Vérification si les Types sont présents dans la BDD
@@ -158,10 +158,12 @@ class MainController extends AbstractController
 
                     $type = new Type();
                     $type->setName($i['type']['name']);
-
                     $em->persist($type);
                     $pokemon->addType($type);
                     $em->flush();
+//                } else {
+//                    $type = $typeRepository->findBy(['name' => $i['type']['name']]);
+//                    $pokemon->addType($type);
                 }
             }
 
