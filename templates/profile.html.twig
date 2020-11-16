@@ -14,7 +14,7 @@
                 <h2 class="text-center">Type</h2>
                 <ul>
                     {% for type in pokemon.types %}
-                        <li>{{ type.name }}</li>
+                        <li>{{ type.name|capitalize }}</li>
                     {% endfor %}
                 </ul>
             </div>

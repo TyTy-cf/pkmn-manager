@@ -26,22 +26,26 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 class MainController extends AbstractController
 {
     /**
-     * Affiche l'index
+     * Affiche l'index et les derniers pokémons enregistrés dans la base de données
      * @Route (path="/", name="index")
+     * @param Request $request
+     * @param PokemonRepository $pokemonRepository
+     * @param PaginatorInterface $paginator
+     * @return Response
      */
-    public function index(Request $request, PokemonRepository $pokemonRepository, PaginatorInterface $paginator)
+    public function index(Request $request, PokemonRepository $pokemonRepository, PaginatorInterface $paginator): Response
     {
         $pokemons = $paginator->paginate(
             $pokemonRepository->findby([],['id' => 'DESC']),
         $request->query->getInt('page', '1'),
-        6);
+        8);
 
         return $this->render('index.html.twig',
             ['pokemons' => $pokemons]);
     }
 
     /**
-     * Affiche la liste des pokémons consultables
+     * Affiche la liste des pokémons consultables en ligne
      * @Route(path="/listing/{offset}", name="listing")
      * @param Request $request
      * @return Response
@@ -55,10 +59,12 @@ class MainController extends AbstractController
     {
         $offset = $request->get('offset');
 
+        //Récupération de la pagination
         if ($offset < 20) {
             $offset = 0;
         }
 
+        //Connexion à l'API pour récupération des données
         $client = HttpClient::create();
         $url = "https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=20";
 
@@ -68,6 +74,7 @@ class MainController extends AbstractController
             throw new RuntimeException(sprintf('The API return an error.'));
         }
 
+        //Récupération des données dans un tableau
         $apiResponse = $response->toArray();
 
         //Récupération du pokéName
