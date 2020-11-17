@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block title %}Catch 'em all{% endblock %}
 {% block body %}
-    <h1 class="text-center">Liste des pokémons</h1>
+    <h1 class="text-center">Consultation en ligne de Pokémons</h1>
     <hr>
     <div class="row justify-content-center">
         {% if offset > 0 %}
@@ -17,11 +17,8 @@
                 <h5 class="mt-2">
                     <a href="{{ path('profile_pokemon', {pokeName: pokemonName }) }}">{{ pokemonName|capitalize }}</a>
                 </h5>
-{#                <hr>#}
-{#                 <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/{{ loop.index }}.svg" #}
-{#                 width="150px" height="150px" alt=""><br> #}
-{#                <hr>#}
-                <a href="{{ path('profile_pokemon', {pokeName: pokemonName }) }}" class="btn btn-sm btn-dark">Voir plus</a>
+                <a href="{{ path('profile_pokemon', {pokeName: pokemonName }) }}" class="btn btn-sm btn-dark">Voir
+                    plus</a>
             </div>
         {% endfor %}
     </div>

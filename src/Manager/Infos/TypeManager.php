@@ -76,10 +76,9 @@ class TypeManager
      */
     public function getTypesInformation($lang, $url)
     {
-        $apiResponse = $this->apiManager->getTypesDetailed($url)->toArray();
+        $apiResponse = $this->apiManager->getDetailed($url)->toArray();
 
         foreach ($apiResponse['names'] as $name) {
-
             if ($name['language']['name'] === $lang) {
                 $typeName = $name['name'];
             }

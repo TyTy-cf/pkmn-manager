@@ -72,24 +72,14 @@ class ApiManager
     }
 
     /**
-     * Return from API the information of the $ability passed in parameter
+     * Return from API the information of the $var passed in parameter
      * @param $url
      * @return array
      * @throws TransportExceptionInterface
      */
-    public function getAbilitiesDetailed($url)
+    public function getDetailed($url)
     {
         return $this->apiConnect($url);
     }
 
-    /**
-     * Return form API the information of the $Type passed in parameter
-     * @param $url
-     * @return mixed
-     * @throws TransportExceptionInterface
-     */
-    public function getTypesDetailed($url)
-    {
-        return $this->apiConnect($url);
-    }
 }

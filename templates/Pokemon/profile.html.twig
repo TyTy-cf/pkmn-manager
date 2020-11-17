@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 {% block title %}Catch 'em all{% endblock %}
 {% block body %}
-    <h1 class="text-center mb-1 mt-3">Profil de {{ pokemon.nameEn }}</h1>
+    <h1 class="text-center mb-1 mt-3">Profil de {{ pokemon.nameFr }}</h1>
     <hr>
     <div class="row justify-content-center mb-3 mt-3">
         <img src="{{ pokemon.urlimg }}" width="200px" height="200px"
-             alt="Image de {{ pokemon.nameEn|capitalize }}">
+             alt="Image de {{ pokemon.nameFr|capitalize }}">
     </div>
     <hr>
     <div class="container">
@@ -31,24 +31,24 @@
                 <h2 class="text-center mb-3">Stats de base</h2>
                 <table class="table text-center">
                     <thead>
-                        <tr>
-                            <th scope="col">HP</th>
-                            <th scope="col">ATK</th>
-                            <th scope="col">DEF</th>
-                            <th scope="col">SPA</th>
-                            <th scope="col">SPD</th>
-                            <th scope="col">SPE</th>
-                        </tr>
+                    <tr>
+                        <th scope="col">HP</th>
+                        <th scope="col">ATK</th>
+                        <th scope="col">DEF</th>
+                        <th scope="col">SPA</th>
+                        <th scope="col">SPD</th>
+                        <th scope="col">SPE</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>{{ pokemon.hp }}</td>
-                            <td>{{ pokemon.atk }}</td>
-                            <td>{{ pokemon.def }}</td>
-                            <td>{{ pokemon.spa }}</td>
-                            <td>{{ pokemon.spd }}</td>
-                            <td>{{ pokemon.spe }}</td>
-                        </tr>
+                    <tr>
+                        <td>{{ pokemon.hp }}</td>
+                        <td>{{ pokemon.atk }}</td>
+                        <td>{{ pokemon.def }}</td>
+                        <td>{{ pokemon.spa }}</td>
+                        <td>{{ pokemon.spd }}</td>
+                        <td>{{ pokemon.spe }}</td>
+                    </tr>
                     </tbody>
                 </table>
             </div>

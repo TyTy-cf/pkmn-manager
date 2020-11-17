@@ -5,10 +5,12 @@ namespace App\Manager\Pokemon;
 
 
 use App\Entity\Pokemon\Pokemon;
+use App\Manager\Api\ApiManager;
 use App\Manager\Infos\AbilitiesManager;
 use App\Manager\Infos\TypeManager;
 use App\Repository\Pokemon\PokemonRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class PokemonManager
 {
@@ -33,18 +35,29 @@ class PokemonManager
     private $typeManager;
 
     /**
+     * @var ApiManager
+     */
+    private $apiManager;
+
+    /**
      * PokemonManager constructor.
      *
      * @param EntityManagerInterface $entityManager
      * @param AbilitiesManager $abilitiesManager
      * @param TypeManager $typeManager
+     * @param ApiManager $apiManager
      */
-    public function __construct(EntityManagerInterface $entityManager, AbilitiesManager $abilitiesManager, TypeManager $typeManager)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        AbilitiesManager $abilitiesManager,
+        TypeManager $typeManager,
+        ApiManager $apiManager
+    ) {
         $this->entityManager = $entityManager;
         $this->pokemonRepository = $this->entityManager->getRepository(Pokemon::class);
         $this->abilitiesManager = $abilitiesManager;
         $this->typeManager = $typeManager;
+        $this->apiManager = $apiManager;
     }
 
     /**
@@ -77,9 +90,15 @@ class PokemonManager
      */
     public function saveNewPokemon(array $apiResponse, string $pokemonName)
     {
+        //Return french name of Pokémon
+        $url = $apiResponse['species']['url'];
+        $pokemonNameFr = $this->getInformationFrPokemon('fr', $url);
+
         $pokemon = new Pokemon();
+        $pokemon->setNameFr($pokemonNameFr);
         $pokemon->setNameEn(ucfirst($pokemonName));
         $pokemon->setUrlimg($apiResponse['sprites']['other']['dream_world']['front_default']);
+
         // Add the stats
         foreach ($apiResponse['stats'] as $stat) {
 
@@ -103,5 +122,24 @@ class PokemonManager
         $this->entityManager->persist($pokemon);
         $this->entityManager->flush();
         return $pokemon;
+    }
+
+    /**
+     * @param $lang
+     * @param $url
+     * @return mixed
+     * @throws TransportExceptionInterface
+     */
+    public function getInformationFrPokemon($lang, $url)
+    {
+        $apiResponse = $this->apiManager->getDetailed($url)->toArray();
+
+        foreach ($apiResponse['names'] as $namePokemon) {
+            if ($namePokemon['language']['name'] === $lang) {
+                $namePokemonFr = $namePokemon['name'];
+            }
+        }
+
+        return $namePokemonFr;
     }
 }

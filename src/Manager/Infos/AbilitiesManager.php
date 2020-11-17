@@ -77,7 +77,7 @@ class AbilitiesManager
      */
     public function getAbilitiesInformation($lang, $url)
     {
-        $apiResponse = $this->apiManager->getAbilitiesDetailed($url)->toArray();
+        $apiResponse = $this->apiManager->getDetailed($url)->toArray();
 
         foreach ($apiResponse['names'] as $name) {
             if ($name['language']['name'] === $lang) {
