@@ -5,9 +5,9 @@
     <hr>
     <div class="row justify-content-center">
         {% if offset > 0 %}
-            <a class="btn btn-sm btn-dark mr-2" href="{{ path('listing', {offset: offset-20}) }}">Précédent</a>
+            <a class="btn btn-sm btn-dark mr-2" href="{{ path('listing', {offset: offset - 20}) }}">Précédent</a>
         {% endif %}
-        <a class="btn btn-sm btn-info" href="{{ path('listing', {offset: offset+20}) }}">Suivant</a>
+        <a class="btn btn-sm btn-info" href="{{ path('listing', {offset: offset + 20 }) }}">Suivant</a>
     </div>
     </a>
     <hr>

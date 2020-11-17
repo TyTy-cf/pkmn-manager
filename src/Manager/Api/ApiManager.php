@@ -6,6 +6,7 @@ namespace App\Manager\Api;
 
 use App\Entity\Pokemon\Pokemon;
 use http\Exception\RuntimeException;
+use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
@@ -18,24 +19,6 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
  */
 class ApiManager
 {
-
-    /**
-     * Connection to the API and retrieving JSON information
-     * @param $url
-     * @return mixed
-     * @throws TransportExceptionInterface
-     */
-    private function apiConnect($url)
-    {
-        $client = HttpClient::create();
-        $response = $client->request('GET', $url);
-
-        if (200 !== $response->getStatusCode()) {
-            throw new RuntimeException(sprintf('The API return an error.'));
-        }
-
-        return $response;
-    }
 
     /**
      * @param $offset
@@ -53,6 +36,24 @@ class ApiManager
             $pokemonNames[] = $result['name'];
         }
         return $pokemonNames;
+    }
+
+    /**
+     * Connection to the API and retrieving JSON information
+     * @param $url
+     * @return mixed
+     * @throws TransportExceptionInterface
+     */
+    private function apiConnect($url)
+    {
+        $client = HttpClient::create();
+        $response = $client->request('GET', $url);
+
+        if (200 !== $response->getStatusCode()) {
+            throw new RuntimeException(sprintf('The API return an error.'));
+        }
+
+        return $response;
     }
 
     /**
@@ -78,20 +79,17 @@ class ApiManager
      */
     public function getAbilitiesDetailed($url)
     {
-        $apiResponse = $this->apiConnect($url);
-        $apiResponse = $apiResponse->toArray();
+        return $this->apiConnect($url);
+    }
 
-        $abilitiesDetailed = [
-            'nameAbilityFr' => $apiResponse['names']['3']['name'],
-            'descriptionAbilityFr' => $apiResponse['flavor_text_entries']['19']['flavor_text'],
-        ];
-
-        dump($apiResponse);
-
-        die();
-
-
-        return $abilitiesDetailed;
-
+    /**
+     * Return form API the information of the $Type passed in parameter
+     * @param $url
+     * @return mixed
+     * @throws TransportExceptionInterface
+     */
+    public function getTypesDetailed($url)
+    {
+        return $this->apiConnect($url);
     }
 }

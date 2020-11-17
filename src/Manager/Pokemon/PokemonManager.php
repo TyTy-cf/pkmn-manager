@@ -82,6 +82,7 @@ class PokemonManager
         $pokemon->setUrlimg($apiResponse['sprites']['other']['dream_world']['front_default']);
         // Add the stats
         foreach ($apiResponse['stats'] as $stat) {
+
             if ($stat['stat']['name'] == 'hp') {
                 $pokemon->setHp($stat['base_stat']);
             } elseif ($stat['stat']['name'] == 'attack') {

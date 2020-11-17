@@ -49,22 +49,52 @@ class AbilitiesManager
         // Iterate the types from the json, create the type if not existing or get it
         foreach ($abilities as $ability) {
             $abilityName = $ability['ability']['name'];
+
             if (($newAbility = $this->abilitiesRepository->findOneBy(['nameEn' => $abilityName])) == null) {
 
                 $urlAbility = $ability['ability']['url'];
 
-                $abilityDetails = $this->apiManager->getAbilitiesDetailed($urlAbility);
-                dump($abilityDetails);
-                die();
-
+                $abilitiesDetailed = $this->getAbilitiesInformation('fr', $urlAbility);
 
                 $newAbility = new Abilities();
                 $newAbility->setNameEn(ucfirst($abilityName));
+                $newAbility->setNameFr(ucfirst($abilitiesDetailed['name']));
+                $newAbility->setDescription($abilitiesDetailed['description']);
 
                 $this->entityManager->persist($newAbility);
             }
             $pokemon->addAbilities($newAbility);
             $this->entityManager->flush();
         }
+    }
+
+    /**
+     * @param $lang
+     * @param $url
+     * @return array
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     */
+    public function getAbilitiesInformation($lang, $url)
+    {
+        $apiResponse = $this->apiManager->getAbilitiesDetailed($url)->toArray();
+
+        foreach ($apiResponse['names'] as $name) {
+            if ($name['language']['name'] === $lang) {
+                $nameAbility = $name['name'];
+
+            }
+        }
+
+        foreach ($apiResponse['flavor_text_entries'] as $flavor_text_entry) {
+            if ($flavor_text_entry['language']['name'] === $lang) {
+                $descriptionAbility = $flavor_text_entry['flavor_text'];
+            }
+        }
+
+        return $AbilitiesInformation = [
+            'name' => $nameAbility,
+            'description' => $descriptionAbility
+        ];
+
     }
 }
