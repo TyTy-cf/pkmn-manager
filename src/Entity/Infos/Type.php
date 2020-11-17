@@ -61,7 +61,7 @@ class Type
     /**
      * @param $pokemon
      */
-    public function addPokemons($pokemon): void
+    public function addPokemon($pokemon): void
     {
         if (!$this->pokemons->contains($pokemon)) {
             $this->pokemons->add($pokemon);
@@ -71,7 +71,7 @@ class Type
     /**
      * @param $pokemon
      */
-    public function removePokemons($pokemon): void
+    public function removePokemon($pokemon): void
     {
         if ($this->pokemons->contains($pokemon)) {
             $this->pokemons->remove($pokemon);

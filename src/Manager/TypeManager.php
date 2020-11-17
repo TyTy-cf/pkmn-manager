@@ -34,9 +34,9 @@ class TypeManager
 
     /**
      * @param $types
-     * @param $pokemon
+     * @param Pokemon $pokemon
      */
-    public function saveNewTypes($types, $pokemon)
+    public function saveNewTypes($types, Pokemon $pokemon)
     {
         // Iterate the types from the json, create the type if not existing or get it
         foreach ($types as $type) {
@@ -46,7 +46,7 @@ class TypeManager
                 $newType->setNameEn(ucfirst($typeName));
                 $this->entityManager->persist($newType);
             }
-            $pokemon->addTypes($newType);
+            $pokemon->addType($newType);
             $this->entityManager->flush();
         }
     }

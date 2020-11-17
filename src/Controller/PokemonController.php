@@ -3,14 +3,10 @@
 
 namespace App\Controller;
 
-use App\Manager\AbilitiesManager;
+use App\Manager\ApiManager;
 use App\Manager\PokemonManager;
-use App\Manager\TypeManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,18 +16,8 @@ use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-class MainController extends AbstractController
+class PokemonController extends AbstractController
 {
-
-    /**
-     * @var AbilitiesManager $abilitiesManager
-     */
-    private $abilitiesManager;
-
-    /**
-     * @var TypeManager
-     */
-    private $typeManager;
 
     /**
      * @var PokemonManager
@@ -39,17 +25,20 @@ class MainController extends AbstractController
     private $pokemonManager;
 
     /**
-     * AlbumManager constructor.
-     *
-     * @param AbilitiesManager $abilitiesManager
-     * @param TypeManager $typeManager
-     * @param PokemonManager $pokemonManager
+     * @var ApiManager
      */
-    public function __construct(AbilitiesManager $abilitiesManager, TypeManager $typeManager, PokemonManager $pokemonManager)
+    private $apiManager;
+
+    /**
+     * PokemonController constructor.
+     *
+     * @param PokemonManager $pokemonManager
+     * @param ApiManager $apiManager
+     */
+    public function __construct(PokemonManager $pokemonManager, ApiManager $apiManager)
     {
-        $this->abilitiesManager = $abilitiesManager;
-        $this->typeManager = $typeManager;
         $this->pokemonManager = $pokemonManager;
+        $this->apiManager = $apiManager;
     }
 
     /**
@@ -89,30 +78,14 @@ class MainController extends AbstractController
         $offset = $request->get('offset');
 
         //Récupération de la pagination
-        if ($offset < 20) {
+        if ($offset < 42) {
             $offset = 0;
         }
 
-        //Connexion à l'API pour récupération des données
-        $client = HttpClient::create();
-        $url = "https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=20";
-
-        $response = $client->request('GET', $url);
-
-        if (200 !== $response->getStatusCode()) {
-            throw new RuntimeException(sprintf('The API return an error.'));
-        }
-
-        //Récupération des données dans un tableau
-        $apiResponse = $response->toArray();
-
-        //Récupération du pokéName
-        foreach ($apiResponse['results'] as $i) {
-            $namesPokmn[] = $i['name'];
-        }
+        $pokemonNames = $this->apiManager->getPokemonsListing($offset);
 
         return $this->render('listing.html.twig', [
-            'namesPokmn' => $namesPokmn,
+            'pokemonNames' => $pokemonNames,
             'offset' => $offset
         ]);
     }
@@ -123,39 +96,19 @@ class MainController extends AbstractController
      * @Route(path="/pokemon/{pokeName}", name="profile_pokemon")
      *
      * @param Request $request
-     * @param EntityManagerInterface $em
      * @return Response
+     *
      * @throws ClientExceptionInterface
      * @throws DecodingExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    function profile(
-        Request $request,
-        EntityManagerInterface $em
-    ): Response {
+    function displayProfile(Request $request): Response {
 
         $pokemonName = $request->get('pokeName');
 
-        // Check if the pokemon exists inside the database
-        if (($pokemon = $this->pokemonManager->findByName($pokemonName)) == null) {
-
-            // not existing, we are looking for it in the API
-            $client = HttpClient::create();
-            $url = "https://pokeapi.co/api/v2/pokemon/".$pokemonName;
-            $response = $client->request('GET', $url);
-
-            if (200 !== $response->getStatusCode()) {
-                throw new RuntimeException(sprintf('The API return an error.'));
-            }
-
-            // save the Json
-            $apiResponse = $response->toArray();
-
-            // Create the new pokemon
-            $pokemon = $this->pokemonManager->saveNewPokemon($apiResponse, $pokemonName);
-        }
+        $pokemon = $this->apiManager->getPokemonFromName($pokemonName);
 
         return $this->render('profile.html.twig', [
             'pokemon' => $pokemon,

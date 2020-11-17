@@ -4,7 +4,6 @@
 namespace App\Entity\Infos;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\Entity;
 
 /**
  * Class Abilities *
@@ -82,7 +81,7 @@ class Abilities
     /**
      * @param $pokemon
      */
-    public function addPokemons($pokemon): void
+    public function addPokemon($pokemon): void
     {
         if (!$this->pokemons->contains($pokemon)) {
             $this->pokemons->add($pokemon);
@@ -92,7 +91,7 @@ class Abilities
     /**
      * @param $pokemon
      */
-    public function removePokemons($pokemon): void
+    public function removePokemon($pokemon): void
     {
         if ($this->pokemons->contains($pokemon)) {
             $this->pokemons->remove($pokemon);

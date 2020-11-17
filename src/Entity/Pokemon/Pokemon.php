@@ -90,17 +90,17 @@ class Pokemon
     /**
      * @return string|null
      */
-    public function getUrlimg(): ?string
+    public function getUrlImg(): ?string
     {
         return $this->urlImg;
     }
 
     /**
-     * @param string $urlimg
+     * @param string $urlImg
      */
-    public function setUrlimg(?string $urlimg)
+    public function setUrlImg(?string $urlImg)
     {
-        $this->urlImg = $urlimg;
+        $this->urlImg = $urlImg;
     }
 
     /**
@@ -124,7 +124,7 @@ class Pokemon
     /**
      * @param Abilities $ability
      */
-    public function removeAbility(Abilities $ability)
+    public function removeAbilities(Abilities $ability)
     {
         if ($this->abilities->contains($ability)) {
             $this->abilities->removeElement($ability);
@@ -134,7 +134,7 @@ class Pokemon
     /**
      * @param Type $type
      */
-    public function addTypes(Type $type): void
+    public function addType(Type $type): void
     {
         if (!$this->types->contains($type)) {
             $this->types->add($type);
