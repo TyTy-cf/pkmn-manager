@@ -14,7 +14,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @package App\Entity\Infos
  *
  * @ORM\Table(name="type")
- * @ORM\Entity(repositoryClass="App\Repository\TypeRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Infos\TypeRepository")
  */
 class Type
 {

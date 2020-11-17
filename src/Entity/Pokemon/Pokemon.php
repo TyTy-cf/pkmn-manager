@@ -18,7 +18,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * Class Pokemon
  * @package App\Entity
- * @ORM\Entity(repositoryClass="App\Repository\PokemonRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Pokemon\PokemonRepository")
  * @ORM\Table(name="pokemon")
  * @UniqueEntity(
  *     fields={"name"},

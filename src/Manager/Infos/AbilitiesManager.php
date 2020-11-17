@@ -1,13 +1,12 @@
 <?php
 
 
-namespace App\Manager;
+namespace App\Manager\Infos;
 
 
 use App\Entity\Infos\Abilities;
-use App\Entity\Infos\Type;
 use App\Entity\Pokemon\Pokemon;
-use App\Repository\AbilitiesRepository;
+use App\Repository\Infos\AbilitiesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class AbilitiesManager

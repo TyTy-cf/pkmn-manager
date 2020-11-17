@@ -1,10 +1,10 @@
 <?php
 
 
-namespace App\Controller;
+namespace App\Controller\Pokemon;
 
-use App\Manager\ApiManager;
-use App\Manager\PokemonManager;
+use App\Manager\Api\ApiManager;
+use App\Manager\Pokemon\PokemonManager;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -56,7 +56,7 @@ class PokemonController extends AbstractController
             $request->query->getInt('page', '1'),
             8
         );
-        return $this->render('index.html.twig', [
+        return $this->render('Pokemon/index.html.twig', [
             'pokemons' => $pokemons,
         ]);
     }
@@ -84,7 +84,7 @@ class PokemonController extends AbstractController
 
         $pokemonNames = $this->apiManager->getPokemonsListing($offset);
 
-        return $this->render('listing.html.twig', [
+        return $this->render('Pokemon/listing.html.twig', [
             'pokemonNames' => $pokemonNames,
             'offset' => $offset
         ]);
@@ -110,7 +110,7 @@ class PokemonController extends AbstractController
 
         $pokemon = $this->apiManager->getPokemonFromName($pokemonName);
 
-        return $this->render('profile.html.twig', [
+        return $this->render('Pokemon/profile.html.twig', [
             'pokemon' => $pokemon,
         ]);
     }

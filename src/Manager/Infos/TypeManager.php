@@ -1,12 +1,12 @@
 <?php
 
 
-namespace App\Manager;
+namespace App\Manager\Infos;
 
 
 use App\Entity\Infos\Type;
 use App\Entity\Pokemon\Pokemon;
-use App\Repository\TypeRepository;
+use App\Repository\Infos\TypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class TypeManager

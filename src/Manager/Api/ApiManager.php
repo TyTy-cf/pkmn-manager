@@ -1,10 +1,11 @@
 <?php
 
 
-namespace App\Manager;
+namespace App\Manager\Api;
 
 
 use App\Entity\Pokemon\Pokemon;
+use App\Manager\Pokemon\PokemonManager;
 use http\Exception\RuntimeException;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
