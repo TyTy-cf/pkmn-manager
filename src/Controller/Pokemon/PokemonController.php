@@ -76,7 +76,13 @@ class PokemonController extends AbstractController
             $offset = 0;
         }
 
-        $pokemonNames = $this->apiManager->getPokemonsListing($offset);
+        $apiResponse = $this->apiManager->getPokemonsListing($offset);
+        $apiResponse = $apiResponse->toArray();
+
+        //Récupération du pokéName
+        foreach ($apiResponse['results'] as $result) {
+            $pokemonNames[] = $result['name'];
+        }
 
         return $this->render('Pokemon/listing.html.twig', [
             'pokemonNames' => $pokemonNames,

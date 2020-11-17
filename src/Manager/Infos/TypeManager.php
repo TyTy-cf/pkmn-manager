@@ -56,7 +56,7 @@ class TypeManager
 
                 $urlType = $type['type']['url'];
 
-                $typeNameFr = $this->getTypesInformation('fr', $urlType);
+                $typeNameFr = $this->getTypesInformationsOnLanguage('fr', $urlType);
 
                 $newType = new Type();
                 $newType->setNameEn(ucfirst($typeNameEn));
@@ -74,9 +74,10 @@ class TypeManager
      * @return mixed
      * @throws TransportExceptionInterface
      */
-    public function getTypesInformation($lang, $url)
+    public function getTypesInformationsOnLanguage($lang, $url)
     {
         $apiResponse = $this->apiManager->getDetailed($url)->toArray();
+        $typeName = null;
 
         foreach ($apiResponse['names'] as $name) {
             if ($name['language']['name'] === $lang) {

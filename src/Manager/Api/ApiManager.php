@@ -21,24 +21,6 @@ class ApiManager
 {
 
     /**
-     * @param $offset
-     * @return mixed
-     * @throws TransportExceptionInterface
-     */
-    public function getPokemonsListing($offset)
-    {
-        //Connexion à l'API pour récupération des données
-        $apiResponse = $this->apiConnect("https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=42");
-        $apiResponse = $apiResponse->toArray();
-
-        //Récupération du pokéName
-        foreach ($apiResponse['results'] as $result) {
-            $pokemonNames[] = $result['name'];
-        }
-        return $pokemonNames;
-    }
-
-    /**
      * Connection to the API and retrieving JSON information
      * @param $url
      * @return mixed
@@ -54,6 +36,17 @@ class ApiManager
         }
 
         return $response;
+    }
+
+    /**
+     * @param $offset
+     * @return mixed
+     * @throws TransportExceptionInterface
+     */
+    public function getPokemonsListing($offset)
+    {
+        return $this->apiConnect("https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=42");
+
     }
 
     /**

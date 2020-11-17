@@ -87,12 +87,13 @@ class PokemonManager
      * @param array $apiResponse
      * @param string $pokemonName
      * @return Pokemon
+     * @throws TransportExceptionInterface
      */
     public function saveNewPokemon(array $apiResponse, string $pokemonName)
     {
         //Return french name of Pokémon
         $url = $apiResponse['species']['url'];
-        $pokemonNameFr = $this->getInformationFrPokemon('fr', $url);
+        $pokemonNameFr = $this->getPokemonInformationsOnLanguage('fr', $url);
 
         $pokemon = new Pokemon();
         $pokemon->setNameFr($pokemonNameFr);
@@ -130,9 +131,10 @@ class PokemonManager
      * @return mixed
      * @throws TransportExceptionInterface
      */
-    public function getInformationFrPokemon($lang, $url)
+    public function getPokemonInformationsOnLanguage($lang, $url)
     {
         $apiResponse = $this->apiManager->getDetailed($url)->toArray();
+        $namePokemonFr = null;
 
         foreach ($apiResponse['names'] as $namePokemon) {
             if ($namePokemon['language']['name'] === $lang) {

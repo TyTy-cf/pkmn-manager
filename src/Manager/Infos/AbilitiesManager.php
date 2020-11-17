@@ -44,6 +44,7 @@ class AbilitiesManager
     /**
      * @param $abilities
      * @param Pokemon $pokemon
+     * @throws TransportExceptionInterface
      */
     public function saveNewAbilities($abilities, $pokemon)
     {
@@ -55,7 +56,7 @@ class AbilitiesManager
 
                 $urlAbility = $ability['ability']['url'];
 
-                $abilitiesDetailed = $this->getAbilitiesInformation('fr', $urlAbility);
+                $abilitiesDetailed = $this->getAbilitiesInformationsOnLanguage('fr', $urlAbility);
 
                 $newAbility = new Abilities();
                 $newAbility->setNameEn(ucfirst($abilityName));
@@ -75,14 +76,15 @@ class AbilitiesManager
      * @return array
      * @throws TransportExceptionInterface
      */
-    public function getAbilitiesInformation($lang, $url)
+    public function getAbilitiesInformationsOnLanguage($lang, $url)
     {
         $apiResponse = $this->apiManager->getDetailed($url)->toArray();
+        $descriptionAbility = null;
+        $nameAbility = null;
 
         foreach ($apiResponse['names'] as $name) {
             if ($name['language']['name'] === $lang) {
                 $nameAbility = $name['name'];
-
             }
         }
 
@@ -94,7 +96,7 @@ class AbilitiesManager
 
         return $AbilitiesInformation = [
             'name' => $nameAbility,
-            'description' => $descriptionAbility
+            'description' => $descriptionAbility,
         ];
 
     }
