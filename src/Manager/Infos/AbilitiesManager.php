@@ -46,7 +46,7 @@ class AbilitiesManager
      * @param Pokemon $pokemon
      * @throws TransportExceptionInterface
      */
-    public function saveNewAbilities($abilities, $pokemon)
+    public function saveNewAbilities($abilities, Pokemon $pokemon)
     {
         // Iterate the types from the json, create the type if not existing or get it
         foreach ($abilities as $ability) {

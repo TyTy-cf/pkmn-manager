@@ -15,6 +15,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @ORM\Table(name="type")
  * @ORM\Entity(repositoryClass="App\Repository\Infos\TypeRepository")
+ * @UniqueEntity(
+ *     fields={"nameEn"},
+ *     message="Ce type existe déjà !"
+ * )
  */
 class Type
 {
@@ -28,7 +32,7 @@ class Type
     private $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Pokemon\Pokemon", mappedBy="abilities")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Pokemon\Pokemon", mappedBy="types")
      */
     private $pokemons;
 

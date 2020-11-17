@@ -6,7 +6,6 @@ namespace App\Manager\Api;
 
 use App\Entity\Pokemon\Pokemon;
 use http\Exception\RuntimeException;
-use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 

@@ -21,7 +21,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass="App\Repository\Pokemon\PokemonRepository")
  * @ORM\Table(name="pokemon")
  * @UniqueEntity(
- *     fields={"name"},
+ *     fields={"nameEn"},
  *     message="Ce pokémon existe déjà !"
  * )
  */

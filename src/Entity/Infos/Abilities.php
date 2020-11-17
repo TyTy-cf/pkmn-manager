@@ -4,6 +4,7 @@
 namespace App\Entity\Infos;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Class Abilities *
@@ -11,7 +12,10 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="abilities")
  * @ORM\Entity(repositoryClass="App\Repository\Infos\AbilitiesRepository")
-
+ * @UniqueEntity(
+ *     fields={"nameEn"},
+ *     message="Ce talent existe déjà !"
+ * )
  */
 class Abilities
 {
