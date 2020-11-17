@@ -9,6 +9,7 @@ use App\Entity\Pokemon\Pokemon;
 use App\Manager\Api\ApiManager;
 use App\Repository\Infos\AbilitiesRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class AbilitiesManager
 {
@@ -72,7 +73,7 @@ class AbilitiesManager
      * @param $lang
      * @param $url
      * @return array
-     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     * @throws TransportExceptionInterface
      */
     public function getAbilitiesInformation($lang, $url)
     {

@@ -44,6 +44,7 @@ class TypeManager
     /**
      * @param $types
      * @param Pokemon $pokemon
+     * @throws TransportExceptionInterface
      */
     public function saveNewTypes($types, Pokemon $pokemon)
     {
@@ -53,8 +54,7 @@ class TypeManager
             $typeNameEn = $type['type']['name'];
             if (($newType = $this->typeRepository->findOneBy(['nameEn' => $typeNameEn])) == null) {
 
-
-                $urlType= $type['type']['url'];
+                $urlType = $type['type']['url'];
 
                 $typeNameFr = $this->getTypesInformation('fr', $urlType);
 
@@ -80,10 +80,9 @@ class TypeManager
 
         foreach ($apiResponse['names'] as $name) {
 
-            if($name['language']['name'] === $lang) {
-                 $typeName = $name['name'];
+            if ($name['language']['name'] === $lang) {
+                $typeName = $name['name'];
             }
-
         }
 
         return $typeName;
