@@ -64,7 +64,7 @@ class PokemonController extends AbstractController
     /**
      * Display pokemon list
      *
-     * @Route(path="/listing/{offset}", name="listing")
+     * @Route(path="/pokemons/{offset}", name="listing")
      * @param Request $request
      * @return Response
      * @throws ClientExceptionInterface

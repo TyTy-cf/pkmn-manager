@@ -8,6 +8,7 @@ use App\Entity\Pokemon\Pokemon;
 use App\Manager\Pokemon\PokemonManager;
 use http\Exception\RuntimeException;
 use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
@@ -42,32 +43,44 @@ class ApiManager
     /**
      * @param $offset
      * @return mixed
-     *
      * @throws ClientExceptionInterface
      * @throws DecodingExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public function getPokemonsListing($offset) {
+    public function getPokemonsListing($offset)
+    {
         //Connexion à l'API pour récupération des données
-        $client = HttpClient::create();
-        $url = "https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=42";
-
-        $response = $client->request('GET', $url);
-
-        if (200 !== $response->getStatusCode()) {
-            throw new RuntimeException(sprintf('The API return an error.'));
-        }
-
-        //Récupération des données dans un tableau
-        $apiResponse = $response->toArray();
+        $apiResponse = $this->apiConnect("https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=42");
 
         //Récupération du pokéName
         foreach ($apiResponse['results'] as $result) {
             $pokemonNames[] = $result['name'];
         }
         return $pokemonNames;
+    }
+
+    /**
+     * Connection to the API and retrieving JSON information
+     * @param $url
+     * @return mixed
+     * @throws ClientExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
+    private function apiConnect($url)
+    {
+        $client = HttpClient::create();
+        $response = $client->request('GET', $url);
+
+        if (200 !== $response->getStatusCode()) {
+            throw new RuntimeException(sprintf('The API return an error.'));
+        }
+
+        return $response->toArray();
     }
 
     /**
@@ -83,24 +96,44 @@ class ApiManager
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public function getPokemonFromName($pokemonName) {
+    public function getPokemonFromName($pokemonName)
+    {
         // Check if the pokemon exists inside the database
         if (($pokemon = $this->pokemonManager->findByName($pokemonName)) == null) {
             // not existing, we are looking for it in the API
-            $client = HttpClient::create();
-            $url = "https://pokeapi.co/api/v2/pokemon/".$pokemonName;
-            $response = $client->request('GET', $url);
-
-            if (200 !== $response->getStatusCode()) {
-                throw new RuntimeException(sprintf('The API return an error.'));
-            }
-
-            // save the Json
-            $apiResponse = $response->toArray();
+            $apiResponse = $this->apiConnect("https://pokeapi.co/api/v2/pokemon/" . $pokemonName);
 
             // Create the new pokemon
             $pokemon = $this->pokemonManager->saveNewPokemon($apiResponse, $pokemonName);
         }
         return $pokemon;
+    }
+
+    /**
+     * Return from API the information of the $ability passed in parameter
+     * @param $url
+     * @return array
+     * @throws ClientExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
+    public function getAbilitiesDetailed($url)
+    {
+        $apiResponse = $this->apiConnect($url);
+
+        $abilitiesDetailed = [
+            'nameAbilityFr' => $apiResponse['names']['3']['name'],
+            'descriptionAbilityFr' => $apiResponse['flavor_text_entries']['19']['flavor_text'],
+        ];
+
+        dump($abilitiesDetailed);
+
+        die();
+
+
+        return $abilitiesDetailed;
+
     }
 }

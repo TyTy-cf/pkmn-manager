@@ -96,6 +96,7 @@ class PokemonManager
                 $pokemon->setSpe($stat['base_stat']);
             }
         }
+
         $this->abilitiesManager->saveNewAbilities($apiResponse['abilities'], $pokemon);
         $this->typeManager->saveNewTypes($apiResponse['types'], $pokemon);
         $this->entityManager->persist($pokemon);
