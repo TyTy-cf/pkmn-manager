@@ -44,7 +44,7 @@ class ApiManager
      */
     public function getPokemonsListing($offset)
     {
-        return $this->apiConnect("https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=42");
+        return $this->apiConnect("https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=1000");
 
     }
 

@@ -5,11 +5,14 @@ namespace App\Controller\Pokemon;
 
 use App\Manager\Api\ApiManager;
 use App\Manager\Pokemon\PokemonManager;
+use App\Form\SearchPokemonType;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class PokemonController extends AbstractController
@@ -69,6 +72,18 @@ class PokemonController extends AbstractController
      */
     function listing(Request $request): Response
     {
+
+        //Création du formulaire de recherche
+        $searchPokemonForm = $this->createForm(SearchPokemonType::class);
+        $searchPokemonForm->handleRequest($request);
+
+        //Si formulaire est soumis ET valide
+        if ($searchPokemonForm->isSubmitted() && $searchPokemonForm->isValid()) {
+            $nameSearchPoke = $searchPokemonForm->getData();
+            return $this->redirectToRoute('profile_pokemon', ['pokeName' => $nameSearchPoke['namePokemon']]);
+        }
+
+        //Affichage de la liste
         $offset = $request->get('offset');
 
         //Récupération de la pagination
@@ -84,9 +99,13 @@ class PokemonController extends AbstractController
             $pokemonNames[] = $result['name'];
         }
 
+        $json = json_encode($pokemonNames);
+
         return $this->render('Pokemon/listing.html.twig', [
             'pokemonNames' => $pokemonNames,
-            'offset' => $offset
+            'formSearchPokemon' => $searchPokemonForm->createView(),
+            'offset' => $offset,
+            'json' => $json,
         ]);
     }
 
@@ -116,5 +135,10 @@ class PokemonController extends AbstractController
             'pokemon' => $pokemon,
         ]);
     }
+
+    function searchPokemon(Request $request) {
+
+    }
+
 }
 
