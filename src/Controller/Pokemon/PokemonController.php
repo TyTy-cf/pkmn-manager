@@ -8,6 +8,7 @@ use App\Manager\Pokemon\PokemonManager;
 use App\Form\SearchPokemonType;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -99,14 +100,29 @@ class PokemonController extends AbstractController
             $pokemonNames[] = $result['name'];
         }
 
-        $json = json_encode($pokemonNames);
-
         return $this->render('Pokemon/listing.html.twig', [
             'pokemonNames' => $pokemonNames,
             'formSearchPokemon' => $searchPokemonForm->createView(),
-            'offset' => $offset,
-            'json' => $json,
+            'offset' => $offset
         ]);
+    }
+
+    /**
+     * @Route(path="/pokemons/getAll", name="get_all_pokemon_names")
+     *
+     * @return JsonResponse
+     */
+    function getAllPokemonNamesJson(): JsonResponse {
+        // Traitement pour récupérer TOUS les noms de pokemons
+        // Il peut être intéressant de les stocker en session, afin de ne pas retourner faire des appels sur l'API constamment
+        // - Ajouter un SessionManager au constructeur ici
+        // - Ajouter une constante "ALL_POKEMON_NAMES" pour la valeur stockée en Session
+        // - Tester en 1er lieu ici si la valeur de la session est null ou pas, si elle n'est pas null on la récupère et on squizze l'étape de l'API
+        // Regarde la doc de JsonResponse pour voir comment passer tes noms dans la response
+
+        // Le code JS doit être écrit dans : pkmn_listing.js
+        //
+        return new JsonResponse();
     }
 
     /**

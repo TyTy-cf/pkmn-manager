@@ -26,10 +26,8 @@
             </div>
         {% endfor %}
     </div>
+
 {% endblock %}
 {% block javascripts %}
-    <script>
-        var tab = { json };
-        console.log(tab);
-    </script>
+    {{ parent() }}
 {% endblock %}

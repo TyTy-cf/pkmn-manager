@@ -7,7 +7,7 @@
 // Paramètrages de Boostrap
 import $ from 'jquery';
 import 'bootstrap';
-import pkmn from './pkmn';
+import pkmn from './pkmn_listing';
 
 
 // any CSS you import will output into a single css file (app.css in this case)
@@ -18,4 +18,5 @@ import './styles/app.css';
 
 $(document).ready(function() {
     $('[data-toggle="popover"]').popover();
+    getJsonAllPokemonNames();
 });
