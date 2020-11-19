@@ -60,11 +60,11 @@ class Pokemon
     private Collection $types;
 
     /**
-     * @var PokemonMovesLevel $pokemonMovesLevel
+     * @var Collection $pokemonMovesLevel
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Moves\PokemonMovesLevel", mappedBy="pokemon", fetch="EXTRA_LAZY")
      */
-    private PokemonMovesLevel $pokemonMovesLevel;
+    private Collection $pokemonMovesLevel;
 
     /**
      * @ORM\Column(name="url_img", type="string", length=255, nullable=true)
