@@ -48,7 +48,7 @@ class Pokemon
      *      inverseJoinColumns={@JoinColumn(name="ability_id", referencedColumnName="id")}
      *      )
      */
-    private ArrayCollection $abilities;
+    private Collection $abilities;
 
     /**
      * @ManyToMany(targetEntity="App\Entity\Infos\Type", inversedBy="pokemons", cascade={"persist"})
@@ -57,7 +57,7 @@ class Pokemon
      *      inverseJoinColumns={@JoinColumn(name="type_id", referencedColumnName="id")}
      *      )
      */
-    private ArrayCollection $types;
+    private Collection $types;
 
     /**
      * @var PokemonMovesLevel $pokemonMovesLevel

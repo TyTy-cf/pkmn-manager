@@ -36,6 +36,11 @@ class Type
      */
     private $pokemons;
 
+    /**
+     * @ORM\Column(name="img", type="string", length=255, nullable=true)
+     */
+    private ?string $img;
+
     use TraitNames;
 
     /**

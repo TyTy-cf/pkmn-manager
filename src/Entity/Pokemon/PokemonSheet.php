@@ -97,7 +97,7 @@ class PokemonSheet
      *      inverseJoinColumns={@JoinColumn(name="move_id", referencedColumnName="id")}
      *      )
      */
-    private ArrayCollection $moves;
+    private Collection $moves;
 
     /**
      * PokemonSheet constructor.
