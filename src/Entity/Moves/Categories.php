@@ -1,22 +1,24 @@
 <?php
 
 
-namespace App\Entity\Infos;
+namespace App\Entity\Moves;
 
+
+use App\Entity\Infos\TraitNames;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
 
 /**
- * Class Gender *
+ * Class Abilities *
  * @package App\Entity\Infos
  *
- * @ORM\Table(name="genre")
+ * @ORM\Table(name="categories")
  * @Entity
  */
-class Gender
+class Categories
 {
     /**
-     * @var int $id
+     * @var int $id id de l'abstract info
      *
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")

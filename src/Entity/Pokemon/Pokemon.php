@@ -6,6 +6,7 @@ namespace App\Entity\Pokemon;
 use App\Entity\Infos\Abilities;
 use App\Entity\Infos\TraitNames;
 use App\Entity\Infos\Type;
+use App\Entity\Moves\PokemonMovesLevel;
 use App\Entity\Stats\TraitStatsPkmn;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -34,7 +35,7 @@ class Pokemon
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(name="id", type="integer", length=6)
      */
-    private $id;
+    private int $id;
 
     use TraitStatsPkmn;
 
@@ -47,7 +48,7 @@ class Pokemon
      *      inverseJoinColumns={@JoinColumn(name="ability_id", referencedColumnName="id")}
      *      )
      */
-    private $abilities;
+    private ArrayCollection $abilities;
 
     /**
      * @ManyToMany(targetEntity="App\Entity\Infos\Type", inversedBy="pokemons", cascade={"persist"})
@@ -56,12 +57,19 @@ class Pokemon
      *      inverseJoinColumns={@JoinColumn(name="type_id", referencedColumnName="id")}
      *      )
      */
-    private $types;
+    private ArrayCollection $types;
+
+    /**
+     * @var PokemonMovesLevel $pokemonMovesLevel
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Moves\PokemonMovesLevel", mappedBy="pokemon", fetch="EXTRA_LAZY")
+     */
+    private PokemonMovesLevel $pokemonMovesLevel;
 
     /**
      * @ORM\Column(name="url_img", type="string", length=255, nullable=true)
      */
-    private $urlImg;
+    private ?string $urlImg;
 
     /**
      * Pokemon constructor.

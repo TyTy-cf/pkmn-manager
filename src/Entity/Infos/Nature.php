@@ -22,7 +22,7 @@ class Nature
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(name="id", type="integer", length=6)
      */
-    private $id;
+    private int $id;
 
     use TraitNames;
 
@@ -31,14 +31,14 @@ class Nature
      *
      * @ORM\Column(name="stats_bonus", type="string", length=12, nullable=true)
      */
-    private $statsBonus;
+    private string $statsBonus;
 
     /**
      * @var string $statsPenalty
      *
      * @ORM\Column(name="stats_penalty", type="string", length=12, nullable=true)
      */
-    private $statsPenalty;
+    private string $statsPenalty;
 
     /**
      * @return int

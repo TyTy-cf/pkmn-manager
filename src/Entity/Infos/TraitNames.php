@@ -13,14 +13,14 @@ trait TraitNames
      *
      * @ORM\Column(name="name_en", type="string", length=24)
      */
-    private $nameEn;
+    private string $nameEn;
 
     /**
      * @var string $nameFr
      *
      * @ORM\Column(name="name_fr", type="string", length=24, nullable=true)
      */
-    private $nameFr;
+    private string $nameFr;
 
     /**
      * @return string

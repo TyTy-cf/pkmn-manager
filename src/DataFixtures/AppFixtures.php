@@ -6,6 +6,7 @@ use App\Entity\Infos\Abilities;
 use App\Entity\Infos\Gender;
 use App\Entity\Infos\Nature;
 use App\Entity\Infos\Type;
+use App\Entity\Moves\Categories;
 use App\Entity\Pokemon\Pokemon;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\Tools\Console\Command\GenerateRepositoriesCommand;
@@ -169,6 +170,19 @@ class AppFixtures extends Fixture
         $timide->setStatsBonus("+spe");
         $timide->setStatsPenalty("-atk");
         $manager->persist($timide);
+        // Move's categories
+        $physical = new Categories();
+        $physical->setNameFr("Physique");
+        $physical->setNameEn("Physical");
+        $manager->persist($physical);
+        $special = new Categories();
+        $special->setNameFr("Spéciale");
+        $special->setNameEn("Special");
+        $manager->persist($special);
+        $status = new Categories();
+        $status->setNameFr("Statut");
+        $status->setNameEn("Status");
+        $manager->persist($status);
         $manager->flush();
     }
 }
