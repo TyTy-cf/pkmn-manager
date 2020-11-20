@@ -67,6 +67,7 @@ class PokemonController extends AbstractController
      * @Route(path="/pokemons/getAll", name="get_all_pokemon_names")
      *
      * @return JsonResponse
+     * @throws TransportExceptionInterface
      */
     function getAllPokemonNamesJson(): JsonResponse
     {
@@ -74,8 +75,8 @@ class PokemonController extends AbstractController
         if ($this->session->get('pokename') == null) {
 
             if (!session_status()) {
-                new Session();
-                $this->session->start();
+                $session = new Session();
+                $session->start();
             }
 
             $apiResponse = $this->apiManager->getDetailed('https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1050');
@@ -85,8 +86,10 @@ class PokemonController extends AbstractController
             foreach ($apiResponse['results'] as $result) {
                 $pokemonNames[] = $result['name'];
             }
+
             $this->session->set('pokename', $pokemonNames);
         }
+
         // Traitement pour récupérer TOUS les noms de pokemons
         // Il peut être intéressant de les stocker en session, afin de ne pas retourner faire des appels sur l'API constamment
         // - Ajouter un SessionManager au constructeur ici
@@ -139,11 +142,13 @@ class PokemonController extends AbstractController
         }
 
         //Données pour autocompletion
+        $jsonAllPokemon = $this->getAllPokemonNamesJson();
 
         return $this->render('Pokemon/listing.html.twig', [
             'pokemonNames' => $pokemonNames,
             'formSearchPokemon' => $searchPokemonForm->createView(),
-            'offset' => $offset
+            'offset' => $offset,
+            'jsonAllPokemon' => $jsonAllPokemon,
         ]);
     }
 
