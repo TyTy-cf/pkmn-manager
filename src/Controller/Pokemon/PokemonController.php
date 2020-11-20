@@ -7,6 +7,7 @@ use App\Manager\Api\ApiManager;
 use App\Manager\Pokemon\PokemonManager;
 use App\Form\SearchPokemonType;
 use Knp\Component\Pager\PaginatorInterface;
+use PhpParser\Node\Expr\Array_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -20,21 +21,29 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 class PokemonController extends AbstractController
 {
 
+    const POKEMON_NAMES_SESSION = 'pokemonNamesSession';
+
     /**
      * @var PokemonManager
      */
-    private $pokemonManager;
+    private PokemonManager $pokemonManager;
 
     /**
      * @var ApiManager
      */
-    private $apiManager;
+    private ApiManager $apiManager;
+
+    /**
+     * @var SessionInterface
+     */
+    private SessionInterface $session;
 
     /**
      * PokemonController constructor.
      *
      * @param PokemonManager $pokemonManager
      * @param ApiManager $apiManager
+     * @param SessionInterface $session
      */
     public function __construct(PokemonManager $pokemonManager, ApiManager $apiManager, SessionInterface $session)
     {
@@ -71,35 +80,20 @@ class PokemonController extends AbstractController
      */
     function getAllPokemonNamesJson(): JsonResponse
     {
+        $pokemonNames = array ();
         //Vérification si la variable existe
-        if ($this->session->get('pokename') == null) {
-
-            if (!session_status()) {
-                $session = new Session();
-                $session->start();
-            }
-
-            $apiResponse = $this->apiManager->getDetailed('https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1050');
+        if ($this->session->get(PokemonController::POKEMON_NAMES_SESSION) == null) {
+            $apiResponse = $this->apiManager->getPokemonJson();
             $apiResponse = $apiResponse->toArray();
-
             //Récupération du pokéName
             foreach ($apiResponse['results'] as $result) {
                 $pokemonNames[] = $result['name'];
             }
-
-            $this->session->set('pokename', $pokemonNames);
+            $this->session->set(PokemonController::POKEMON_NAMES_SESSION, $pokemonNames);
+        } else {
+            $pokemonNames = $this->session->get(PokemonController::POKEMON_NAMES_SESSION);
         }
-
-        // Traitement pour récupérer TOUS les noms de pokemons
-        // Il peut être intéressant de les stocker en session, afin de ne pas retourner faire des appels sur l'API constamment
-        // - Ajouter un SessionManager au constructeur ici
-        // - Ajouter une constante "ALL_POKEMON_NAMES" pour la valeur stockée en Session
-        // - Tester en 1er lieu ici si la valeur de la session est null ou pas, si elle n'est pas null on la récupère et on squizze l'étape de l'API
-        // Regarde la doc de JsonResponse pour voir comment passer tes noms dans la response
-
-        // Le code JS doit être écrit dans : pkmn_listing.js
-        //
-        return new JsonResponse(['ALL_POKEMON_NAMES' => $this->session->get('pokename')]);
+        return new JsonResponse($pokemonNames);
     }
 
     /**
@@ -122,7 +116,7 @@ class PokemonController extends AbstractController
         //Si formulaire est soumis ET valide
         if ($searchPokemonForm->isSubmitted() && $searchPokemonForm->isValid()) {
             $nameSearchPoke = $searchPokemonForm->getData();
-            return $this->redirectToRoute('profile_pokemon', ['pokeName' => $nameSearchPoke['namePokemon']]);
+            return $this->redirectToRoute('profile_pokemon', ['pokeName' => $nameSearchPoke['name_pokemon']]);
         }
 
         //Affichage de la liste

@@ -1,4 +1,0 @@
-
-function getJsonAllPokemonNames() {
-    alert('coucou');
-}

@@ -1,7 +1,7 @@
 
 @import '~bootstrap';
-@import '~font-awesome';
 @import 'layout/pkmn-mngt.css';
 @import 'layout/header.css';
 @import 'layout/footer.css';
+@import '~@fortawesome/fontawesome-free/css/all.css';
 

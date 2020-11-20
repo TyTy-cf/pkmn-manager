@@ -6,7 +6,6 @@ namespace App\Entity\Pokemon;
 use App\Entity\Infos\Abilities;
 use App\Entity\Infos\TraitNames;
 use App\Entity\Infos\Type;
-use App\Entity\Moves\PokemonMovesLevel;
 use App\Entity\Stats\TraitStatsPkmn;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

@@ -1,33 +1,34 @@
 {% extends 'base.html.twig' %}
 {% block title %}Catch 'em all{% endblock %}
+
 {% block body %}
-    <h1 class="text-center">Consultation en ligne de Pokémons</h1>
-    <hr>
-    {{ include('search.html.twig') }}
-    <div class="row justify-content-center">
-        {% if offset > 0 %}
-            <a class="btn btn-sm btn-dark mr-2" href="{{ path('listing', {offset: offset - 42}) }}">Précédent</a>
-        {% endif %}
-        <a class="btn btn-sm btn-info" href="{{ path('listing', {offset: offset + 42 }) }}">Suivant</a>
+    <div class="container-fluid col-10 mb-2">
+        {{ include('search.html.twig') }}
+        <div class="row justify-content-center">
+            {% if offset > 0 %}
+                <a class="btn btn-sm btn-dark mr-2" href="{{ path('listing', {offset: offset - 42}) }}">
+                    <i class="fa-arrow-left"></i>
+                </a>
+            {% endif %}
+            <a class="btn btn-sm btn-info" href="{{ path('listing', {offset: offset + 42 }) }}">
+                <i class="fa-arrow-right"></i>
+            </a>
+        </div>
+        <hr>
+        <div class="row">
+            {% for pokemonName in pokemonNames %}
+                <div class="col-md-2 col-sm-8 text-center border pb-2">
+                    <h5 class="mt-2">
+                        <a href="{{ path('profile_pokemon', {pokeName: pokemonName }) }}">{{ pokemonName|capitalize }}</a>
+                    </h5>
+                    <a href="{{ path('profile_pokemon', {pokeName: pokemonName }) }}" class="btn btn-sm btn-dark">Voir
+                        plus</a>
+                </div>
+            {% endfor %}
+        </div>
     </div>
-    <div id="jsonn">
-
-    </div>
-    </a>
-    <hr>
-    <div class="row">
-        {% for pokemonName in pokemonNames %}
-            <div class="col-md-2 col-sm-8 text-center border pb-2">
-                <h5 class="mt-2">
-                    <a href="{{ path('profile_pokemon', {pokeName: pokemonName }) }}">{{ pokemonName|capitalize }}</a>
-                </h5>
-                <a href="{{ path('profile_pokemon', {pokeName: pokemonName }) }}" class="btn btn-sm btn-dark">Voir
-                    plus</a>
-            </div>
-        {% endfor %}
-    </div>
-
 {% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
 {% endblock %}

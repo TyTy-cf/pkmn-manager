@@ -13,13 +13,17 @@ class SearchPokemonType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('namePokemon', SearchType::class, [
-                'label' => 'Rechercher un pokemon : ',
+            ->add('name_pokemon', SearchType::class, [
+                'label' => false,
                 'attr' => [
                     'maxlenght' => 15,
                     'autocomplete' => 'off',
-                ]
+                    'class' => 'form-control',
+                    'placeholder' => 'Pokemon...'
+                ],
             ])
-            ->add('Rechercher', SubmitType::class);
+            ->add('submit', SubmitType::class, [
+                'label' => 'OK',
+            ]);
     }
 }

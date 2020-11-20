@@ -3,15 +3,19 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}{% endblock %}</title>
-        {{ encore_entry_link_tags('app') }}
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('style') }}
+        {% endblock %}
     </head>
     <body>
         <header>
             {% include 'nav.html.twig' %}
         </header>
         {% block body %}
+        {% endblock %}
 
+        {% block footer %}
+            {{ include('Common/footer.html.twig') }}
         {% endblock %}
 
         {% block javascripts %}
