@@ -44,8 +44,17 @@ class ApiManager
      */
     public function getPokemonsListing($offset)
     {
-        return $this->apiConnect("https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=1000");
+        return $this->apiConnect("https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=8");
 
+    }
+
+    /**
+     * @return mixed
+     * @throws TransportExceptionInterface
+     */
+    public function getPokemonJson()
+    {
+        return $this->apiConnect("https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1050");
     }
 
     /**
