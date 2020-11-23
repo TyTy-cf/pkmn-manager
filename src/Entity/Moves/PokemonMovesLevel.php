@@ -48,6 +48,7 @@ class PokemonMovesLevel
      */
     private $gameinfos;
 
+
     /**
      * @return string
      */
