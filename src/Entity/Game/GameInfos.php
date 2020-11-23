@@ -19,30 +19,29 @@ class GameInfos
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
+
+    use TraitNames;
 
     /**
      * @ORM\Column(type="string", length=6)
      */
-    private $code;
-
+    private ?string $code;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $nbPkmn;
+    private ?int $nbPkmn;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Moves\PokemonMovesLevel", mappedBy="gameinfos")
+     * @ORM\OneToMany(targetEntity="App\Entity\Moves\PokemonMovesLevel", mappedBy="gameInfos")
      */
-    private $pokemonMovesLevels;
+    private Collection $pokemonMovesLevels;
 
     public function __construct()
     {
         $this->pokemonMovesLevels = new ArrayCollection();
     }
-
-    use TraitNames;
 
     public function getId(): ?int
     {
@@ -81,17 +80,15 @@ class GameInfos
         return $this->pokemonMovesLevels;
     }
 
-    public function addPokemonMovesLevel(PokemonMovesLevel $pokemonMovesLevel): self
+    public function addPokemonMovesLevel(PokemonMovesLevel $pokemonMovesLevel): void
     {
         if (!$this->pokemonMovesLevels->contains($pokemonMovesLevel)) {
             $this->pokemonMovesLevels[] = $pokemonMovesLevel;
             $pokemonMovesLevel->setGameinfos($this);
         }
-
-        return $this;
     }
 
-    public function removePokemonMovesLevel(PokemonMovesLevel $pokemonMovesLevel): self
+    public function removePokemonMovesLevel(PokemonMovesLevel $pokemonMovesLevel): void
     {
         if ($this->pokemonMovesLevels->removeElement($pokemonMovesLevel)) {
             // set the owning side to null (unless already changed)
@@ -99,7 +96,5 @@ class GameInfos
                 $pokemonMovesLevel->setGameinfos(null);
             }
         }
-
-        return $this;
     }
 }

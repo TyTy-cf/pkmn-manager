@@ -2,15 +2,11 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\GameInfos;
-use App\Entity\Infos\Abilities;
+use App\Entity\Game\GameInfos;
 use App\Entity\Infos\Gender;
 use App\Entity\Infos\Nature;
-use App\Entity\Infos\Type;
 use App\Entity\Moves\Categories;
-use App\Entity\Pokemon\Pokemon;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\ORM\Tools\Console\Command\GenerateRepositoriesCommand;
 use Doctrine\Persistence\ObjectManager;
 
 class AppFixtures extends Fixture

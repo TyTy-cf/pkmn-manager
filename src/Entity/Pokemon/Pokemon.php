@@ -71,9 +71,9 @@ class Pokemon
     private ?string $urlImg;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(name="url_img_shiny", type="string", length=255, nullable=true)
      */
-    private $urlImgShiny;
+    private ?string $urlImgShiny;
 
     /**
      * Pokemon constructor.
