@@ -3,6 +3,7 @@
 
 namespace App\Entity\Moves;
 
+use App\Entity\GameInfos;
 use App\Entity\Pokemon\Pokemon;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
@@ -41,6 +42,11 @@ class PokemonMovesLevel
      * @ORM\Column(name="level", type="integer", length=3)
      */
     private Integer $level;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=GameInfos::class, inversedBy="pokemonMovesLevels")
+     */
+    private $gameinfos;
 
     /**
      * @return string
@@ -104,6 +110,18 @@ class PokemonMovesLevel
     public function setLevel(int $level): void
     {
         $this->level = $level;
+    }
+
+    public function getGameinfos(): ?GameInfos
+    {
+        return $this->gameinfos;
+    }
+
+    public function setGameinfos(?GameInfos $gameinfos): self
+    {
+        $this->gameinfos = $gameinfos;
+
+        return $this;
     }
 
 }

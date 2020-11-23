@@ -71,6 +71,11 @@ class Pokemon
     private ?string $urlImg;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $urlImgShiny;
+
+    /**
      * Pokemon constructor.
      */
     public function __construct() {
@@ -164,5 +169,17 @@ class Pokemon
         if ($this->types->contains($type)) {
             $this->types->removeElement($type);
         }
+    }
+
+    public function getUrlImgShiny(): ?string
+    {
+        return $this->urlImgShiny;
+    }
+
+    public function setUrlImgShiny(?string $urlImgShiny): self
+    {
+        $this->urlImgShiny = $urlImgShiny;
+
+        return $this;
     }
 }

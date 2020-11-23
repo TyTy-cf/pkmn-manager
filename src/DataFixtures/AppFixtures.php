@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\GameInfos;
 use App\Entity\Infos\Abilities;
 use App\Entity\Infos\Gender;
 use App\Entity\Infos\Nature;
@@ -183,6 +184,14 @@ class AppFixtures extends Fixture
         $status->setNameFr("Statut");
         $status->setNameEn("Status");
         $manager->persist($status);
+        $manager->flush();
+        //GameINfo
+        $gameInfo = new GameInfos();
+        $gameInfo->setCode('B2W2');
+        $gameInfo->setNameEn('Black 2 - White 2');
+        $gameInfo->setNameFr('Noire 2 - Blanc 2');
+        $gameInfo->setNbPkmn('649');
+        $manager->persist($gameInfo);
         $manager->flush();
     }
 }
