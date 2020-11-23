@@ -87,4 +87,20 @@ class Type
         }
     }
 
+    /**
+     * @return string|null
+     */
+    public function getImg(): ?string
+    {
+        return $this->img;
+    }
+
+    /**
+     * @param string|null $img
+     */
+    public function setImg(?string $img): void
+    {
+        $this->img = $img;
+    }
+
 }

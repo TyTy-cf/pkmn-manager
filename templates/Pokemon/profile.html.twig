@@ -12,11 +12,13 @@
         <div class="row pt-2">
             <div class="col-md-6">
                 <h2 class="text-center">Type(s)</h2>
-                <ul>
+                <div class="row text-center">
                     {% for type in pokemon.types %}
-                        <li>{{ type.nameFr|capitalize }}</li>
+                        <div class="col-md-6">
+                            <img src="{{ type.img }}" alt="Type {{ type.namefr|lower }}"></li>
+                        </div>
                     {% endfor %}
-                </ul>
+                </div>
             </div>
             <div class="col-md-6">
                 <h2 class="text-center">Capacité(s)</h2>

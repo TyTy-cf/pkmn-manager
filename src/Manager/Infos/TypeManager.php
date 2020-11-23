@@ -6,9 +6,12 @@ namespace App\Manager\Infos;
 
 use App\Entity\Infos\Type;
 use App\Entity\Pokemon\Pokemon;
+use App\Kernel;
 use App\Manager\Api\ApiManager;
 use App\Repository\Infos\TypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class TypeManager
@@ -34,10 +37,11 @@ class TypeManager
      * @param EntityManagerInterface $entityManager
      * @param ApiManager $apiManager
      */
-    public function __construct(EntityManagerInterface $entityManager, ApiManager $apiManager)
+    public function __construct(EntityManagerInterface $entityManager, ApiManager $apiManager, KernelInterface $kernel)
     {
         $this->entityManager = $entityManager;
         $this->apiManager = $apiManager;
+        $this->kernel = $kernel;
         $this->typeRepository = $this->entityManager->getRepository(Type::class);
     }
 
@@ -56,11 +60,16 @@ class TypeManager
 
                 $urlType = $type['type']['url'];
 
+                $urlImg = '/images/types/';
+
                 $typeNameFr = $this->getTypesInformationsOnLanguage('fr', $urlType);
 
                 $newType = new Type();
+
                 $newType->setNameEn(ucfirst($typeNameEn));
                 $newType->setNameFr(ucfirst($typeNameFr));
+                $newType->setImg($urlImg . $typeNameEn . '.png');
+
                 $this->entityManager->persist($newType);
             }
             $pokemon->addType($newType);

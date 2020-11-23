@@ -2,8 +2,11 @@
 <div class="offset-5 d-inline-flex mt-1 mb-1">
     {{ form_start(formSearchPokemon, {'attr' : {'clas' : 'form-inline'}}) }}
     <div class="autocomplete mx-sm-3">
-        {{ form_row(formSearchPokemon.name_pokemon) }}
-        {{ form_row(formSearchPokemon.submit) }}
+        <h1>Recherche</h1>
+        <div class="row">
+            {{ form_row(formSearchPokemon.name_pokemon) }}
+            {{ form_row(formSearchPokemon.submit) }}
+        </div>
     </div>
     {{ form_end(formSearchPokemon) }}
 </div>
