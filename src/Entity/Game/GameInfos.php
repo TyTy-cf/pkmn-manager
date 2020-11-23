@@ -4,7 +4,7 @@ namespace App\Entity\Game;
 
 use App\Entity\Infos\TraitNames;
 use App\Entity\Moves\PokemonMovesLevel;
-use App\Repository\GameInfosRepository;
+use App\Repository\Game\GameInfosRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
