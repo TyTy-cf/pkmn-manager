@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Game;
 
 use App\Entity\Infos\TraitNames;
 use App\Entity\Moves\PokemonMovesLevel;
@@ -33,7 +33,7 @@ class GameInfos
     private $nbPkmn;
 
     /**
-     * @ORM\OneToMany(targetEntity=PokemonMovesLevel::class, mappedBy="gameinfos")
+     * @ORM\OneToMany(targetEntity="App\Entity\Moves\PokemonMovesLevel", mappedBy="gameinfos")
      */
     private $pokemonMovesLevels;
 

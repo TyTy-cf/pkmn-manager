@@ -44,7 +44,8 @@ class PokemonMovesLevel
     private Integer $level;
 
     /**
-     * @ORM\ManyToOne(targetEntity=GameInfos::class, inversedBy="pokemonMovesLevels")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Game\GameInfos", inversedBy="pokemonMovesLevels")
+     * @JoinColumn(name="gameinfos_id", referencedColumnName="id")
      */
     private $gameinfos;
 
