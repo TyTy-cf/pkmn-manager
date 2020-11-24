@@ -8,7 +8,6 @@ use App\Entity\Pokemon\Pokemon;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\JoinColumn;
-use phpDocumentor\Reflection\Types\Integer;
 
 /**
  * Class PokemonMovesLevel
@@ -41,14 +40,13 @@ class PokemonMovesLevel
      * @var int $level
      * @ORM\Column(name="level", type="integer", length=3)
      */
-    private Integer $level;
+    private int $level;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Game\GameInfos", inversedBy="pokemonMovesLevels")
      * @JoinColumn(name="gameinfos_id", referencedColumnName="id")
      */
     private ?GameInfos $gameInfos;
-
 
     /**
      * @return string

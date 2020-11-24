@@ -3,4 +3,4 @@
 import 'bootstrap';
 import '@fortawesome/fontawesome-free/js/all';
 import './styles/app.css';
-import './script/pokemon/pkmn_listing.js';
+import './script/pokemon/pokemon_listing.js';

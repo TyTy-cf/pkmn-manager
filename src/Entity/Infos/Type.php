@@ -4,9 +4,8 @@
 namespace App\Entity\Infos;
 
 
+use App\Entity\Traits\TraitNames;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\ManyToMany;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**

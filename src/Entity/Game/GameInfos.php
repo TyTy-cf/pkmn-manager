@@ -2,8 +2,8 @@
 
 namespace App\Entity\Game;
 
-use App\Entity\Infos\TraitNames;
 use App\Entity\Moves\PokemonMovesLevel;
+use App\Entity\Traits\TraitNames;
 use App\Repository\Game\GameInfosRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -27,6 +27,11 @@ class GameInfos
      * @ORM\Column(type="string", length=6)
      */
     private ?string $code;
+
+    /**
+     * @ORM\Column(type="string", length=2, nullable=true)
+     */
+    private ?string $codeVersion;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -70,6 +75,22 @@ class GameInfos
         $this->nbPkmn = $nbPkmn;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCodeVersion(): ?string
+    {
+        return $this->codeVersion;
+    }
+
+    /**
+     * @param string|null $codeVersion
+     */
+    public function setCodeVersion(?string $codeVersion): void
+    {
+        $this->codeVersion = $codeVersion;
     }
 
     /**

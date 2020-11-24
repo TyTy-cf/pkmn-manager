@@ -11,6 +11,7 @@ use App\Entity\Moves\Moves;
 use App\Entity\Stats\EvsPkmn;
 use App\Entity\Stats\IvsPkmn;
 use App\Entity\Stats\StatsPkmn;
+use App\Entity\Users\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,6 +19,7 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\ManyToMany;
+use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 
 /**
@@ -98,6 +100,14 @@ class PokemonSheet
      *      )
      */
     private Collection $moves;
+
+    /**
+     * @var User
+     *
+     * @ManyToOne(targetEntity="App\Entity\Users\User", inversedBy="pokemonSheet")
+     * @JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private User $user;
 
     /**
      * PokemonSheet constructor.

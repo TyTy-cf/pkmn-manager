@@ -3,8 +3,9 @@
 
 namespace App\Entity\Moves;
 
-use App\Entity\Infos\TraitNames;
 use App\Entity\Infos\Type;
+use App\Entity\Traits\TraitDescription;
+use App\Entity\Traits\TraitNames;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
@@ -35,6 +36,8 @@ class Moves
 
     use TraitNames;
 
+    use TraitDescription;
+
     /**
      * @var Type $type the type of the move
      *
@@ -61,13 +64,19 @@ class Moves
      * @var int|null $accuracy the accuracy of the move
      * @ORM\Column(name="accuracy", type="integer", length=3, nullable=true)
      */
-    private ?Integer $accuracy;
+    private ?int $accuracy;
 
     /**
      * @var int|null $power the power the of the move
      * @ORM\Column(name="power", type="integer", length=3, nullable=true)
      */
-    private ?Integer $power;
+    private ?int $power;
+
+    /**
+     * @var int|null $priority the power the of the move
+     * @ORM\Column(name="priority", type="smallint", length=1)
+     */
+    private ?int $priority;
 
     /**
      * @var PokemonMovesLevel $pokemonMovesLevel

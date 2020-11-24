@@ -4,7 +4,7 @@
 namespace App\Entity\Moves;
 
 
-use App\Entity\Infos\TraitNames;
+use App\Entity\Traits\TraitNames;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
 

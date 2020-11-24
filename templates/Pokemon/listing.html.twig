@@ -7,11 +7,11 @@
         <div class="row justify-content-center">
             {% if offset > 0 %}
                 <a class="btn btn-sm btn-dark mr-2" href="{{ path('listing', {offset: offset - 42}) }}">
-                    <i class="fa-arrow-left"></i>
+                    <i class="fa fa-arrow-left"></i>
                 </a>
             {% endif %}
             <a class="btn btn-sm btn-info" href="{{ path('listing', {offset: offset + 42 }) }}">
-                <i class="fa-arrow-right"></i>
+                <i class="fa fa-arrow-right"></i>
             </a>
         </div>
         <hr>
@@ -21,8 +21,6 @@
                     <h5 class="mt-2">
                         <a href="{{ path('profile_pokemon', {pokeName: pokemonName }) }}">{{ pokemonName|capitalize }}</a>
                     </h5>
-                    <a href="{{ path('profile_pokemon', {pokeName: pokemonName }) }}" class="btn btn-sm btn-dark">Voir
-                        plus</a>
                 </div>
             {% endfor %}
         </div>

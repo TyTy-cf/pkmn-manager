@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Entity\Stats;
+namespace App\Entity\Traits;
 
 
 use Doctrine\ORM\Mapping as ORM;

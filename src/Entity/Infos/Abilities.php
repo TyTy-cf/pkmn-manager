@@ -3,11 +3,13 @@
 
 namespace App\Entity\Infos;
 
+use App\Entity\Traits\TraitDescription;
+use App\Entity\Traits\TraitNames;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * Class Abilities *
+ * Class Abilities
  * @package App\Entity\Infos
  *
  * @ORM\Table(name="abilities")
@@ -35,12 +37,7 @@ class Abilities
 
     use TraitNames;
 
-    /**
-     * @var string $description
-     *
-     * @ORM\Column(name="description", type="string", length=255, nullable=true)
-     */
-    private string $description;
+    use TraitDescription;
 
     /**
      * @return int

@@ -1,6 +1,6 @@
 
 @import '~bootstrap';
-@import 'layout/autocomplete/pkmn-mngt.css';
+@import 'layout/autocomplete/autocomplete.css';
 @import 'common/header.css';
 @import 'common/footer.css';
 @import '~@fortawesome/fontawesome-free/css/all.css';

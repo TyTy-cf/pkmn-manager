@@ -4,9 +4,9 @@
 namespace App\Entity\Pokemon;
 
 use App\Entity\Infos\Abilities;
-use App\Entity\Infos\TraitNames;
 use App\Entity\Infos\Type;
-use App\Entity\Stats\TraitStatsPkmn;
+use App\Entity\Traits\TraitNames;
+use App\Entity\Traits\TraitStatsPkmn;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;

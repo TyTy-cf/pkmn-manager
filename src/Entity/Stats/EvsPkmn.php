@@ -3,6 +3,7 @@
 
 namespace App\Entity\Stats;
 
+use App\Entity\Traits\TraitStatsPkmn;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
 
