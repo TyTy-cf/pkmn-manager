@@ -8,6 +8,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 /**
  * Pokemon manager
@@ -15,6 +16,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ExcecCommand extends Command
 {
+    /**
+     * Name of the command (after bin/console)
+     */
+    protected static $defaultName = "app:pokemon:all fr";
+
     /**
      * @var PokemonManager $pokemonManager
      */
@@ -43,7 +49,7 @@ class ExcecCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('app:pokemon:all')
+            ->setName('app:pokemon:all fr')
             ->addArgument('lang', InputArgument::REQUIRED, 'Language used')
             ->setDescription('Execute app:pokemon');
     }
@@ -52,12 +58,24 @@ class ExcecCommand extends Command
      * Execute app:pokemon:all
      * @param InputInterface $input
      * @param OutputInterface $output
+     * @throws TransportExceptionInterface
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $lang = $input->getArgument('lang');
+        $apiReponse = $this->apiManager->getPokemonJson();
 
-//        if (null === $lang = $this->apiManager->getPokemonFromName());
+        $allPokemons = $apiReponse->toarray();
+
+        foreach ($allPokemons['results'] as $pokemon ) {
+
+            $namePokemon = $pokemon['name'];
+
+            $apiReponse = $this->apiManager->getPokemonFromName($namePokemon);
+
+            $pokemonSaved = $this->pokemonManager->saveNewPokemon($apiReponse, $namePokemon);
+        }
+
+        return command::SUCCESS;
     }
 
 }

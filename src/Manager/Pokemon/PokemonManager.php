@@ -22,22 +22,22 @@ class PokemonManager
     /**
      * @var EntityManagerInterface
      */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     /**
      * @var AbilitiesManager
      */
-    private $abilitiesManager;
+    private AbilitiesManager $abilitiesManager;
 
     /**
      * @var TypeManager
      */
-    private $typeManager;
+    private TypeManager $typeManager;
 
     /**
      * @var ApiManager
      */
-    private $apiManager;
+    private ApiManager $apiManager;
 
     /**
      * PokemonManager constructor.
