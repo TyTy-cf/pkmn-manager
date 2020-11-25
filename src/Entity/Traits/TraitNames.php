@@ -25,7 +25,7 @@ trait TraitNames
     /**
      * @var string $nameFr
      *
-     * @ORM\Column(name="name", type="string", length=36)
+     * @ORM\Column(name="name", type="string", length=36, nullable=true)
      */
     private string $name;
 

@@ -6,6 +6,7 @@ use App\Entity\Game\GameInfos;
 use App\Entity\Infos\Gender;
 use App\Entity\Infos\Nature;
 use App\Entity\Moves\Categories;
+use App\Entity\Users\Language;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -270,6 +271,10 @@ class AppFixtures extends Fixture
         $gameInfoSs->setNameFr('Epée & Bouclier');
         $gameInfoSs->setNbPkmn('898');
         $manager->persist($gameInfoSs);
+        $language = new Language();
+        $language->setCode('fr');
+        $language->setTitle('Français');
+        $manager->persist($language);
         $manager->flush();
     }
 }
