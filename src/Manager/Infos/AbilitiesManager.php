@@ -6,6 +6,7 @@ namespace App\Manager\Infos;
 
 use App\Entity\Infos\Abilities;
 use App\Entity\Pokemon\Pokemon;
+use App\Entity\Users\Language;
 use App\Manager\Api\ApiManager;
 use App\Repository\Infos\AbilitiesRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -42,29 +43,25 @@ class AbilitiesManager
     }
 
     /**
-     * @param object $language
+     * @param Language $language
      * @param string $lang
      * @param $abilities
      * @param Pokemon $pokemon
      * @throws TransportExceptionInterface
      */
-    public function saveNewAbilities($language, string $lang, $abilities, Pokemon $pokemon)
+    public function saveNewAbilities(Language $language, string $lang, $abilities, Pokemon $pokemon)
     {
         // Iterate the types from the json, create the type if not existing or get it
         foreach ($abilities as $ability) {
             $urlAbility = $ability['ability']['url'];
             $abilitiesDetailed = $this->getAbilitiesInformationsOnLanguage($lang, $urlAbility);
 
-//            $abilityName = $ability['ability']['name'];
-
             if (($newAbility = $this->abilitiesRepository->findOneBy(['name' => $abilitiesDetailed['name']])) == null) {
-
                 $newAbility = new Abilities();
-//                $newAbility->setNameEn(ucfirst($abilityName));
                 $newAbility->setName(ucfirst($abilitiesDetailed['name']));
+                $newAbility->setSlug($ability['ability']['name']);
                 $newAbility->setDescription($abilitiesDetailed['description']);
                 $newAbility->setLanguage($language);
-
                 $this->entityManager->persist($newAbility);
             }
 

@@ -6,6 +6,7 @@ namespace App\Manager\Infos;
 
 use App\Entity\Infos\Type;
 use App\Entity\Pokemon\Pokemon;
+use App\Entity\Users\Language;
 use App\Manager\Api\ApiManager;
 use App\Repository\Infos\TypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -42,33 +43,27 @@ class TypeManager
     }
 
     /**
-     * @param object $language
+     * @param Language $language
      * @param string $lang
      * @param $types
      * @param Pokemon $pokemon
      * @throws TransportExceptionInterface
      */
-    public function saveNewTypes(object $language, string $lang, $types, Pokemon $pokemon)
+    public function saveNewTypes(Language $language, string $lang, $types, Pokemon $pokemon)
     {
         // Iterate the types from the json, create the type if not existing or get it
         foreach ($types as $type) {
-
             $urlType = $type['type']['url'];
             $typeName = $this->getTypesInformationsOnLanguage($lang, $urlType);
             $typeNameEn = $type['type']['name'];
 
             if (($newType = $this->typeRepository->findOneBy(['name' => $typeName])) == null) {
-
-                $urlImg = '/images/types/';
-
+                $urlImg = '/images/types/' . $language->getCode() . '/';
                 $newType = new Type();
                 $newType->setName($typeName);
+                $newType->setSlug($typeNameEn);
                 $newType->setLanguage($language);
-
-//                $newType->setNameEn(ucfirst($typeNameEn));
-//                $newType->setNameFr(ucfirst($typeNameFr));
                 $newType->setImg($urlImg . $typeNameEn . '.png');
-
                 $this->entityManager->persist($newType);
             }
             $pokemon->addType($newType);

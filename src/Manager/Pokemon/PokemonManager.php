@@ -8,7 +8,7 @@ use App\Entity\Pokemon\Pokemon;
 use App\Manager\Api\ApiManager;
 use App\Manager\Infos\AbilitiesManager;
 use App\Manager\Infos\TypeManager;
-use App\Manager\Moves\MovesManager;
+use App\Manager\Moves\MoveManager;
 use App\Manager\Users\LanguageManager;
 use App\Repository\Pokemon\PokemonRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -47,9 +47,9 @@ class PokemonManager
     private LanguageManager $languageManager;
 
     /**
-     * @var MovesManager
+     * @var MoveManager
      */
-    private MovesManager $movesManager;
+    private MoveManager $movesManager;
 
     /**
      * PokemonManager constructor.
@@ -58,7 +58,7 @@ class PokemonManager
      * @param AbilitiesManager $abilitiesManager
      * @param TypeManager $typeManager
      * @param LanguageManager $languageManager
-     * @param MovesManager $movesManager
+     * @param MoveManager $movesManager
      * @param ApiManager $apiManager
      */
     public function __construct(
@@ -66,7 +66,7 @@ class PokemonManager
         AbilitiesManager $abilitiesManager,
         TypeManager $typeManager,
         LanguageManager $languageManager,
-        MovesManager $movesManager,
+        MoveManager $movesManager,
         ApiManager $apiManager
     ) {
         $this->entityManager = $entityManager;
@@ -95,7 +95,7 @@ class PokemonManager
      */
     public function findByName($name)
     {
-        return $this->pokemonRepository->findOneBy(['nameEn' => $name]);
+        return $this->pokemonRepository->findOneBy(['name' => $name]);
     }
 
     /**
@@ -117,20 +117,20 @@ class PokemonManager
         $pokemonName = $this->getPokemonInformationsOnLanguage($lang, $url);
 
         //Check and save the moves, if not exist
-        $moves = $this->movesManager->saveMove($language, $lang, $apiResponse['moves']);
-        die();
+        //$moves = $this->movesManager->saveMove($language, $lang, $apiResponse['moves']);
 
         //Create new Pokemon
         $pokemon = new Pokemon();
         $pokemon->setName(ucfirst($pokemonName));
-//        $pokemon->setNameFr($pokemonNameFr);
-//        $pokemon->setNameEn(ucfirst($pokemonName));
-        $pokemon->setUrlimg($apiResponse['sprites']['other']['dream_world']['front_default']);
+        $pokemon->setSlug($apiResponse['name']);
+        $pokemon->setUrlimg($apiResponse['sprites']['versions']['generation-vii']['ultra-sun-ultra-moon']['front_default']);
+        $pokemon->setUrlImgShiny($apiResponse['sprites']['versions']['generation-vii']['ultra-sun-ultra-moon']['front_shiny']);
+        $pokemon->setUrlIcon($apiResponse['sprites']['versions']['generation-viii']['icons']['front_default']);
+        $pokemon->setUrlSpriteImg($apiResponse['sprites']['other']['official-artwork']['front_default']);
         $pokemon->setLanguage($language);
 
         // Add the stats
         foreach ($apiResponse['stats'] as $stat) {
-
             if ($stat['stat']['name'] == 'hp') {
                 $pokemon->setHp($stat['base_stat']);
             } elseif ($stat['stat']['name'] == 'attack') {
@@ -157,20 +157,19 @@ class PokemonManager
     /**
      * @param $lang
      * @param $url
-     * @return mixed
+     * @return mixed|null
      * @throws TransportExceptionInterface
      */
-    public function getPokemonInformationsOnLanguage(string $lang, string $url): string
+    public function getPokemonInformationsOnLanguage(string $lang, string $url): ?string
     {
         $apiResponse = $this->apiManager->getDetailed($url)->toArray();
-        $namePokemonFr = null;
 
         foreach ($apiResponse['names'] as $namePokemon) {
             if ($namePokemon['language']['name'] === $lang) {
                 $pokemonName = $namePokemon['name'];
             }
         }
-
+        // TODO un return null passe, il faut regarder pourquoi ?
         return $pokemonName;
     }
 }

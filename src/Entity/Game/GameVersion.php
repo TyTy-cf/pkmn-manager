@@ -5,15 +5,15 @@ namespace App\Entity\Game;
 use App\Entity\Moves\PokemonMovesLevel;
 use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
-use App\Repository\Game\GameInfosRepository;
+use App\Entity\Traits\TraitSlug;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=GameInfosRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\Game\GameVersionRepository")
  */
-class GameInfos
+class GameVersion
 {
     /**
      * @ORM\Id
@@ -24,22 +24,14 @@ class GameInfos
 
     use TraitNames;
 
+    use TraitSlug;
+
     use TraitLanguage;
 
     /**
-     * @ORM\Column(type="string", length=6)
+     * @ORM\Column(type="string", length=2)
      */
-    private ?string $code;
-
-    /**
-     * @ORM\Column(type="string", length=2, nullable=true)
-     */
-    private ?string $codeVersion;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private ?int $nbPkmn;
+    private string $code;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Moves\PokemonMovesLevel", mappedBy="gameInfos")
@@ -51,49 +43,31 @@ class GameInfos
         $this->pokemonMovesLevels = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getCode(): ?string
     {
         return $this->code;
     }
 
+    /**
+     * @param string $code
+     * @return $this
+     */
     public function setCode(string $code): self
     {
         $this->code = $code;
 
         return $this;
-    }
-
-    public function getNbPkmn(): ?int
-    {
-        return $this->nbPkmn;
-    }
-
-    public function setNbPkmn(?int $nbPkmn): self
-    {
-        $this->nbPkmn = $nbPkmn;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getCodeVersion(): ?string
-    {
-        return $this->codeVersion;
-    }
-
-    /**
-     * @param string|null $codeVersion
-     */
-    public function setCodeVersion(?string $codeVersion): void
-    {
-        $this->codeVersion = $codeVersion;
     }
 
     /**

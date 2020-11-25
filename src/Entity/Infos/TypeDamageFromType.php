@@ -1,0 +1,106 @@
+<?php
+
+
+namespace App\Entity\Infos;
+
+use App\Entity\Traits\TraitSlug;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Class Type
+ * @package App\Entity\Infos
+ *
+ * @ORM\Table(name="type_damage_from_type")
+ * @ORM\Entity(repositoryClass="App\Repository\Infos\TypeDamageFromTypeRepository")
+ */
+class TypeDamageFromType
+{
+    /**
+     * @var int $id id de l'abstract info
+     *
+     * @ORM\Id()
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(name="id", type="integer", length=6)
+     */
+    private $id;
+
+    use TraitSlug;
+
+    /**
+     * @var Type $type
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Infos\Type")
+     * @ORM\Column(name="type_id", type="integer", length=6)
+     */
+    private Type $type;
+
+    /**
+     * @var Type $damageFromType
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Infos\Type")
+     * @ORM\Column(name="damage_from_type_id", type="integer", length=6)
+     */
+    private Type $damageFromType;
+
+    /**
+     * @var float $coefFrom
+     * @ORM\Column(name="coef_from", type="float", length=2)
+     */
+    private float $coefFrom;
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return Type
+     */
+    public function getType(): Type
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param Type $type
+     */
+    public function setType(Type $type): void
+    {
+        $this->type = $type;
+    }
+
+    /**
+     * @return Type
+     */
+    public function getDamageFromType(): Type
+    {
+        return $this->damageFromType;
+    }
+
+    /**
+     * @param Type $damageFromType
+     */
+    public function setDamageFromType(Type $damageFromType): void
+    {
+        $this->damageFromType = $damageFromType;
+    }
+
+    /**
+     * @return float
+     */
+    public function getCoefFrom(): float
+    {
+        return $this->coefFrom;
+    }
+
+    /**
+     * @param float $coefFrom
+     */
+    public function setCoefFrom(float $coefFrom): void
+    {
+        $this->coefFrom = $coefFrom;
+    }
+}

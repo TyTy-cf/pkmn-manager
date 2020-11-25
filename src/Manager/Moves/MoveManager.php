@@ -2,16 +2,16 @@
 
 namespace App\Manager\Moves;
 
-use App\Entity\Moves\Moves;
+use App\Entity\Moves\Move;
 use App\Manager\Api\ApiManager;
 use App\Manager\Infos\TypeManager;
-use App\Repository\Moves\MovesRepository;
+use App\Repository\Moves\MoveRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
-class MovesManager
+class MoveManager
 {
     /**
-     * @var MovesRepository
+     * @var MoveRepository
      */
     private $movesRepository;
 
@@ -31,7 +31,7 @@ class MovesManager
     private TypeManager $typeManager;
 
     /**
-     * MovesManager constructor
+     * MoveManager constructor
      * @param EntityManagerInterface $em
      * @param ApiManager $apiManager
      * @param TypeManager $typeManager
@@ -40,7 +40,7 @@ class MovesManager
     {
         $this->em = $em;
         $this->apiManager = $apiManager;
-        $this->movesRepository = $this->em->getRepository(Moves::class);
+        $this->movesRepository = $this->em->getRepository(Move::class);
         $this->typeManager = $typeManager;
     }
 
@@ -62,13 +62,12 @@ class MovesManager
 
                 if ($moveNameLang = $moveName['language']['name'] === $lang) {
                     if ($this->movesRepository->findOneBy(['name' => $moveNameLang]) === null) {
-                        $newMove = new Moves();
+                        $newMove = new Move();
 
                         $newMove->setPp($movesResponse['pp']);
                         $newMove->setAccuracy($movesResponse['accuracy']);
                         $newMove->setPower($movesResponse['power']);
                         $newMove->setPriority($movesResponse['priority']);
-
                         $newMove->setName($moveNameLang);
                         $newMove->setLanguage($language);
 

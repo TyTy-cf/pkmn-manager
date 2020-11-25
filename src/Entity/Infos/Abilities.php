@@ -7,6 +7,7 @@ use App\Entity\Pokemon\Pokemon;
 use App\Entity\Traits\TraitDescription;
 use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
+use App\Entity\Traits\TraitSlug;
 use App\Entity\Users\Language;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -40,13 +41,14 @@ class Abilities
      */
     private $pokemons;
 
-
     public function __construct()
     {
         $this->pokemons = new ArrayCollection();
     }
 
     use TraitNames;
+
+    use TraitSlug;
 
     use TraitDescription;
 
@@ -58,14 +60,6 @@ class Abilities
     public function getId(): int
     {
         return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId(int $id): void
-    {
-        $this->id = $id;
     }
 
     /**

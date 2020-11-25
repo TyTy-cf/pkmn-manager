@@ -48,17 +48,11 @@ class Language
     private Collection $users;
 
     /**
-     * @ORM\OneToMany(targetEntity=Abilities::class, mappedBy="languageId")
-     */
-    private $abilities;
-
-    /**
      * Language constructor.
      */
     public function __construct()
     {
         $this->users = new ArrayCollection();
-        $this->abilities = new ArrayCollection();
     }
 
     /**
@@ -67,14 +61,6 @@ class Language
     public function getId(): int
     {
         return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId(int $id): void
-    {
-        $this->id = $id;
     }
 
     /**
@@ -151,35 +137,5 @@ class Language
         if ($this->users->contains($user)) {
             $this->users->removeElement($user);
         }
-    }
-
-    /**
-     * @return Collection|Abilities[]
-     */
-    public function getAbilities(): Collection
-    {
-        return $this->abilities;
-    }
-
-    public function addAbility(Abilities $ability): self
-    {
-        if (!$this->abilities->contains($ability)) {
-            $this->abilities[] = $ability;
-            $ability->setLanguageId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAbility(Abilities $ability): self
-    {
-        if ($this->abilities->removeElement($ability)) {
-            // set the owning side to null (unless already changed)
-            if ($ability->getLanguageId() === $this) {
-                $ability->setLanguageId(null);
-            }
-        }
-
-        return $this;
     }
 }

@@ -7,6 +7,7 @@ use App\Entity\Infos\Type;
 use App\Entity\Traits\TraitDescription;
 use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
+use App\Entity\Traits\TraitSlug;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -20,13 +21,13 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @package App\Entity\Infos
  *
  * @ORM\Table(name="moves")
- * @ORM\Entity(repositoryClass="App\Repository\Moves\MovesRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Moves\MoveRepository")
  * @UniqueEntity(
- *     fields={"nameEn"},
+ *     fields={"name"},
  *     message="Cette attaque existe déjà !"
  * )
  */
-class Moves
+class Move
 {
     /**
      * @var int $id id de l'abstract info
@@ -38,6 +39,8 @@ class Moves
     private int $id;
 
     use TraitNames;
+
+    use TraitSlug;
 
     use TraitDescription;
 

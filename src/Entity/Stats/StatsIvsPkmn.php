@@ -3,21 +3,22 @@
 
 namespace App\Entity\Stats;
 
+
 use App\Entity\Traits\TraitStatsPkmn;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
 
 /**
- * Class EvsPkmn
+ * Class StatsIvsPkmn
  * @package App\Entity\Stats
  *
- * @ORM\Table(name="evs_pkmn")
+ * @ORM\Table(name="stats_ivs_pkmn")
  * @Entity
  */
-class EvsPkmn
+class StatsIvsPkmn
 {
     /**
-     * @var int $id id des evs
+     * @var int $id id des ivs
      *
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -42,4 +43,5 @@ class EvsPkmn
     {
         $this->id = $id;
     }
+
 }

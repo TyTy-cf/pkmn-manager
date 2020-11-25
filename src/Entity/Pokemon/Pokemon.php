@@ -8,8 +8,8 @@ use App\Entity\Infos\Type;
 use App\Entity\Moves\PokemonMovesLevel;
 use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
+use App\Entity\Traits\TraitSlug;
 use App\Entity\Traits\TraitStatsPkmn;
-use App\Entity\Users\Language;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,7 +24,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass="App\Repository\Pokemon\PokemonRepository")
  * @ORM\Table(name="pokemon")
  * @UniqueEntity(
- *     fields={"nameEn"},
+ *     fields={"name"},
  *     message="Ce pokémon existe déjà !"
  * )
  */
@@ -42,6 +42,8 @@ class Pokemon
     use TraitStatsPkmn;
 
     use TraitNames;
+
+    use TraitSlug;
 
     use TraitLanguage;
 
@@ -79,6 +81,16 @@ class Pokemon
      * @ORM\Column(name="url_img_shiny", type="string", length=255, nullable=true)
      */
     private ?string $urlImgShiny;
+
+    /**
+     * @ORM\Column(name="url_icon", type="string", length=255, nullable=true)
+     */
+    private ?string $urlIcon;
+
+    /**
+     * @ORM\Column(name="url_sprite_img", type="string", length=255, nullable=true)
+     */
+    private ?string $urlSpriteImg;
 
     /**
      * Pokemon constructor.
@@ -119,6 +131,38 @@ class Pokemon
     public function setUrlImg(?string $urlImg)
     {
         $this->urlImg = $urlImg;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getUrlIcon(): ?string
+    {
+        return $this->urlIcon;
+    }
+
+    /**
+     * @param string|null $urlIcon
+     */
+    public function setUrlIcon(?string $urlIcon): void
+    {
+        $this->urlIcon = $urlIcon;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getUrlSpriteImg(): ?string
+    {
+        return $this->urlSpriteImg;
+    }
+
+    /**
+     * @param string|null $urlSpriteImg
+     */
+    public function setUrlSpriteImg(?string $urlSpriteImg): void
+    {
+        $this->urlSpriteImg = $urlSpriteImg;
     }
 
     /**

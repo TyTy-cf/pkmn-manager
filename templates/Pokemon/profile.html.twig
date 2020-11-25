@@ -1,11 +1,10 @@
 {% extends 'base.html.twig' %}
 {% block title %}Catch 'em all{% endblock %}
 {% block body %}
-    <h1 class="text-center mb-1 mt-3">Profil de {{ pokemon.nameFr }}</h1>
+    <h1 class="text-center mb-1 mt-3">Profil de {{ pokemon.name }}</h1>
     <hr>
     <div class="row justify-content-center mb-3 mt-3">
-        <img src="{{ pokemon.urlimg }}" width="200px" height="200px"
-             alt="Image de {{ pokemon.nameFr|capitalize }}">
+        <img src="{{ pokemon.urlSpriteImg }}" width="15%" height="15%" alt="Image de {{ pokemon.name|capitalize }}">
     </div>
     <hr>
     <div class="container">
@@ -15,7 +14,7 @@
                 <div class="row text-center">
                     {% for type in pokemon.types %}
                         <div class="col-md-6">
-                            <img src="{{ type.img }}" alt="Type {{ type.namefr|lower }}"></li>
+                            <img src="{{ type.img }}" alt="Type {{ type.name|lower }}"></li>
                         </div>
                     {% endfor %}
                 </div>
@@ -24,7 +23,7 @@
                 <h2 class="text-center">Capacité(s)</h2>
                 <ul>
                     {% for ability in pokemon.abilities %}
-                        <li><strong>{{ ability.nameFr|capitalize }}</strong>: {{ ability.description }}</li>
+                        <li><strong>{{ ability.name|capitalize }}</strong>: {{ ability.description }}</li>
                     {% endfor %}
                 </ul>
             </div>

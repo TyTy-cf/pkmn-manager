@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command;
+namespace App\Command\Pokemon;
 
 use App\Manager\Api\ApiManager;
 use App\Manager\Pokemon\PokemonManager;
@@ -16,10 +16,6 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
  */
 class PokemonCommand extends Command
 {
-    /**
-     * Name of the command (after bin/console)
-     */
-    protected static $defaultName = "app:pokemon:all";
 
     /**
      * @var PokemonManager $pokemonManager
@@ -51,7 +47,7 @@ class PokemonCommand extends Command
         $this
             ->setName('app:pokemon:all')
             ->addArgument('lang', InputArgument::REQUIRED, 'Language used')
-            ->setDescription('Execute app:pokemon');
+            ->setDescription('Execute app:pokemon to fetech all pokemon for language');
     }
 
     /**
@@ -81,9 +77,9 @@ class PokemonCommand extends Command
 
             //Save pokemon in BDD
             $apiResponse = $this->apiManager->getPokemonFromName($namePokemon);
-            $detailledPokemon = $apiResponse->toarray();
+            $detailedPokemon = $apiResponse->toarray();
 
-            $this->pokemonManager->saveNewPokemon($lang, $detailledPokemon, $namePokemon);
+            $this->pokemonManager->saveNewPokemon($lang, $detailedPokemon, $namePokemon);
 
             //Advance progressBar
             $progressBar->advance();

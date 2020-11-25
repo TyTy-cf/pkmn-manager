@@ -3,7 +3,7 @@
 
 namespace App\Entity\Moves;
 
-use App\Entity\Game\GameInfos;
+use App\Entity\Game\GameVersion;
 use App\Entity\Pokemon\Pokemon;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
  * Class PokemonMovesLevel
- * @package App\Entity\Moves
+ * @package App\Entity\Move
  * @Entity
  * @ORM\Table(name="pokemon_moves_level")
  */
@@ -31,10 +31,10 @@ class PokemonMovesLevel
     private Pokemon $pokemon;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Moves\Moves", inversedBy="pokemonMovesLevel")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Moves\Move", inversedBy="pokemonMovesLevel")
      * @JoinColumn(name="move_id", referencedColumnName="id")
      */
-    private Moves $move;
+    private Move $move;
 
     /**
      * @var int $level
@@ -43,10 +43,10 @@ class PokemonMovesLevel
     private int $level;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Game\GameInfos", inversedBy="pokemonMovesLevels")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Game\GameVersion", inversedBy="pokemonMovesLevels")
      * @JoinColumn(name="gameinfos_id", referencedColumnName="id")
      */
-    private ?GameInfos $gameInfos;
+    private ?GameVersion $gameInfos;
 
     /**
      * @return string
@@ -81,17 +81,17 @@ class PokemonMovesLevel
     }
 
     /**
-     * @return Moves
+     * @return Move
      */
-    public function getMove(): Moves
+    public function getMove(): Move
     {
         return $this->move;
     }
 
     /**
-     * @param Moves $move
+     * @param Move $move
      */
-    public function setMove(Moves $move): void
+    public function setMove(Move $move): void
     {
         $this->move = $move;
     }
@@ -113,17 +113,17 @@ class PokemonMovesLevel
     }
 
     /**
-     * @return GameInfos|null
+     * @return GameVersion|null
      */
-    public function getGameinfos(): ?GameInfos
+    public function getGameinfos(): ?GameVersion
     {
         return $this->gameInfos;
     }
 
     /**
-     * @param GameInfos|null $gameInfos
+     * @param GameVersion|null $gameInfos
      */
-    public function setGameinfos(?GameInfos $gameInfos): void
+    public function setGameinfos(?GameVersion $gameInfos): void
     {
         $this->gameInfos = $gameInfos;
     }

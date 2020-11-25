@@ -6,10 +6,9 @@ namespace App\Entity\Pokemon;
 
 use App\Entity\Infos\Gender;
 use App\Entity\Infos\Nature;
-use App\Entity\Infos\Type;
-use App\Entity\Moves\Moves;
-use App\Entity\Stats\EvsPkmn;
-use App\Entity\Stats\IvsPkmn;
+use App\Entity\Moves\Move;
+use App\Entity\Stats\StatsEvsPkmn;
+use App\Entity\Stats\StatsIvsPkmn;
 use App\Entity\Stats\StatsPkmn;
 use App\Entity\Users\User;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -75,16 +74,16 @@ class PokemonSheet
     private Nature $nature;
 
     /**
-     * @OneToOne(targetEntity="App\Entity\Stats\IvsPkmn")
+     * @OneToOne(targetEntity="App\Entity\Stats\StatsIvsPkmn")
      * @JoinColumn(name="ivs_id", referencedColumnName="id")
      */
-    private IvsPkmn $ivs;
+    private StatsIvsPkmn $ivs;
 
     /**
-     * @OneToOne(targetEntity="App\Entity\Stats\EvsPkmn")
+     * @OneToOne(targetEntity="App\Entity\Stats\StatsEvsPkmn")
      * @JoinColumn(name="evs_id", referencedColumnName="id")
      */
-    private EvsPkmn $evs;
+    private StatsEvsPkmn $evs;
 
     /**
      * @OneToOne(targetEntity="App\Entity\Stats\StatsPkmn")
@@ -93,7 +92,7 @@ class PokemonSheet
     private StatsPkmn $stats;
 
     /**
-     * @ManyToMany(targetEntity="App\Entity\Moves\Moves")
+     * @ManyToMany(targetEntity="App\Entity\Moves\Move")
      * @JoinTable(name="pokemon_sheet_moves",
      *      joinColumns={@JoinColumn(name="pokemon_sheet_id", referencedColumnName="id")},
      *      inverseJoinColumns={@JoinColumn(name="move_id", referencedColumnName="id")}
@@ -262,9 +261,9 @@ class PokemonSheet
     }
 
     /**
-     * @param Moves $move
+     * @param Move $move
      */
-    public function addMove(Moves $move): void
+    public function addMove(Move $move): void
     {
         if (!$this->moves->contains($move)) {
             $this->moves->add($move);
@@ -280,16 +279,16 @@ class PokemonSheet
     }
 
     /**
-     * @param Moves $move
+     * @param Move $move
      */
-    public function removeType(Moves $move)
+    public function removeType(Move $move)
     {
         if ($this->moves->contains($move)) {
             $this->moves->removeElement($move);
         }
     }
 
-    public function removeMove(Moves $move): self
+    public function removeMove(Move $move): self
     {
         $this->moves->removeElement($move);
 

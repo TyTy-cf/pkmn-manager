@@ -32,7 +32,7 @@ class Gender
 
     /**
      * @var string $image
-     * @ORM\Column(name="image", type="string", length=255)
+     * @ORM\Column(name="image", type="string", length=255, nullable=true)
      */
     private string $image;
 

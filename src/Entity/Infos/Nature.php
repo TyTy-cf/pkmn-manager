@@ -5,8 +5,10 @@ namespace App\Entity\Infos;
 
 use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
+use App\Entity\Traits\TraitSlug;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Class Nature
@@ -14,6 +16,10 @@ use Doctrine\ORM\Mapping\Entity;
  *
  * @ORM\Table(name="nature")
  * @Entity
+ * @UniqueEntity(
+ *     fields={"name"},
+ *     message="Cette nature existe déjà !"
+ * )
  */
 class Nature
 {
@@ -28,21 +34,23 @@ class Nature
 
     use TraitNames;
 
+    use TraitSlug;
+
     use TraitLanguage;
 
     /**
-     * @var string $statsBonus la stats "bonus" de la nature
+     * @var string $statIncreased la stats "bonus" de la nature
      *
-     * @ORM\Column(name="stats_bonus", type="string", length=12, nullable=true)
+     * @ORM\Column(name="stat_increased", type="string", length=12, nullable=true)
      */
-    private string $statsBonus;
+    private string $statIncreased;
 
     /**
-     * @var string $statsPenalty
+     * @var string $statDecreased
      *
-     * @ORM\Column(name="stats_penalty", type="string", length=12, nullable=true)
+     * @ORM\Column(name="stat_decreased", type="string", length=12, nullable=true)
      */
-    private string $statsPenalty;
+    private string $statDecreased;
 
     /**
      * @return int
@@ -63,33 +71,33 @@ class Nature
     /**
      * @return string
      */
-    public function getStatsBonus(): string
+    public function getStatIncreased(): string
     {
-        return $this->statsBonus;
+        return $this->statIncreased;
     }
 
     /**
-     * @param string $statsBonus
+     * @param string $statIncreased
      */
-    public function setStatsBonus(string $statsBonus): void
+    public function setStatsIncreased(string $statIncreased): void
     {
-        $this->statsBonus = $statsBonus;
+        $this->statIncreased = $statIncreased;
     }
 
     /**
      * @return string
      */
-    public function getStatsPenalty(): string
+    public function getStatDecreased(): string
     {
-        return $this->statsPenalty;
+        return $this->statDecreased;
     }
 
     /**
-     * @param string $statsPenalty
+     * @param string $statDecreased
      */
-    public function setStatsPenalty(string $statsPenalty): void
+    public function setStatDecreased(string $statDecreased): void
     {
-        $this->statsPenalty = $statsPenalty;
+        $this->statDecreased = $statDecreased;
     }
 
 }

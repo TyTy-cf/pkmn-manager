@@ -160,7 +160,6 @@ class PokemonController extends AbstractController
      */
     function displayProfile(Request $request): Response
     {
-
         $pokemonName = $request->get('pokeName');
 
         // Check if the pokemon exists inside the database
@@ -168,7 +167,7 @@ class PokemonController extends AbstractController
             // Not existing, we are looking for it in the API
             $apiResponse = $this->apiManager->getPokemonFromName($pokemonName)->toArray();
             // And create the new pokemon
-            $pokemon = $this->pokemonManager->saveNewPokemon($apiResponse, $pokemonName);
+            $pokemon = $this->pokemonManager->saveNewPokemon('fr', $apiResponse, $pokemonName);
         }
 
         return $this->render('Pokemon/profile.html.twig', [
