@@ -8,6 +8,7 @@ use App\Entity\Pokemon\Pokemon;
 use App\Manager\Api\ApiManager;
 use App\Manager\Infos\AbilitiesManager;
 use App\Manager\Infos\TypeManager;
+use App\Manager\Moves\MovesManager;
 use App\Manager\Users\LanguageManager;
 use App\Repository\Pokemon\PokemonRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -46,12 +47,18 @@ class PokemonManager
     private LanguageManager $languageManager;
 
     /**
+     * @var MovesManager
+     */
+    private MovesManager $movesManager;
+
+    /**
      * PokemonManager constructor.
      *
      * @param EntityManagerInterface $entityManager
      * @param AbilitiesManager $abilitiesManager
      * @param TypeManager $typeManager
      * @param LanguageManager $languageManager
+     * @param MovesManager $movesManager
      * @param ApiManager $apiManager
      */
     public function __construct(
@@ -59,6 +66,7 @@ class PokemonManager
         AbilitiesManager $abilitiesManager,
         TypeManager $typeManager,
         LanguageManager $languageManager,
+        MovesManager $movesManager,
         ApiManager $apiManager
     ) {
         $this->entityManager = $entityManager;
@@ -66,6 +74,7 @@ class PokemonManager
         $this->abilitiesManager = $abilitiesManager;
         $this->typeManager = $typeManager;
         $this->languageManager = $languageManager;
+        $this->movesManager = $movesManager;
         $this->apiManager = $apiManager;
     }
 
@@ -106,6 +115,10 @@ class PokemonManager
         //Return foreign name of Pokémon
         $url = $apiResponse['species']['url'];
         $pokemonName = $this->getPokemonInformationsOnLanguage($lang, $url);
+
+        //Check and save the moves, if not exist
+        $moves = $this->movesManager->saveMove($language, $lang, $apiResponse['moves']);
+        die();
 
         //Create new Pokemon
         $pokemon = new Pokemon();

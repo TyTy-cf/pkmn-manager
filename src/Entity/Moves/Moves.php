@@ -90,10 +90,10 @@ class Moves
      */
     private PokemonMovesLevel $pokemonMovesLevel;
 
-    public function __construct()
-    {
-        $this->pokemonMovesLevel = new ArrayCollection();
-    }
+//    public function __construct()
+//    {
+//        $this->pokemonMovesLevel = new ArrayCollection();
+//    }
 
     /**
      * @return int
@@ -160,17 +160,17 @@ class Moves
     }
 
     /**
-     * @return Integer|null
+     * @return int|null
      */
-    public function getAccuracy(): ?Integer
+    public function getAccuracy(): ?int
     {
         return $this->accuracy;
     }
 
     /**
-     * @param Integer|null $accuracy
+     * @param int|null $accuracy
      */
-    public function setAccuracy(?Integer $accuracy): void
+    public function setAccuracy(?int $accuracy): void
     {
         $this->accuracy = $accuracy;
     }
