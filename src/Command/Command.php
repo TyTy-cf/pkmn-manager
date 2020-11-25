@@ -5,6 +5,7 @@ namespace App\Command;
 use App\Manager\Api\ApiManager;
 use App\Manager\Pokemon\PokemonManager;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -59,23 +60,37 @@ class PokemonCommand extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      * @throws TransportExceptionInterface
-     **/
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $apiReponse = $this->apiManager->getPokemonJson();
 
+        //Get list of pokemons
+        $apiReponse = $this->apiManager->getPokemonJson();
         $allPokemons = $apiReponse->toarray();
 
+        //Initialise progress bar
+        $progressBar = new ProgressBar($output, count($allPokemons['results']));
+        $progressBar->start();
+
+        // Check row
         foreach ($allPokemons['results'] as $pokemon ) {
 
             $namePokemon = $pokemon['name'];
 
-            $getPokemonFromName = $this->apiManager->getPokemonFromName($namePokemon);
+            //Save pokemon in BDD
+            $apiReponse = $this->apiManager->getPokemonFromName($namePokemon);
+            $detailledPokemon = $apiReponse->toarray();
 
-            $pokemonSaved = $this->pokemonManager->saveNewPokemon($getPokemonFromName, $namePokemon);
+            $pokemonSaved = $this->pokemonManager->saveNewPokemon($detailledPokemon, $namePokemon);
+
+            $progressBar->advance();
         }
+
+        $progressBar->finish();
 
         return command::SUCCESS;
     }
+
+
 
 }
