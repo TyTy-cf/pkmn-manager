@@ -3,6 +3,7 @@
 namespace App\Entity\Game;
 
 use App\Entity\Moves\PokemonMovesLevel;
+use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
 use App\Repository\Game\GameInfosRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -22,6 +23,8 @@ class GameInfos
     private ?int $id;
 
     use TraitNames;
+
+    use TraitLanguage;
 
     /**
      * @ORM\Column(type="string", length=6)

@@ -4,6 +4,7 @@
 namespace App\Entity\Moves;
 
 
+use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
@@ -27,6 +28,8 @@ class Categories
     private int $id;
 
     use TraitNames;
+
+    use TraitLanguage;
 
     /**
      * @return int

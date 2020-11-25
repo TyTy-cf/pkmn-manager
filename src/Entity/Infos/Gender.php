@@ -3,6 +3,7 @@
 
 namespace App\Entity\Infos;
 
+use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
@@ -27,6 +28,14 @@ class Gender
 
     use TraitNames;
 
+    use TraitLanguage;
+
+    /**
+     * @var string $image
+     * @ORM\Column(name="image", type="string", length=255)
+     */
+    private string $image;
+
     /**
      * @return int
      */
@@ -36,10 +45,19 @@ class Gender
     }
 
     /**
-     * @param int $id
+     * @return string
      */
-    public function setId(int $id): void
+    public function getImage(): string
     {
-        $this->id = $id;
+        return $this->image;
     }
+
+    /**
+     * @param string $image
+     */
+    public function setImage(string $image): void
+    {
+        $this->image = $image;
+    }
+
 }

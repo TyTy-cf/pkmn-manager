@@ -5,6 +5,7 @@ namespace App\Entity\Moves;
 
 use App\Entity\Infos\Type;
 use App\Entity\Traits\TraitDescription;
+use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
@@ -37,6 +38,8 @@ class Moves
     use TraitNames;
 
     use TraitDescription;
+
+    use TraitLanguage;
 
     /**
      * @var Type $type the type of the move

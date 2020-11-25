@@ -4,6 +4,7 @@
 namespace App\Entity\Infos;
 
 
+use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -41,6 +42,8 @@ class Type
     private ?string $img;
 
     use TraitNames;
+
+    use TraitLanguage;
 
     /**
      * @return int

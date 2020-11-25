@@ -6,6 +6,7 @@ namespace App\Entity\Pokemon;
 use App\Entity\Infos\Abilities;
 use App\Entity\Infos\Type;
 use App\Entity\Moves\PokemonMovesLevel;
+use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
 use App\Entity\Traits\TraitStatsPkmn;
 use App\Entity\Users\Language;
@@ -42,6 +43,8 @@ class Pokemon
 
     use TraitNames;
 
+    use TraitLanguage;
+
     /**
      * @ManyToMany(targetEntity="App\Entity\Infos\Abilities", inversedBy="pokemons", cascade={"persist"})
      * @JoinTable(name="pokemons_abilities",
@@ -66,14 +69,6 @@ class Pokemon
      * @ORM\OneToMany(targetEntity="App\Entity\Moves\PokemonMovesLevel", mappedBy="pokemon", fetch="EXTRA_LAZY")
      */
     private Collection $pokemonMovesLevel;
-
-    /**
-     * @var Language $language
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Users\Language")
-     * @JoinColumn(name="language_id", referencedColumnName="id")
-     */
-    private Language $language;
 
     /**
      * @ORM\Column(name="url_img", type="string", length=255, nullable=true)
@@ -218,22 +213,6 @@ class Pokemon
     public function setUrlImgShiny(?string $urlImgShiny): void
     {
         $this->urlImgShiny = $urlImgShiny;
-    }
-
-    /**
-     * @return Language
-     */
-    public function getLanguage(): Language
-    {
-        return $this->language;
-    }
-
-    /**
-     * @param Language $language
-     */
-    public function setLanguage(Language $language): void
-    {
-        $this->language = $language;
     }
 
 }
