@@ -3,9 +3,13 @@
 
 namespace App\Entity\Infos;
 
+use App\Entity\Pokemon\Pokemon;
 use App\Entity\Traits\TraitDescription;
 use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
+use App\Entity\Users\Language;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -16,7 +20,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Table(name="abilities")
  * @ORM\Entity(repositoryClass="App\Repository\Infos\AbilitiesRepository")
  * @UniqueEntity(
- *     fields={"nameEn"},
+ *     fields={"name"},
  *     message="Ce talent existe déjà !"
  * )
  */
@@ -35,6 +39,12 @@ class Abilities
      * @ORM\ManyToMany(targetEntity="App\Entity\Pokemon\Pokemon", mappedBy="abilities")
      */
     private $pokemons;
+
+
+    public function __construct()
+    {
+        $this->pokemons = new ArrayCollection();
+    }
 
     use TraitNames;
 
@@ -100,6 +110,18 @@ class Abilities
         if ($this->pokemons->contains($pokemon)) {
             $this->pokemons->remove($pokemon);
         }
+    }
+
+    public function getLanguageId(): ?Language
+    {
+        return $this->languageId;
+    }
+
+    public function setLanguageId(?Language $languageId): self
+    {
+        $this->languageId = $languageId;
+
+        return $this;
     }
 
 }

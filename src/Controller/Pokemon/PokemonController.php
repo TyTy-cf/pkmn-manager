@@ -67,6 +67,7 @@ class PokemonController extends AbstractController
             $request->query->getInt('page', '1'),
             8
         );
+
         return $this->render('Pokemon/index.html.twig', [
             'pokemons' => $pokemons,
         ]);

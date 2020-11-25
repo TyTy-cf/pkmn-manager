@@ -6,12 +6,9 @@ namespace App\Manager\Infos;
 
 use App\Entity\Infos\Type;
 use App\Entity\Pokemon\Pokemon;
-use App\Kernel;
 use App\Manager\Api\ApiManager;
 use App\Repository\Infos\TypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class TypeManager
@@ -24,35 +21,34 @@ class TypeManager
     /**
      * @var EntityManagerInterface
      */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     /**
      * @var ApiManager
      */
-    private $apiManager;
+    private ApiManager $apiManager;
 
     /**
      * PokemonManager constructor.
      *
      * @param EntityManagerInterface $entityManager
      * @param ApiManager $apiManager
-     * @param KernelInterface $kernel
      */
-    public function __construct(EntityManagerInterface $entityManager, ApiManager $apiManager, KernelInterface $kernel)
+    public function __construct(EntityManagerInterface $entityManager, ApiManager $apiManager)
     {
         $this->entityManager = $entityManager;
         $this->apiManager = $apiManager;
-        $this->kernel = $kernel;
         $this->typeRepository = $this->entityManager->getRepository(Type::class);
     }
 
     /**
-     * @param $lang
+     * @param object $language
+     * @param string $lang
      * @param $types
      * @param Pokemon $pokemon
      * @throws TransportExceptionInterface
      */
-    public function saveNewTypes($lang, $types, Pokemon $pokemon)
+    public function saveNewTypes(object $language, string $lang, $types, Pokemon $pokemon)
     {
         // Iterate the types from the json, create the type if not existing or get it
         foreach ($types as $type) {
@@ -67,6 +63,7 @@ class TypeManager
 
                 $newType = new Type();
                 $newType->setName($typeName);
+                $newType->setLanguage($language);
 
 //                $newType->setNameEn(ucfirst($typeNameEn));
 //                $newType->setNameFr(ucfirst($typeNameFr));

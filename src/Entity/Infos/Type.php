@@ -4,8 +4,11 @@
 namespace App\Entity\Infos;
 
 
+use App\Entity\Pokemon\Pokemon;
 use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -40,6 +43,11 @@ class Type
      * @ORM\Column(name="img", type="string", length=255, nullable=true)
      */
     private ?string $img;
+
+    public function __construct()
+    {
+        $this->pokemons = new ArrayCollection();
+    }
 
     use TraitNames;
 

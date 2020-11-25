@@ -14,7 +14,6 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 /**
  * Pokemon manager
  */
-
 class PokemonCommand extends Command
 {
     /**
@@ -28,7 +27,7 @@ class PokemonCommand extends Command
     private PokemonManager $pokemonManager;
 
     /**
-     * @var ApiManager $apiManager;
+     * @var ApiManager $apiManager ;
      */
     private ApiManager $apiManager;
 
@@ -59,6 +58,7 @@ class PokemonCommand extends Command
      * Execute app:pokemon:all
      * @param InputInterface $input
      * @param OutputInterface $output
+     * @return int
      * @throws TransportExceptionInterface
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -67,24 +67,25 @@ class PokemonCommand extends Command
         $lang = $input->getArgument('lang');
 
         //Get list of pokemons
-        $apiReponse = $this->apiManager->getPokemonJson();
-        $allPokemons = $apiReponse->toarray();
+        $apiResponse = $this->apiManager->getPokemonJson();
+        $allPokemons = $apiResponse->toarray();
 
         //Initialise progress bar
         $progressBar = new ProgressBar($output, count($allPokemons['results']));
         $progressBar->start();
 
         // Check row
-        foreach ($allPokemons['results'] as $pokemon ) {
+        foreach ($allPokemons['results'] as $pokemon) {
 
             $namePokemon = $pokemon['name'];
 
             //Save pokemon in BDD
-            $apiReponse = $this->apiManager->getPokemonFromName($namePokemon);
-            $detailledPokemon = $apiReponse->toarray();
+            $apiResponse = $this->apiManager->getPokemonFromName($namePokemon);
+            $detailledPokemon = $apiResponse->toarray();
 
             $this->pokemonManager->saveNewPokemon($lang, $detailledPokemon, $namePokemon);
 
+            //Advance progressBar
             $progressBar->advance();
         }
 

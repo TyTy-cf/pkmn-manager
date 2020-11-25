@@ -7,6 +7,8 @@ use App\Entity\Infos\Type;
 use App\Entity\Traits\TraitDescription;
 use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
@@ -87,6 +89,11 @@ class Moves
      * @ORM\OneToMany(targetEntity="PokemonMovesLevel", mappedBy="move", fetch="EXTRA_LAZY")
      */
     private PokemonMovesLevel $pokemonMovesLevel;
+
+    public function __construct()
+    {
+        $this->pokemonMovesLevel = new ArrayCollection();
+    }
 
     /**
      * @return int
@@ -182,5 +189,47 @@ class Moves
     public function setPower(?int $power): void
     {
         $this->power = $power;
+    }
+
+    public function getPriority(): ?int
+    {
+        return $this->priority;
+    }
+
+    public function setPriority(int $priority): self
+    {
+        $this->priority = $priority;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PokemonMovesLevel[]
+     */
+    public function getPokemonMovesLevel(): Collection
+    {
+        return $this->pokemonMovesLevel;
+    }
+
+    public function addPokemonMovesLevel(PokemonMovesLevel $pokemonMovesLevel): self
+    {
+        if (!$this->pokemonMovesLevel->contains($pokemonMovesLevel)) {
+            $this->pokemonMovesLevel[] = $pokemonMovesLevel;
+            $pokemonMovesLevel->setMove($this);
+        }
+
+        return $this;
+    }
+
+    public function removePokemonMovesLevel(PokemonMovesLevel $pokemonMovesLevel): self
+    {
+        if ($this->pokemonMovesLevel->removeElement($pokemonMovesLevel)) {
+            // set the owning side to null (unless already changed)
+            if ($pokemonMovesLevel->getMove() === $this) {
+                $pokemonMovesLevel->setMove(null);
+            }
+        }
+
+        return $this;
     }
 }

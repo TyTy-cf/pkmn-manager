@@ -215,4 +215,42 @@ class Pokemon
         $this->urlImgShiny = $urlImgShiny;
     }
 
+    public function addAbility(Abilities $ability): self
+    {
+        if (!$this->abilities->contains($ability)) {
+            $this->abilities[] = $ability;
+        }
+
+        return $this;
+    }
+
+    public function removeAbility(Abilities $ability): self
+    {
+        $this->abilities->removeElement($ability);
+
+        return $this;
+    }
+
+    public function addPokemonMovesLevel(PokemonMovesLevel $pokemonMovesLevel): self
+    {
+        if (!$this->pokemonMovesLevel->contains($pokemonMovesLevel)) {
+            $this->pokemonMovesLevel[] = $pokemonMovesLevel;
+            $pokemonMovesLevel->setPokemon($this);
+        }
+
+        return $this;
+    }
+
+    public function removePokemonMovesLevel(PokemonMovesLevel $pokemonMovesLevel): self
+    {
+        if ($this->pokemonMovesLevel->removeElement($pokemonMovesLevel)) {
+            // set the owning side to null (unless already changed)
+            if ($pokemonMovesLevel->getPokemon() === $this) {
+                $pokemonMovesLevel->setPokemon(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

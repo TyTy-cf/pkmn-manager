@@ -42,12 +42,13 @@ class AbilitiesManager
     }
 
     /**
+     * @param object $language
      * @param string $lang
      * @param $abilities
      * @param Pokemon $pokemon
      * @throws TransportExceptionInterface
      */
-    public function saveNewAbilities(string $lang, $abilities, Pokemon $pokemon)
+    public function saveNewAbilities($language, string $lang, $abilities, Pokemon $pokemon)
     {
         // Iterate the types from the json, create the type if not existing or get it
         foreach ($abilities as $ability) {
@@ -58,12 +59,11 @@ class AbilitiesManager
 
             if (($newAbility = $this->abilitiesRepository->findOneBy(['name' => $abilitiesDetailed['name']])) == null) {
 
-
-
                 $newAbility = new Abilities();
 //                $newAbility->setNameEn(ucfirst($abilityName));
                 $newAbility->setName(ucfirst($abilitiesDetailed['name']));
                 $newAbility->setDescription($abilitiesDetailed['description']);
+                $newAbility->setLanguage($language);
 
                 $this->entityManager->persist($newAbility);
             }

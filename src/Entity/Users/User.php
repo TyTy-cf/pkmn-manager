@@ -196,4 +196,26 @@ class User implements UserInterface
     {
         // TODO: Implement eraseCredentials() method.
     }
+
+    public function addPokemonsSheet(PokemonSheet $pokemonsSheet): self
+    {
+        if (!$this->pokemonsSheet->contains($pokemonsSheet)) {
+            $this->pokemonsSheet[] = $pokemonsSheet;
+            $pokemonsSheet->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePokemonsSheet(PokemonSheet $pokemonsSheet): self
+    {
+        if ($this->pokemonsSheet->removeElement($pokemonsSheet)) {
+            // set the owning side to null (unless already changed)
+            if ($pokemonsSheet->getUser() === $this) {
+                $pokemonsSheet->setUser(null);
+            }
+        }
+
+        return $this;
+    }
 }
