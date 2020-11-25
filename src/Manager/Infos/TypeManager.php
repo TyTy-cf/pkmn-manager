@@ -36,6 +36,7 @@ class TypeManager
      *
      * @param EntityManagerInterface $entityManager
      * @param ApiManager $apiManager
+     * @param KernelInterface $kernel
      */
     public function __construct(EntityManagerInterface $entityManager, ApiManager $apiManager, KernelInterface $kernel)
     {
@@ -46,28 +47,29 @@ class TypeManager
     }
 
     /**
+     * @param $lang
      * @param $types
      * @param Pokemon $pokemon
      * @throws TransportExceptionInterface
      */
-    public function saveNewTypes($types, Pokemon $pokemon)
+    public function saveNewTypes($lang, $types, Pokemon $pokemon)
     {
         // Iterate the types from the json, create the type if not existing or get it
         foreach ($types as $type) {
 
+            $urlType = $type['type']['url'];
+            $typeName = $this->getTypesInformationsOnLanguage($lang, $urlType);
             $typeNameEn = $type['type']['name'];
-            if (($newType = $this->typeRepository->findOneBy(['nameEn' => $typeNameEn])) == null) {
 
-                $urlType = $type['type']['url'];
+            if (($newType = $this->typeRepository->findOneBy(['name' => $typeName])) == null) {
 
                 $urlImg = '/images/types/';
 
-                $typeNameFr = $this->getTypesInformationsOnLanguage('fr', $urlType);
-
                 $newType = new Type();
+                $newType->setName($typeName);
 
-                $newType->setNameEn(ucfirst($typeNameEn));
-                $newType->setNameFr(ucfirst($typeNameFr));
+//                $newType->setNameEn(ucfirst($typeNameEn));
+//                $newType->setNameFr(ucfirst($typeNameFr));
                 $newType->setImg($urlImg . $typeNameEn . '.png');
 
                 $this->entityManager->persist($newType);

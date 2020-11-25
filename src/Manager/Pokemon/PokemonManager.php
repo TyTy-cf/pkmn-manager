@@ -84,20 +84,22 @@ class PokemonManager
      * Save a new pokemon from API to the database
      * Create his abilities and type(s) if necessary
      *
+     * @param string $lang
      * @param array $apiResponse
      * @param string $pokemonName
      * @return Pokemon
      * @throws TransportExceptionInterface
      */
-    public function saveNewPokemon(array $apiResponse, string $pokemonName)
+    public function saveNewPokemon(string $lang, array $apiResponse, string $pokemonName)
     {
         //Return french name of Pokémon
         $url = $apiResponse['species']['url'];
-        $pokemonNameFr = $this->getPokemonInformationsOnLanguage('fr', $url);
+        $pokemonName = $this->getPokemonInformationsOnLanguage($lang, $url);
 
         $pokemon = new Pokemon();
-        $pokemon->setNameFr($pokemonNameFr);
-        $pokemon->setNameEn(ucfirst($pokemonName));
+        $pokemon->setName(ucfirst($pokemonName));
+//        $pokemon->setNameFr($pokemonNameFr);
+//        $pokemon->setNameEn(ucfirst($pokemonName));
         $pokemon->setUrlimg($apiResponse['sprites']['other']['dream_world']['front_default']);
 
         // Add the stats
@@ -118,8 +120,8 @@ class PokemonManager
             }
         }
 
-        $this->abilitiesManager->saveNewAbilities($apiResponse['abilities'], $pokemon);
-        $this->typeManager->saveNewTypes($apiResponse['types'], $pokemon);
+        $this->abilitiesManager->saveNewAbilities($lang, $apiResponse['abilities'], $pokemon);
+        $this->typeManager->saveNewTypes($lang, $apiResponse['types'], $pokemon);
         $this->entityManager->persist($pokemon);
         $this->entityManager->flush();
         return $pokemon;
@@ -138,10 +140,10 @@ class PokemonManager
 
         foreach ($apiResponse['names'] as $namePokemon) {
             if ($namePokemon['language']['name'] === $lang) {
-                $namePokemonFr = $namePokemon['name'];
+                $pokemonName = $namePokemon['name'];
             }
         }
 
-        return $namePokemonFr;
+        return $pokemonName;
     }
 }

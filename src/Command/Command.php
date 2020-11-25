@@ -50,7 +50,7 @@ class PokemonCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('app:pokemon:all fr')
+            ->setName('app:pokemon:all')
             ->addArgument('lang', InputArgument::REQUIRED, 'Language used')
             ->setDescription('Execute app:pokemon');
     }
@@ -63,6 +63,8 @@ class PokemonCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        //Fetch parameter
+        $lang = $input->getArgument('lang');
 
         //Get list of pokemons
         $apiReponse = $this->apiManager->getPokemonJson();
@@ -81,7 +83,7 @@ class PokemonCommand extends Command
             $apiReponse = $this->apiManager->getPokemonFromName($namePokemon);
             $detailledPokemon = $apiReponse->toarray();
 
-            $pokemonSaved = $this->pokemonManager->saveNewPokemon($detailledPokemon, $namePokemon);
+            $this->pokemonManager->saveNewPokemon($lang, $detailledPokemon, $namePokemon);
 
             $progressBar->advance();
         }
@@ -90,7 +92,4 @@ class PokemonCommand extends Command
 
         return command::SUCCESS;
     }
-
-
-
 }
