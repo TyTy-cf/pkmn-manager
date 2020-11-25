@@ -14,12 +14,12 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
  * Pokemon manager
  */
 
-class ExcecCommand extends Command
+class PokemonCommand extends Command
 {
     /**
      * Name of the command (after bin/console)
      */
-    protected static $defaultName = "app:pokemon:all fr";
+    protected static $defaultName = "app:pokemon:all";
 
     /**
      * @var PokemonManager $pokemonManager
@@ -38,9 +38,9 @@ class ExcecCommand extends Command
      */
     public function __construct(PokemonManager $pokemonManager, ApiManager $apiManager)
     {
-        parent::__construct();
         $this->pokemonManager = $pokemonManager;
         $this->apiManager = $apiManager;
+        parent::__construct();
     }
 
     /**
@@ -59,7 +59,7 @@ class ExcecCommand extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      * @throws TransportExceptionInterface
-     */
+     **/
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $apiReponse = $this->apiManager->getPokemonJson();
@@ -70,9 +70,9 @@ class ExcecCommand extends Command
 
             $namePokemon = $pokemon['name'];
 
-            $apiReponse = $this->apiManager->getPokemonFromName($namePokemon);
+            $getPokemonFromName = $this->apiManager->getPokemonFromName($namePokemon);
 
-            $pokemonSaved = $this->pokemonManager->saveNewPokemon($apiReponse, $namePokemon);
+            $pokemonSaved = $this->pokemonManager->saveNewPokemon($getPokemonFromName, $namePokemon);
         }
 
         return command::SUCCESS;
