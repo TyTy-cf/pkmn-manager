@@ -5,8 +5,10 @@ namespace App\Entity\Pokemon;
 
 use App\Entity\Infos\Abilities;
 use App\Entity\Infos\Type;
+use App\Entity\Moves\PokemonMovesLevel;
 use App\Entity\Traits\TraitNames;
 use App\Entity\Traits\TraitStatsPkmn;
+use App\Entity\Users\Language;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -66,6 +68,14 @@ class Pokemon
     private Collection $pokemonMovesLevel;
 
     /**
+     * @var Language $language
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Users\Language")
+     * @JoinColumn(name="language_id", referencedColumnName="id")
+     */
+    private Language $language;
+
+    /**
      * @ORM\Column(name="url_img", type="string", length=255, nullable=true)
      */
     private ?string $urlImg;
@@ -81,6 +91,7 @@ class Pokemon
     public function __construct() {
         $this->abilities = new ArrayCollection();
         $this->types = new ArrayCollection();
+        $this->pokemonMovesLevel = new ArrayCollection();
     }
 
     /**
@@ -171,15 +182,58 @@ class Pokemon
         }
     }
 
+    /**
+     * @param PokemonMovesLevel $pokemonMovesLevel
+     */
+    public function addPokemonMoveLevel(PokemonMovesLevel $pokemonMovesLevel): void
+    {
+        if (!$this->pokemonMovesLevel->contains($pokemonMovesLevel)) {
+            $this->pokemonMovesLevel->add($pokemonMovesLevel);
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPokemonMovesLevel(): Collection
+    {
+        return $this->pokemonMovesLevel;
+    }
+
+    /**
+     * @param PokemonMovesLevel $pokemonMovesLevel
+     */
+    public function removePokemonMoveLevel(PokemonMovesLevel $pokemonMovesLevel)
+    {
+        if ($this->pokemonMovesLevel->contains($pokemonMovesLevel)) {
+            $this->pokemonMovesLevel->removeElement($pokemonMovesLevel);
+        }
+    }
+
     public function getUrlImgShiny(): ?string
     {
         return $this->urlImgShiny;
     }
 
-    public function setUrlImgShiny(?string $urlImgShiny): self
+    public function setUrlImgShiny(?string $urlImgShiny): void
     {
         $this->urlImgShiny = $urlImgShiny;
-
-        return $this;
     }
+
+    /**
+     * @return Language
+     */
+    public function getLanguage(): Language
+    {
+        return $this->language;
+    }
+
+    /**
+     * @param Language $language
+     */
+    public function setLanguage(Language $language): void
+    {
+        $this->language = $language;
+    }
+
 }

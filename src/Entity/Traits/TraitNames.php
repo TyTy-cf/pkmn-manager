@@ -11,16 +11,23 @@ trait TraitNames
     /**
      * @var string $nameEn
      *
-     * @ORM\Column(name="name_en", type="string", length=24)
+     * @ORM\Column(name="name_en", type="string", length=36, nullable=true)
      */
     private string $nameEn;
 
     /**
      * @var string $nameFr
      *
-     * @ORM\Column(name="name_fr", type="string", length=24, nullable=true)
+     * @ORM\Column(name="name_fr", type="string", length=36, nullable=true)
      */
     private string $nameFr;
+
+    /**
+     * @var string $nameFr
+     *
+     * @ORM\Column(name="name", type="string", length=36)
+     */
+    private string $name;
 
     /**
      * @return string
@@ -52,6 +59,22 @@ trait TraitNames
     public function setNameFr(string $nameFr): void
     {
         $this->nameFr = $nameFr;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void
+    {
+        $this->name = $name;
     }
 
 }
