@@ -94,10 +94,13 @@ class TypeCommand extends Command
 
         foreach ($typesList['results'] as $type) {
 
+            //Fetch URL details type
             $urlType = $type['url'];
 
+            //Fetch name according the language
             $typeNameLang = $this->typeManager->getTypesInformationOnLanguage($lang, $urlType);
 
+            //Check if the data exist in databases
             $newType = $this->typeRepository->findOneBy(['name' => $typeNameLang]);
 
             //If database is null, create type
@@ -106,8 +109,8 @@ class TypeCommand extends Command
 
                 $urlImg = '/images/types/' . $language->getCode() . '/';
 
+                //Create new object and save in databases
                 $newType = new Type();
-
                 $newType->setName($typeNameLang);
                 $newType->setSlug($type['name']);
                 $newType->setLanguage($language);
