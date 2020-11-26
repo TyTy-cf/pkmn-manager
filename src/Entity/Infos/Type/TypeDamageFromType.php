@@ -22,23 +22,23 @@ class TypeDamageFromType
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(name="id", type="integer", length=6)
      */
-    private $id;
+    private int $id;
 
     use TraitSlug;
 
     /**
      * @var Type $type
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Infos\Type")
-     * @ORM\Column(name="type_id", type="integer", length=6)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Infos\Type\Type")
+     * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
      */
     private Type $type;
 
     /**
      * @var Type $damageFromType
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Infos\Type")
-     * @ORM\Column(name="damage_from_type_id", type="integer", length=6)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Infos\Type\Type")
+     * @ORM\JoinColumn(name="damage_from_type_id", referencedColumnName="id")
      */
     private Type $damageFromType;
 

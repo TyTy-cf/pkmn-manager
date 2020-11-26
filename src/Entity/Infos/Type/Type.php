@@ -43,16 +43,21 @@ class Type
      */
     private ?string $img;
 
-    public function __construct()
-    {
-        $this->pokemons = new ArrayCollection();
-    }
+    /**
+     * @ORM\Column(name="code_api", type="string", length=2, nullable=true)
+     */
+    private string $codeApi;
 
     use TraitNames;
 
     use TraitSlug;
 
     use TraitLanguage;
+
+    public function __construct()
+    {
+        $this->pokemons = new ArrayCollection();
+    }
 
     /**
      * @return int
@@ -112,6 +117,22 @@ class Type
     public function setImg(?string $img): void
     {
         $this->img = $img;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCodeApi(): string
+    {
+        return $this->codeApi;
+    }
+
+    /**
+     * @param string $codeApi
+     */
+    public function setCodeApi(string $codeApi): void
+    {
+        $this->codeApi = $codeApi;
     }
 
 }

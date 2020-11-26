@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Command\Infos;
+namespace App\Command\Infos\Type;
 
 
 use App\Manager\Api\ApiManager;
@@ -64,9 +64,10 @@ class TypeCommand extends Command
      * Execute the command app:type:all
      * @param InputInterface $input
      * @param OutputInterface $output
+     * @return int
      * @throws TransportExceptionInterface
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         //Fetch parameter
         $lang = $input->getArgument('lang');
@@ -81,9 +82,8 @@ class TypeCommand extends Command
         // Fetch the right language
         $language = $this->languageManager->getLanguageByCode($lang);
 
-
         foreach ($typesList['results'] as $type) {
-            $this->typeManager->createIfNotExist($language, $type);
+            $this->typeManager->createTypeIfNotExist($language, $type);
             $progressBar->advance();
         }
 

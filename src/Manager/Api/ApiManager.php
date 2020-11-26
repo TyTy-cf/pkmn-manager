@@ -63,7 +63,7 @@ class ApiManager
      *
      * @param $pokemonName
      *
-     * @return Pokemon|object|null
+     * @return mixed
      *
      * @throws TransportExceptionInterface
      */
@@ -76,7 +76,7 @@ class ApiManager
     /**
      * Return from API the information of the $var passed in parameter
      * @param $url
-     * @return array
+     * @return mixed
      * @throws TransportExceptionInterface
      */
     public function getDetailed($url)
@@ -111,6 +111,16 @@ class ApiManager
         }
 
         return $nameReturn;
+    }
+
+    /**
+     * @param $url
+     * @return mixed|string
+     */
+    public function getIdFromUrl($url)
+    {
+        $splittedUrl = explode('/', $url);
+        return $splittedUrl[6];
     }
 
 }

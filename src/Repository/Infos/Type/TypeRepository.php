@@ -4,6 +4,7 @@ namespace App\Repository\Infos\Type;
 
 use App\Entity\Infos\Type\Type;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,32 +20,33 @@ class TypeRepository extends ServiceEntityRepository
         parent::__construct($registry, Type::class);
     }
 
-    // /**
-    //  * @return Type[] Returns an array of Type objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param string $lang
+     * @return Object[]
+     */
+    public function getAllTypeByLanguage(string $lang): array
     {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $qb = $this->createQueryBuilder('type');
+        $qb->join('type.language', 'language');
+        $qb->where('language.code = :lang');
+        $qb->setParameter('lang', $lang);
+        return $qb->getQuery()->getResult();
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Type
+    /**
+     * @param string $lang
+     * @param $codeApi
+     * @return Type
+     * @throws NonUniqueResultException
+     */
+    public function getTypeByLanguageAndCodeApi(string $lang, $codeApi): Type
     {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $qb = $this->createQueryBuilder('type');
+        $qb->join('type.language', 'language');
+        $qb->where('language.code = :lang');
+        $qb->andWhere('type.codeApi = :codeApi');
+        $qb->setParameter('lang', $lang);
+        $qb->setParameter('codeApi', $codeApi);
+        return $qb->getQuery()->getOneOrNullResult();
     }
-    */
 }

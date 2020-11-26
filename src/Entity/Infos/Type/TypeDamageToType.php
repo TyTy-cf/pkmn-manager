@@ -30,16 +30,16 @@ class TypeDamageToType
     /**
      * @var Type $type
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Infos\Type")
-     * @ORM\Column(name="type_id", type="integer", length=6)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Infos\Type\Type")
+     * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
      */
     private Type $type;
 
     /**
      * @var Type $damageToType
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Infos\Type")
-     * @ORM\Column(name="damage_to_type_id", type="integer", length=6)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Infos\Type\Type")
+     * @ORM\JoinColumn(name="damage_to_type_id", referencedColumnName="id")
      */
     private Type $damageToType;
 

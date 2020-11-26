@@ -36,9 +36,9 @@ class TypeManager
     private LanguageManager $languageManager;
 
     /**
-     * @var TypeDamageFromTypeManager $typeDamageFromTypeManager
+     * @var TypeDamageRelationManager $typeDamageFromTypeManager
      */
-    private TypeDamageFromTypeManager $typeDamageFromTypeManager;
+    private TypeDamageRelationManager $typeDamageFromTypeManager;
 
     /**
      * PokemonManager constructor.
@@ -46,19 +46,30 @@ class TypeManager
      * @param EntityManagerInterface $entityManager
      * @param ApiManager $apiManager
      * @param LanguageManager $languageManager
-     * @param TypeDamageFromTypeManager $typeDamageFromTypeManager
+     * @param TypeDamageRelationManager $typeDamageFromTypeManager
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         ApiManager $apiManager,
         LanguageManager $languageManager,
-        TypeDamageFromTypeManager $typeDamageFromTypeManager
+        TypeDamageRelationManager $typeDamageFromTypeManager
     ) {
         $this->entityManager = $entityManager;
         $this->apiManager = $apiManager;
         $this->languageManager = $languageManager;
         $this->typeDamageFromTypeManager = $typeDamageFromTypeManager;
         $this->typeRepository = $this->entityManager->getRepository(Type::class);
+    }
+
+    /**
+     * Return all Type based on a Language
+     *
+     * @param string $lang
+     * @return Type[]|object[]
+     */
+    public function getAllTypeByLanguage(string $lang)
+    {
+        return $this->typeRepository->getAllTypeByLanguage($lang);
     }
 
     /**
@@ -102,13 +113,14 @@ class TypeManager
      * @param mixed $type
      * @throws TransportExceptionInterface
      */
-    public function createIfNotExist(Language $language, $type)
+    public function createTypeIfNotExist(Language $language, $type)
     {
         //Fetch URL details type
         $urlType = $type['url'];
 
         //Fetch name according the language
         $typeNameLang = $this->apiManager->getNameBasedOnLanguage($language->getCode(), $urlType);
+        $codeApi = $this->apiManager->getIdFromUrl($urlType);
 
         //Check if the data exist in databases
         $newType = $this->typeRepository->findOneBy(['name' => $typeNameLang]);
@@ -124,6 +136,7 @@ class TypeManager
             $newType->setSlug(mb_strtolower('type-' . $type['name']));
             $newType->setLanguage($language);
             $newType->setImg($urlImg . $type['name'] . '.png');
+            $newType->setCodeApi($codeApi);
             $this->entityManager->persist($newType);
             $this->entityManager->flush();
         }
