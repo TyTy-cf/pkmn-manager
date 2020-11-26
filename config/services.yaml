@@ -33,3 +33,7 @@ services:
     App\Command\PokemonCommand:
         tags:
             - { name: 'console.command', command: 'app:pokemon:all' }
+
+    App\Command\TypeCommand:
+        tags:
+            - { name: 'console.command', command: 'app:type:all' }

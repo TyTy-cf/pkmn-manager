@@ -104,11 +104,10 @@ class PokemonManager
      *
      * @param string $lang
      * @param array $apiResponse
-     * @param string $pokemonName
      * @return Pokemon
      * @throws TransportExceptionInterface
      */
-    public function saveNewPokemon(string $lang, array $apiResponse, string $pokemonName)
+    public function saveNewPokemon(string $lang, array $apiResponse)
     {
         $language = $this->languageManager->createLanguage($lang);
 
@@ -147,7 +146,8 @@ class PokemonManager
         }
 
         $this->abilitiesManager->saveNewAbilities($language, $lang, $apiResponse['abilities'], $pokemon);
-        $this->typeManager->saveNewTypes($language, $lang, $apiResponse['types'], $pokemon);
+        $newType = $this->typeManager->saveNewTypes($language, $lang, $apiResponse['types'], $pokemon);
+        $pokemon->addType($newType);
         $this->entityManager->persist($pokemon);
         $this->entityManager->flush();
 

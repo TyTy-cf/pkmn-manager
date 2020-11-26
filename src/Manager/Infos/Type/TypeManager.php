@@ -8,6 +8,7 @@ use App\Entity\Infos\Type\Type;
 use App\Entity\Pokemon\Pokemon;
 use App\Entity\Users\Language;
 use App\Manager\Api\ApiManager;
+use App\Manager\Users\LanguageManager;
 use App\Repository\Infos\Type\TypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
@@ -30,31 +31,41 @@ class TypeManager
     private ApiManager $apiManager;
 
     /**
+     * @var LanguageManager
+     */
+    private LanguageManager $languageManager;
+
+    /**
      * PokemonManager constructor.
      *
      * @param EntityManagerInterface $entityManager
      * @param ApiManager $apiManager
      */
-    public function __construct(EntityManagerInterface $entityManager, ApiManager $apiManager)
+    public function __construct(EntityManagerInterface $entityManager, ApiManager $apiManager, LanguageManager $languageManager)
     {
         $this->entityManager = $entityManager;
         $this->apiManager = $apiManager;
+        $this->languageManager = $languageManager;
         $this->typeRepository = $this->entityManager->getRepository(Type::class);
     }
 
     /**
-     * @param Language $language
+     * Check if the types exists. If it does not exist, create the type in database.
      * @param string $lang
      * @param $types
-     * @param Pokemon $pokemon
+     * @return Object
      * @throws TransportExceptionInterface
      */
-    public function saveNewTypes(Language $language, string $lang, $types, Pokemon $pokemon)
+    public function saveNewTypes(string $lang, $types)
     {
+        //Check if language exist else create language
+        $language = $this->languageManager->createLanguage($lang);
+
         // Iterate the types from the json, create the type if not existing or get it
         foreach ($types as $type) {
+
             $urlType = $type['type']['url'];
-            $typeName = $this->getTypesInformationsOnLanguage($lang, $urlType);
+            $typeName = $this->getTypesInformationOnLanguage($lang, $urlType);
             $typeNameEn = $type['type']['name'];
 
             if (($newType = $this->typeRepository->findOneBy(['name' => $typeName])) == null) {
@@ -66,9 +77,11 @@ class TypeManager
                 $newType->setImg($urlImg . $typeNameEn . '.png');
                 $this->entityManager->persist($newType);
             }
-            $pokemon->addType($newType);
+
             $this->entityManager->flush();
         }
+
+        return $newType;
     }
 
     /**
@@ -77,7 +90,7 @@ class TypeManager
      * @return mixed
      * @throws TransportExceptionInterface
      */
-    public function getTypesInformationsOnLanguage($lang, $url)
+    public function getTypesInformationOnLanguage($lang, $url)
     {
         $apiResponse = $this->apiManager->getDetailed($url)->toArray();
         $typeName = null;
