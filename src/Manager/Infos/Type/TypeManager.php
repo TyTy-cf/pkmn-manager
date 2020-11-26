@@ -40,9 +40,13 @@ class TypeManager
      *
      * @param EntityManagerInterface $entityManager
      * @param ApiManager $apiManager
+     * @param LanguageManager $languageManager
      */
-    public function __construct(EntityManagerInterface $entityManager, ApiManager $apiManager, LanguageManager $languageManager)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        ApiManager $apiManager,
+        LanguageManager $languageManager
+    ) {
         $this->entityManager = $entityManager;
         $this->apiManager = $apiManager;
         $this->languageManager = $languageManager;
@@ -56,7 +60,7 @@ class TypeManager
      * @return Object
      * @throws TransportExceptionInterface
      */
-    public function saveNewTypes(string $lang, $types)
+    public function saveNewTypesByPkmn(string $lang, $types)
     {
         //Check if language exist else create language
         $language = $this->languageManager->createLanguage($lang);
@@ -102,5 +106,50 @@ class TypeManager
         }
 
         return $typeName;
+    }
+
+    /**
+     * If not exist, save Type in Database according in language
+     * @param $lang
+     * @param $typesList
+     * @param $progressBar
+     * @throws TransportExceptionInterface
+     */
+    public function createIfNotExist($lang, $typesList, $progressBar = null)
+    {
+        //Check if language exist else create language
+        $language = $this->languageManager->createLanguage($lang);
+
+        foreach ($typesList['results'] as $type) {
+
+            //Fetch URL details type
+            $urlType = $type['url'];
+
+            //Fetch name according the language
+            $typeNameLang = $this->getTypesInformationOnLanguage($lang, $urlType);
+
+            //Check if the data exist in databases
+            $newType = $this->typeRepository->findOneBy(['name' => $typeNameLang]);
+
+            //If database is null, create type
+            if (empty($newType) && $type['name'] !== "shadow" && $type['name'] !== "unknown") {
+
+                $urlImg = '/images/types/' . $language->getCode() . '/';
+
+                //Create new object and save in databases
+                dump($typeNameLang);
+
+                $newType = new Type();
+                $newType->setName($typeNameLang);
+                $newType->setSlug($type['name']);
+                $newType->setLanguage($language);
+                $newType->setImg($urlImg . $type['name'] . '.png');
+
+                $this->entityManager->persist($newType);
+                $this->entityManager->flush();
+            }
+            //Advance progressBar
+            ($progressBar) ? $progressBar->advance() : '';
+        }
     }
 }
