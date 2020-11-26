@@ -36,8 +36,19 @@ class LanguageManager
     }
 
     /**
+     * Return a language based on the code
+     *
+     * @param string $code
+     * @return Language|null
+     */
+    public function getLanguageByCode(string $code) {
+        return $this->languageRepository->findOneBy(['code' => $code]);
+    }
+
+    /**
      * Check if the language exists. If it does not exist, create the language in database
      * @param string $lang
+     * @return Language
      * @throws TransportExceptionInterface
      */
     public function createLanguage(string $lang)

@@ -7,6 +7,7 @@ namespace App\Manager\Api;
 use App\Entity\Pokemon\Pokemon;
 use http\Exception\RuntimeException;
 use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\Validator\Constraints\Json;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 /**
@@ -81,6 +82,35 @@ class ApiManager
     public function getDetailed($url)
     {
         return $this->apiConnect($url);
+    }
+
+    /**
+     * @return mixed
+     * @throws TransportExceptionInterface
+     */
+    public function getAllTypeJson()
+    {
+        return $this->apiConnect("https://pokeapi.co/api/v2/type");
+    }
+
+    /**
+     * @param $lang
+     * @param $url
+     * @return mixed
+     * @throws TransportExceptionInterface
+     */
+    public function getNameBasedOnLanguage($lang, $url)
+    {
+        $apiResponse = $this->getDetailed($url)->toArray();
+        $nameReturn = null;
+
+        foreach ($apiResponse['names'] as $name) {
+            if ($name['language']['name'] === $lang) {
+                $nameReturn = $name['name'];
+            }
+        }
+
+        return $nameReturn;
     }
 
 }

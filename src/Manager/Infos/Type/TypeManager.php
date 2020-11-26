@@ -77,7 +77,7 @@ class TypeManager
         foreach ($types as $type) {
 
             $urlType = $type['type']['url'];
-            $typeName = $this->getTypesInformationOnLanguage($lang, $urlType);
+            $typeName = $this->getNameBasedOnLanguage($lang, $urlType);
             $typeNameEn = $type['type']['name'];
 
             if (($newType = $this->typeRepository->findOneBy(['name' => $typeName])) == null) {
@@ -93,77 +93,39 @@ class TypeManager
             $this->entityManager->flush();
         }
 
-
         return $newType;
     }
 
     /**
-     * @param $lang
-     * @param $url
-     * @return mixed
-     * @throws TransportExceptionInterface
-     */
-    public function getTypesInformationOnLanguage($lang, $url)
-    {
-        $apiResponse = $this->apiManager->getDetailed($url)->toArray();
-        $typeName = null;
-
-        foreach ($apiResponse['names'] as $name) {
-            if ($name['language']['name'] === $lang) {
-                $typeName = $name['name'];
-            }
-        }
-
-        return $typeName;
-    }
-
-    /**
      * If not exist, save Type in Database according in language
-     * @param $lang
-     * @param $typesList
-     * @param $progressBar
+     * @param Language $language
+     * @param mixed $type
      * @throws TransportExceptionInterface
      */
-    public function createIfNotExist($lang, $typesList, $progressBar = null)
+    public function createIfNotExist(Language $language, $type)
     {
-        //Check if language exist else create language
-        $language = $this->languageManager->createLanguage($lang);
+        //Fetch URL details type
+        $urlType = $type['url'];
 
-        foreach ($typesList['results'] as $type) {
+        //Fetch name according the language
+        $typeNameLang = $this->apiManager->getNameBasedOnLanguage($language->getCode(), $urlType);
 
-            //Fetch URL details type
-            $urlType = $type['url'];
+        //Check if the data exist in databases
+        $newType = $this->typeRepository->findOneBy(['name' => $typeNameLang]);
 
-            //Fetch name according the language
-            $typeNameLang = $this->getTypesInformationOnLanguage($lang, $urlType);
+        //If database is null, create type
+        if (empty($newType) && $type['name'] !== "shadow" && $type['name'] !== "unknown") {
 
-            //Check if the data exist in databases
-            $newType = $this->typeRepository->findOneBy(['name' => $typeNameLang]);
+            $urlImg = '/images/types/' . $language->getCode() . '/';
 
-            //If database is null, create type
-            if (empty($newType) && $type['name'] !== "shadow" && $type['name'] !== "unknown") {
-
-                $urlImg = '/images/types/' . $language->getCode() . '/';
-
-                //Create new object and save in databases
-                $newType = new Type();
-                $newType->setName($typeNameLang);
-                $newType->setSlug(mb_strtolower($type['name']));
-                $newType->setLanguage($language);
-                $newType->setImg($urlImg . $type['name'] . '.png');
-
-                $this->entityManager->persist($newType);
-                $this->entityManager->flush();
-
-                $typeDetailed = $this->apiManager->getDetailed($type['url'])->toarray();
-
-                foreach ($typeDetailed['damage_relations']['double_damage_from'] as $doubleDammageFrom) {
-                    $this->typeDamageFromTypeManager->createDamageFromTypeIfNotExist($newType,
-                        mb_strtolower($doubleDammageFrom['name']), 2);
-                }
-            }
-            //Advance progressBar
-            ($progressBar) ? $progressBar->advance() : '';
+            //Create new object and save in databases
+            $newType = new Type();
+            $newType->setName($typeNameLang);
+            $newType->setSlug(mb_strtolower('type-' . $type['name']));
+            $newType->setLanguage($language);
+            $newType->setImg($urlImg . $type['name'] . '.png');
+            $this->entityManager->persist($newType);
+            $this->entityManager->flush();
         }
     }
 }
