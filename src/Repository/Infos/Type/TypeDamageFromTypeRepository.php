@@ -1,9 +1,9 @@
 <?php
 
 
-namespace App\Repository\Infos;
+namespace App\Repository\Infos\Type;
 
-use App\Entity\Infos\TypeDamageFromType;
+use App\Entity\Infos\Type\TypeDamageFromType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

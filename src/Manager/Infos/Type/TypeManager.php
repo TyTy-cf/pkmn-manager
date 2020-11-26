@@ -1,14 +1,14 @@
 <?php
 
 
-namespace App\Manager\Infos;
+namespace App\Manager\Infos\Type;
 
 
-use App\Entity\Infos\Type;
+use App\Entity\Infos\Type\Type;
 use App\Entity\Pokemon\Pokemon;
 use App\Entity\Users\Language;
 use App\Manager\Api\ApiManager;
-use App\Repository\Infos\TypeRepository;
+use App\Repository\Infos\Type\TypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 

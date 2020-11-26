@@ -4,7 +4,7 @@
 namespace App\Entity\Pokemon;
 
 use App\Entity\Infos\Abilities;
-use App\Entity\Infos\Type;
+use App\Entity\Infos\Type\Type;
 use App\Entity\Moves\PokemonMovesLevel;
 use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
@@ -57,7 +57,7 @@ class Pokemon
     private Collection $abilities;
 
     /**
-     * @ManyToMany(targetEntity="App\Entity\Infos\Type", inversedBy="pokemons", cascade={"persist"})
+     * @ManyToMany(targetEntity="App\Entity\Infos\Type\Type", inversedBy="pokemons", cascade={"persist"})
      * @JoinTable(name="pokemons_types",
      *      joinColumns={@JoinColumn(name="pokemon_id", referencedColumnName="id")},
      *      inverseJoinColumns={@JoinColumn(name="type_id", referencedColumnName="id")}

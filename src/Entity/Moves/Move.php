@@ -3,12 +3,11 @@
 
 namespace App\Entity\Moves;
 
-use App\Entity\Infos\Type;
+use App\Entity\Infos\Type\Type;
 use App\Entity\Traits\TraitDescription;
 use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
 use App\Entity\Traits\TraitSlug;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
@@ -49,7 +48,7 @@ class Move
     /**
      * @var Type $type the type of the move
      *
-     * @ManyToOne(targetEntity="App\Entity\Infos\Type")
+     * @ManyToOne(targetEntity="App\Entity\Infos\Type\Type")
      * @JoinColumn(name="type_id", referencedColumnName="id")
      */
     private Type $type;
@@ -93,10 +92,10 @@ class Move
      */
     private PokemonMovesLevel $pokemonMovesLevel;
 
-//    public function __construct()
-//    {
+    public function __construct()
+    {
 //        $this->pokemonMovesLevel = new ArrayCollection();
-//    }
+    }
 
     /**
      * @return int
@@ -205,34 +204,34 @@ class Move
 
         return $this;
     }
-
-    /**
-     * @return Collection|PokemonMovesLevel[]
-     */
-    public function getPokemonMovesLevel(): Collection
-    {
-        return $this->pokemonMovesLevel;
-    }
-
-    public function addPokemonMovesLevel(PokemonMovesLevel $pokemonMovesLevel): self
-    {
-        if (!$this->pokemonMovesLevel->contains($pokemonMovesLevel)) {
-            $this->pokemonMovesLevel[] = $pokemonMovesLevel;
-            $pokemonMovesLevel->setMove($this);
-        }
-
-        return $this;
-    }
-
-    public function removePokemonMovesLevel(PokemonMovesLevel $pokemonMovesLevel): self
-    {
-        if ($this->pokemonMovesLevel->removeElement($pokemonMovesLevel)) {
-            // set the owning side to null (unless already changed)
-            if ($pokemonMovesLevel->getMove() === $this) {
-                $pokemonMovesLevel->setMove(null);
-            }
-        }
-
-        return $this;
-    }
+//
+//    /**
+//     * @return Collection|PokemonMovesLevel[]
+//     */
+//    public function getPokemonMovesLevel(): Collection
+//    {
+//        return $this->pokemonMovesLevel;
+//    }
+//
+//    public function addPokemonMovesLevel(PokemonMovesLevel $pokemonMovesLevel): self
+//    {
+//        if (!$this->pokemonMovesLevel->contains($pokemonMovesLevel)) {
+//            $this->pokemonMovesLevel[] = $pokemonMovesLevel;
+//            $pokemonMovesLevel->setMove($this);
+//        }
+//
+//        return $this;
+//    }
+//
+//    public function removePokemonMovesLevel(PokemonMovesLevel $pokemonMovesLevel): self
+//    {
+//        if ($this->pokemonMovesLevel->removeElement($pokemonMovesLevel)) {
+//            // set the owning side to null (unless already changed)
+//            if ($pokemonMovesLevel->getMove() === $this) {
+//                $pokemonMovesLevel->setMove(null);
+//            }
+//        }
+//
+//        return $this;
+//    }
 }

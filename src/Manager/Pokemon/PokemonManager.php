@@ -7,7 +7,7 @@ namespace App\Manager\Pokemon;
 use App\Entity\Pokemon\Pokemon;
 use App\Manager\Api\ApiManager;
 use App\Manager\Infos\AbilitiesManager;
-use App\Manager\Infos\TypeManager;
+use App\Manager\Infos\Type\TypeManager;
 use App\Manager\Moves\MoveManager;
 use App\Manager\Users\LanguageManager;
 use App\Repository\Pokemon\PokemonRepository;

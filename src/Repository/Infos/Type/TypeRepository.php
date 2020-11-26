@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repository\Infos;
+namespace App\Repository\Infos\Type;
 
-use App\Entity\Infos\Type;
+use App\Entity\Infos\Type\Type;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

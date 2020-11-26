@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Entity\Infos;
+namespace App\Entity\Infos\Type;
 
 
 use App\Entity\Traits\TraitSlug;
@@ -9,10 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Type *
- * @package App\Entity\Infos
+ * @package App\Entity\Infos\Type
  *
  * @ORM\Table(name="type_damage_to_type")
- * @ORM\Entity(repositoryClass="App\Repository\Infos\TypeDamageToTypeRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Infos\Type\TypeDamageToTypeRepository")
  */
 class TypeDamageToType
 {

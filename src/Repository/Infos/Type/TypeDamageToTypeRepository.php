@@ -1,10 +1,10 @@
 <?php
 
 
-namespace App\Repository\Infos;
+namespace App\Repository\Infos\Type;
 
 
-use App\Entity\Infos\TypeDamageToType;
+use App\Entity\Infos\Type\TypeDamageToType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

@@ -4,7 +4,7 @@ namespace App\Manager\Moves;
 
 use App\Entity\Moves\Move;
 use App\Manager\Api\ApiManager;
-use App\Manager\Infos\TypeManager;
+use App\Manager\Infos\Type\TypeManager;
 use App\Repository\Moves\MoveRepository;
 use Doctrine\ORM\EntityManagerInterface;
 

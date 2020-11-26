@@ -1,24 +1,22 @@
 <?php
 
 
-namespace App\Entity\Infos;
+namespace App\Entity\Infos\Type;
 
 
-use App\Entity\Pokemon\Pokemon;
 use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
 use App\Entity\Traits\TraitSlug;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Class Type *
- * @package App\Entity\Infos
+ * @package App\Entity\Infos\Type
  *
  * @ORM\Table(name="type")
- * @ORM\Entity(repositoryClass="App\Repository\Infos\TypeRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Infos\Type\TypeRepository")
  * @UniqueEntity(
  *     fields={"name"},
  *     message="Ce type existe déjà !"
