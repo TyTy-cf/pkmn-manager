@@ -5,6 +5,7 @@ namespace App\Command\Infos;
 
 
 use App\Manager\Api\ApiManager;
+use App\Manager\Infos\Type\TypeDamageFromTypeManager;
 use App\Manager\Infos\Type\TypeManager;
 use App\Manager\Users\LanguageManager;
 use App\Repository\Infos\Type\TypeRepository;
@@ -23,6 +24,8 @@ class TypeCommand extends Command
      */
     private TypeManager $typeManager;
 
+
+
     /**
      * @var ApiManager $apiManager
      */
@@ -31,16 +34,12 @@ class TypeCommand extends Command
 
     /**
      * ExcecCommand constructor
-     * @param TypeRepository $typeRepository
      * @param TypeManager $typeManager
      * @param ApiManager $apiManager
-     * @param LanguageManager $languageManager
-     * @param EntityManagerInterface $em
      */
     public function __construct(
         TypeManager $typeManager,
         ApiManager $apiManager
-
     ) {
         $this->typeManager = $typeManager;
         $this->apiManager = $apiManager;

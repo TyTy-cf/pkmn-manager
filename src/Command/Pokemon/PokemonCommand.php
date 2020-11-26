@@ -85,6 +85,8 @@ class PokemonCommand extends Command
             $progressBar->advance();
         }
 
+
+
         $progressBar->finish();
 
         return command::SUCCESS;

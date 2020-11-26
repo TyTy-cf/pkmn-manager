@@ -36,20 +36,28 @@ class TypeManager
     private LanguageManager $languageManager;
 
     /**
+     * @var TypeDamageFromTypeManager $typeDamageFromTypeManager
+     */
+    private TypeDamageFromTypeManager $typeDamageFromTypeManager;
+
+    /**
      * PokemonManager constructor.
      *
      * @param EntityManagerInterface $entityManager
      * @param ApiManager $apiManager
      * @param LanguageManager $languageManager
+     * @param TypeDamageFromTypeManager $typeDamageFromTypeManager
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         ApiManager $apiManager,
-        LanguageManager $languageManager
+        LanguageManager $languageManager,
+        TypeDamageFromTypeManager $typeDamageFromTypeManager
     ) {
         $this->entityManager = $entityManager;
         $this->apiManager = $apiManager;
         $this->languageManager = $languageManager;
+        $this->typeDamageFromTypeManager = $typeDamageFromTypeManager;
         $this->typeRepository = $this->entityManager->getRepository(Type::class);
     }
 
@@ -84,6 +92,7 @@ class TypeManager
 
             $this->entityManager->flush();
         }
+
 
         return $newType;
     }
@@ -137,16 +146,21 @@ class TypeManager
                 $urlImg = '/images/types/' . $language->getCode() . '/';
 
                 //Create new object and save in databases
-                dump($typeNameLang);
-
                 $newType = new Type();
                 $newType->setName($typeNameLang);
-                $newType->setSlug($type['name']);
+                $newType->setSlug(mb_strtolower($type['name']));
                 $newType->setLanguage($language);
                 $newType->setImg($urlImg . $type['name'] . '.png');
 
                 $this->entityManager->persist($newType);
                 $this->entityManager->flush();
+
+                $typeDetailed = $this->apiManager->getDetailed($type['url'])->toarray();
+
+                foreach ($typeDetailed['damage_relations']['double_damage_from'] as $doubleDammageFrom) {
+                    $this->typeDamageFromTypeManager->createDamageFromTypeIfNotExist($newType,
+                        mb_strtolower($doubleDammageFrom['name']), 2);
+                }
             }
             //Advance progressBar
             ($progressBar) ? $progressBar->advance() : '';
