@@ -16,9 +16,9 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 class TypeManager
 {
     /**
-     * @var TypeRepository
+     * @var TypeRepository $typeRepository
      */
-    private $typeRepository;
+    private TypeRepository $typeRepository;
 
     /**
      * @var EntityManagerInterface

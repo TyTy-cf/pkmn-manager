@@ -94,6 +94,15 @@ class ApiManager
     }
 
     /**
+     * @return mixed
+     * @throws TransportExceptionInterface
+     */
+    public function getAllNatureJson()
+    {
+        return $this->apiConnect("https://pokeapi.co/api/v2/nature?offset=0&limit=25");
+    }
+
+    /**
      * @param $lang
      * @param $url
      * @return mixed
@@ -102,15 +111,24 @@ class ApiManager
     public function getNameBasedOnLanguage($lang, $url)
     {
         $apiResponse = $this->getDetailed($url)->toArray();
-        $nameReturn = null;
+        return $this->getNameBasedOnLanguageFromArray($lang, $apiResponse['names']);
+    }
 
-        foreach ($apiResponse['names'] as $name) {
+    /**
+     * @param $lang
+     *
+     * @param $apiResponse
+     * @return string
+     */
+    public function getNameBasedOnLanguageFromArray($lang, $apiResponse): ?string
+    {
+        $nameReturned = null;
+        foreach ($apiResponse as $name) {
             if ($name['language']['name'] === $lang) {
-                $nameReturn = $name['name'];
+                $nameReturned = $name['name'];
             }
         }
-
-        return $nameReturn;
+        return $nameReturned;
     }
 
     /**

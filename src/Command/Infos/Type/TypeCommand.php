@@ -75,7 +75,7 @@ class TypeCommand extends Command
         //Get list of types
         $typesList = $this->apiManager->getAllTypeJson()->toArray();
 
-        //Initialise progress bar
+        //Initialize progress bar
         $progressBar = new ProgressBar($output, count($typesList['results']));
         $progressBar->start();
 

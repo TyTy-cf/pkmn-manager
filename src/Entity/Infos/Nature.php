@@ -39,18 +39,18 @@ class Nature
     use TraitLanguage;
 
     /**
-     * @var string $statIncreased la stats "bonus" de la nature
+     * @var string|null $statIncreased la stats "bonus" de la nature
      *
      * @ORM\Column(name="stat_increased", type="string", length=12, nullable=true)
      */
-    private string $statIncreased;
+    private ?string $statIncreased;
 
     /**
-     * @var string $statDecreased
+     * @var string|null $statDecreased
      *
      * @ORM\Column(name="stat_decreased", type="string", length=12, nullable=true)
      */
-    private string $statDecreased;
+    private ?string $statDecreased;
 
     /**
      * @return int
@@ -77,9 +77,9 @@ class Nature
     }
 
     /**
-     * @param string $statIncreased
+     * @param string|null $statIncreased
      */
-    public function setStatsIncreased(string $statIncreased): void
+    public function setStatsIncreased(?string $statIncreased): void
     {
         $this->statIncreased = $statIncreased;
     }
@@ -93,9 +93,9 @@ class Nature
     }
 
     /**
-     * @param string $statDecreased
+     * @param string|null $statDecreased
      */
-    public function setStatDecreased(string $statDecreased): void
+    public function setStatDecreased(?string $statDecreased): void
     {
         $this->statDecreased = $statDecreased;
     }

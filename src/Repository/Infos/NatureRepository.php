@@ -6,6 +6,7 @@ namespace App\Repository\Infos;
 
 use App\Entity\Infos\Nature;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -21,4 +22,20 @@ class NatureRepository extends ServiceEntityRepository
         parent::__construct($registry, Nature::class);
     }
 
+    /**
+     * @param string $lang
+     * @param $slug
+     * @return Nature|null
+     * @throws NonUniqueResultException
+     */
+    public function getNatureByLanguageAndSlug(string $lang, $slug): ?Nature
+    {
+        $qb = $this->createQueryBuilder('nature');
+        $qb->join('nature.language', 'language');
+        $qb->where('language.code = :lang');
+        $qb->andWhere('nature.slug = :slug');
+        $qb->setParameter('lang', $lang);
+        $qb->setParameter('slug', $slug);
+        return $qb->getQuery()->getOneOrNullResult();
+    }
 }
