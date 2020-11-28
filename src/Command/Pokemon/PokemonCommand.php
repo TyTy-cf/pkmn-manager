@@ -2,9 +2,12 @@
 
 namespace App\Command\Pokemon;
 
+use App\Command\AbstractCommand;
 use App\Manager\Api\ApiManager;
 use App\Manager\Pokemon\PokemonManager;
+use Exception;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,7 +17,7 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 /**
  * Pokemon manager
  */
-class PokemonCommand extends Command
+class PokemonCommand extends AbstractCommand
 {
 
     /**
@@ -32,7 +35,8 @@ class PokemonCommand extends Command
      * @param PokemonManager $pokemonManager
      * @param ApiManager $apiManager
      */
-    public function __construct(PokemonManager $pokemonManager, ApiManager $apiManager)
+    public function __construct(PokemonManager $pokemonManager,
+                                ApiManager $apiManager)
     {
         $this->pokemonManager = $pokemonManager;
         $this->apiManager = $apiManager;
@@ -56,39 +60,49 @@ class PokemonCommand extends Command
      * @param OutputInterface $output
      * @return int
      * @throws TransportExceptionInterface
+     * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         //Fetch parameter
         $lang = $input->getArgument('lang');
+        if ($this->checkLanguageExists($output, $lang))
+        {
+            $this->executeCommand($output, $lang, 'app:abilities:all');
 
-        //Get list of pokemons
-        $apiResponse = $this->apiManager->getPokemonJson();
-        $allPokemons = $apiResponse->toarray();
+            $this->executeCommand($output, $lang, 'app:type:all');
 
-        //Initialise progress bar
-        $progressBar = new ProgressBar($output, count($allPokemons['results']));
-        $progressBar->start();
+            $this->executeCommand($output, $lang, 'app:damage-relation:all');
 
-        // Check row
-        foreach ($allPokemons['results'] as $pokemon) {
+            $this->executeCommand($output, $lang, 'app:damage-class:all');
 
-            $namePokemon = $pokemon['name'];
+            $this->executeCommand($output, $lang, 'app:nature:all');
 
-            //Save pokemon in BDD
-            $apiResponse = $this->apiManager->getPokemonFromName($namePokemon);
-            $detailedPokemon = $apiResponse->toarray();
+            $output->writeln('');
+            $output->writeln('<info>Fetching all pokemons for language ' . $lang . '</info>');
 
-            $this->pokemonManager->saveNewPokemon($lang, $detailedPokemon, $namePokemon);
+            //Get list of pokemons
+            $arrayApiPokemons = $this->apiManager->getAllPokemonJson()->toArray();
 
-            //Advance progressBar
-            $progressBar->advance();
+            //Initialise progress bar
+            $progressBar = new ProgressBar($output, count($arrayApiPokemons['results']));
+            $progressBar->start();
+    
+            // Check row
+            foreach ($arrayApiPokemons['results'] as $pokemon) {
+                //Save pokemon in BDD
+                $apiResponse = $this->apiManager->getPokemonFromName($pokemon['name']);
+                $this->pokemonManager->saveNewPokemon($lang, $apiResponse->toArray());
+    
+                //Advance progressBar
+                $progressBar->advance();
+            }
+    
+            $progressBar->finish();
+    
+            return command::SUCCESS;
         }
-
-
-
-        $progressBar->finish();
-
-        return command::SUCCESS;
+        return command::FAILURE;
     }
+
 }

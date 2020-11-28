@@ -62,64 +62,18 @@ class TypeManager
     }
 
     /**
-     * Return all Type based on a Language
-     *
-     * @param string $lang
-     * @return Type[]|object[]
-     */
-    public function getAllTypeByLanguage(string $lang)
-    {
-        return $this->typeRepository->getAllTypeByLanguage($lang);
-    }
-
-    /**
-     * Check if the types exists. If it does not exist, create the type in database.
-     * @param string $lang
-     * @param $types
-     * @return Object
-     * @throws TransportExceptionInterface
-     */
-    public function saveNewTypesByPkmn(string $lang, $types)
-    {
-        //Check if language exist else create language
-        $language = $this->languageManager->createLanguage($lang);
-
-        // Iterate the types from the json, create the type if not existing or get it
-        foreach ($types as $type) {
-
-            $urlType = $type['type']['url'];
-            $typeName = $this->getNameBasedOnLanguage($lang, $urlType);
-            $typeNameEn = $type['type']['name'];
-
-            if (($newType = $this->typeRepository->findOneBy(['name' => $typeName])) == null) {
-                $urlImg = '/images/types/' . $language->getCode() . '/';
-                $newType = new Type();
-                $newType->setName($typeName);
-                $newType->setSlug($typeNameEn);
-                $newType->setLanguage($language);
-                $newType->setImg($urlImg . $typeNameEn . '.png');
-                $this->entityManager->persist($newType);
-            }
-
-            $this->entityManager->flush();
-        }
-
-        return $newType;
-    }
-
-    /**
      * If not exist, save Type in Database according in language
-     * @param Language $language
+     * @param string $lang
      * @param mixed $type
      * @throws TransportExceptionInterface
      */
-    public function createTypeIfNotExist(Language $language, $type)
+    public function createTypeIfNotExist(string $lang, $type)
     {
         //Fetch URL details type
         $urlType = $type['url'];
 
         //Fetch name according the language
-        $typeNameLang = $this->apiManager->getNameBasedOnLanguage($language->getCode(), $urlType);
+        $typeNameLang = $this->apiManager->getNameBasedOnLanguage($lang, $urlType);
         $codeApi = $this->apiManager->getIdFromUrl($urlType);
 
         //Check if the data exist in databases
@@ -128,7 +82,8 @@ class TypeManager
         //If database is null, create type
         if (empty($newType) && $type['name'] !== "shadow" && $type['name'] !== "unknown") {
 
-            $urlImg = '/images/types/' . $language->getCode() . '/';
+            $urlImg = '/images/types/' . $lang . '/';
+            $language = $this->languageManager->getLanguageByCode($lang);
 
             //Create new object and save in databases
             $newType = new Type();
@@ -140,5 +95,25 @@ class TypeManager
             $this->entityManager->persist($newType);
             $this->entityManager->flush();
         }
+    }
+
+    /**
+     * Return all Type based on a Language
+     *
+     * @param string $lang
+     * @return Type[]|object[]
+     */
+    public function getAllTypeByLanguage(string $lang)
+    {
+        return $this->typeRepository->getAllTypeByLanguage($lang);
+    }
+
+    /**
+     * @param Language $language
+     * @param string $string
+     */
+    public function getTypeByLanguageAndSlug(Language $language, string $slug)
+    {
+        return $this->typeRepository->getTypeByLanguageAndSlug($language, $slug);
     }
 }

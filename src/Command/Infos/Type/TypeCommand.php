@@ -28,24 +28,14 @@ class TypeCommand extends Command
     private ApiManager $apiManager;
 
     /**
-     * @var LanguageManager $languageManager
-     */
-    private LanguageManager $languageManager;
-
-    /**
      * ExcecCommand constructor
      * @param TypeManager $typeManager
      * @param ApiManager $apiManager
-     * @param LanguageManager $languageManager
      */
-    public function __construct(
-        TypeManager $typeManager,
-        ApiManager $apiManager,
-        LanguageManager $languageManager
+    public function __construct(TypeManager $typeManager, ApiManager $apiManager
     ) {
         $this->typeManager = $typeManager;
         $this->apiManager = $apiManager;
-        $this->languageManager = $languageManager;
         parent::__construct();
     }
 
@@ -69,8 +59,11 @@ class TypeCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        //Fetch parameter
+        // Fetch parameter
         $lang = $input->getArgument('lang');
+
+        $output->writeln('');
+        $output->writeln('<info>Fetching all types for language ' . $lang . '</info>');
 
         //Get list of types
         $typesList = $this->apiManager->getAllTypeJson()->toArray();
@@ -79,11 +72,8 @@ class TypeCommand extends Command
         $progressBar = new ProgressBar($output, count($typesList['results']));
         $progressBar->start();
 
-        // Fetch the right language
-        $language = $this->languageManager->getLanguageByCode($lang);
-
         foreach ($typesList['results'] as $type) {
-            $this->typeManager->createTypeIfNotExist($language, $type);
+            $this->typeManager->createTypeIfNotExist($lang, $type);
             $progressBar->advance();
         }
 

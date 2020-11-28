@@ -6,6 +6,7 @@ namespace App\Command\Move;
 
 use App\Manager\Api\ApiManager;
 use App\Manager\Moves\MoveManager;
+use App\Manager\Users\LanguageManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,14 +26,23 @@ class MoveCommand extends Command
     private ApiManager $apiManager;
 
     /**
+     * @var LanguageManager $languageManager
+     */
+    private LanguageManager $languageManager;
+
+    /**
      * ExcecCommand constructor
      * @param MoveManager $moveManager
      * @param ApiManager $apiManager
+     * @param LanguageManager $languageManager
      */
-    public function __construct(MoveManager $moveManager, ApiManager $apiManager)
+    public function __construct(MoveManager $moveManager,
+                                ApiManager $apiManager,
+                                LanguageManager $languageManager)
     {
         $this->moveManager = $moveManager;
         $this->apiManager = $apiManager;
+        $this->languageManager = $languageManager;
         parent::__construct();
     }
 
@@ -53,6 +63,10 @@ class MoveCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // Fetch parameter
+        $lang = $input->getArgument('lang');
 
+
+        return command::SUCCESS;
     }
 }

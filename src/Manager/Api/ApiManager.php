@@ -53,9 +53,9 @@ class ApiManager
      * @return mixed
      * @throws TransportExceptionInterface
      */
-    public function getPokemonJson()
+    public function getAllPokemonJson()
     {
-        return $this->apiConnect("https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1050");
+        return $this->apiConnect("https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1117");
     }
 
     /**
@@ -69,7 +69,6 @@ class ApiManager
      */
     public function getPokemonFromName($pokemonName)
     {
-
         return $this->apiConnect("https://pokeapi.co/api/v2/pokemon/" . $pokemonName);
     }
 
@@ -103,6 +102,24 @@ class ApiManager
     }
 
     /**
+     * @return mixed
+     * @throws TransportExceptionInterface
+     */
+    public function getAllAbilitiesJson()
+    {
+        return $this->apiConnect("http://pokeapi.co/api/v2/ability/?offset=0&limit=299");
+    }
+
+    /**
+     * @return mixed
+     * @throws TransportExceptionInterface
+     */
+    public function getAllDamageClassJson()
+    {
+        return $this->apiConnect("https://pokeapi.co/api/v2/move-damage-class/");
+    }
+
+    /**
      * @param $lang
      * @param $url
      * @return mixed
@@ -129,6 +146,23 @@ class ApiManager
             }
         }
         return $nameReturned;
+    }
+
+    /**
+     * @param string $lang
+     * @param $apiResponse
+     * @return string|null
+     */
+    public function getFlavorTextBasedOnLanguageFromArray(string $lang, $apiResponse): ?string
+    {
+        $description = null;
+        foreach ($apiResponse['flavor_text_entries'] as $flavor_text_entry) {
+            if ($flavor_text_entry['language']['name'] === $lang) {
+                $description = $flavor_text_entry['flavor_text'];
+                break;
+            }
+        }
+        return $description;
     }
 
     /**

@@ -72,8 +72,11 @@ class NatureCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        //Fetch parameter
+        // Fetch parameter
         $lang = $input->getArgument('lang');
+
+        $output->writeln('');
+        $output->writeln('<info>Fetching all natures for language ' . $lang . '</info>');
 
         //Get list of types
         $natureList = $this->apiManager->getAllNatureJson()->toArray();

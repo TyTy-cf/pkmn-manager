@@ -5,7 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Game\GameVersion;
 use App\Entity\Infos\Gender;
 use App\Entity\Infos\Nature;
-use App\Entity\Moves\Categories;
+use App\Entity\Moves\DamageClass;
 use App\Entity\Users\Language;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;

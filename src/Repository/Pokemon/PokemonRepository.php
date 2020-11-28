@@ -4,6 +4,7 @@ namespace App\Repository\Pokemon;
 
 use App\Entity\Pokemon\Pokemon;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,32 +20,22 @@ class PokemonRepository extends ServiceEntityRepository
         parent::__construct($registry, Pokemon::class);
     }
 
-    // /**
-    //  * @return Pokemon[] Returns an array of Pokemon objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param string $lang
+     * @param string $slug
+     * @return int|mixed|string|null
+     * @throws NonUniqueResultException
+     * @throws NonUniqueResultException
+     */
+    public function getPokemonByLanguageAndSlug(string $lang, string $slug)
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $qb = $this->createQueryBuilder('pokemon');
+        $qb->join('pokemon.language', 'language');
+        $qb->where('language.code = :lang');
+        $qb->andWhere('pokemon.slug = :slug');
+        $qb->setParameter('lang', $lang);
+        $qb->setParameter('slug', $slug);
+        return $qb->getQuery()->getOneOrNullResult();
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Pokemon
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

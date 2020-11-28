@@ -71,6 +71,13 @@ class TypeDamageRelationCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        // Fetch parameter
+        $lang = $input->getArgument('lang');
+
+
+        $output->writeln('');
+        $output->writeln('<info>Fetching all types damage-relation for language ' . $lang . '</info>');
+
         // Fetch all Type by language
         $lang = $input->getArgument('lang');
         $types = $this->typeManager->getAllTypeByLanguage($lang);

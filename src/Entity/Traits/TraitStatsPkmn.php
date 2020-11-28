@@ -12,42 +12,42 @@ trait TraitStatsPkmn
     /**
      * @var integer $hp
      *
-     * @ORM\Column(name="hp", type="integer", length=3)
+     * @ORM\Column(name="hp", type="integer", length=3, nullable=true)
      */
     private $hp;
 
     /**
      * @var integer $atk
      *
-     * @ORM\Column(name="atk", type="integer", length=3)
+     * @ORM\Column(name="atk", type="integer", length=3, nullable=true)
      */
     private $atk;
 
     /**
      * @var integer $def
      *
-     * @ORM\Column(name="def", type="integer", length=3)
+     * @ORM\Column(name="def", type="integer", length=3, nullable=true)
      */
     private $def;
 
     /**
      * @var integer $spa
      *
-     * @ORM\Column(name="spa", type="integer", length=3)
+     * @ORM\Column(name="spa", type="integer", length=3, nullable=true)
      */
     private $spa;
 
     /**
      * @var integer $spd
      *
-     * @ORM\Column(name="spd", type="integer", length=3)
+     * @ORM\Column(name="spd", type="integer", length=3, nullable=true)
      */
     private $spd;
 
     /**
      * @var integer $spe
      *
-     * @ORM\Column(name="spe", type="integer", length=3)
+     * @ORM\Column(name="spe", type="integer", length=3, nullable=true)
      */
     private $spe;
 

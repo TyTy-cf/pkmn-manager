@@ -39,12 +39,7 @@ class Abilities
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Pokemon\Pokemon", mappedBy="abilities")
      */
-    private $pokemons;
-
-    public function __construct()
-    {
-        $this->pokemons = new ArrayCollection();
-    }
+    private Collection $pokemons;
 
     use TraitNames;
 
@@ -53,6 +48,11 @@ class Abilities
     use TraitDescription;
 
     use TraitLanguage;
+
+    public function __construct()
+    {
+        $this->pokemons = new ArrayCollection();
+    }
 
     /**
      * @return int
@@ -104,18 +104,6 @@ class Abilities
         if ($this->pokemons->contains($pokemon)) {
             $this->pokemons->remove($pokemon);
         }
-    }
-
-    public function getLanguageId(): ?Language
-    {
-        return $this->languageId;
-    }
-
-    public function setLanguageId(?Language $languageId): self
-    {
-        $this->languageId = $languageId;
-
-        return $this;
     }
 
 }

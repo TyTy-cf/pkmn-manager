@@ -3,7 +3,9 @@
 namespace App\Repository\Infos;
 
 use App\Entity\Infos\Abilities;
+use App\Entity\Users\Language;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,32 +21,20 @@ class AbilitiesRepository extends ServiceEntityRepository
         parent::__construct($registry, Abilities::class);
     }
 
-    // /**
-    //  * @return Abilities[] Returns an array of Abilities objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param Language $language
+     * @param string $slug
+     * @return Abilities|null
+     * @throws NonUniqueResultException
+     */
+    public function getAbilitiesByLanguageAndSlug(Language $language, string $slug): ?Abilities
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $qb = $this->createQueryBuilder('abilities');
+        $qb->join('abilities.language', 'language');
+        $qb->where('language = :lang');
+        $qb->andWhere('abilities.slug = :slug');
+        $qb->setParameter('lang', $language);
+        $qb->setParameter('slug', $slug);
+        return $qb->getQuery()->getOneOrNullResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Abilities
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

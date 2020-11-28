@@ -54,12 +54,12 @@ class Move
     private Type $type;
 
     /**
-     * @var Categories $category the category of the move
+     * @var DamageClass $category the category of the move
      *
-     * @ManyToOne(targetEntity="App\Entity\Moves\Categories")
-     * @JoinColumn(name="category_id", referencedColumnName="id")
+     * @ManyToOne(targetEntity="App\Entity\Moves\DamageClass")
+     * @JoinColumn(name="damage_class_id", referencedColumnName="id")
      */
-    private Categories $category;
+    private DamageClass $damageClass;
 
     /**
      * @var int $pp the maximu number of point of power for this move
@@ -130,17 +130,17 @@ class Move
     }
 
     /**
-     * @return Categories
+     * @return DamageClass
      */
-    public function getCategory(): Categories
+    public function getCategory(): DamageClass
     {
         return $this->category;
     }
 
     /**
-     * @param Categories $category
+     * @param DamageClass $category
      */
-    public function setCategory(Categories $category): void
+    public function setCategory(DamageClass $category): void
     {
         $this->category = $category;
     }

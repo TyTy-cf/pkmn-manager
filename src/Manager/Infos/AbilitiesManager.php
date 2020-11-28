@@ -5,99 +5,108 @@ namespace App\Manager\Infos;
 
 
 use App\Entity\Infos\Abilities;
-use App\Entity\Pokemon\Pokemon;
 use App\Entity\Users\Language;
 use App\Manager\Api\ApiManager;
+use App\Manager\TextManager;
+use App\Manager\Users\LanguageManager;
 use App\Repository\Infos\AbilitiesRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class AbilitiesManager
 {
     /**
-     * @var AbilitiesRepository
+     * @var AbilitiesRepository $abilitiesRepository
      */
-    private $abilitiesRepository;
+    private AbilitiesRepository $abilitiesRepository;
 
     /**
      * @var EntityManagerInterface
      */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     /**
      * @var ApiManager
      */
-    private $apiManager;
+    private ApiManager $apiManager;
+    /**
+     * @var TextManager
+     */
+    private TextManager $textManager;
+
+    /**
+     * @var LanguageManager
+     */
+    private LanguageManager $languageManager;
 
     /**
      * PokemonManager constructor.
      *
      * @param EntityManagerInterface $entityManager
      * @param ApiManager $apiManager
+     * @param LanguageManager $languageManager
+     * @param TextManager $textManager
      */
-    public function __construct(EntityManagerInterface $entityManager, ApiManager $apiManager)
+    public function __construct(EntityManagerInterface $entityManager,
+                                ApiManager $apiManager,
+                                LanguageManager $languageManager,
+                                TextManager $textManager)
     {
         $this->entityManager = $entityManager;
         $this->apiManager = $apiManager;
+        $this->textManager = $textManager;
+        $this->languageManager = $languageManager;
         $this->abilitiesRepository = $this->entityManager->getRepository(Abilities::class);
     }
 
     /**
-     * @param Language $language
      * @param string $lang
-     * @param $abilities
-     * @param Pokemon $pokemon
+     * @param $ability
+     * @throws NonUniqueResultException
      * @throws TransportExceptionInterface
      */
-    public function saveNewAbilities(Language $language, string $lang, $abilities, Pokemon $pokemon)
+    public function createAbilityIfNotExist(string $lang, $ability)
     {
-        // Iterate the types from the json, create the type if not existing or get it
-        foreach ($abilities as $ability) {
-            $urlAbility = $ability['ability']['url'];
-            $abilitiesDetailed = $this->getAbilitiesInformationsOnLanguage($lang, $urlAbility);
+        //Fetch URL details type
+        $urlAbility = $ability['url'];
+        $urlDetailed = $this->apiManager->getDetailed($urlAbility)->toArray();
 
-            if (($newAbility = $this->abilitiesRepository->findOneBy(['name' => $abilitiesDetailed['name']])) == null) {
+        if (!empty($urlDetailed['pokemon']))
+        {
+            // Fetch the right language
+            $language = $this->languageManager->getLanguageByCode($lang);
+
+            //Check if the data exist in databases
+            $slug = 'ability-'. $ability['name'];
+
+            if (($newAbility = $this->abilitiesRepository->getAbilitiesByLanguageAndSlug($language, $slug)) == null)
+            {
+                // Fetch name & description according the language
+                $abilityNameLang = $this->apiManager->getNameBasedOnLanguageFromArray($lang, $urlDetailed['names']);
+
+                $abilityDescription = $this->textManager->removeCharacter("\n", " ",
+                                      $this->apiManager->getFlavorTextBasedOnLanguageFromArray($lang, $urlDetailed));
+
                 $newAbility = new Abilities();
-                $newAbility->setName(ucfirst($abilitiesDetailed['name']));
-                $newAbility->setSlug($ability['ability']['name']);
-                $newAbility->setDescription($abilitiesDetailed['description']);
+                $newAbility->setName($abilityNameLang);
+                $newAbility->setDescription($abilityDescription);
+                $newAbility->setSlug($slug);
                 $newAbility->setLanguage($language);
                 $this->entityManager->persist($newAbility);
+                $this->entityManager->flush();
             }
-
-            $pokemon->addAbilities($newAbility);
-            $this->entityManager->flush();
         }
     }
 
     /**
-     * @param $lang
-     * @param $url
-     * @return array
-     * @throws TransportExceptionInterface
+     * @param Language $language
+     * @param string $slug
+     * @return Abilities
+     * @throws NonUniqueResultException
      */
-    public function getAbilitiesInformationsOnLanguage($lang, $url)
+    public function getAbilitiesByLanguageAndSlug(Language $language, string $slug): Abilities
     {
-        $apiResponse = $this->apiManager->getDetailed($url)->toArray();
-        $descriptionAbility = null;
-        $nameAbility = null;
-
-        foreach ($apiResponse['names'] as $name) {
-            if ($name['language']['name'] === $lang) {
-                $nameAbility = $name['name'];
-            }
-        }
-
-        foreach ($apiResponse['flavor_text_entries'] as $flavor_text_entry) {
-            if ($flavor_text_entry['language']['name'] === $lang) {
-                $descriptionAbility = $flavor_text_entry['flavor_text'];
-            }
-        }
-
-        return $AbilitiesInformation = [
-            'name' => $nameAbility,
-            'description' => $descriptionAbility,
-        ];
-
+        return $this->abilitiesRepository->getAbilitiesByLanguageAndSlug($language, $slug);
     }
 }

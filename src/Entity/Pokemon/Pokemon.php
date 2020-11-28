@@ -73,16 +73,6 @@ class Pokemon
     private Collection $pokemonMovesLevel;
 
     /**
-     * @ORM\Column(name="url_img", type="string", length=255, nullable=true)
-     */
-    private ?string $urlImg;
-
-    /**
-     * @ORM\Column(name="url_img_shiny", type="string", length=255, nullable=true)
-     */
-    private ?string $urlImgShiny;
-
-    /**
      * @ORM\Column(name="url_icon", type="string", length=255, nullable=true)
      */
     private ?string $urlIcon;
@@ -115,22 +105,6 @@ class Pokemon
     public function setId(int $id): void
     {
         $this->id = $id;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getUrlImg(): ?string
-    {
-        return $this->urlImg;
-    }
-
-    /**
-     * @param string $urlImg
-     */
-    public function setUrlImg(?string $urlImg)
-    {
-        $this->urlImg = $urlImg;
     }
 
     /**
@@ -249,42 +223,23 @@ class Pokemon
         }
     }
 
-    public function getUrlImgShiny(): ?string
-    {
-        return $this->urlImgShiny;
-    }
-
-    public function setUrlImgShiny(?string $urlImgShiny): void
-    {
-        $this->urlImgShiny = $urlImgShiny;
-    }
-
-    public function addAbility(Abilities $ability): self
-    {
-        if (!$this->abilities->contains($ability)) {
-            $this->abilities[] = $ability;
-        }
-
-        return $this;
-    }
-
-    public function removeAbility(Abilities $ability): self
-    {
-        $this->abilities->removeElement($ability);
-
-        return $this;
-    }
-
+    /**
+     * @param PokemonMovesLevel $pokemonMovesLevel
+     * @return $this
+     */
     public function addPokemonMovesLevel(PokemonMovesLevel $pokemonMovesLevel): self
     {
         if (!$this->pokemonMovesLevel->contains($pokemonMovesLevel)) {
             $this->pokemonMovesLevel[] = $pokemonMovesLevel;
             $pokemonMovesLevel->setPokemon($this);
         }
-
         return $this;
     }
 
+    /**
+     * @param PokemonMovesLevel $pokemonMovesLevel
+     * @return $this
+     */
     public function removePokemonMovesLevel(PokemonMovesLevel $pokemonMovesLevel): self
     {
         if ($this->pokemonMovesLevel->removeElement($pokemonMovesLevel)) {
@@ -293,7 +248,6 @@ class Pokemon
                 $pokemonMovesLevel->setPokemon(null);
             }
         }
-
         return $this;
     }
 

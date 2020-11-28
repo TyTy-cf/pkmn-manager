@@ -1,11 +1,11 @@
 <?php
 
 
-namespace App\Command\Infos;
+namespace App\Command\Move;
 
 
 use App\Manager\Api\ApiManager;
-use App\Manager\Infos\AbilitiesManager;
+use App\Manager\Moves\DamageClassManager;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -14,13 +14,13 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-class AbilitiesCommand extends Command
+class DamageClassCommand extends Command
 {
 
     /**
-     * @var AbilitiesManager $abilitiesManager
+     * @var DamageClassManager $damageClassManager
      */
-    private AbilitiesManager $abilitiesManager;
+    private DamageClassManager $damageClassManager;
 
     /**
      * @var ApiManager $apiManager ;
@@ -29,13 +29,13 @@ class AbilitiesCommand extends Command
 
     /**
      * ExcecCommand constructor
-     * @param AbilitiesManager $abilitiesManager
+     * @param DamageClassManager $damageClassManager
      * @param ApiManager $apiManager
      */
-    public function __construct(AbilitiesManager $abilitiesManager,
+    public function __construct(DamageClassManager $damageClassManager,
                                 ApiManager $apiManager)
     {
-        $this->abilitiesManager = $abilitiesManager;
+        $this->damageClassManager = $damageClassManager;
         $this->apiManager = $apiManager;
         parent::__construct();
     }
@@ -46,9 +46,9 @@ class AbilitiesCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('app:abilities:all')
+            ->setName('app:damage-class:all')
             ->addArgument('lang', InputArgument::REQUIRED, 'Language used')
-            ->setDescription('Execute app:pokemon to fetech all pokemon for language');
+            ->setDescription('Execute app:pokemon to fetch all pokemon for language');
     }
 
     /**
@@ -63,18 +63,22 @@ class AbilitiesCommand extends Command
         // Fetch parameter
         $lang = $input->getArgument('lang');
 
+
         $output->writeln('');
-        $output->writeln('<info>Fetching all abilities for language ' . $lang . '</info>');
+        $output->writeln('<info>Fetching all damages-class for language ' . $lang . '</info>');
+
+        // Fetch parameter
+        $lang = $input->getArgument('lang');
 
         //Get list of types
-        $abilitiesList = $this->apiManager->getAllAbilitiesJson()->toArray();
+        $damageClassList = $this->apiManager->getAllDamageClassJson()->toArray();
 
         //Initialize progress bar
-        $progressBar = new ProgressBar($output, count($abilitiesList['results']));
+        $progressBar = new ProgressBar($output, count($damageClassList['results']));
         $progressBar->start();
 
-        foreach ($abilitiesList['results'] as $ability) {
-            $this->abilitiesManager->createAbilityIfNotExist($lang, $ability);
+        foreach ($damageClassList['results'] as $damageClass) {
+            $this->damageClassManager->createDamageClassIfNotExist($lang, $damageClass);
             $progressBar->advance();
         }
 
@@ -83,4 +87,5 @@ class AbilitiesCommand extends Command
 
         return command::SUCCESS;
     }
+
 }

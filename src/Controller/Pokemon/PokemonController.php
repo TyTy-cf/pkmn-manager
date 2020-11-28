@@ -81,7 +81,7 @@ class PokemonController extends AbstractController
         $pokemonNames = array ();
         //Vérification si la variable existe
         if ($this->session->get(PokemonController::POKEMON_NAMES_SESSION) == null) {
-            $apiResponse = $this->apiManager->getPokemonJson();
+            $apiResponse = $this->apiManager->getAllPokemonJson();
             $apiResponse = $apiResponse->toArray();
             //Récupération du pokéName
             foreach ($apiResponse['results'] as $result) {
