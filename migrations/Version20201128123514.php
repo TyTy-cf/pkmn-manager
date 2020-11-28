@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20201128115627 extends AbstractMigration
+final class Version20201128123514 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -24,7 +24,7 @@ final class Version20201128115627 extends AbstractMigration
         $this->addSql('CREATE TABLE damage_class (id INT AUTO_INCREMENT NOT NULL, language_id INT DEFAULT NULL, image VARCHAR(255) NOT NULL, name VARCHAR(36) DEFAULT NULL, slug VARCHAR(36) DEFAULT NULL, INDEX IDX_7BCB5C8782F1BAF4 (language_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE game_version (id INT AUTO_INCREMENT NOT NULL, language_id INT DEFAULT NULL, code VARCHAR(2) NOT NULL, name VARCHAR(36) DEFAULT NULL, slug VARCHAR(36) DEFAULT NULL, INDEX IDX_2ADEACEC82F1BAF4 (language_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE genre (id INT AUTO_INCREMENT NOT NULL, language_id INT DEFAULT NULL, image VARCHAR(255) DEFAULT NULL, name VARCHAR(36) DEFAULT NULL, INDEX IDX_835033F882F1BAF4 (language_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE language (id INT AUTO_INCREMENT NOT NULL, code VARCHAR(3) NOT NULL, title VARCHAR(255) NOT NULL, img VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE language (id INT AUTO_INCREMENT NOT NULL, code VARCHAR(3) NOT NULL, image VARCHAR(255) DEFAULT NULL, name VARCHAR(36) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE moves (id INT AUTO_INCREMENT NOT NULL, type_id INT DEFAULT NULL, damage_class_id INT DEFAULT NULL, language_id INT DEFAULT NULL, pp INT NOT NULL, accuracy INT DEFAULT NULL, power INT DEFAULT NULL, priority SMALLINT NOT NULL, name VARCHAR(36) DEFAULT NULL, slug VARCHAR(36) DEFAULT NULL, description VARCHAR(255) DEFAULT NULL, INDEX IDX_453F0832C54C8C93 (type_id), INDEX IDX_453F08329883C12E (damage_class_id), INDEX IDX_453F083282F1BAF4 (language_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE nature (id INT AUTO_INCREMENT NOT NULL, language_id INT DEFAULT NULL, stat_increased VARCHAR(12) DEFAULT NULL, stat_decreased VARCHAR(12) DEFAULT NULL, name VARCHAR(36) DEFAULT NULL, slug VARCHAR(36) DEFAULT NULL, INDEX IDX_B1D882A782F1BAF4 (language_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE pokemon (id INT AUTO_INCREMENT NOT NULL, language_id INT DEFAULT NULL, url_icon VARCHAR(255) DEFAULT NULL, url_sprite_img VARCHAR(255) DEFAULT NULL, hp INT DEFAULT NULL, atk INT DEFAULT NULL, def INT DEFAULT NULL, spa INT DEFAULT NULL, spd INT DEFAULT NULL, spe INT DEFAULT NULL, name VARCHAR(36) DEFAULT NULL, slug VARCHAR(36) DEFAULT NULL, INDEX IDX_62DC90F382F1BAF4 (language_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');

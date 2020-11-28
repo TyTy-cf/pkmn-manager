@@ -16,13 +16,13 @@ class AppFixtures extends Fixture
     {
         $languageFr = new Language();
         $languageFr->setCode('fr');
-        $languageFr->setTitle('Français');
-        $languageFr->setImg('/public/images/language/fr.png');
+        $languageFr->setName('Français');
+        $languageFr->setImage('/public/images/language/fr.png');
         $manager->persist($languageFr);
         $languageEn = new Language();
         $languageEn->setCode('en');
-        $languageEn->setTitle('English');
-        $languageEn->setImg('/public/images/language/en.png');
+        $languageEn->setName('English');
+        $languageEn->setImage('/public/images/language/en.png');
         $manager->persist($languageEn);
         /* Gender */
         // FR

@@ -5,6 +5,7 @@ namespace App\Entity\Users;
 
 
 use App\Entity\Infos\Abilities;
+use App\Entity\Traits\TraitNames;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -23,6 +24,8 @@ class Language
      */
     private int $id;
 
+    use TraitNames;
+
     /**
      * @var string $code
      * @ORM\Column(name="code", type="string", length=3)
@@ -30,16 +33,10 @@ class Language
     private string $code;
 
     /**
-     * @var string $title
-     * @ORM\Column(name="title", type="string", length=255)
+     * @var string $image
+     * @ORM\Column(name="image", type="string", length=255, nullable=true)
      */
-    private string $title;
-
-    /**
-     * @var string $img
-     * @ORM\Column(name="img", type="string", length=255, nullable=true)
-     */
-    private string $img;
+    private string $image;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Users\User", mappedBy="language")
@@ -82,33 +79,17 @@ class Language
     /**
      * @return string
      */
-    public function getTitle(): string
+    public function getImage(): string
     {
-        return $this->title;
+        return $this->image;
     }
 
     /**
-     * @param string $title
+     * @param string $image
      */
-    public function setTitle(string $title): void
+    public function setImage(string $image): void
     {
-        $this->title = $title;
-    }
-
-    /**
-     * @return string
-     */
-    public function getImg(): string
-    {
-        return $this->img;
-    }
-
-    /**
-     * @param string $img
-     */
-    public function setImg(string $img): void
-    {
-        $this->img = $img;
+        $this->image = $image;
     }
 
     /**
