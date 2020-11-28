@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20201128005556 extends AbstractMigration
+final class Version20201128115627 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -37,8 +37,7 @@ final class Version20201128005556 extends AbstractMigration
         $this->addSql('CREATE TABLE stats_ivs_pkmn (id INT AUTO_INCREMENT NOT NULL, hp INT DEFAULT NULL, atk INT DEFAULT NULL, def INT DEFAULT NULL, spa INT DEFAULT NULL, spd INT DEFAULT NULL, spe INT DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE stats_pkmn (id INT AUTO_INCREMENT NOT NULL, hp INT DEFAULT NULL, atk INT DEFAULT NULL, def INT DEFAULT NULL, spa INT DEFAULT NULL, spd INT DEFAULT NULL, spe INT DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE type (id INT AUTO_INCREMENT NOT NULL, language_id INT DEFAULT NULL, img VARCHAR(255) DEFAULT NULL, code_api VARCHAR(2) DEFAULT NULL, name VARCHAR(36) DEFAULT NULL, slug VARCHAR(36) DEFAULT NULL, INDEX IDX_8CDE572982F1BAF4 (language_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE type_damage_from_type (id INT AUTO_INCREMENT NOT NULL, type_id INT DEFAULT NULL, damage_from_type_id INT DEFAULT NULL, coef_from DOUBLE PRECISION NOT NULL, slug VARCHAR(36) DEFAULT NULL, INDEX IDX_6FC4951AC54C8C93 (type_id), INDEX IDX_6FC4951A617B28A0 (damage_from_type_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE type_damage_to_type (id INT AUTO_INCREMENT NOT NULL, type_id INT DEFAULT NULL, damage_to_type_id INT DEFAULT NULL, coef_to DOUBLE PRECISION NOT NULL, slug VARCHAR(36) DEFAULT NULL, INDEX IDX_B95ED4B4C54C8C93 (type_id), INDEX IDX_B95ED4B471A0F336 (damage_to_type_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE type_damage_relation_type (id INT AUTO_INCREMENT NOT NULL, type_id INT DEFAULT NULL, damage_relation_type_id INT DEFAULT NULL, damage_relation VARCHAR(4) NOT NULL, damage_relation_coefficient DOUBLE PRECISION NOT NULL, slug VARCHAR(36) DEFAULT NULL, INDEX IDX_8480E846C54C8C93 (type_id), INDEX IDX_8480E8463F2BCAB1 (damage_relation_type_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE user (id INT AUTO_INCREMENT NOT NULL, language_id INT DEFAULT NULL, nickname VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, INDEX IDX_8D93D64982F1BAF4 (language_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE abilities ADD CONSTRAINT FK_B8388DA482F1BAF4 FOREIGN KEY (language_id) REFERENCES language (id)');
         $this->addSql('ALTER TABLE damage_class ADD CONSTRAINT FK_7BCB5C8782F1BAF4 FOREIGN KEY (language_id) REFERENCES language (id)');
@@ -66,10 +65,8 @@ final class Version20201128005556 extends AbstractMigration
         $this->addSql('ALTER TABLE pokemon_sheet_moves ADD CONSTRAINT FK_A56BA330C76CF0B FOREIGN KEY (pokemon_sheet_id) REFERENCES pokemon_sheet (id)');
         $this->addSql('ALTER TABLE pokemon_sheet_moves ADD CONSTRAINT FK_A56BA3306DC541A8 FOREIGN KEY (move_id) REFERENCES moves (id)');
         $this->addSql('ALTER TABLE type ADD CONSTRAINT FK_8CDE572982F1BAF4 FOREIGN KEY (language_id) REFERENCES language (id)');
-        $this->addSql('ALTER TABLE type_damage_from_type ADD CONSTRAINT FK_6FC4951AC54C8C93 FOREIGN KEY (type_id) REFERENCES type (id)');
-        $this->addSql('ALTER TABLE type_damage_from_type ADD CONSTRAINT FK_6FC4951A617B28A0 FOREIGN KEY (damage_from_type_id) REFERENCES type (id)');
-        $this->addSql('ALTER TABLE type_damage_to_type ADD CONSTRAINT FK_B95ED4B4C54C8C93 FOREIGN KEY (type_id) REFERENCES type (id)');
-        $this->addSql('ALTER TABLE type_damage_to_type ADD CONSTRAINT FK_B95ED4B471A0F336 FOREIGN KEY (damage_to_type_id) REFERENCES type (id)');
+        $this->addSql('ALTER TABLE type_damage_relation_type ADD CONSTRAINT FK_8480E846C54C8C93 FOREIGN KEY (type_id) REFERENCES type (id)');
+        $this->addSql('ALTER TABLE type_damage_relation_type ADD CONSTRAINT FK_8480E8463F2BCAB1 FOREIGN KEY (damage_relation_type_id) REFERENCES type (id)');
         $this->addSql('ALTER TABLE user ADD CONSTRAINT FK_8D93D64982F1BAF4 FOREIGN KEY (language_id) REFERENCES language (id)');
     }
 
@@ -102,10 +99,8 @@ final class Version20201128005556 extends AbstractMigration
         $this->addSql('ALTER TABLE pokemon_sheet DROP FOREIGN KEY FK_68D528B670AA3482');
         $this->addSql('ALTER TABLE moves DROP FOREIGN KEY FK_453F0832C54C8C93');
         $this->addSql('ALTER TABLE pokemons_types DROP FOREIGN KEY FK_B7FC4A10C54C8C93');
-        $this->addSql('ALTER TABLE type_damage_from_type DROP FOREIGN KEY FK_6FC4951AC54C8C93');
-        $this->addSql('ALTER TABLE type_damage_from_type DROP FOREIGN KEY FK_6FC4951A617B28A0');
-        $this->addSql('ALTER TABLE type_damage_to_type DROP FOREIGN KEY FK_B95ED4B4C54C8C93');
-        $this->addSql('ALTER TABLE type_damage_to_type DROP FOREIGN KEY FK_B95ED4B471A0F336');
+        $this->addSql('ALTER TABLE type_damage_relation_type DROP FOREIGN KEY FK_8480E846C54C8C93');
+        $this->addSql('ALTER TABLE type_damage_relation_type DROP FOREIGN KEY FK_8480E8463F2BCAB1');
         $this->addSql('ALTER TABLE pokemon_sheet DROP FOREIGN KEY FK_68D528B6A76ED395');
         $this->addSql('DROP TABLE abilities');
         $this->addSql('DROP TABLE damage_class');
@@ -124,8 +119,7 @@ final class Version20201128005556 extends AbstractMigration
         $this->addSql('DROP TABLE stats_ivs_pkmn');
         $this->addSql('DROP TABLE stats_pkmn');
         $this->addSql('DROP TABLE type');
-        $this->addSql('DROP TABLE type_damage_from_type');
-        $this->addSql('DROP TABLE type_damage_to_type');
+        $this->addSql('DROP TABLE type_damage_relation_type');
         $this->addSql('DROP TABLE user');
     }
 }

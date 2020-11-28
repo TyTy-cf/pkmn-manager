@@ -8,6 +8,7 @@ use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
 use App\Entity\Traits\TraitSlug;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -36,7 +37,7 @@ class Type
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Pokemon\Pokemon", mappedBy="types")
      */
-    private $pokemons;
+    private Collection $pokemons;
 
     /**
      * @ORM\Column(name="img", type="string", length=255, nullable=true)

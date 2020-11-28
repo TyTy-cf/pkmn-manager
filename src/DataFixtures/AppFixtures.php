@@ -37,7 +37,7 @@ class AppFixtures extends Fixture
         $genderFemaleFr->setImage('/public/images/infos/gender/female.png');
         $manager->persist($genderFemaleFr);
         $genderAsexueFr = new Gender();
-        $genderAsexueFr->setName("Asexué");
+        $genderAsexueFr->setName("Sans genre");
         $genderAsexueFr->setLanguage($languageFr);
         $manager->persist($genderAsexueFr);
         // EN
@@ -52,7 +52,7 @@ class AppFixtures extends Fixture
         $genderFemaleEn->setImage('/public/images/infos/gender/female.png');
         $manager->persist($genderFemaleEn);
         $genderAsexueEn = new Gender();
-        $genderAsexueEn->setName("Asexual");
+        $genderAsexueEn->setName("Genderless");
         $genderAsexueEn->setLanguage($languageEn);
         $manager->persist($genderAsexueEn);
         //GameVersion

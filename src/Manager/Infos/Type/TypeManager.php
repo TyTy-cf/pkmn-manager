@@ -36,9 +36,9 @@ class TypeManager
     private LanguageManager $languageManager;
 
     /**
-     * @var TypeDamageRelationManager $typeDamageFromTypeManager
+     * @var TypeDamageRelationTypeManager $typeDamageFromTypeManager
      */
-    private TypeDamageRelationManager $typeDamageFromTypeManager;
+    private TypeDamageRelationTypeManager $typeDamageFromTypeManager;
 
     /**
      * PokemonManager constructor.
@@ -46,13 +46,13 @@ class TypeManager
      * @param EntityManagerInterface $entityManager
      * @param ApiManager $apiManager
      * @param LanguageManager $languageManager
-     * @param TypeDamageRelationManager $typeDamageFromTypeManager
+     * @param TypeDamageRelationTypeManager $typeDamageFromTypeManager
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         ApiManager $apiManager,
         LanguageManager $languageManager,
-        TypeDamageRelationManager $typeDamageFromTypeManager
+        TypeDamageRelationTypeManager $typeDamageFromTypeManager
     ) {
         $this->entityManager = $entityManager;
         $this->apiManager = $apiManager;
