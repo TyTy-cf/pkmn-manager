@@ -8,13 +8,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
 
 /**
- * Class StatsPkmn
+ * Class StatsEv
  * @package App\Entity\Stats
  *
- * @ORM\Table(name="stats_pkmn")
+ * @ORM\Table(name="stats_ev")
  * @Entity
  */
-class StatsPkmn
+class StatsEv
 {
     /**
      * @var int $id id des evs
@@ -42,5 +42,4 @@ class StatsPkmn
     {
         $this->id = $id;
     }
-
 }

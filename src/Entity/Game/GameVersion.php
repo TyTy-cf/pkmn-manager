@@ -2,7 +2,7 @@
 
 namespace App\Entity\Game;
 
-use App\Entity\Moves\PokemonMovesLevel;
+use App\Entity\Moves\PokemonMovesLearnVersion;
 use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
 use App\Entity\Traits\TraitSlug;
@@ -34,16 +34,6 @@ class GameVersion
     private string $code;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Moves\PokemonMovesLevel", mappedBy="gameInfos")
-     */
-    private Collection $pokemonMovesLevels;
-
-    public function __construct()
-    {
-        $this->pokemonMovesLevels = new ArrayCollection();
-    }
-
-    /**
      * @return int|null
      */
     public function getId(): ?int
@@ -68,31 +58,5 @@ class GameVersion
         $this->code = $code;
 
         return $this;
-    }
-
-    /**
-     * @return Collection|PokemonMovesLevel[]
-     */
-    public function getPokemonMovesLevels(): Collection
-    {
-        return $this->pokemonMovesLevels;
-    }
-
-    public function addPokemonMovesLevel(PokemonMovesLevel $pokemonMovesLevel): void
-    {
-        if (!$this->pokemonMovesLevels->contains($pokemonMovesLevel)) {
-            $this->pokemonMovesLevels[] = $pokemonMovesLevel;
-            $pokemonMovesLevel->setGameinfos($this);
-        }
-    }
-
-    public function removePokemonMovesLevel(PokemonMovesLevel $pokemonMovesLevel): void
-    {
-        if ($this->pokemonMovesLevels->removeElement($pokemonMovesLevel)) {
-            // set the owning side to null (unless already changed)
-            if ($pokemonMovesLevel->getGameinfos() === $this) {
-                $pokemonMovesLevel->setGameinfos(null);
-            }
-        }
     }
 }

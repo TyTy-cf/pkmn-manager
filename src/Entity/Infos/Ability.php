@@ -3,29 +3,27 @@
 
 namespace App\Entity\Infos;
 
-use App\Entity\Pokemon\Pokemon;
 use App\Entity\Traits\TraitDescription;
 use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
 use App\Entity\Traits\TraitSlug;
-use App\Entity\Users\Language;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * Class Abilities
+ * Class Ability
  * @package App\Entity\Infos
  *
- * @ORM\Table(name="abilities")
+ * @ORM\Table(name="ability")
  * @ORM\Entity(repositoryClass="App\Repository\Infos\AbilitiesRepository")
  * @UniqueEntity(
  *     fields={"name"},
  *     message="Ce talent existe déjà !"
  * )
  */
-class Abilities
+class Ability
 {
     /**
      * @var int $id id de l'abstract info

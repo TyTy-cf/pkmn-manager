@@ -26,7 +26,7 @@ abstract class AbstractCommand extends Command
     {
         $command = $this->getApplication()->find($command);
         $langArguments = ['lang' => $lang];
-        // Run Abilities Command
+        // Run Ability Command
         $cmdInput = new ArrayInput($langArguments);
         return $command->run($cmdInput, $output);
     }

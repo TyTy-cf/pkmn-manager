@@ -3,9 +3,9 @@
 
 namespace App\Entity\Pokemon;
 
-use App\Entity\Infos\Abilities;
+use App\Entity\Infos\Ability;
 use App\Entity\Infos\Type\Type;
-use App\Entity\Moves\PokemonMovesLevel;
+use App\Entity\Moves\PokemonMovesLearnVersion;
 use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
 use App\Entity\Traits\TraitSlug;
@@ -48,8 +48,8 @@ class Pokemon
     use TraitLanguage;
 
     /**
-     * @ManyToMany(targetEntity="App\Entity\Infos\Abilities", inversedBy="pokemons", cascade={"persist"})
-     * @JoinTable(name="pokemons_abilities",
+     * @ManyToMany(targetEntity="App\Entity\Infos\Ability", inversedBy="pokemons", cascade={"persist"})
+     * @JoinTable(name="pokemon_abilities",
      *      joinColumns={@JoinColumn(name="pokemon_id", referencedColumnName="id")},
      *      inverseJoinColumns={@JoinColumn(name="ability_id", referencedColumnName="id")}
      *      )
@@ -58,7 +58,7 @@ class Pokemon
 
     /**
      * @ManyToMany(targetEntity="App\Entity\Infos\Type\Type", inversedBy="pokemons", cascade={"persist"})
-     * @JoinTable(name="pokemons_types",
+     * @JoinTable(name="pokemon_types",
      *      joinColumns={@JoinColumn(name="pokemon_id", referencedColumnName="id")},
      *      inverseJoinColumns={@JoinColumn(name="type_id", referencedColumnName="id")}
      *      )
@@ -66,11 +66,9 @@ class Pokemon
     private Collection $types;
 
     /**
-     * @var Collection $pokemonMovesLevel
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\Moves\PokemonMovesLevel", mappedBy="pokemon", fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="App\Entity\Moves\PokemonMovesLearnVersion", mappedBy="pokemon", fetch="EXTRA_LAZY")
      */
-    private Collection $pokemonMovesLevel;
+    private Collection $pokemonMovesLearnVersion;
 
     /**
      * @ORM\Column(name="url_icon", type="string", length=255, nullable=true)
@@ -86,9 +84,9 @@ class Pokemon
      * Pokemon constructor.
      */
     public function __construct() {
-        $this->abilities = new ArrayCollection();
         $this->types = new ArrayCollection();
-        $this->pokemonMovesLevel = new ArrayCollection();
+        $this->abilities = new ArrayCollection();
+        $this->pokemonMovesLearnVersion = new ArrayCollection();
     }
 
     /**
@@ -140,9 +138,9 @@ class Pokemon
     }
 
     /**
-     * @param Abilities $abilities
+     * @param Ability $abilities
      */
-    public function addAbilities(Abilities $abilities): void
+    public function addAbilities(Ability $abilities): void
     {
         if (!$this->abilities->contains($abilities)) {
             $this->abilities->add($abilities);
@@ -158,9 +156,9 @@ class Pokemon
     }
 
     /**
-     * @param Abilities $ability
+     * @param Ability $ability
      */
-    public function removeAbilities(Abilities $ability)
+    public function removeAbilities(Ability $ability)
     {
         if ($this->abilities->contains($ability)) {
             $this->abilities->removeElement($ability);
@@ -196,59 +194,30 @@ class Pokemon
     }
 
     /**
-     * @param PokemonMovesLevel $pokemonMovesLevel
+     * @return Collection|PokemonMovesLearnVersion[]
      */
-    public function addPokemonMoveLevel(PokemonMovesLevel $pokemonMovesLevel): void
+    public function getPokemonMovesLearnVersion(): Collection
     {
-        if (!$this->pokemonMovesLevel->contains($pokemonMovesLevel)) {
-            $this->pokemonMovesLevel->add($pokemonMovesLevel);
+        return $this->pokemonMovesLearnVersion;
+    }
+
+    /**
+     * @param PokemonMovesLearnVersion $pokemonMovesLearnVersion
+     */
+    public function addPokemonMovesLearnVersion(PokemonMovesLearnVersion $pokemonMovesLearnVersion)
+    {
+        if (!$this->pokemonMovesLearnVersion->contains($pokemonMovesLearnVersion)) {
+            $this->pokemonMovesLearnVersion[] = $pokemonMovesLearnVersion;
         }
     }
 
     /**
-     * @return mixed
+     * @param PokemonMovesLearnVersion $pokemonMovesLearnVersion
      */
-    public function getPokemonMovesLevel(): Collection
+    public function removePokemonMovesLearnVersion(PokemonMovesLearnVersion $pokemonMovesLearnVersion)
     {
-        return $this->pokemonMovesLevel;
-    }
-
-    /**
-     * @param PokemonMovesLevel $pokemonMovesLevel
-     */
-    public function removePokemonMoveLevel(PokemonMovesLevel $pokemonMovesLevel)
-    {
-        if ($this->pokemonMovesLevel->contains($pokemonMovesLevel)) {
-            $this->pokemonMovesLevel->removeElement($pokemonMovesLevel);
+        if ($this->pokemonMovesLearnVersion->contains($pokemonMovesLearnVersion)) {
+            $this->pokemonMovesLearnVersion->remove($pokemonMovesLearnVersion);
         }
     }
-
-    /**
-     * @param PokemonMovesLevel $pokemonMovesLevel
-     * @return $this
-     */
-    public function addPokemonMovesLevel(PokemonMovesLevel $pokemonMovesLevel): self
-    {
-        if (!$this->pokemonMovesLevel->contains($pokemonMovesLevel)) {
-            $this->pokemonMovesLevel[] = $pokemonMovesLevel;
-            $pokemonMovesLevel->setPokemon($this);
-        }
-        return $this;
-    }
-
-    /**
-     * @param PokemonMovesLevel $pokemonMovesLevel
-     * @return $this
-     */
-    public function removePokemonMovesLevel(PokemonMovesLevel $pokemonMovesLevel): self
-    {
-        if ($this->pokemonMovesLevel->removeElement($pokemonMovesLevel)) {
-            // set the owning side to null (unless already changed)
-            if ($pokemonMovesLevel->getPokemon() === $this) {
-                $pokemonMovesLevel->setPokemon(null);
-            }
-        }
-        return $this;
-    }
-
 }

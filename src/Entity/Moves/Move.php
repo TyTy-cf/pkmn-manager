@@ -8,6 +8,7 @@ use App\Entity\Traits\TraitDescription;
 use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
 use App\Entity\Traits\TraitSlug;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
@@ -16,10 +17,10 @@ use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * Class Abilities *
+ * Class Ability *
  * @package App\Entity\Infos
  *
- * @ORM\Table(name="moves")
+ * @ORM\Table(name="move")
  * @ORM\Entity(repositoryClass="App\Repository\Moves\MoveRepository")
  * @UniqueEntity(
  *     fields={"name"},
@@ -54,7 +55,7 @@ class Move
     private Type $type;
 
     /**
-     * @var DamageClass $category the category of the move
+     * @var DamageClass $damageClass the category of the move
      *
      * @ManyToOne(targetEntity="App\Entity\Moves\DamageClass")
      * @JoinColumn(name="damage_class_id", referencedColumnName="id")
@@ -86,15 +87,13 @@ class Move
     private ?int $priority;
 
     /**
-     * @var PokemonMovesLevel $pokemonMovesLevel
-     *
-     * @ORM\OneToMany(targetEntity="PokemonMovesLevel", mappedBy="move", fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="App\Entity\Moves\PokemonMovesLearnVersion", mappedBy="move", fetch="EXTRA_LAZY")
      */
-    private PokemonMovesLevel $pokemonMovesLevel;
+    private Collection $pokemonMovesLearnVersion;
 
     public function __construct()
     {
-//        $this->pokemonMovesLevel = new ArrayCollection();
+        $this->pokemonMovesLearnVersion = new ArrayCollection();
     }
 
     /**
@@ -132,17 +131,17 @@ class Move
     /**
      * @return DamageClass
      */
-    public function getCategory(): DamageClass
+    public function getDamageClass(): DamageClass
     {
-        return $this->category;
+        return $this->damageClass;
     }
 
     /**
-     * @param DamageClass $category
+     * @param DamageClass $damageClass
      */
-    public function setCategory(DamageClass $category): void
+    public function setDamageClass(DamageClass $damageClass): void
     {
-        $this->category = $category;
+        $this->damageClass = $damageClass;
     }
 
     /**
@@ -204,34 +203,32 @@ class Move
 
         return $this;
     }
-//
-//    /**
-//     * @return Collection|PokemonMovesLevel[]
-//     */
-//    public function getPokemonMovesLevel(): Collection
-//    {
-//        return $this->pokemonMovesLevel;
-//    }
-//
-//    public function addPokemonMovesLevel(PokemonMovesLevel $pokemonMovesLevel): self
-//    {
-//        if (!$this->pokemonMovesLevel->contains($pokemonMovesLevel)) {
-//            $this->pokemonMovesLevel[] = $pokemonMovesLevel;
-//            $pokemonMovesLevel->setMove($this);
-//        }
-//
-//        return $this;
-//    }
-//
-//    public function removePokemonMovesLevel(PokemonMovesLevel $pokemonMovesLevel): self
-//    {
-//        if ($this->pokemonMovesLevel->removeElement($pokemonMovesLevel)) {
-//            // set the owning side to null (unless already changed)
-//            if ($pokemonMovesLevel->getMove() === $this) {
-//                $pokemonMovesLevel->setMove(null);
-//            }
-//        }
-//
-//        return $this;
-//    }
+
+    /**
+     * @return Collection|PokemonMovesLearnVersion[]
+     */
+    public function getPokemonMovesLearnVersion(): Collection
+    {
+        return $this->pokemonMovesLearnVersion;
+    }
+
+    /**
+     * @param PokemonMovesLearnVersion $pokemonMovesLearnVersion
+     */
+    public function addPokemonMovesLearnVersion(PokemonMovesLearnVersion $pokemonMovesLearnVersion)
+    {
+        if (!$this->pokemonMovesLearnVersion->contains($pokemonMovesLearnVersion)) {
+            $this->pokemonMovesLearnVersion[] = $pokemonMovesLearnVersion;
+        }
+    }
+
+    /**
+     * @param PokemonMovesLearnVersion $pokemonMovesLearnVersion
+     */
+    public function removePokemonMovesLearnVersion(PokemonMovesLearnVersion $pokemonMovesLearnVersion)
+    {
+        if ($this->pokemonMovesLearnVersion->contains($pokemonMovesLearnVersion)) {
+            $this->pokemonMovesLearnVersion->remove($pokemonMovesLearnVersion);
+        }
+    }
 }

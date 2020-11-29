@@ -9,13 +9,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
 
 /**
- * Class StatsIvsPkmn
+ * Class StatIv
  * @package App\Entity\Stats
  *
- * @ORM\Table(name="stats_ivs_pkmn")
+ * @ORM\Table(name="stats_iv")
  * @Entity
  */
-class StatsIvsPkmn
+class StatIv
 {
     /**
      * @var int $id id des ivs

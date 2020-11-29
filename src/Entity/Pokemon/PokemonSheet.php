@@ -4,12 +4,13 @@
 namespace App\Entity\Pokemon;
 
 
+use App\Entity\Infos\Ability;
 use App\Entity\Infos\Gender;
 use App\Entity\Infos\Nature;
 use App\Entity\Moves\Move;
-use App\Entity\Stats\StatsEvsPkmn;
-use App\Entity\Stats\StatsIvsPkmn;
-use App\Entity\Stats\StatsPkmn;
+use App\Entity\Stats\StatsEv;
+use App\Entity\Stats\StatIv;
+use App\Entity\Stats\Stats;
 use App\Entity\Users\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -53,6 +54,13 @@ class PokemonSheet
     private ?string $nickname;
 
     /**
+     * @var integer $level le niveau du pokemon
+     *
+     * @ORM\Column(name="level", type="integer", length=3)
+     */
+    private int $level;
+
+    /**
      * @var Gender $gender le genre du pokemon
      *
      * @OneToOne(targetEntity="App\Entity\Infos\Gender")
@@ -61,35 +69,34 @@ class PokemonSheet
     private Gender $gender;
 
     /**
-     * @var integer $level le niveau du pokemon
-     *
-     * @ORM\Column(name="level", type="integer", length=3)
-     */
-    private int $level;
-
-    /**
-     * @OneToOne(targetEntity="App\Entity\Infos\Nature")
+     * @ManyToOne(targetEntity="App\Entity\Infos\Nature")
      * @JoinColumn(name="nature_id", referencedColumnName="id")
      */
     private Nature $nature;
 
     /**
-     * @OneToOne(targetEntity="App\Entity\Stats\StatsIvsPkmn")
+     * @ManyToOne(targetEntity="App\Entity\Infos\Ability")
+     * @JoinColumn(name="ability_id", referencedColumnName="id")
+     */
+    private Ability $ability;
+
+    /**
+     * @OneToOne(targetEntity="App\Entity\Stats\StatIv")
      * @JoinColumn(name="ivs_id", referencedColumnName="id")
      */
-    private StatsIvsPkmn $ivs;
+    private StatIv $ivs;
 
     /**
-     * @OneToOne(targetEntity="App\Entity\Stats\StatsEvsPkmn")
+     * @OneToOne(targetEntity="App\Entity\Stats\StatsEv")
      * @JoinColumn(name="evs_id", referencedColumnName="id")
      */
-    private StatsEvsPkmn $evs;
+    private StatsEv $evs;
 
     /**
-     * @OneToOne(targetEntity="App\Entity\Stats\StatsPkmn")
+     * @OneToOne(targetEntity="App\Entity\Stats\Stats")
      * @JoinColumn(name="stats_id", referencedColumnName="id")
      */
-    private StatsPkmn $stats;
+    private Stats $stats;
 
     /**
      * @ManyToMany(targetEntity="App\Entity\Moves\Move")
@@ -101,12 +108,12 @@ class PokemonSheet
     private Collection $moves;
 
     /**
-     * @var User
+     * @var User|null
      *
      * @ManyToOne(targetEntity="App\Entity\Users\User", inversedBy="pokemonSheet")
-     * @JoinColumn(name="user_id", referencedColumnName="id")
+     * @JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
      */
-    private User $user;
+    private ?User $user;
 
     /**
      * PokemonSheet constructor.
@@ -178,6 +185,22 @@ class PokemonSheet
     public function setGender(Gender $gender): void
     {
         $this->gender = $gender;
+    }
+
+    /**
+     * @return Ability
+     */
+    public function getAbility(): Ability
+    {
+        return $this->ability;
+    }
+
+    /**
+     * @param Ability $ability
+     */
+    public function setAbility(Ability $ability): void
+    {
+        $this->ability = $ability;
     }
 
     /**

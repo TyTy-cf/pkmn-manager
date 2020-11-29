@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * Class Abilities *
+ * Class Ability *
  * @package App\Entity\Infos
  *
  * @ORM\Table(name="damage_class")

@@ -145,7 +145,7 @@ class PokemonManager
                 }
             }
 
-            // Set the Abilities
+            // Set the Ability
             foreach($apiResponse['abilities'] as $abilityDetailed)
             {
                 $ability = $this->abilitiesManager->getAbilitiesByLanguageAndSlug($language, 'ability-' . $abilityDetailed['ability']['name']);

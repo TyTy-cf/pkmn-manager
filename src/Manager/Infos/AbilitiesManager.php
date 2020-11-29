@@ -4,7 +4,7 @@
 namespace App\Manager\Infos;
 
 
-use App\Entity\Infos\Abilities;
+use App\Entity\Infos\Ability;
 use App\Entity\Users\Language;
 use App\Manager\Api\ApiManager;
 use App\Manager\TextManager;
@@ -57,7 +57,7 @@ class AbilitiesManager
         $this->apiManager = $apiManager;
         $this->textManager = $textManager;
         $this->languageManager = $languageManager;
-        $this->abilitiesRepository = $this->entityManager->getRepository(Abilities::class);
+        $this->abilitiesRepository = $this->entityManager->getRepository(Ability::class);
     }
 
     /**
@@ -88,7 +88,7 @@ class AbilitiesManager
                 $abilityDescription = $this->textManager->removeCharacter("\n", " ",
                                       $this->apiManager->getFlavorTextBasedOnLanguageFromArray($lang, $urlDetailed));
 
-                $newAbility = new Abilities();
+                $newAbility = new Ability();
                 $newAbility->setName($abilityNameLang);
                 $newAbility->setDescription($abilityDescription);
                 $newAbility->setSlug($slug);
@@ -102,10 +102,10 @@ class AbilitiesManager
     /**
      * @param Language $language
      * @param string $slug
-     * @return Abilities
+     * @return Ability
      * @throws NonUniqueResultException
      */
-    public function getAbilitiesByLanguageAndSlug(Language $language, string $slug): Abilities
+    public function getAbilitiesByLanguageAndSlug(Language $language, string $slug): Ability
     {
         return $this->abilitiesRepository->getAbilitiesByLanguageAndSlug($language, $slug);
     }

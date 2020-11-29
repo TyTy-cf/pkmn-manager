@@ -4,7 +4,7 @@
 namespace App\Entity\Users;
 
 
-use App\Entity\Infos\Abilities;
+use App\Entity\Infos\Ability;
 use App\Entity\Traits\TraitNames;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

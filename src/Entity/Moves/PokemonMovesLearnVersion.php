@@ -10,12 +10,12 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
- * Class PokemonMovesLevel
+ * Class PokemonMovesLearnVersion
  * @package App\Entity\Move
  * @Entity
- * @ORM\Table(name="pokemon_moves_level")
+ * @ORM\Table(name="pokemon_moves_learn_version")
  */
-class PokemonMovesLevel
+class PokemonMovesLearnVersion
 {
     /**
      * @ORM\Id()
@@ -25,16 +25,22 @@ class PokemonMovesLevel
     private string $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pokemon\Pokemon", inversedBy="pokemonMovesLevel", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Pokemon\Pokemon", inversedBy="pokemonMovesLearnVersion", fetch="EAGER")
      * @JoinColumn(name="pokemon_id", referencedColumnName="id")
      */
     private Pokemon $pokemon;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Moves\Move", inversedBy="pokemonMovesLevel")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Moves\Move", inversedBy="pokemonMovesLearnVersion")
      * @JoinColumn(name="move_id", referencedColumnName="id")
      */
     private Move $move;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Moves\MoveLearnMethod")
+     * @JoinColumn(name="move_learn_method_id", referencedColumnName="id")
+     */
+    private MoveLearnMethod $moveLearnMethod;
 
     /**
      * @var int $level
@@ -43,7 +49,7 @@ class PokemonMovesLevel
     private int $level;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Game\GameVersion", inversedBy="pokemonMovesLevels")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Game\GameVersion")
      * @JoinColumn(name="gameinfos_id", referencedColumnName="id")
      */
     private ?GameVersion $gameInfos;
@@ -94,6 +100,22 @@ class PokemonMovesLevel
     public function setMove(Move $move): void
     {
         $this->move = $move;
+    }
+
+    /**
+     * @return MoveLearnMethod
+     */
+    public function getMoveLearnMethod(): MoveLearnMethod
+    {
+        return $this->moveLearnMethod;
+    }
+
+    /**
+     * @param MoveLearnMethod $moveLearnMethod
+     */
+    public function setMoveLearnMethod(MoveLearnMethod $moveLearnMethod): void
+    {
+        $this->moveLearnMethod = $moveLearnMethod;
     }
 
     /**
