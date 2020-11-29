@@ -8,6 +8,7 @@ use App\Entity\Infos\Type\Type;
 use App\Entity\Pokemon\Pokemon;
 use App\Entity\Users\Language;
 use App\Manager\Api\ApiManager;
+use App\Manager\TextManager;
 use App\Manager\Users\LanguageManager;
 use App\Repository\Infos\Type\TypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -41,20 +42,28 @@ class TypeManager
     private TypeDamageRelationTypeManager $typeDamageFromTypeManager;
 
     /**
+     * @var TextManager $textManager
+     */
+    private TextManager $textManager;
+
+    /**
      * PokemonManager constructor.
      *
      * @param EntityManagerInterface $entityManager
      * @param ApiManager $apiManager
      * @param LanguageManager $languageManager
      * @param TypeDamageRelationTypeManager $typeDamageFromTypeManager
+     * @param TextManager $textManager
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         ApiManager $apiManager,
         LanguageManager $languageManager,
-        TypeDamageRelationTypeManager $typeDamageFromTypeManager
+        TypeDamageRelationTypeManager $typeDamageFromTypeManager,
+        TextManager $textManager
     ) {
         $this->entityManager = $entityManager;
+        $this->textManager = $textManager;
         $this->apiManager = $apiManager;
         $this->languageManager = $languageManager;
         $this->typeDamageFromTypeManager = $typeDamageFromTypeManager;
@@ -81,11 +90,9 @@ class TypeManager
 
         //If database is null, create type
         if (empty($newType) && $type['name'] !== "shadow" && $type['name'] !== "unknown") {
-
             $urlImg = '/images/types/' . $lang . '/';
             $language = $this->languageManager->getLanguageByCode($lang);
-            $slug = mb_strtolower('type-' . $type['name']);
-
+            $slug = $this->textManager->generateSlugFromClass(Type::class, $type['name']);
             //Create new object and save in databases
             $newType = new Type();
             $newType->setName($typeNameLang);

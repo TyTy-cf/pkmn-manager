@@ -4,8 +4,10 @@
 namespace App\Repository\Versions;
 
 
+use App\Entity\Users\Language;
 use App\Entity\Versions\Generation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,5 +21,22 @@ class GenerationRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Generation::class);
+    }
+
+    /**
+     * @param Language $language
+     * @param string $slug
+     * @return int|mixed|string|null
+     * @throws NonUniqueResultException
+     */
+    public function getGenerationByLanguageAndSlug(Language $language, string $slug)
+    {
+        $qb = $this->createQueryBuilder('generation');
+        $qb->join('generation.language', 'language');
+        $qb->where('language = :lang');
+        $qb->andWhere('generation.slug = :slug');
+        $qb->setParameter('lang', $language);
+        $qb->setParameter('slug', $slug);
+        return $qb->getQuery()->getOneOrNullResult();
     }
 }

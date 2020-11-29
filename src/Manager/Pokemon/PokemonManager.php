@@ -4,11 +4,15 @@
 namespace App\Manager\Pokemon;
 
 
+use App\Entity\Infos\Ability;
+use App\Entity\Infos\Type\Type;
 use App\Entity\Pokemon\Pokemon;
+use App\Entity\Stats\StatsEffort;
 use App\Manager\Api\ApiManager;
-use App\Manager\Infos\AbilitiesManager;
+use App\Manager\Infos\AbilitiyManager;
 use App\Manager\Infos\Type\TypeManager;
 use App\Manager\Moves\MoveManager;
+use App\Manager\TextManager;
 use App\Manager\Users\LanguageManager;
 use App\Repository\Pokemon\PokemonRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -28,9 +32,9 @@ class PokemonManager
     private EntityManagerInterface $entityManager;
 
     /**
-     * @var AbilitiesManager
+     * @var AbilitiyManager
      */
-    private AbilitiesManager $abilitiesManager;
+    private AbilitiyManager $abilitiesManager;
 
     /**
      * @var TypeManager
@@ -53,22 +57,29 @@ class PokemonManager
     private MoveManager $movesManager;
 
     /**
+     * @var TextManager
+     */
+    private TextManager $textManager;
+
+    /**
      * PokemonManager constructor.
      *
      * @param EntityManagerInterface $entityManager
-     * @param AbilitiesManager $abilitiesManager
+     * @param AbilitiyManager $abilitiesManager
      * @param TypeManager $typeManager
      * @param LanguageManager $languageManager
      * @param MoveManager $movesManager
      * @param ApiManager $apiManager
+     * @param TextManager $textManager
      */
     public function __construct(
         EntityManagerInterface $entityManager,
-        AbilitiesManager $abilitiesManager,
+        AbilitiyManager $abilitiesManager,
         TypeManager $typeManager,
         LanguageManager $languageManager,
         MoveManager $movesManager,
-        ApiManager $apiManager
+        ApiManager $apiManager,
+        TextManager $textManager
     ) {
         $this->entityManager = $entityManager;
         $this->pokemonRepository = $this->entityManager->getRepository(Pokemon::class);
@@ -77,6 +88,7 @@ class PokemonManager
         $this->languageManager = $languageManager;
         $this->movesManager = $movesManager;
         $this->apiManager = $apiManager;
+        $this->textManager = $textManager;
     }
 
     /**
@@ -111,7 +123,7 @@ class PokemonManager
      */
     public function saveNewPokemon(string $lang, array $apiResponse)
     {
-        $slug = 'pokemon-' . $apiResponse['name'];
+        $slug = $this->textManager->generateSlugFromClass(Pokemon::class, $apiResponse['name']);
 
         if (($newPokemon = $this->pokemonRepository->getPokemonByLanguageAndSlug($lang, $slug)) == null && $apiResponse['stats'] )
         {
@@ -131,33 +143,45 @@ class PokemonManager
             $pokemon->setLanguage($language);
 
             // Add the stats
+            $statsEffort = new StatsEffort();
             foreach ($apiResponse['stats'] as $stat) {
                 if ($stat['stat']['name'] == 'hp') {
                     $pokemon->setHp($stat['base_stat']);
+                    $statsEffort->setHp($stat['effort']);
                 } elseif ($stat['stat']['name'] == 'attack') {
                     $pokemon->setAtk($stat['base_stat']);
+                    $statsEffort->setAtk($stat['effort']);
                 } elseif ($stat['stat']['name'] == 'defense') {
                     $pokemon->setDef($stat['base_stat']);
+                    $statsEffort->setDef($stat['effort']);
                 } elseif ($stat['stat']['name'] == 'special-attack') {
                     $pokemon->setSpa($stat['base_stat']);
+                    $statsEffort->setSpa($stat['effort']);
                 } elseif ($stat['stat']['name'] == 'special-defense') {
                     $pokemon->setSpd($stat['base_stat']);
+                    $statsEffort->setSpd($stat['effort']);
                 } elseif ($stat['stat']['name'] == 'speed') {
                     $pokemon->setSpe($stat['base_stat']);
+                    $statsEffort->setSpe($stat['effort']);
                 }
             }
+            // Persist the StatsEffort
+            $this->entityManager->persist($statsEffort);
+            $pokemon->setStatsEffort($statsEffort);
 
             // Set the Ability
             foreach($apiResponse['abilities'] as $abilityDetailed)
             {
-                $ability = $this->abilitiesManager->getAbilitiesByLanguageAndSlug($language, 'ability-' . $abilityDetailed['ability']['name']);
+                $slugAbility = $this->textManager->generateSlugFromClass(Ability::class, $abilityDetailed['ability']['name']);
+                $ability = $this->abilitiesManager->getAbilitiesByLanguageAndSlug($language, $slugAbility);
                 $pokemon->addAbilities($ability);
             }
 
             // Set the Type
             foreach($apiResponse['types'] as $typesDetailed)
             {
-                $type = $this->typeManager->getTypeByLanguageAndSlug($language, 'type-' . $typesDetailed['type']['name']);
+                $slugType = $this->textManager->generateSlugFromClass(Type::class, $typesDetailed['type']['name']);
+                $type = $this->typeManager->getTypeByLanguageAndSlug($language, $slugType);
                 $pokemon->addType($type);
             }
 

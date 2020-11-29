@@ -1,12 +1,12 @@
 <?php
 
 
-namespace App\Command\Move;
+namespace App\Command\Versions;
 
 
+use App\Command\AbstractCommand;
 use App\Manager\Api\ApiManager;
-use App\Manager\Moves\DamageClassManager;
-use Doctrine\ORM\NonUniqueResultException;
+use App\Manager\Versions\GenerationManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
@@ -14,13 +14,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-class DamageClassCommand extends Command
+class GenerationCommand extends AbstractCommand
 {
-
-    /**
-     * @var DamageClassManager $damageClassManager
-     */
-    private DamageClassManager $damageClassManager;
 
     /**
      * @var ApiManager $apiManager ;
@@ -28,14 +23,19 @@ class DamageClassCommand extends Command
     private ApiManager $apiManager;
 
     /**
+     * @var GenerationManager $generationManager
+     */
+    private GenerationManager $generationManager;
+
+    /**
      * ExcecCommand constructor
-     * @param DamageClassManager $damageClassManager
+     * @param GenerationManager $generationManager
      * @param ApiManager $apiManager
      */
-    public function __construct(DamageClassManager $damageClassManager,
+    public function __construct(GenerationManager $generationManager,
                                 ApiManager $apiManager)
     {
-        $this->damageClassManager = $damageClassManager;
+        $this->generationManager = $generationManager;
         $this->apiManager = $apiManager;
         parent::__construct();
     }
@@ -46,9 +46,9 @@ class DamageClassCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('app:damage-class:all')
+            ->setName('app:generation:all')
             ->addArgument('lang', InputArgument::REQUIRED, 'Language used')
-            ->setDescription('Execute app:pokemon to fetch all pokemon for language');
+            ->setDescription('Execute app:pokemon to fetech all pokemon for language');
     }
 
     /**
@@ -56,29 +56,25 @@ class DamageClassCommand extends Command
      * @param OutputInterface $output
      *
      * @return int
-     * @throws TransportExceptionInterface|NonUniqueResultException
+     * @throws TransportExceptionInterface
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // Fetch parameter
         $lang = $input->getArgument('lang');
 
-
         $output->writeln('');
-        $output->writeln('<info>Fetching all damages-class for language ' . $lang . '</info>');
-
-        // Fetch parameter
-        $lang = $input->getArgument('lang');
+        $output->writeln('<info>Fetching all generation for language ' . $lang . '</info>');
 
         //Get list of types
-        $damageClassList = $this->apiManager->getAllDamageClassJson()->toArray();
+        $generationList = $this->apiManager->getAllGenerationJson()->toArray();
 
         //Initialize progress bar
-        $progressBar = new ProgressBar($output, count($damageClassList['results']));
+        $progressBar = new ProgressBar($output, count($generationList['results']));
         $progressBar->start();
 
-        foreach ($damageClassList['results'] as $damageClass) {
-            $this->damageClassManager->createDamageClassIfNotExist($lang, $damageClass);
+        foreach ($generationList['results'] as $generation) {
+            $this->generationManager->createGenerationIfNotExist($lang, $generation);
             $progressBar->advance();
         }
 
@@ -87,5 +83,4 @@ class DamageClassCommand extends Command
 
         return command::SUCCESS;
     }
-
 }

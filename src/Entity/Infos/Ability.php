@@ -17,7 +17,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @package App\Entity\Infos
  *
  * @ORM\Table(name="ability")
- * @ORM\Entity(repositoryClass="App\Repository\Infos\AbilitiesRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Infos\AbilityRepository")
  * @UniqueEntity(
  *     fields={"name"},
  *     message="Ce talent existe déjà !"

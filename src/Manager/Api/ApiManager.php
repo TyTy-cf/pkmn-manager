@@ -120,6 +120,15 @@ class ApiManager
     }
 
     /**
+     * @return mixed
+     * @throws TransportExceptionInterface
+     */
+    public function getAllGenerationJson()
+    {
+        return $this->apiConnect("https://pokeapi.co/api/v2/generation/");
+    }
+
+    /**
      * @param $lang
      * @param $url
      * @return mixed

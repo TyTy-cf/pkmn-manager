@@ -5,7 +5,7 @@ namespace App\Command\Infos;
 
 
 use App\Manager\Api\ApiManager;
-use App\Manager\Infos\AbilitiesManager;
+use App\Manager\Infos\AbilitiyManager;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -14,13 +14,13 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-class AbilitiesCommand extends Command
+class AbilityCommand extends Command
 {
 
     /**
-     * @var AbilitiesManager $abilitiesManager
+     * @var AbilitiyManager $abilitiesManager
      */
-    private AbilitiesManager $abilitiesManager;
+    private AbilitiyManager $abilitiesManager;
 
     /**
      * @var ApiManager $apiManager ;
@@ -29,10 +29,10 @@ class AbilitiesCommand extends Command
 
     /**
      * ExcecCommand constructor
-     * @param AbilitiesManager $abilitiesManager
+     * @param AbilitiyManager $abilitiesManager
      * @param ApiManager $apiManager
      */
-    public function __construct(AbilitiesManager $abilitiesManager,
+    public function __construct(AbilitiyManager $abilitiesManager,
                                 ApiManager $apiManager)
     {
         $this->abilitiesManager = $abilitiesManager;
@@ -46,7 +46,7 @@ class AbilitiesCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('app:abilities:all')
+            ->setName('app:ability:all')
             ->addArgument('lang', InputArgument::REQUIRED, 'Language used')
             ->setDescription('Execute app:pokemon to fetech all pokemon for language');
     }

@@ -4,9 +4,11 @@
 namespace App\Manager\Infos;
 
 
+use App\Entity\Infos\Ability;
 use App\Entity\Infos\Nature;
 use App\Entity\Users\Language;
 use App\Manager\Api\ApiManager;
+use App\Manager\TextManager;
 use App\Repository\Infos\NatureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
@@ -30,18 +32,26 @@ class NatureManager
     private ApiManager $apiManager;
 
     /**
+     * @var TextManager
+     */
+    private TextManager $textManager;
+
+    /**
      * PokemonManager constructor.
      *
      * @param EntityManagerInterface $entityManager
      * @param NatureRepository $natureRepository
      * @param ApiManager $apiManager
+     * @param TextManager $textManager
      */
     public function __construct(EntityManagerInterface $entityManager,
                                 NatureRepository $natureRepository,
-                                ApiManager $apiManager)
+                                ApiManager $apiManager,
+                                TextManager $textManager)
     {
         $this->entityManager = $entityManager;
         $this->apiManager = $apiManager;
+        $this->textManager = $textManager;
         $this->natureRepository = $natureRepository;
     }
 
@@ -55,7 +65,7 @@ class NatureManager
      */
     public function createNatureIfNotExist(Language $language, array $urlContent)
     {
-        $slug = 'nature-'. $urlContent['name'];
+        $slug = $this->textManager->generateSlugFromClass(Nature::class, $urlContent['name']);
         $codeLang = $language->getCode();
         if (($nature = $this->natureRepository->getNatureByLanguageAndSlug($codeLang, $slug)) == null)
         {

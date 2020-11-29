@@ -22,6 +22,14 @@ class TextManager
         $text = trim($text, '-');
         // remove duplicate -
         $text = preg_replace('~-+~', '-', $text);
+        // add a - before an uppercase letter
+        $text = preg_replace('/(?<!\ )[A-Z]/', '-$0', $text);
+        // check if the 1st letter become a - and remove it
+        if (substr($text, 0, 1) === '-')
+        {
+            $text = substr($text, 1);
+        }
+
         // lowercase
         $text = strtolower($text);
 
@@ -30,6 +38,17 @@ class TextManager
         }
 
         return $text;
+    }
+
+    /**
+     * @param string $className
+     * @param string $text
+     * @return string
+     */
+    public function generateSlugFromClass(string $className, string $text): string
+    {
+        $splitClass = explode('\\', $className);
+        return $this->slugify($splitClass[sizeof($splitClass)-1]) . '-' . $text;
     }
 
     /**

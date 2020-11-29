@@ -9,10 +9,17 @@ use App\Entity\Traits\TraitNames;
 use App\Entity\Traits\TraitSlug;
 use App\Entity\Versions\VersionGroup;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 
-class MachineMove
+/**
+ * Class MachineMove
+ * @package App\Entity\Moves
+ * @Entity
+ * @ORM\Table(name="move_machine")
+ */
+class MoveMachine
 {
 
     /**

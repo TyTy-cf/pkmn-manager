@@ -7,6 +7,7 @@ use App\Manager\Api\ApiManager;
 use App\Manager\Infos\Type\TypeManager;
 use App\Repository\Moves\MoveRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class MoveManager
 {
@@ -49,6 +50,7 @@ class MoveManager
      * @param $language
      * @param string $lang
      * @param $apiResponse
+     * @throws TransportExceptionInterface
      */
     public function saveMove($language, string $lang, array $apiResponse)
     {
@@ -57,13 +59,11 @@ class MoveManager
             $movesResponse = $this->apiManager->getDetailed($moveUrl);
             $movesResponse = $movesResponse->toarray();
 
-
             foreach ($movesResponse['names'] as $moveName) {
 
                 if ($moveNameLang = $moveName['language']['name'] === $lang) {
                     if ($this->movesRepository->findOneBy(['name' => $moveNameLang]) === null) {
                         $newMove = new Move();
-
                         $newMove->setPp($movesResponse['pp']);
                         $newMove->setAccuracy($movesResponse['accuracy']);
                         $newMove->setPower($movesResponse['power']);
@@ -77,17 +77,9 @@ class MoveManager
                                 break;
                             }
                         }
-
-                        dump($newMove);
-                        die();
-
-
                     }
                 }
-
             }
-
-
         }
     }
 

@@ -9,17 +9,17 @@ use App\Entity\Users\Language;
 use App\Manager\Api\ApiManager;
 use App\Manager\TextManager;
 use App\Manager\Users\LanguageManager;
-use App\Repository\Infos\AbilitiesRepository;
+use App\Repository\Infos\AbilityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-class AbilitiesManager
+class AbilitiyManager
 {
     /**
-     * @var AbilitiesRepository $abilitiesRepository
+     * @var AbilityRepository $abilitiesRepository
      */
-    private AbilitiesRepository $abilitiesRepository;
+    private AbilityRepository $abilitiesRepository;
 
     /**
      * @var EntityManagerInterface
@@ -30,6 +30,7 @@ class AbilitiesManager
      * @var ApiManager
      */
     private ApiManager $apiManager;
+
     /**
      * @var TextManager
      */
@@ -41,7 +42,7 @@ class AbilitiesManager
     private LanguageManager $languageManager;
 
     /**
-     * PokemonManager constructor.
+     * AbilitiyManager constructor.
      *
      * @param EntityManagerInterface $entityManager
      * @param ApiManager $apiManager
@@ -78,7 +79,7 @@ class AbilitiesManager
             $language = $this->languageManager->getLanguageByCode($lang);
 
             //Check if the data exist in databases
-            $slug = 'ability-'. $ability['name'];
+            $slug = $this->textManager->generateSlugFromClass(Ability::class, $ability['name']);
 
             if (($newAbility = $this->abilitiesRepository->getAbilitiesByLanguageAndSlug($language, $slug)) == null)
             {

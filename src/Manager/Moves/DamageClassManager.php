@@ -79,7 +79,7 @@ class DamageClassManager
         $language = $this->languageManager->getLanguageByCode($lang);
 
         //Check if the data exist in databases
-        $slug = 'damage-class-'. $apiDamageClass['name'];
+        $slug = $this->textManager->generateSlugFromClass(DamageClass::class, $apiDamageClass['name']);
 
         if (($newDamageClass = $this->damageClassRepository->getDamageClassByLanguageAndSlug($lang, $slug)) == null)
         {

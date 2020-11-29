@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Command\Move;
+namespace App\Command\Moves;
 
 
 use App\Manager\Api\ApiManager;

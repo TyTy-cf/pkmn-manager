@@ -190,6 +190,22 @@ class Pokemon
     }
 
     /**
+     * @return StatsEffort
+     */
+    public function getStatsEffort(): StatsEffort
+    {
+        return $this->statsEffort;
+    }
+
+    /**
+     * @param StatsEffort $statsEffort
+     */
+    public function setStatsEffort(StatsEffort $statsEffort): void
+    {
+        $this->statsEffort = $statsEffort;
+    }
+
+    /**
      * @param Ability $abilities
      */
     public function addAbilities(Ability $abilities): void

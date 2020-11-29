@@ -41,14 +41,14 @@ class Nature
     /**
      * @var string|null $statIncreased la stats "bonus" de la nature
      *
-     * @ORM\Column(name="stat_increased", type="string", length=12, nullable=true)
+     * @ORM\Column(name="stat_increased", type="string", length=120, nullable=true)
      */
     private ?string $statIncreased;
 
     /**
      * @var string|null $statDecreased
      *
-     * @ORM\Column(name="stat_decreased", type="string", length=12, nullable=true)
+     * @ORM\Column(name="stat_decreased", type="string", length=120, nullable=true)
      */
     private ?string $statDecreased;
 
