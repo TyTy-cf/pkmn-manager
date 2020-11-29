@@ -84,13 +84,14 @@ class TypeManager
 
             $urlImg = '/images/types/' . $lang . '/';
             $language = $this->languageManager->getLanguageByCode($lang);
+            $slug = mb_strtolower('type-' . $type['name']);
 
             //Create new object and save in databases
             $newType = new Type();
             $newType->setName($typeNameLang);
-            $newType->setSlug(mb_strtolower('type-' . $type['name']));
+            $newType->setSlug($slug);
             $newType->setLanguage($language);
-            $newType->setImg($urlImg . $type['name'] . '.png');
+            $newType->setImg($urlImg . $slug . '.png');
             $newType->setCodeApi($codeApi);
             $this->entityManager->persist($newType);
             $this->entityManager->flush();

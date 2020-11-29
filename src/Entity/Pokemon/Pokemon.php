@@ -6,6 +6,7 @@ namespace App\Entity\Pokemon;
 use App\Entity\Infos\Ability;
 use App\Entity\Infos\Type\Type;
 use App\Entity\Moves\PokemonMovesLearnVersion;
+use App\Entity\Stats\StatsEffort;
 use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
 use App\Entity\Traits\TraitSlug;
@@ -71,6 +72,13 @@ class Pokemon
     private Collection $pokemonMovesLearnVersion;
 
     /**
+     * @var StatsEffort
+     * @ORM\ManyToOne(targetEntity="App\Entity\Stats\StatsEffort")
+     * @JoinColumn(name="stats_effort_id")
+     */
+    private StatsEffort $statsEffort;
+
+    /**
      * @ORM\Column(name="url_icon", type="string", length=255, nullable=true)
      */
     private ?string $urlIcon;
@@ -79,6 +87,18 @@ class Pokemon
      * @ORM\Column(name="url_sprite_img", type="string", length=255, nullable=true)
      */
     private ?string $urlSpriteImg;
+
+    /**
+     * @var int|null
+     * @ORM\Column(name="weight", type="integer", length=6, nullable=true)
+     */
+    private ?int $weight;
+
+    /**
+     * @var int|null
+     * @ORM\Column(name="height", type="integer", length=6, nullable=true)
+     */
+    private ?int $height;
 
     /**
      * Pokemon constructor.
@@ -135,6 +155,38 @@ class Pokemon
     public function setUrlSpriteImg(?string $urlSpriteImg): void
     {
         $this->urlSpriteImg = $urlSpriteImg;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getWeight(): ?int
+    {
+        return $this->weight;
+    }
+
+    /**
+     * @param int|null $weight
+     */
+    public function setWeight(?int $weight): void
+    {
+        $this->weight = $weight;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getHeight(): ?int
+    {
+        return $this->height;
+    }
+
+    /**
+     * @param int|null $height
+     */
+    public function setHeight(?int $height): void
+    {
+        $this->height = $height;
     }
 
     /**

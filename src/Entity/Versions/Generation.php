@@ -1,32 +1,32 @@
 <?php
 
-namespace App\Entity\Game;
 
-use App\Entity\Moves\PokemonMovesLearnVersion;
+namespace App\Entity\Versions;
+
+
 use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
 use App\Entity\Traits\TraitSlug;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\Game\GameVersionRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Versions\GenerationRepository")
+ * @ORM\Table(name="generation")
  */
-class GameVersion
+class Generation
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private ?int $id;
+    private int $id;
 
     use TraitNames;
 
-    use TraitSlug;
-
     use TraitLanguage;
+
+    use TraitSlug;
 
     /**
      * @ORM\Column(type="string", length=2)
@@ -34,29 +34,27 @@ class GameVersion
     private string $code;
 
     /**
-     * @return int|null
+     * @return int
      */
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getCode(): ?string
+    public function getCode(): string
     {
         return $this->code;
     }
 
     /**
      * @param string $code
-     * @return $this
      */
-    public function setCode(string $code): self
+    public function setCode(string $code): void
     {
         $this->code = $code;
-
-        return $this;
     }
+
 }

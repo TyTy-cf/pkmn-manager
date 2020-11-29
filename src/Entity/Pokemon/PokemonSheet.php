@@ -9,7 +9,7 @@ use App\Entity\Infos\Gender;
 use App\Entity\Infos\Nature;
 use App\Entity\Moves\Move;
 use App\Entity\Stats\StatsEv;
-use App\Entity\Stats\StatIv;
+use App\Entity\Stats\StatsIv;
 use App\Entity\Stats\Stats;
 use App\Entity\Users\User;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -81,10 +81,10 @@ class PokemonSheet
     private Ability $ability;
 
     /**
-     * @OneToOne(targetEntity="App\Entity\Stats\StatIv")
+     * @OneToOne(targetEntity="App\Entity\Stats\StatsIv")
      * @JoinColumn(name="ivs_id", referencedColumnName="id")
      */
-    private StatIv $ivs;
+    private StatsIv $ivs;
 
     /**
      * @OneToOne(targetEntity="App\Entity\Stats\StatsEv")

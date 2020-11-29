@@ -124,6 +124,8 @@ class PokemonManager
             $pokemon = new Pokemon();
             $pokemon->setName(ucfirst($pokemonName));
             $pokemon->setSlug($slug);
+            $pokemon->setWeight($apiResponse['weight']);
+            $pokemon->setHeight($apiResponse['height']);
             $pokemon->setUrlIcon($apiResponse['sprites']['versions']['generation-viii']['icons']['front_default']);
             $pokemon->setUrlSpriteImg($apiResponse['sprites']['other']['official-artwork']['front_default']);
             $pokemon->setLanguage($language);

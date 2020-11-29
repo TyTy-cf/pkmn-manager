@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping\Entity;
  * @ORM\Table(name="stats_iv")
  * @Entity
  */
-class StatIv
+class StatsIv
 {
     /**
      * @var int $id id des ivs

@@ -3,7 +3,7 @@
 
 namespace App\Entity\Moves;
 
-use App\Entity\Game\GameVersion;
+use App\Entity\Versions\VersionGroup;
 use App\Entity\Pokemon\Pokemon;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
@@ -25,6 +25,12 @@ class PokemonMovesLearnVersion
     private string $id;
 
     /**
+     * @var int $level
+     * @ORM\Column(name="level", type="integer", length=3)
+     */
+    private int $level;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Pokemon\Pokemon", inversedBy="pokemonMovesLearnVersion", fetch="EAGER")
      * @JoinColumn(name="pokemon_id", referencedColumnName="id")
      */
@@ -43,16 +49,10 @@ class PokemonMovesLearnVersion
     private MoveLearnMethod $moveLearnMethod;
 
     /**
-     * @var int $level
-     * @ORM\Column(name="level", type="integer", length=3)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Versions\VersionGroup")
+     * @JoinColumn(name="version_group_id", referencedColumnName="id")
      */
-    private int $level;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Game\GameVersion")
-     * @JoinColumn(name="gameinfos_id", referencedColumnName="id")
-     */
-    private ?GameVersion $gameInfos;
+    private VersionGroup $versionGroup;
 
     /**
      * @return string
@@ -135,19 +135,19 @@ class PokemonMovesLearnVersion
     }
 
     /**
-     * @return GameVersion|null
+     * @return VersionGroup
      */
-    public function getGameinfos(): ?GameVersion
+    public function getVersionGroup(): VersionGroup
     {
-        return $this->gameInfos;
+        return $this->versionGroup;
     }
 
     /**
-     * @param GameVersion|null $gameInfos
+     * @param VersionGroup $versionGroup
      */
-    public function setGameinfos(?GameVersion $gameInfos): void
+    public function setVersionGroup(VersionGroup $versionGroup): void
     {
-        $this->gameInfos = $gameInfos;
+        $this->versionGroup = $versionGroup;
     }
 
 }

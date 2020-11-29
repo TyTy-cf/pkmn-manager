@@ -1,26 +1,26 @@
 <?php
 
-namespace App\Repository\Game;
+namespace App\Repository\Versions;
 
-use App\Entity\Game\GameVersion;
+use App\Entity\Versions\VersionGroup;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method GameVersion|null find($id, $lockMode = null, $lockVersion = null)
- * @method GameVersion|null findOneBy(array $criteria, array $orderBy = null)
- * @method GameVersion[]    findAll()
- * @method GameVersion[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method VersionGroup|null find($id, $lockMode = null, $lockVersion = null)
+ * @method VersionGroup|null findOneBy(array $criteria, array $orderBy = null)
+ * @method VersionGroup[]    findAll()
+ * @method VersionGroup[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class GameVersionRepository extends ServiceEntityRepository
+class VersionGroupRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, GameVersion::class);
+        parent::__construct($registry, VersionGroup::class);
     }
 
     // /**
-    //  * @return GameVersion[] Returns an array of GameVersion objects
+    //  * @return VersionGroup[] Returns an array of VersionGroup objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class GameVersionRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?GameVersion
+    public function findOneBySomeField($value): ?VersionGroup
     {
         return $this->createQueryBuilder('g')
             ->andWhere('g.exampleField = :val')
