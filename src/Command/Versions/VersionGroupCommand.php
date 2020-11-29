@@ -6,8 +6,8 @@ namespace App\Command\Versions;
 
 use App\Command\AbstractCommand;
 use App\Manager\Api\ApiManager;
-use App\Manager\Versions\GenerationManager;
-use Doctrine\ORM\NonUniqueResultException;
+use App\Manager\Versions\VersionGroupManager;
+use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
@@ -15,7 +15,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-class GenerationCommand extends AbstractCommand
+class VersionGroupCommand extends AbstractCommand
 {
 
     /**
@@ -24,19 +24,21 @@ class GenerationCommand extends AbstractCommand
     private ApiManager $apiManager;
 
     /**
-     * @var GenerationManager $generationManager
+     * @var VersionGroupManager $versionGroupManager
      */
-    private GenerationManager $generationManager;
+    private VersionGroupManager $versionGroupManager;
 
     /**
      * ExcecCommand constructor
-     * @param GenerationManager $generationManager
+     * @param VersionGroupManager $versionGroupManager
      * @param ApiManager $apiManager
      */
-    public function __construct(GenerationManager $generationManager,
-                                ApiManager $apiManager)
+    public function __construct(
+        VersionGroupManager $versionGroupManager,
+        ApiManager $apiManager
+    )
     {
-        $this->generationManager = $generationManager;
+        $this->versionGroupManager = $versionGroupManager;
         $this->apiManager = $apiManager;
         parent::__construct();
     }
@@ -47,7 +49,7 @@ class GenerationCommand extends AbstractCommand
     protected function configure()
     {
         $this
-            ->setName('app:generation:all')
+            ->setName('app:version-group:all')
             ->addArgument('lang', InputArgument::REQUIRED, 'Language used')
             ->setDescription('Execute app:pokemon to fetech all pokemon for language');
     }
@@ -57,25 +59,31 @@ class GenerationCommand extends AbstractCommand
      * @param OutputInterface $output
      *
      * @return int
-     * @throws TransportExceptionInterface|NonUniqueResultException
+     * @throws TransportExceptionInterface
+     * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // Fetch parameter
         $lang = $input->getArgument('lang');
         if ($this->checkLanguageExists($output, $lang)) {
+
             $output->writeln('');
-            $output->writeln('<info>Fetching all generation for language ' . $lang . '</info>');
+            $output->writeln('<info>Required : Generation. Fetching all generation for language ' . $lang . '</info>');
+            $this->executeCommand($output, $lang, 'app:generation:all');
+
+            $output->writeln('');
+            $output->writeln('<info>Fetching all version-group for language ' . $lang . '</info>');
 
             //Get list of types
-            $generationList = $this->apiManager->getAllGenerationJson()->toArray();
+            $versionGroupList = $this->apiManager->getAllVersionGroupJson()->toArray();
 
             //Initialize progress bar
-            $progressBar = new ProgressBar($output, count($generationList['results']));
+            $progressBar = new ProgressBar($output, count($versionGroupList['results']));
             $progressBar->start();
 
-            foreach ($generationList['results'] as $generation) {
-                $this->generationManager->createGenerationIfNotExist($lang, $generation);
+            foreach ($versionGroupList['results'] as $versionGroup) {
+                $this->versionGroupManager->createVersionGroupIfNotExist($lang, $versionGroup);
                 $progressBar->advance();
             }
 

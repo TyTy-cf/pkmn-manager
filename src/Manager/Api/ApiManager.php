@@ -129,6 +129,15 @@ class ApiManager
     }
 
     /**
+     * @return mixed
+     * @throws TransportExceptionInterface
+     */
+    public function getAllVersionGroupJson()
+    {
+        return $this->apiConnect("https://pokeapi.co/api/v2/version-group/");
+    }
+
+    /**
      * @param $lang
      * @param $url
      * @return mixed

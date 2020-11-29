@@ -39,4 +39,21 @@ class GenerationRepository extends ServiceEntityRepository
         $qb->setParameter('slug', $slug);
         return $qb->getQuery()->getOneOrNullResult();
     }
+
+    /**
+     * @param Language $language
+     * @param string $number
+     * @return int|mixed|string|null
+     * @throws NonUniqueResultException
+     */
+    public function getGenerationByLanguageAndGenerationNumber(Language $language, string $number)
+    {
+        $qb = $this->createQueryBuilder('generation');
+        $qb->join('generation.language', 'language');
+        $qb->where('language = :lang');
+        $qb->andWhere('generation.number = :number');
+        $qb->setParameter('lang', $language);
+        $qb->setParameter('number', $number);
+        return $qb->getQuery()->getOneOrNullResult();
+    }
 }

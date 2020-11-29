@@ -2,8 +2,10 @@
 
 namespace App\Repository\Versions;
 
+use App\Entity\Users\Language;
 use App\Entity\Versions\VersionGroup;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,32 +21,20 @@ class VersionGroupRepository extends ServiceEntityRepository
         parent::__construct($registry, VersionGroup::class);
     }
 
-    // /**
-    //  * @return VersionGroup[] Returns an array of VersionGroup objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param Language $language
+     * @param string $slug
+     * @return int|mixed|string|null
+     * @throws NonUniqueResultException
+     */
+    public function getVersionGroupByLanguageAndSlug(Language $language, string $slug)
     {
-        return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('g.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $qb = $this->createQueryBuilder('version_group');
+        $qb->join('version_group.language', 'language');
+        $qb->where('language = :lang');
+        $qb->andWhere('version_group.slug = :slug');
+        $qb->setParameter('lang', $language);
+        $qb->setParameter('slug', $slug);
+        return $qb->getQuery()->getOneOrNullResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?VersionGroup
-    {
-        return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
