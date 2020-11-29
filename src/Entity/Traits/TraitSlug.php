@@ -12,7 +12,7 @@ trait TraitSlug
     /**
      * @var string $slug
      *
-     * @ORM\Column(name="slug", type="string", length=36, nullable=true)
+     * @ORM\Column(name="slug", type="string", length=56, nullable=true)
      */
     private string $slug;
 

@@ -9,12 +9,14 @@ use App\Entity\Traits\TraitNames;
 use App\Entity\Traits\TraitSlug;
 use App\Entity\Users\Language;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 
 /**
  * Class Version
  * @package App\Entity\Versions
+ * @Entity(repositoryClass="App\Repository\Versions\VersionRepository")
  * @ORM\Table(name="version")
  */
 class Version

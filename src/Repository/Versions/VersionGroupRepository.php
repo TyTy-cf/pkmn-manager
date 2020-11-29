@@ -37,4 +37,21 @@ class VersionGroupRepository extends ServiceEntityRepository
         $qb->setParameter('slug', $slug);
         return $qb->getQuery()->getOneOrNullResult();
     }
+
+    /**
+     * @param Language $language
+     * @param string $name
+     * @return int|mixed|string|null
+     * @throws NonUniqueResultException
+     */
+    public function getVersionGroupByLanguageAndName(Language $language, string $name)
+    {
+        $qb = $this->createQueryBuilder('version_group');
+        $qb->join('version_group.language', 'language');
+        $qb->where('language = :lang');
+        $qb->andWhere('version_group.name = :name');
+        $qb->setParameter('lang', $language);
+        $qb->setParameter('name', $name);
+        return $qb->getQuery()->getOneOrNullResult();
+    }
 }

@@ -138,6 +138,15 @@ class ApiManager
     }
 
     /**
+     * @return mixed
+     * @throws TransportExceptionInterface
+     */
+    public function getAllVersionJson()
+    {
+        return $this->apiConnect("https://pokeapi.co/api/v2/version?offset=0&limit=34");
+    }
+
+    /**
      * @param $lang
      * @param $url
      * @return mixed
@@ -158,9 +167,11 @@ class ApiManager
     public function getNameBasedOnLanguageFromArray($lang, $apiResponse): ?string
     {
         $nameReturned = null;
-        foreach ($apiResponse as $name) {
-            if ($name['language']['name'] === $lang) {
-                $nameReturned = $name['name'];
+        if (sizeof($apiResponse) > 0) {
+            foreach ($apiResponse as $name) {
+                if ($name['language']['name'] === $lang) {
+                    $nameReturned = $name['name'];
+                }
             }
         }
         return $nameReturned;
