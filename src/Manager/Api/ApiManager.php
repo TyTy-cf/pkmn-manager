@@ -4,10 +4,8 @@
 namespace App\Manager\Api;
 
 
-use App\Entity\Pokemon\Pokemon;
 use http\Exception\RuntimeException;
 use Symfony\Component\HttpClient\HttpClient;
-use Symfony\Component\Validator\Constraints\Json;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 /**
@@ -147,6 +145,15 @@ class ApiManager
     }
 
     /**
+     * @return mixed
+     * @throws TransportExceptionInterface
+     */
+    public function getAllMoveLearnMethodJson()
+    {
+        return $this->apiConnect("https://pokeapi.co/api/v2/move-learn-method/");
+    }
+
+    /**
      * @param $lang
      * @param $url
      * @return mixed
@@ -171,6 +178,7 @@ class ApiManager
             foreach ($apiResponse as $name) {
                 if ($name['language']['name'] === $lang) {
                     $nameReturned = $name['name'];
+                    break;
                 }
             }
         }
@@ -184,11 +192,26 @@ class ApiManager
      */
     public function getFlavorTextBasedOnLanguageFromArray(string $lang, $apiResponse): ?string
     {
+        return $this->getFieldContentFromLanguage($lang, $apiResponse, 'flavor_text_entries', 'flavor_text');
+    }
+
+    /**
+     * @param $lang
+     *
+     * @param $apiResponse
+     * @param $mainField
+     * @param $field
+     * @return string
+     */
+    public function getFieldContentFromLanguage($lang, $apiResponse, $mainField, $field): ?string
+    {
         $description = null;
-        foreach ($apiResponse['flavor_text_entries'] as $flavor_text_entry) {
-            if ($flavor_text_entry['language']['name'] === $lang) {
-                $description = $flavor_text_entry['flavor_text'];
-                break;
+        if (sizeof($apiResponse) > 0) {
+            foreach ($apiResponse[$mainField] as $flavor_text_entry) {
+                if ($flavor_text_entry['language']['name'] === $lang) {
+                    $description = $flavor_text_entry[$field];
+                    break;
+                }
             }
         }
         return $description;
