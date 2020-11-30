@@ -7,13 +7,17 @@ namespace App\Manager\Pokemon;
 use App\Entity\Infos\Ability;
 use App\Entity\Infos\Type\Type;
 use App\Entity\Pokemon\Pokemon;
+use App\Entity\Pokemon\PokemonSpritesVersion;
 use App\Entity\Stats\StatsEffort;
+use App\Entity\Users\Language;
+use App\Entity\Versions\VersionGroup;
 use App\Manager\Api\ApiManager;
 use App\Manager\Infos\AbilitiyManager;
 use App\Manager\Infos\Type\TypeManager;
 use App\Manager\Moves\MoveManager;
 use App\Manager\TextManager;
 use App\Manager\Users\LanguageManager;
+use App\Manager\Versions\VersionGroupManager;
 use App\Repository\Pokemon\PokemonRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
@@ -62,6 +66,11 @@ class PokemonManager
     private TextManager $textManager;
 
     /**
+     * @var VersionGroupManager $versionGroupManager
+     */
+    private VersionGroupManager $versionGroupManager;
+
+    /**
      * PokemonManager constructor.
      *
      * @param EntityManagerInterface $entityManager
@@ -71,6 +80,8 @@ class PokemonManager
      * @param MoveManager $movesManager
      * @param ApiManager $apiManager
      * @param TextManager $textManager
+     * @param VersionGroupManager $versionGroupManager
+     * @param PokemonRepository $pokemonRepository
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -79,16 +90,19 @@ class PokemonManager
         LanguageManager $languageManager,
         MoveManager $movesManager,
         ApiManager $apiManager,
-        TextManager $textManager
+        TextManager $textManager,
+        VersionGroupManager $versionGroupManager,
+        PokemonRepository $pokemonRepository
     ) {
         $this->entityManager = $entityManager;
-        $this->pokemonRepository = $this->entityManager->getRepository(Pokemon::class);
+        $this->pokemonRepository = $pokemonRepository;
         $this->abilitiesManager = $abilitiesManager;
         $this->typeManager = $typeManager;
         $this->languageManager = $languageManager;
         $this->movesManager = $movesManager;
         $this->apiManager = $apiManager;
         $this->textManager = $textManager;
+        $this->versionGroupManager = $versionGroupManager;
     }
 
     /**
@@ -100,6 +114,28 @@ class PokemonManager
     public function findby(array $array)
     {
         return $this->pokemonRepository->findBy($array);
+    }
+
+    /**
+     * @param string $name
+     * @param string $languageCode
+     * @return Pokemon
+     * @throws NonUniqueResultException
+     */
+    public function getPokemonByNameAndLanguageCode(string $name, string $languageCode)
+    {
+        return $this->pokemonRepository->getPokemonByNameAndLanguageCode($name, $languageCode);
+    }
+
+    /**
+     * @param string $slug
+     * @param string $langCode
+     * @return Pokemon|null
+     * @throws NonUniqueResultException
+     */
+    public function getPokemonByLanguageAndSlug(string $langCode, string $slug): ?Pokemon
+    {
+        return $this->pokemonRepository->getPokemonByLanguageAndSlug($langCode, $slug);
     }
 
     /**
@@ -187,7 +223,6 @@ class PokemonManager
 
             $this->entityManager->persist($pokemon);
             $this->entityManager->flush();
-
         }
     }
 }

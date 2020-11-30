@@ -38,4 +38,21 @@ class PokemonRepository extends ServiceEntityRepository
         return $qb->getQuery()->getOneOrNullResult();
     }
 
+    /**
+     * @param string $name
+     * @param string $languageCode
+     * @return int|mixed|string|null
+     * @throws NonUniqueResultException
+     */
+    public function getPokemonByNameAndLanguageCode(string $name, string $languageCode)
+    {
+        $qb = $this->createQueryBuilder('pokemon');
+        $qb->join('pokemon.language', 'language');
+        $qb->where('language.code = :lang');
+        $qb->andWhere('pokemon.name = :name');
+        $qb->setParameter('lang', $languageCode);
+        $qb->setParameter('name', $name);
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
 }

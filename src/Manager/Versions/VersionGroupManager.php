@@ -4,6 +4,7 @@
 namespace App\Manager\Versions;
 
 
+use App\Entity\Users\Language;
 use App\Entity\Versions\VersionGroup;
 use App\Manager\Api\ApiManager;
 use App\Manager\TextManager;
@@ -107,5 +108,15 @@ class VersionGroupManager
         }
     }
 
+    /**
+     * @param Language $language
+     * @param string $slug
+     * @return VersionGroup|null
+     * @throws NonUniqueResultException
+     */
+    public function getVersionGroupByLanguageAndSlug(Language $language, string $slug): ?VersionGroup
+    {
+        return $this->versionGroupRepository->getVersionGroupByLanguageAndSlug($language, $slug);
+    }
 
 }

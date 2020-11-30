@@ -4,7 +4,7 @@
 namespace App\Entity\Pokemon;
 
 
-use App\Entity\Versions\Version;
+use App\Entity\Versions\VersionGroup;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 
@@ -30,10 +30,10 @@ class PokemonSpritesVersion
     private Pokemon $pokemon;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Versions\Version")
-     * @JoinColumn(name="version_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Versions\VersionGroup")
+     * @JoinColumn(name="version_group_id", referencedColumnName="id")
      */
-    private Version $version;
+    private VersionGroup $versionGroup;
 
     /**
      * @var string|null
@@ -84,19 +84,19 @@ class PokemonSpritesVersion
     }
 
     /**
-     * @return Version
+     * @return VersionGroup
      */
-    public function getVersion(): Version
+    public function getVersionGroup(): VersionGroup
     {
-        return $this->version;
+        return $this->versionGroup;
     }
 
     /**
-     * @param Version $version
+     * @param VersionGroup $versionGroup
      */
-    public function setVersion(Version $version): void
+    public function setVersionGroup(VersionGroup $versionGroup): void
     {
-        $this->version = $version;
+        $this->versionGroup = $versionGroup;
     }
 
     /**

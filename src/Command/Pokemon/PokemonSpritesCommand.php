@@ -1,10 +1,13 @@
 <?php
 
+
 namespace App\Command\Pokemon;
+
 
 use App\Command\AbstractCommand;
 use App\Manager\Api\ApiManager;
 use App\Manager\Pokemon\PokemonManager;
+use App\Manager\Pokemon\PokemonSpritesVersionManager;
 use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -13,16 +16,13 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-/**
- * Pokemon manager
- */
-class PokemonCommand extends AbstractCommand
+class PokemonSpritesCommand extends AbstractCommand
 {
 
     /**
-     * @var PokemonManager $pokemonManager
+     * @var PokemonSpritesVersionManager $pokemonManagerVersionManager
      */
-    private PokemonManager $pokemonManager;
+    private PokemonSpritesVersionManager $pokemonManagerVersionManager;
 
     /**
      * @var ApiManager $apiManager ;
@@ -31,13 +31,13 @@ class PokemonCommand extends AbstractCommand
 
     /**
      * ExcecCommand constructor
-     * @param PokemonManager $pokemonManager
+     * @param PokemonSpritesVersionManager $pokemonManagerVersionManager
      * @param ApiManager $apiManager
      */
-    public function __construct(PokemonManager $pokemonManager,
+    public function __construct(PokemonSpritesVersionManager $pokemonManagerVersionManager,
                                 ApiManager $apiManager)
     {
-        $this->pokemonManager = $pokemonManager;
+        $this->pokemonManagerVersionManager = $pokemonManagerVersionManager;
         $this->apiManager = $apiManager;
         parent::__construct();
     }
@@ -48,9 +48,9 @@ class PokemonCommand extends AbstractCommand
     protected function configure()
     {
         $this
-            ->setName('app:pokemon:all')
+            ->setName('app:sprites:all')
             ->addArgument('lang', InputArgument::REQUIRED, 'Language used')
-            ->setDescription('Execute app:pokemon to fetech all pokemon for language');
+            ->setDescription('Execute app:sprites to fetch sprites for all pokemons by version');
     }
 
     /**
@@ -67,17 +67,7 @@ class PokemonCommand extends AbstractCommand
         $lang = $input->getArgument('lang');
         if ($this->checkLanguageExists($output, $lang))
         {
-//            $this->executeCommand($output, $lang, 'app:ability:all');
-//
-//            $this->executeCommand($output, $lang, 'app:type:all');
-//
-//            $this->executeCommand($output, $lang, 'app:damage-relation:all');
-//
-//            $this->executeCommand($output, $lang, 'app:damage-class:all');
-//
-//            $this->executeCommand($output, $lang, 'app:nature:all');
-//
-//            $this->executeCommand($output, $lang, 'app:version:all');
+            $output->writeln('Pokemon table and version-group are required');
 
             $output->writeln('');
             $output->writeln('<info>Fetching all pokemons for language ' . $lang . '</info>');
@@ -88,22 +78,21 @@ class PokemonCommand extends AbstractCommand
             //Initialise progress bar
             $progressBar = new ProgressBar($output, count($arrayApiPokemons['results']));
             $progressBar->start();
-    
+
             // Check row
             foreach ($arrayApiPokemons['results'] as $pokemon) {
                 //Save pokemon in BDD
-                $apiResponse = $this->apiManager->getPokemonFromName($pokemon['name']);
-                $this->pokemonManager->saveNewPokemon($lang, $apiResponse->toArray());
-    
+                $apiResponse = $this->apiManager->getDetailed($pokemon['url']);
+                $this->pokemonManagerVersionManager->saveSpritesFromApi($lang, $apiResponse->toArray()['sprites']['versions'], $pokemon['name']);
+
                 //Advance progressBar
                 $progressBar->advance();
             }
-    
+
             $progressBar->finish();
-    
+
             return command::SUCCESS;
         }
         return command::FAILURE;
     }
-
 }
