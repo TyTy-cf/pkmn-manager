@@ -125,7 +125,7 @@ class PokemonManager
     {
         $slug = $this->textManager->generateSlugFromClass(Pokemon::class, $apiResponse['name']);
 
-        if (($newPokemon = $this->pokemonRepository->getPokemonByLanguageAndSlug($lang, $slug)) == null && $apiResponse['stats'] )
+        if (($newPokemon = $this->pokemonRepository->getPokemonByLanguageAndSlug($lang, $slug)) == null && sizeof($apiResponse['stats']) > 0)
         {
             // Return foreign name of Pokémon
             $url = $apiResponse['species']['url'];
