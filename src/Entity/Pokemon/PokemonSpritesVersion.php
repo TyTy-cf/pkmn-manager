@@ -8,6 +8,12 @@ use App\Entity\Versions\Version;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 
+/**
+ * Class PokemonSpritesVersion
+ * @package App\Entity\Pokemon
+ * @ORM\Entity(repositoryClass="App\Repository\Pokemon\PokemonSpritesVersionRepository")
+ * @ORM\Table(name="pokemon_sprites_version")
+ */
 class PokemonSpritesVersion
 {
     /**
