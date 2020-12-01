@@ -12,6 +12,7 @@ use App\Manager\TextManager;
 use App\Manager\Users\LanguageManager;
 use App\Repository\Infos\Type\TypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class TypeManager
@@ -71,41 +72,6 @@ class TypeManager
     }
 
     /**
-     * If not exist, save Type in Database according in language
-     * @param string $lang
-     * @param mixed $type
-     * @throws TransportExceptionInterface
-     */
-    public function createTypeIfNotExist(string $lang, $type)
-    {
-        //Fetch URL details type
-        $urlType = $type['url'];
-
-        //Fetch name according the language
-        $typeNameLang = $this->apiManager->getNameBasedOnLanguage($lang, $urlType);
-        $codeApi = $this->apiManager->getIdFromUrl($urlType);
-
-        //Check if the data exist in databases
-        $newType = $this->typeRepository->findOneBy(['name' => $typeNameLang]);
-
-        //If database is null, create type
-        if (empty($newType) && $type['name'] !== "shadow" && $type['name'] !== "unknown") {
-            $urlImg = '/images/types/' . $lang . '/';
-            $language = $this->languageManager->getLanguageByCode($lang);
-            $slug = $this->textManager->generateSlugFromClass(Type::class, $type['name']);
-            //Create new object and save in databases
-            $newType = new Type();
-            $newType->setName($typeNameLang);
-            $newType->setSlug($slug);
-            $newType->setLanguage($language);
-            $newType->setImg($urlImg . $slug . '.png');
-            $newType->setCodeApi($codeApi);
-            $this->entityManager->persist($newType);
-            $this->entityManager->flush();
-        }
-    }
-
-    /**
      * Return all Type based on a Language
      *
      * @param string $lang
@@ -118,10 +84,54 @@ class TypeManager
 
     /**
      * @param Language $language
-     * @param string $string
+     * @param string $slug
+     * @return Type
+     * @throws NonUniqueResultException
      */
     public function getTypeByLanguageAndSlug(Language $language, string $slug)
     {
-        return $this->typeRepository->getTypeByLanguageAndSlug($language, $slug);
+        return $this->typeRepository->getTypeByLanguageAndSlug(
+            $language,
+            $slug
+        );
+    }
+
+    /**
+     * If not exist, save Type in Database according in language
+     * @param Language $language
+     * @param mixed $type
+     * @throws TransportExceptionInterface
+     * @throws NonUniqueResultException
+     */
+    public function createTypeIfNotExist(Language $language, $type)
+    {
+        $slug = $this->textManager->generateSlugFromClass(Type::class, $type['name']);
+
+        if ($this->getTypeByLanguageAndSlug($language, $slug) !== null)
+        {
+            //Fetch URL details type
+            $urlType = $type['url'];
+
+            //Fetch name according the language
+            $typeNameLang = $this->apiManager->getNameBasedOnLanguage($language->getCode(), $urlType);
+            $codeApi = $this->apiManager->getIdFromUrl($urlType);
+
+            //Check if the data exist in databases
+            $newType = $this->typeRepository->findOneBy(['name' => $typeNameLang]);
+
+            //If database is null, create type
+            if (empty($newType) && $type['name'] !== "shadow" && $type['name'] !== "unknown") {
+                $urlImg = '/images/types/' . $language->getCode() . '/';
+                //Create new object and save in databases
+                $newType = new Type();
+                $newType->setName($typeNameLang);
+                $newType->setSlug($slug);
+                $newType->setLanguage($language);
+                $newType->setImg($urlImg . $slug . '.png');
+                $newType->setCodeApi($codeApi);
+                $this->entityManager->persist($newType);
+                $this->entityManager->flush();
+            }
+        }
     }
 }

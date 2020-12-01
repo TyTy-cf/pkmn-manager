@@ -116,7 +116,10 @@ class VersionGroupManager
      */
     public function getVersionGroupByLanguageAndSlug(Language $language, string $slug): ?VersionGroup
     {
-        return $this->versionGroupRepository->getVersionGroupByLanguageAndSlug($language, $slug);
+        return $this->versionGroupRepository->getVersionGroupByLanguageAndSlug(
+            $language,
+            $this->textManager->generateSlugFromClass(VersionGroup::class, $slug)
+        );
     }
 
 }

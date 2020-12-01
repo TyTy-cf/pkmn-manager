@@ -65,8 +65,11 @@ class PokemonCommand extends AbstractCommand
     {
         //Fetch parameter
         $lang = $input->getArgument('lang');
+
         if ($this->checkLanguageExists($output, $lang))
         {
+            $language = $this->languageManager->createLanguage($lang);
+
 //            $this->executeCommand($output, $lang, 'app:ability:all');
 //
 //            $this->executeCommand($output, $lang, 'app:type:all');

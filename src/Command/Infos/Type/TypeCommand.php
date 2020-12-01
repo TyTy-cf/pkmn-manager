@@ -4,6 +4,7 @@
 namespace App\Command\Infos\Type;
 
 
+use App\Command\AbstractCommand;
 use App\Manager\Api\ApiManager;
 use App\Manager\Infos\Type\TypeManager;
 use App\Manager\Users\LanguageManager;
@@ -14,7 +15,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-class TypeCommand extends Command
+class TypeCommand extends AbstractCommand
 {
 
     /**
@@ -28,14 +29,24 @@ class TypeCommand extends Command
     private ApiManager $apiManager;
 
     /**
+     * @var LanguageManager $languageManager
+     */
+    private LanguageManager $languageManager;
+
+    /**
      * ExcecCommand constructor
      * @param TypeManager $typeManager
      * @param ApiManager $apiManager
+     * @param LanguageManager $languageManager
      */
-    public function __construct(TypeManager $typeManager, ApiManager $apiManager
+    public function __construct(
+        TypeManager $typeManager,
+        ApiManager $apiManager,
+        LanguageManager $languageManager
     ) {
         $this->typeManager = $typeManager;
         $this->apiManager = $apiManager;
+        $this->languageManager = $languageManager;
         parent::__construct();
     }
 
@@ -62,24 +73,30 @@ class TypeCommand extends Command
         // Fetch parameter
         $lang = $input->getArgument('lang');
 
-        $output->writeln('');
-        $output->writeln('<info>Fetching all types for language ' . $lang . '</info>');
+        if ($this->checkLanguageExists($output, $lang))
+        {
+            $language = $this->languageManager->createLanguage($lang);
 
-        //Get list of types
-        $typesList = $this->apiManager->getAllTypeJson()->toArray();
+            $output->writeln('');
+            $output->writeln('<info>Fetching all types for language ' . $lang . '</info>');
 
-        //Initialize progress bar
-        $progressBar = new ProgressBar($output, count($typesList['results']));
-        $progressBar->start();
+            //Get list of types
+            $typesList = $this->apiManager->getAllTypeJson()->toArray();
 
-        foreach ($typesList['results'] as $type) {
-            $this->typeManager->createTypeIfNotExist($lang, $type);
-            $progressBar->advance();
+            //Initialize progress bar
+            $progressBar = new ProgressBar($output, count($typesList['results']));
+            $progressBar->start();
+
+            foreach ($typesList['results'] as $type) {
+                $this->typeManager->createTypeIfNotExist($language, $type);
+                $progressBar->advance();
+            }
+
+            //End of the progressBar
+            $progressBar->finish();
+
+            return command::SUCCESS;
         }
-
-        //End of the progressBar
-        $progressBar->finish();
-
-        return command::SUCCESS;
+        return command::FAILURE;
     }
 }

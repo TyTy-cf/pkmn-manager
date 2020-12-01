@@ -65,6 +65,22 @@ class DamageClassManager
     }
 
     /**
+     * The name is always in english and the slug is generate there
+     *
+     * @param Language $language
+     * @param string $slug
+     * @return DamageClass|null
+     * @throws NonUniqueResultException
+     */
+    public function getDamageClassByLanguageAndSlug(Language $language, string $slug): ?DamageClass
+    {
+        return $this->damageClassRepository->getDamageClassByLanguageAndSlug(
+            $language,
+            $slug
+        );
+    }
+
+    /**
      * @param string $lang
      * @param $apiDamageClass
      * @throws NonUniqueResultException

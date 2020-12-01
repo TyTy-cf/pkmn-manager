@@ -17,7 +17,7 @@ use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * Class Ability *
+ * Class Move
  * @package App\Entity\Infos
  *
  * @ORM\Table(name="move")
@@ -41,8 +41,6 @@ class Move
     use TraitNames;
 
     use TraitSlug;
-
-    use TraitDescription;
 
     use TraitLanguage;
 

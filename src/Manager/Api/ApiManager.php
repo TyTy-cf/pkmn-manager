@@ -48,15 +48,6 @@ class ApiManager
     }
 
     /**
-     * @return mixed
-     * @throws TransportExceptionInterface
-     */
-    public function getAllPokemonJson()
-    {
-        return $this->apiConnect("https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1117");
-    }
-
-    /**
      * Return from the API the informations of the $pokemonName passed in parameter
      *
      * @param $pokemonName
@@ -79,6 +70,15 @@ class ApiManager
     public function getDetailed($url)
     {
         return $this->apiConnect($url);
+    }
+
+    /**
+     * @return mixed
+     * @throws TransportExceptionInterface
+     */
+    public function getAllPokemonJson()
+    {
+        return $this->apiConnect("https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1117");
     }
 
     /**
@@ -154,6 +154,15 @@ class ApiManager
     }
 
     /**
+     *
+     * @throws TransportExceptionInterface
+     */
+    public function getAllMoveJson()
+    {
+        return $this->apiConnect("https://pokeapi.co/api/v2/move/?offset=0&limit=813");
+    }
+
+    /**
      * @param $lang
      * @param $url
      * @return mixed
@@ -162,7 +171,7 @@ class ApiManager
     public function getNameBasedOnLanguage($lang, $url)
     {
         $apiResponse = $this->getDetailed($url)->toArray();
-        return $this->getNameBasedOnLanguageFromArray($lang, $apiResponse['names']);
+        return $this->getNameBasedOnLanguageFromArray($lang, $apiResponse);
     }
 
     /**
@@ -173,16 +182,7 @@ class ApiManager
      */
     public function getNameBasedOnLanguageFromArray($lang, $apiResponse): ?string
     {
-        $nameReturned = null;
-        if (sizeof($apiResponse) > 0) {
-            foreach ($apiResponse as $name) {
-                if ($name['language']['name'] === $lang) {
-                    $nameReturned = $name['name'];
-                    break;
-                }
-            }
-        }
-        return $nameReturned;
+        return $this->getFieldContentFromLanguage($lang, $apiResponse, 'names', 'name');
     }
 
     /**
@@ -203,7 +203,7 @@ class ApiManager
      * @param $field
      * @return string
      */
-    public function getFieldContentFromLanguage($lang, $apiResponse, $mainField, $field): ?string
+    public function getFieldContentFromLanguage(string $lang, $apiResponse, string $mainField, string $field): ?string
     {
         $description = null;
         if (sizeof($apiResponse) > 0) {

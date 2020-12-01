@@ -79,8 +79,7 @@ class PokemonSpritesVersionManager
             // Iterate over each content of generation-i
             foreach($version as $key => $spriteVersion)
             {
-                $slugVersion = $this->textManager->generateSlugFromClass(VersionGroup::class, $key);
-                $versionGroup = $this->versionGroupManager->getVersionGroupByLanguageAndSlug($language, $slugVersion);
+                $versionGroup = $this->versionGroupManager->getVersionGroupByLanguageAndSlug($language, $key);
                 if ($versionGroup != null)
                 {
                     $frontDefault = isset($spriteVersion['front_default']) ? $spriteVersion['front_default'] : null;
