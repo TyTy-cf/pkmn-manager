@@ -5,6 +5,8 @@ namespace App\Entity\Moves;
 
 
 use App\Entity\Traits\TraitDescription;
+use App\Entity\Traits\TraitLanguage;
+use App\Entity\Traits\TraitSlug;
 use App\Entity\Versions\VersionGroup;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
@@ -29,6 +31,10 @@ class MoveDescription
     private int $id;
 
     use TraitDescription;
+
+    use TraitLanguage;
+
+    use TraitSlug;
 
     /**
      * @var Move $move

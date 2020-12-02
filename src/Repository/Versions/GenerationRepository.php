@@ -29,7 +29,7 @@ class GenerationRepository extends ServiceEntityRepository
      * @return int|mixed|string|null
      * @throws NonUniqueResultException
      */
-    public function getGenerationByLanguageAndSlug(Language $language, string $slug)
+    public function getGenerationByLanguageAndSlug(Language $language, string $slug): ?Generation
     {
         $qb = $this->createQueryBuilder('generation');
         $qb->join('generation.language', 'language');
@@ -46,7 +46,7 @@ class GenerationRepository extends ServiceEntityRepository
      * @return int|mixed|string|null
      * @throws NonUniqueResultException
      */
-    public function getGenerationByLanguageAndGenerationNumber(Language $language, string $number)
+    public function getGenerationByLanguageAndGenerationNumber(Language $language, string $number): ?Generation
     {
         $qb = $this->createQueryBuilder('generation');
         $qb->join('generation.language', 'language');

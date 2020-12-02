@@ -5,6 +5,7 @@ namespace App\Command\Pokemon;
 use App\Command\AbstractCommand;
 use App\Manager\Api\ApiManager;
 use App\Manager\Pokemon\PokemonManager;
+use App\Manager\Users\LanguageManager;
 use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -20,26 +21,19 @@ class PokemonCommand extends AbstractCommand
 {
 
     /**
-     * @var PokemonManager $pokemonManager
-     */
-    private PokemonManager $pokemonManager;
-
-    /**
-     * @var ApiManager $apiManager ;
-     */
-    private ApiManager $apiManager;
-
-    /**
      * ExcecCommand constructor
      * @param PokemonManager $pokemonManager
+     * @param LanguageManager $languageManager
      * @param ApiManager $apiManager
      */
-    public function __construct(PokemonManager $pokemonManager,
-                                ApiManager $apiManager)
+    public function __construct
+    (
+        PokemonManager $pokemonManager,
+        LanguageManager $languageManager,
+        ApiManager $apiManager
+    )
     {
-        $this->pokemonManager = $pokemonManager;
-        $this->apiManager = $apiManager;
-        parent::__construct();
+        parent::__construct($pokemonManager, $languageManager, $apiManager);
     }
 
     /**
@@ -50,7 +44,7 @@ class PokemonCommand extends AbstractCommand
         $this
             ->setName('app:pokemon:all')
             ->addArgument('lang', InputArgument::REQUIRED, 'Language used')
-            ->setDescription('Execute app:pokemon to fetech all pokemon for language');
+            ->setDescription('Execute app:pokemon to fetch all pokemon for language');
     }
 
     /**
@@ -63,50 +57,10 @@ class PokemonCommand extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        //Fetch parameter
-        $lang = $input->getArgument('lang');
+        $output->writeln('');
+        $output->writeln('<info>Fetching all pokemons...');
 
-        if ($this->checkLanguageExists($output, $lang))
-        {
-            $language = $this->languageManager->createLanguage($lang);
-
-//            $this->executeCommand($output, $lang, 'app:ability:all');
-//
-//            $this->executeCommand($output, $lang, 'app:type:all');
-//
-//            $this->executeCommand($output, $lang, 'app:damage-relation:all');
-//
-//            $this->executeCommand($output, $lang, 'app:damage-class:all');
-//
-//            $this->executeCommand($output, $lang, 'app:nature:all');
-//
-//            $this->executeCommand($output, $lang, 'app:version:all');
-
-            $output->writeln('');
-            $output->writeln('<info>Fetching all pokemons for language ' . $lang . '</info>');
-
-            //Get list of pokemons
-            $arrayApiPokemons = $this->apiManager->getAllPokemonJson()->toArray();
-
-            //Initialise progress bar
-            $progressBar = new ProgressBar($output, count($arrayApiPokemons['results']));
-            $progressBar->start();
-    
-            // Check row
-            foreach ($arrayApiPokemons['results'] as $pokemon) {
-                //Save pokemon in BDD
-                $apiResponse = $this->apiManager->getPokemonFromName($pokemon['name']);
-                $this->pokemonManager->saveNewPokemon($lang, $apiResponse->toArray());
-    
-                //Advance progressBar
-                $progressBar->advance();
-            }
-    
-            $progressBar->finish();
-    
-            return command::SUCCESS;
-        }
-        return command::FAILURE;
+        return $this->executeFromManager($input, $output, $this->apiManager->getAllPokemonJson()->toArray());
     }
 
 }

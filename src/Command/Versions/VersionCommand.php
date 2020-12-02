@@ -6,6 +6,7 @@ namespace App\Command\Versions;
 
 use App\Command\AbstractCommand;
 use App\Manager\Api\ApiManager;
+use App\Manager\Users\LanguageManager;
 use App\Manager\Versions\VersionManager;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\Console\Command\Command;
@@ -19,28 +20,19 @@ class VersionCommand extends AbstractCommand
 {
 
     /**
-     * @var ApiManager $apiManager ;
-     */
-    private ApiManager $apiManager;
-
-    /**
-     * @var VersionManager $versionManager
-     */
-    private VersionManager $versionManager;
-
-    /**
      * ExcecCommand constructor
      * @param VersionManager $versionManager
+     * @param LanguageManager $languageManager
      * @param ApiManager $apiManager
      */
-    public function __construct(
+    public function __construct
+    (
         VersionManager $versionManager,
+        LanguageManager $languageManager,
         ApiManager $apiManager
     )
     {
-        $this->versionManager = $versionManager;
-        $this->apiManager = $apiManager;
-        parent::__construct();
+        parent::__construct($versionManager, $languageManager, $apiManager);
     }
 
     /**
@@ -51,7 +43,7 @@ class VersionCommand extends AbstractCommand
         $this
             ->setName('app:version:all')
             ->addArgument('lang', InputArgument::REQUIRED, 'Language used')
-            ->setDescription('Execute app:pokemon to fetech all pokemon for language');
+            ->setDescription('Execute app:version:all to fetch all version for language');
     }
 
     /**
@@ -63,34 +55,9 @@ class VersionCommand extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // Fetch parameter
-        $lang = $input->getArgument('lang');
-        if ($this->checkLanguageExists($output, $lang)) {
+        $output->writeln('');
+        $output->writeln('<info>Fetching all version...');
 
-            $output->writeln('');
-            $output->writeln('<info>Required : VersionGroup. Fetching all version-group for language ' . $lang . '</info>');
-            $this->executeCommand($output, $lang, 'app:version-group:all');
-
-            $output->writeln('');
-            $output->writeln('<info>Fetching all version for language ' . $lang . '</info>');
-
-            //Get list of types
-            $versionList = $this->apiManager->getAllVersionJson()->toArray();
-
-            //Initialize progress bar
-            $progressBar = new ProgressBar($output, count($versionList['results']));
-            $progressBar->start();
-
-            foreach ($versionList['results'] as $version) {
-                $this->versionManager->createVersionIfNotExist($lang, $version);
-                $progressBar->advance();
-            }
-
-            //End of the progressBar
-            $progressBar->finish();
-
-            return command::SUCCESS;
-        }
-        return command::FAILURE;
+        return $this->executeFromManager($input, $output, $this->apiManager->getAllVersionJson()->toArray());
     }
 }

@@ -8,8 +8,6 @@ use App\Command\AbstractCommand;
 use App\Manager\Api\ApiManager;
 use App\Manager\Infos\Type\TypeManager;
 use App\Manager\Users\LanguageManager;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -17,21 +15,6 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class TypeCommand extends AbstractCommand
 {
-
-    /**
-     * @var TypeManager $typeManager
-     */
-    private TypeManager $typeManager;
-
-    /**
-     * @var ApiManager $apiManager
-     */
-    private ApiManager $apiManager;
-
-    /**
-     * @var LanguageManager $languageManager
-     */
-    private LanguageManager $languageManager;
 
     /**
      * ExcecCommand constructor
@@ -44,10 +27,7 @@ class TypeCommand extends AbstractCommand
         ApiManager $apiManager,
         LanguageManager $languageManager
     ) {
-        $this->typeManager = $typeManager;
-        $this->apiManager = $apiManager;
-        $this->languageManager = $languageManager;
-        parent::__construct();
+        parent::__construct($typeManager, $languageManager, $apiManager);
     }
 
     /**
@@ -58,7 +38,7 @@ class TypeCommand extends AbstractCommand
         $this
             ->setName('app:type:all')
             ->addArgument('lang', InputArgument::REQUIRED, 'Language used')
-            ->setDescription('Execute app:pokemon to fetech all pokemon for language');
+            ->setDescription('Execute app:type:all to fetch all type for language');
     }
 
     /**
@@ -70,33 +50,9 @@ class TypeCommand extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        // Fetch parameter
-        $lang = $input->getArgument('lang');
+        $output->writeln('');
+        $output->writeln('<info>Fetching all types...');
 
-        if ($this->checkLanguageExists($output, $lang))
-        {
-            $language = $this->languageManager->createLanguage($lang);
-
-            $output->writeln('');
-            $output->writeln('<info>Fetching all types for language ' . $lang . '</info>');
-
-            //Get list of types
-            $typesList = $this->apiManager->getAllTypeJson()->toArray();
-
-            //Initialize progress bar
-            $progressBar = new ProgressBar($output, count($typesList['results']));
-            $progressBar->start();
-
-            foreach ($typesList['results'] as $type) {
-                $this->typeManager->createTypeIfNotExist($language, $type);
-                $progressBar->advance();
-            }
-
-            //End of the progressBar
-            $progressBar->finish();
-
-            return command::SUCCESS;
-        }
-        return command::FAILURE;
+        return $this->executeFromManager($input, $output, $this->apiManager->getAllTypeJson()->toArray());
     }
 }

@@ -51,8 +51,8 @@ class Pokemon
     /**
      * @ManyToMany(targetEntity="App\Entity\Infos\Ability", inversedBy="pokemons", cascade={"persist"})
      * @JoinTable(name="pokemon_abilities",
-     *      joinColumns={@JoinColumn(name="pokemon_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="ability_id", referencedColumnName="id")}
+     *      joinColumns={@JoinColumn(name="pokemon_id", referencedColumnName="id", nullable=true)},
+     *      inverseJoinColumns={@JoinColumn(name="ability_id", referencedColumnName="id", nullable=true)}
      *      )
      */
     private Collection $abilities;
@@ -206,10 +206,11 @@ class Pokemon
     }
 
     /**
-     * @param Ability $abilities
+     * @param Ability|null $abilities
      */
-    public function addAbilities(Ability $abilities): void
+    public function addAbilities(?Ability $abilities): void
     {
+        if ($abilities === null) return;
         if (!$this->abilities->contains($abilities)) {
             $this->abilities->add($abilities);
         }

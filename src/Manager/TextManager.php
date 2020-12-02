@@ -52,16 +52,14 @@ class TextManager
     }
 
     /**
-     * @param string $remvovedValue
-     * @param string $replace
      * @param string|null $text
      * @return string|string[]
      */
-    public function removeCharacter(string $remvovedValue, string $replace, ?string $text)
+    public function removeReturnLineFromText(?string $text)
     {
         if ($text !== null)
         {
-            return str_replace($remvovedValue, $replace, $text);
+            return str_replace("\n", " ", $text);
         }
         return null;
     }

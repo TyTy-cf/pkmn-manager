@@ -6,42 +6,17 @@ namespace App\Manager\Versions;
 
 use App\Entity\Users\Language;
 use App\Entity\Versions\Version;
+use App\Manager\AbstractManager;
 use App\Manager\Api\ApiManager;
 use App\Manager\TextManager;
-use App\Manager\Users\LanguageManager;
 use App\Repository\Versions\VersionGroupRepository;
 use App\Repository\Versions\VersionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-class VersionManager
+class VersionManager extends AbstractManager
 {
-
-    /**
-     * @var VersionRepository $versionRepository
-     */
-    private VersionRepository $versionRepository;
-
-    /**
-     * @var EntityManagerInterface $entityManager
-     */
-    private EntityManagerInterface $entityManager;
-
-    /**
-     * @var ApiManager $apiManager
-     */
-    private ApiManager $apiManager;
-
-    /**
-     * @var TextManager $textManager
-     */
-    private TextManager $textManager;
-
-    /**
-     * @var LanguageManager $languageManager
-     */
-    private LanguageManager $languageManager;
 
     /**
      * @var VersionGroupRepository $versionGroupRepository
@@ -49,11 +24,15 @@ class VersionManager
     private VersionGroupRepository $versionGroupRepository;
 
     /**
+     * @var VersionRepository
+     */
+    private VersionRepository $versionRepository;
+
+    /**
      * PokemonManager constructor.
      *
      * @param EntityManagerInterface $entityManager
      * @param ApiManager $apiManager
-     * @param LanguageManager $languageManager
      * @param TextManager $textManager
      * @param VersionRepository $versionRepository
      * @param VersionGroupRepository $versionGroupRepository
@@ -61,42 +40,44 @@ class VersionManager
     public function __construct(
         EntityManagerInterface $entityManager,
         ApiManager $apiManager,
-        LanguageManager $languageManager,
         TextManager $textManager,
         VersionRepository $versionRepository,
         VersionGroupRepository $versionGroupRepository
     )
     {
-        $this->entityManager = $entityManager;
-        $this->apiManager = $apiManager;
-        $this->textManager = $textManager;
-        $this->languageManager = $languageManager;
         $this->versionGroupRepository = $versionGroupRepository;
         $this->versionRepository = $versionRepository;
+        parent::__construct($entityManager, $apiManager, $textManager);
     }
 
     /**
-     * @param string $lang
-     * @param $version
-     * @throws NonUniqueResultException|TransportExceptionInterface
+     * @param Language $language
+     * @param string $slug
+     * @return Version|null
+     * @throws NonUniqueResultException
      */
-    public function createVersionIfNotExist(string $lang, $version)
+    private function getVersionByLanguageAndSlug(Language $language, string $slug): ?Version
     {
-        //Fetch URL details type
-        $urlVersion = $version['url'];
-        $urlDetailed = $this->apiManager->getDetailed($urlVersion)->toArray();
+        return $this->versionRepository->getVersionByLanguageAndSlug($language, $slug);
+    }
 
-        // Fetch the right language
-        $language = $this->languageManager->getLanguageByCode($lang);
-
+    /**
+     * @param Language $language
+     * @param $version
+     * @throws NonUniqueResultException
+     * @throws TransportExceptionInterface
+     */
+    public function createFromApiResponse(Language $language, $version)
+    {
         //Check if the data exist in databases
-        $slug = $this->textManager->generateSlugFromClass(Version::class, $urlDetailed['name']);
+        $slug = $this->textManager->generateSlugFromClass(Version::class, $version['name']);
 
-        if (($newVersion = $this->versionRepository->getVersionByLanguageAndSlug($language, $slug)) == null)
+        if ($this->getVersionByLanguageAndSlug($language, $slug) === null)
         {
             // fetch the generation according to the group-version
+            $urlDetailed = $this->apiManager->getDetailed($version['url'])->toArray();
             $versionGroup = $this->versionGroupRepository->getVersionGroupByLanguageAndName($language, $urlDetailed['version_group']['name']);
-            $versionLang = $this->apiManager->getNameBasedOnLanguageFromArray($lang, $urlDetailed['names']);
+            $versionLang = $this->apiManager->getNameBasedOnLanguageFromArray($language->getCode(), $urlDetailed);
 
             $newVersion = new Version();
             $newVersion->setSlug($slug);

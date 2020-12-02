@@ -6,62 +6,38 @@ namespace App\Manager\Moves;
 
 use App\Entity\Moves\DamageClass;
 use App\Entity\Users\Language;
+use App\Manager\AbstractManager;
 use App\Manager\Api\ApiManager;
 use App\Manager\TextManager;
-use App\Manager\Users\LanguageManager;
 use App\Repository\Moves\DamageClassRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-class DamageClassManager
+class DamageClassManager extends AbstractManager
 {
-
     /**
-     * @var DamageClassRepository $damageClassRepository
+     * @var DamageClassRepository
      */
     private DamageClassRepository $damageClassRepository;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private EntityManagerInterface $entityManager;
-
-    /**
-     * @var ApiManager
-     */
-    private ApiManager $apiManager;
-
-    /**
-     * @var TextManager
-     */
-    private TextManager $textManager;
-
-    /**
-     * @var LanguageManager $languageManager
-     */
-    private LanguageManager $languageManager;
 
     /**
      * PokemonManager constructor.
      *
      * @param EntityManagerInterface $entityManager
      * @param DamageClassRepository $damageClassRepository
-     * @param LanguageManager $languageManager
      * @param ApiManager $apiManager
      * @param TextManager $textManager
      */
-    public function __construct(EntityManagerInterface $entityManager,
-                                DamageClassRepository $damageClassRepository,
-                                LanguageManager $languageManager,
-                                ApiManager $apiManager,
-                                TextManager $textManager)
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        DamageClassRepository $damageClassRepository,
+        ApiManager $apiManager,
+        TextManager $textManager
+    )
     {
-        $this->entityManager = $entityManager;
-        $this->apiManager = $apiManager;
-        $this->textManager = $textManager;
-        $this->languageManager = $languageManager;
         $this->damageClassRepository = $damageClassRepository;
+        parent::__construct($entityManager, $apiManager, $textManager);
     }
 
     /**
@@ -81,26 +57,22 @@ class DamageClassManager
     }
 
     /**
-     * @param string $lang
+     * @param Language $language
      * @param $apiDamageClass
      * @throws NonUniqueResultException
      * @throws TransportExceptionInterface
      */
-    public function createDamageClassIfNotExist(string $lang, $apiDamageClass)
+    public function createFromApiResponse(Language $language, $apiDamageClass)
     {
-        //Fetch URL details type
-        $urlDamageClass = $apiDamageClass['url'];
-        $urlDamageClassDetailed = $this->apiManager->getDetailed($urlDamageClass)->toArray();
-        // Fetch the right language
-        $language = $this->languageManager->getLanguageByCode($lang);
-
         //Check if the data exist in databases
         $slug = $this->textManager->generateSlugFromClass(DamageClass::class, $apiDamageClass['name']);
 
-        if (($newDamageClass = $this->damageClassRepository->getDamageClassByLanguageAndSlug($lang, $slug)) == null)
+        if (($newDamageClass = $this->getDamageClassByLanguageAndSlug($language, $slug)) == null)
         {
+            //Fetch URL details type
+            $urlDamageClassDetailed = $this->apiManager->getDetailed($apiDamageClass['url'])->toArray();
             // Fetch name & description according the language
-            $damageClassNameLang = $this->apiManager->getNameBasedOnLanguageFromArray($lang, $urlDamageClassDetailed['names']);
+            $damageClassNameLang = $this->apiManager->getNameBasedOnLanguageFromArray($language->getCode(), $urlDamageClassDetailed);
             $damageClass = new DamageClass();
             $damageClass->setName(ucfirst($damageClassNameLang));
             $damageClass->setSlug($slug);

@@ -7,33 +7,22 @@ namespace App\Manager\Pokemon;
 use App\Entity\Infos\Ability;
 use App\Entity\Infos\Type\Type;
 use App\Entity\Pokemon\Pokemon;
-use App\Entity\Pokemon\PokemonSpritesVersion;
 use App\Entity\Stats\StatsEffort;
 use App\Entity\Users\Language;
-use App\Entity\Versions\VersionGroup;
+use App\Manager\AbstractManager;
 use App\Manager\Api\ApiManager;
 use App\Manager\Infos\AbilitiyManager;
 use App\Manager\Infos\Type\TypeManager;
 use App\Manager\Moves\MoveManager;
 use App\Manager\TextManager;
-use App\Manager\Users\LanguageManager;
 use App\Manager\Versions\VersionGroupManager;
 use App\Repository\Pokemon\PokemonRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-class PokemonManager
+class PokemonManager extends AbstractManager
 {
-    /**
-     * @var PokemonRepository
-     */
-    private $pokemonRepository;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private EntityManagerInterface $entityManager;
 
     /**
      * @var AbilitiyManager
@@ -46,24 +35,9 @@ class PokemonManager
     private TypeManager $typeManager;
 
     /**
-     * @var ApiManager
-     */
-    private ApiManager $apiManager;
-
-    /**
-     * @var LanguageManager
-     */
-    private LanguageManager $languageManager;
-
-    /**
      * @var MoveManager
      */
     private MoveManager $movesManager;
-
-    /**
-     * @var TextManager
-     */
-    private TextManager $textManager;
 
     /**
      * @var VersionGroupManager $versionGroupManager
@@ -71,38 +45,39 @@ class PokemonManager
     private VersionGroupManager $versionGroupManager;
 
     /**
+     * @var PokemonRepository
+     */
+    private PokemonRepository $pokemonRepository;
+
+    /**
      * PokemonManager constructor.
      *
      * @param EntityManagerInterface $entityManager
      * @param AbilitiyManager $abilitiesManager
      * @param TypeManager $typeManager
-     * @param LanguageManager $languageManager
      * @param MoveManager $movesManager
      * @param ApiManager $apiManager
      * @param TextManager $textManager
      * @param VersionGroupManager $versionGroupManager
      * @param PokemonRepository $pokemonRepository
      */
-    public function __construct(
+    public function __construct
+    (
         EntityManagerInterface $entityManager,
         AbilitiyManager $abilitiesManager,
         TypeManager $typeManager,
-        LanguageManager $languageManager,
         MoveManager $movesManager,
         ApiManager $apiManager,
         TextManager $textManager,
         VersionGroupManager $versionGroupManager,
         PokemonRepository $pokemonRepository
     ) {
-        $this->entityManager = $entityManager;
-        $this->pokemonRepository = $pokemonRepository;
-        $this->abilitiesManager = $abilitiesManager;
         $this->typeManager = $typeManager;
-        $this->languageManager = $languageManager;
         $this->movesManager = $movesManager;
-        $this->apiManager = $apiManager;
-        $this->textManager = $textManager;
+        $this->abilitiesManager = $abilitiesManager;
         $this->versionGroupManager = $versionGroupManager;
+        $this->pokemonRepository = $pokemonRepository;
+        parent::__construct($entityManager, $apiManager, $textManager);
     }
 
     /**
@@ -119,23 +94,23 @@ class PokemonManager
     /**
      * @param string $name
      * @param string $languageCode
-     * @return Pokemon
+     * @return Pokemon|null
      * @throws NonUniqueResultException
      */
-    public function getPokemonByNameAndLanguageCode(string $name, string $languageCode)
+    public function getPokemonByNameAndLanguageCode(string $name, string $languageCode): ?Pokemon
     {
         return $this->pokemonRepository->getPokemonByNameAndLanguageCode($name, $languageCode);
     }
 
     /**
+     * @param Language $language
      * @param string $slug
-     * @param string $langCode
      * @return Pokemon|null
      * @throws NonUniqueResultException
      */
-    public function getPokemonByLanguageAndSlug(string $langCode, string $slug): ?Pokemon
+    public function getPokemonByLanguageAndSlug(Language $language, string $slug): ?Pokemon
     {
-        return $this->pokemonRepository->getPokemonByLanguageAndSlug($langCode, $slug);
+        return $this->pokemonRepository->getPokemonByLanguageAndSlug($language, $slug);
     }
 
     /**
@@ -151,36 +126,35 @@ class PokemonManager
      * Save a new pokemon from API to the database
      * Create his abilities and type(s) if necessary
      *
-     * @param string $lang
-     * @param array $apiResponse
+     * @param Language $language
+     * @param $apiResponse
      * @return void
      * @throws NonUniqueResultException
      * @throws TransportExceptionInterface
      */
-    public function saveNewPokemon(string $lang, array $apiResponse)
+    public function createFromApiResponse(Language $language, $apiResponse)
     {
         $slug = $this->textManager->generateSlugFromClass(Pokemon::class, $apiResponse['name']);
+        $urlDetailed = $this->apiManager->getDetailed($apiResponse['url'])->toArray();
 
-        if (($newPokemon = $this->pokemonRepository->getPokemonByLanguageAndSlug($lang, $slug)) == null && sizeof($apiResponse['stats']) > 0)
+        if ($this->getPokemonByLanguageAndSlug($language, $slug) === null && sizeof($urlDetailed['stats']) > 0)
         {
-            // Return foreign name of Pokémon
-            $url = $apiResponse['species']['url'];
-            $pokemonName = $this->apiManager->getNameBasedOnLanguage($lang, $url);
-            $language = $this->languageManager->createLanguage($lang);
+            $apiResponse = $this->apiManager->getPokemonFromName($urlDetailed['name']);
+            $pokemonName = $this->apiManager->getNameBasedOnLanguage($language->getCode(), $urlDetailed['species']['url']);
 
             // Create new Pokemon
             $pokemon = new Pokemon();
             $pokemon->setName(ucfirst($pokemonName));
             $pokemon->setSlug($slug);
-            $pokemon->setWeight($apiResponse['weight']);
-            $pokemon->setHeight($apiResponse['height']);
-            $pokemon->setUrlIcon($apiResponse['sprites']['versions']['generation-viii']['icons']['front_default']);
-            $pokemon->setUrlSpriteImg($apiResponse['sprites']['other']['official-artwork']['front_default']);
+            $pokemon->setWeight($urlDetailed['weight']);
+            $pokemon->setHeight($urlDetailed['height']);
+            $pokemon->setUrlIcon($urlDetailed['sprites']['versions']['generation-viii']['icons']['front_default']);
+            $pokemon->setUrlSpriteImg($urlDetailed['sprites']['other']['official-artwork']['front_default']);
             $pokemon->setLanguage($language);
 
             // Add the stats
             $statsEffort = new StatsEffort();
-            foreach ($apiResponse['stats'] as $stat) {
+            foreach ($urlDetailed['stats'] as $stat) {
                 if ($stat['stat']['name'] == 'hp') {
                     $pokemon->setHp($stat['base_stat']);
                     $statsEffort->setHp($stat['effort']);
@@ -206,7 +180,7 @@ class PokemonManager
             $pokemon->setStatsEffort($statsEffort);
 
             // Set the Ability
-            foreach($apiResponse['abilities'] as $abilityDetailed)
+            foreach($urlDetailed['abilities'] as $abilityDetailed)
             {
                 $slugAbility = $this->textManager->generateSlugFromClass(Ability::class, $abilityDetailed['ability']['name']);
                 $ability = $this->abilitiesManager->getAbilitiesByLanguageAndSlug($language, $slugAbility);
@@ -214,7 +188,7 @@ class PokemonManager
             }
 
             // Set the Type
-            foreach($apiResponse['types'] as $typesDetailed)
+            foreach($urlDetailed['types'] as $typesDetailed)
             {
                 $slugType = $this->textManager->generateSlugFromClass(Type::class, $typesDetailed['type']['name']);
                 $type = $this->typeManager->getTypeByLanguageAndSlug($language, $slugType);

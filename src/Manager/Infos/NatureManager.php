@@ -4,9 +4,9 @@
 namespace App\Manager\Infos;
 
 
-use App\Entity\Infos\Ability;
 use App\Entity\Infos\Nature;
 use App\Entity\Users\Language;
+use App\Manager\AbstractManager;
 use App\Manager\Api\ApiManager;
 use App\Manager\TextManager;
 use App\Repository\Infos\NatureRepository;
@@ -14,27 +14,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-class NatureManager
+class NatureManager extends AbstractManager
 {
     /**
      * @var NatureRepository
      */
     private NatureRepository $natureRepository;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private EntityManagerInterface $entityManager;
-
-    /**
-     * @var ApiManager
-     */
-    private ApiManager $apiManager;
-
-    /**
-     * @var TextManager
-     */
-    private TextManager $textManager;
 
     /**
      * PokemonManager constructor.
@@ -44,36 +29,38 @@ class NatureManager
      * @param ApiManager $apiManager
      * @param TextManager $textManager
      */
-    public function __construct(EntityManagerInterface $entityManager,
-                                NatureRepository $natureRepository,
-                                ApiManager $apiManager,
-                                TextManager $textManager)
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        NatureRepository $natureRepository,
+        ApiManager $apiManager,
+        TextManager $textManager
+    )
     {
-        $this->entityManager = $entityManager;
-        $this->apiManager = $apiManager;
-        $this->textManager = $textManager;
         $this->natureRepository = $natureRepository;
+        parent::__construct($entityManager, $apiManager, $textManager);
     }
 
     /**
      * Create a Nature if not already existing in DB
      *
      * @param Language $language
-     * @param array $urlContent
+     * @param $urlContent
      * @throws NonUniqueResultException
      * @throws TransportExceptionInterface
      */
-    public function createNatureIfNotExist(Language $language, array $urlContent)
+    public function createFromApiResponse(Language $language, $urlContent)
     {
         $slug = $this->textManager->generateSlugFromClass(Nature::class, $urlContent['name']);
         $codeLang = $language->getCode();
-        if (($nature = $this->natureRepository->getNatureByLanguageAndSlug($codeLang, $slug)) == null)
+
+        if ($this->natureRepository->getNatureByLanguageAndSlug($codeLang, $slug) === null)
         {
+            $urlContent = $this->apiManager->getDetailed($urlContent['url'])->toArray();
             $decreasedStat = $this->getModifiedStat($codeLang, $urlContent['decreased_stat']);
             $increasedStat = $this->getModifiedStat($codeLang, $urlContent['increased_stat']);
             $nature = new Nature();
             $nature->setSlug($slug);
-            $nature->setName($this->apiManager->getNameBasedOnLanguageFromArray($codeLang, $urlContent['names']));
+            $nature->setName($this->apiManager->getNameBasedOnLanguageFromArray($codeLang, $urlContent));
             $nature->setLanguage($language);
             $nature->setStatDecreased($decreasedStat);
             $nature->setStatsIncreased($increasedStat);

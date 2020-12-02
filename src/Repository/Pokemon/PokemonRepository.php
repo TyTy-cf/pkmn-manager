@@ -3,6 +3,7 @@
 namespace App\Repository\Pokemon;
 
 use App\Entity\Pokemon\Pokemon;
+use App\Entity\Users\Language;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -21,19 +22,18 @@ class PokemonRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param string $lang
+     * @param Language $language
      * @param string $slug
-     * @return int|mixed|string|null
+     * @return Pokemon|null
      * @throws NonUniqueResultException
      * @throws NonUniqueResultException
      */
-    public function getPokemonByLanguageAndSlug(string $lang, string $slug)
+    public function getPokemonByLanguageAndSlug(Language $language, string $slug): ?Pokemon
     {
         $qb = $this->createQueryBuilder('pokemon');
-        $qb->join('pokemon.language', 'language');
-        $qb->where('language.code = :lang');
+        $qb->where('pokemon.language = :lang');
         $qb->andWhere('pokemon.slug = :slug');
-        $qb->setParameter('lang', $lang);
+        $qb->setParameter('lang', $language);
         $qb->setParameter('slug', $slug);
         return $qb->getQuery()->getOneOrNullResult();
     }

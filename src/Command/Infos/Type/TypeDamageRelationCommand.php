@@ -5,9 +5,11 @@ namespace App\Command\Infos\Type;
 
 
 use App\Command\AbstractCommand;
+use App\Entity\Infos\Type\TypeDamageRelationType;
 use App\Manager\Api\ApiManager;
 use App\Manager\Infos\Type\TypeDamageRelationTypeManager;
 use App\Manager\Infos\Type\TypeManager;
+use App\Manager\Users\LanguageManager;
 use Doctrine\ORM\NonUniqueResultException;
 use Exception;
 use Symfony\Component\Console\Command\Command;
@@ -26,31 +28,21 @@ class TypeDamageRelationCommand extends AbstractCommand
     private TypeManager $typeManager;
 
     /**
-     * @var ApiManager $apiManager
-     */
-    private ApiManager $apiManager;
-
-    /**
-     * @var TypeDamageRelationTypeManager
-     */
-    private TypeDamageRelationTypeManager $typeDamageFromTypeManager;
-
-    /**
-     * ExcecCommand constructor
+     * TypeDamageRelationCommand constructor
      *
      * @param TypeManager $typeManager
      * @param ApiManager $apiManager
+     * @param LanguageManager $languageManager
      * @param TypeDamageRelationTypeManager $typeDamageFromTypeManager
      */
     public function __construct(
         TypeManager $typeManager,
         ApiManager $apiManager,
+        LanguageManager $languageManager,
         TypeDamageRelationTypeManager $typeDamageFromTypeManager
     ) {
-        $this->apiManager = $apiManager;
         $this->typeManager = $typeManager;
-        $this->typeDamageFromTypeManager = $typeDamageFromTypeManager;
-        parent::__construct();
+        parent::__construct($typeDamageFromTypeManager, $languageManager, $apiManager);
     }
 
     /**
@@ -61,31 +53,25 @@ class TypeDamageRelationCommand extends AbstractCommand
         $this
             ->setName('app:damage-relation:all')
             ->addArgument('lang', InputArgument::REQUIRED, 'Language used')
-            ->setDescription('Execute app:pokemon to fetch all pokemon for language');
+            ->setDescription('Execute app:damage-relation:all to fetch all damage relation between type for language');
     }
 
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int|void
-     * @throws TransportExceptionInterface
-     * @throws NonUniqueResultException
      * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        // Fetch parameter
         $lang = $input->getArgument('lang');
 
-        if ($this->checkLanguageExists($output, $lang)) {
+        $output->writeln('');
+        $output->writeln('<info>Fetching all types damage-relation...');
+        $output->writeln('For language ' . $lang . '</info>');
 
-            $this->executeCommand($output, $lang, 'app:type:all');
-
-            $output->writeln('');
-            $output->writeln('<info>Fetching all types damage-relation for language ' . $lang . '</info>');
-
-            // Fetch all Type by language
-            $lang = $input->getArgument('lang');
+        if ($this->checkLanguageExists($output, $lang))
+        {
             $types = $this->typeManager->getAllTypeByLanguage($lang);
 
             //Initialise progress bar
@@ -93,7 +79,8 @@ class TypeDamageRelationCommand extends AbstractCommand
             $progressBar->start();
 
             foreach ($types as $type) {
-                $this->typeDamageFromTypeManager->createDamageFromType($type, $lang);
+                /** @var TypeDamageRelationType $this->manager */
+                $this->manager->createDamageFromType($type, $lang);
                 $progressBar->advance();
             }
 

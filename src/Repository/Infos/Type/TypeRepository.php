@@ -37,10 +37,10 @@ class TypeRepository extends ServiceEntityRepository
     /**
      * @param string $lang
      * @param $codeApi
-     * @return Type
+     * @return Type|null
      * @throws NonUniqueResultException
      */
-    public function getTypeByLanguageAndCodeApi(string $lang, $codeApi): Type
+    public function getTypeByLanguageAndCodeApi(string $lang, $codeApi): ?Type
     {
         $qb = $this->createQueryBuilder('type');
         $qb->join('type.language', 'language');
@@ -54,10 +54,10 @@ class TypeRepository extends ServiceEntityRepository
     /**
      * @param Language $language
      * @param string $slug
-     * @return Type
+     * @return Type|null
      * @throws NonUniqueResultException
      */
-    public function getTypeByLanguageAndSlug(Language $language, string $slug): Type
+    public function getTypeByLanguageAndSlug(Language $language, string $slug): ?Type
     {
         $qb = $this->createQueryBuilder('type');
         $qb->join('type.language', 'language');

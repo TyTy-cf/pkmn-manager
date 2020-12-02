@@ -27,7 +27,7 @@ class MoveRepository extends ServiceEntityRepository
      * @return Move|null
      * @throws NonUniqueResultException
      */
-    public function getMoveByLanguageAndSlug(Language $language, string $slug)
+    public function getMoveByLanguageAndSlug(Language $language, string $slug): ?Move
     {
         $qb = $this->createQueryBuilder('move');
         $qb->where('move.language = :lang');

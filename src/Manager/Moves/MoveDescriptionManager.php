@@ -8,6 +8,7 @@ use App\Entity\Moves\Move;
 use App\Entity\Moves\MoveDescription;
 use App\Entity\Users\Language;
 use App\Entity\Versions\VersionGroup;
+use App\Manager\AbstractManager;
 use App\Manager\Api\ApiManager;
 use App\Manager\TextManager;
 use App\Manager\Versions\VersionGroupManager;
@@ -15,7 +16,7 @@ use App\Repository\Moves\MoveDescriptionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 
-class MoveDescriptionManager
+class MoveDescriptionManager extends AbstractManager
 {
 
     /**
@@ -24,24 +25,9 @@ class MoveDescriptionManager
     private MoveDescriptionRepository $repo;
 
     /**
-     * @var ApiManager $apiManager
-     */
-    private ApiManager $apiManager;
-
-    /**
      * @var VersionGroupManager $versionGroupManager
      */
     private VersionGroupManager $versionGroupManager;
-
-    /**
-     * @var TextManager $textManager
-     */
-    private TextManager $textManager;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private EntityManagerInterface $em;
 
     /**
      * MoveDescriptionManager constructor.
@@ -51,7 +37,8 @@ class MoveDescriptionManager
      * @param TextManager $textManager
      * @param EntityManagerInterface $em
      */
-    public function __construct(
+    public function __construct
+    (
         MoveDescriptionRepository $repo,
         ApiManager $apiManager,
         VersionGroupManager $versionGroupManager,
@@ -60,20 +47,28 @@ class MoveDescriptionManager
     )
     {
         $this->repo = $repo;
-        $this->apiManager = $apiManager;
         $this->versionGroupManager = $versionGroupManager;
-        $this->textManager = $textManager;
-        $this->em = $em;
+        parent::__construct($em, $apiManager, $textManager);
+    }
+
+    /**
+     * @param Language $lang
+     * @param string $slug
+     * @return MoveDescription|null
+     * @throws NonUniqueResultException
+     */
+    private function getMoveDescriptionByLanguageAndSlug(Language $lang, string $slug): ?MoveDescription
+    {
+        return $this->repo->getMoveDescriptionByLanguageAndSlug($lang, $slug);
     }
 
     /**
      * @param Language $lang
      * @param Move $move
-     * @param string $name
      * @param array $apiResponse
      * @throws NonUniqueResultException
      */
-    public function createMoveDescription(Language $lang, Move $move, string $name, array $apiResponse)
+    public function createMoveDescription(Language $lang, Move $move, array $apiResponse)
     {
         foreach($apiResponse as $descriptionDetailed)
         {
@@ -83,16 +78,21 @@ class MoveDescriptionManager
                     VersionGroup::class,
                     $descriptionDetailed['version_group']['name']
                 );
-                $slug = $name . '-description-' . $slugVersion;
-                if ($this->repo->getMoveDescriptionByLanguageAndSlug($lang, $slug))
+                $slug = $this->textManager->generateSlugFromClass(
+                    MoveDescription::class,
+                    $move->getSlug().'-'.$slugVersion
+                );
+                if ($this->getMoveDescriptionByLanguageAndSlug($lang, $slug) === null)
                 {
                     $description = $descriptionDetailed['flavor_text'];
                     $versionGroup = $this->versionGroupManager->getVersionGroupByLanguageAndSlug($lang, $slugVersion);
                     $moveDescription = new MoveDescription();
                     $moveDescription->setMove($move);
+                    $moveDescription->setSlug($slug);
+                    $moveDescription->setLanguage($lang);
                     $moveDescription->setVersionGroup($versionGroup);
-                    $moveDescription->setDescription($description);
-                    $this->em->persist($moveDescription);
+                    $moveDescription->setDescription($this->textManager->removeReturnLineFromText($description));
+                    $this->entityManager->persist($moveDescription);
                 }
             }
         }

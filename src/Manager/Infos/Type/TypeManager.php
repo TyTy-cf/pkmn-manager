@@ -5,37 +5,17 @@ namespace App\Manager\Infos\Type;
 
 
 use App\Entity\Infos\Type\Type;
-use App\Entity\Pokemon\Pokemon;
 use App\Entity\Users\Language;
+use App\Manager\AbstractManager;
 use App\Manager\Api\ApiManager;
 use App\Manager\TextManager;
-use App\Manager\Users\LanguageManager;
 use App\Repository\Infos\Type\TypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-class TypeManager
+class TypeManager extends AbstractManager
 {
-    /**
-     * @var TypeRepository $typeRepository
-     */
-    private TypeRepository $typeRepository;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private EntityManagerInterface $entityManager;
-
-    /**
-     * @var ApiManager
-     */
-    private ApiManager $apiManager;
-
-    /**
-     * @var LanguageManager
-     */
-    private LanguageManager $languageManager;
 
     /**
      * @var TypeDamageRelationTypeManager $typeDamageFromTypeManager
@@ -43,32 +23,30 @@ class TypeManager
     private TypeDamageRelationTypeManager $typeDamageFromTypeManager;
 
     /**
-     * @var TextManager $textManager
+     * @var TypeRepository
      */
-    private TextManager $textManager;
+    private TypeRepository $typeRepository;
 
     /**
      * PokemonManager constructor.
      *
      * @param EntityManagerInterface $entityManager
      * @param ApiManager $apiManager
-     * @param LanguageManager $languageManager
      * @param TypeDamageRelationTypeManager $typeDamageFromTypeManager
      * @param TextManager $textManager
+     * @param TypeRepository $typeRepository
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         ApiManager $apiManager,
-        LanguageManager $languageManager,
         TypeDamageRelationTypeManager $typeDamageFromTypeManager,
-        TextManager $textManager
+        TextManager $textManager,
+        TypeRepository $typeRepository
     ) {
-        $this->entityManager = $entityManager;
-        $this->textManager = $textManager;
-        $this->apiManager = $apiManager;
-        $this->languageManager = $languageManager;
         $this->typeDamageFromTypeManager = $typeDamageFromTypeManager;
-        $this->typeRepository = $this->entityManager->getRepository(Type::class);
+        $this->typeRepository = $typeRepository;
+        parent::__construct($entityManager, $apiManager, $textManager);
+
     }
 
     /**
@@ -85,10 +63,10 @@ class TypeManager
     /**
      * @param Language $language
      * @param string $slug
-     * @return Type
+     * @return Type|null
      * @throws NonUniqueResultException
      */
-    public function getTypeByLanguageAndSlug(Language $language, string $slug)
+    public function getTypeByLanguageAndSlug(Language $language, string $slug): ?Type
     {
         return $this->typeRepository->getTypeByLanguageAndSlug(
             $language,
@@ -103,11 +81,11 @@ class TypeManager
      * @throws TransportExceptionInterface
      * @throws NonUniqueResultException
      */
-    public function createTypeIfNotExist(Language $language, $type)
+    public function createFromApiResponse(Language $language, $type)
     {
         $slug = $this->textManager->generateSlugFromClass(Type::class, $type['name']);
 
-        if ($this->getTypeByLanguageAndSlug($language, $slug) !== null)
+        if ($this->getTypeByLanguageAndSlug($language, $slug) === null)
         {
             //Fetch URL details type
             $urlType = $type['url'];

@@ -32,8 +32,7 @@ class VersionRepository  extends ServiceEntityRepository
     public function getVersionByLanguageAndSlug(Language $language, string $slug)
     {
         $qb = $this->createQueryBuilder('version');
-        $qb->join('version.language', 'language');
-        $qb->where('language = :lang');
+        $qb->where('version.language = :lang');
         $qb->andWhere('version.slug = :slug');
         $qb->setParameter('lang', $language);
         $qb->setParameter('slug', $slug);

@@ -29,11 +29,3 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-
-    App\Command\PokemonCommand:
-        tags:
-            - { name: 'console.command', command: 'app:pokemon:all' }
-
-    App\Command\TypeCommand:
-        tags:
-            - { name: 'console.command', command: 'app:type:all' }

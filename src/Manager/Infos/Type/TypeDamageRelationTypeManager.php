@@ -4,19 +4,17 @@ namespace App\Manager\Infos\Type;
 
 use App\Entity\Infos\Type\Type;
 use App\Entity\Infos\Type\TypeDamageRelationType;
+use App\Manager\AbstractManager;
 use App\Manager\Api\ApiManager;
+use App\Manager\TextManager;
 use App\Repository\Infos\Type\TypeDamageRelationTypeRepository;
 use App\Repository\Infos\Type\TypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-class TypeDamageRelationTypeManager
+class TypeDamageRelationTypeManager extends AbstractManager
 {
-    /**
-     * @var TypeDamageRelationTypeRepository
-     */
-    private TypeDamageRelationTypeRepository $typeDamageRelationTypeRepository;
 
     /**
      * @var TypeRepository
@@ -24,32 +22,28 @@ class TypeDamageRelationTypeManager
     private TypeRepository $typeRepository;
 
     /**
-     * @var EntityManagerInterface $entityManager
+     * @var TypeDamageRelationTypeRepository
      */
-    private EntityManagerInterface $entityManager;
-
-    /**
-     * @var ApiManager $apiManager
-     */
-    private ApiManager $apiManager;
+    private TypeDamageRelationTypeRepository $typeDamageRelationTypeRepository;
 
     /**
      * TypeDamageFromTypeRepository constructor
      * @param TypeRepository $typeRepository
      * @param ApiManager $apiManager
      * @param EntityManagerInterface $em
+     * @param TextManager $textManager
      * @param TypeDamageRelationTypeRepository $typeDamageRelationTypeRepository
      */
     public function __construct(
         TypeRepository $typeRepository,
         ApiManager $apiManager,
         EntityManagerInterface $em,
+        TextManager $textManager,
         TypeDamageRelationTypeRepository $typeDamageRelationTypeRepository
     ) {
-        $this->entityManager = $em;
-        $this->apiManager = $apiManager;
         $this->typeRepository = $typeRepository;
         $this->typeDamageRelationTypeRepository = $typeDamageRelationTypeRepository;
+        parent::__construct($em, $apiManager, $textManager);
     }
 
     /**
