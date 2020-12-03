@@ -71,7 +71,7 @@ class MoveManager extends AbstractManager
      * @return Move|null
      * @throws NonUniqueResultException
      */
-    private function getMoveByLanguageAndSlug(Language $language, string $slug): ?Move
+    public function getMoveByLanguageAndSlug(Language $language, string $slug): ?Move
     {
         return $this->movesRepository->getMoveByLanguageAndSlug($language, $slug);
     }

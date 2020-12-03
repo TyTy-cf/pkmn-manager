@@ -3,6 +3,7 @@
 
 namespace App\Entity\Moves;
 
+use App\Entity\Traits\TraitSlug;
 use App\Entity\Versions\VersionGroup;
 use App\Entity\Pokemon\Pokemon;
 use Doctrine\ORM\Mapping as ORM;
@@ -23,6 +24,8 @@ class PokemonMovesLearnVersion
      * @ORM\Column(type="integer")
      */
     private string $id;
+
+    use TraitSlug;
 
     /**
      * @var int $level

@@ -63,6 +63,19 @@ class VersionGroupManager extends AbstractManager
     }
 
     /**
+     * @param int $generation
+     * @param string $name
+     * @return VersionGroup|null
+     */
+    public function getVersionGroupFromGenerationIdAndName(int $generation, string $name)
+    {
+        return $this->versionGroupRepository->findOneBy([
+            'generation' => $generation,
+            'name' => $name
+        ]);
+    }
+
+    /**
      * @param Language $language
      * @param $versionGroup
      * @throws NonUniqueResultException

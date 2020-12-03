@@ -163,6 +163,15 @@ class ApiManager
     }
 
     /**
+     *
+     * @throws TransportExceptionInterface
+     */
+    public function getAllMoveMachineJson()
+    {
+        return $this->apiConnect("https://pokeapi.co/api/v2/machine/?offset=0&limit=1442");
+    }
+
+    /**
      * @param $lang
      * @param $url
      * @return mixed

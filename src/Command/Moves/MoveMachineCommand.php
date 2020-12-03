@@ -6,30 +6,30 @@ namespace App\Command\Moves;
 
 use App\Command\AbstractCommand;
 use App\Manager\Api\ApiManager;
-use App\Manager\Moves\MoveManager;
+use App\Manager\Moves\MoveMachineManager;
 use App\Manager\Users\LanguageManager;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-class MoveCommand extends AbstractCommand
+class MoveMachineCommand extends AbstractCommand
 {
 
     /**
      * ExcecCommand constructor
-     * @param MoveManager $moveManager
+     * @param MoveMachineManager $moveMachineManager
      * @param ApiManager $apiManager
      * @param LanguageManager $languageManager
      */
     public function __construct
     (
-        MoveManager $moveManager,
+        MoveMachineManager $moveMachineManager,
         ApiManager $apiManager,
         LanguageManager $languageManager
     )
     {
-        parent::__construct($moveManager, $languageManager, $apiManager);
+        parent::__construct($moveMachineManager, $languageManager, $apiManager);
     }
 
     /**
@@ -38,9 +38,9 @@ class MoveCommand extends AbstractCommand
     protected function configure()
     {
         $this
-            ->setName('app:move:all')
+            ->setName('app:move-machine:all')
             ->addArgument('lang', InputArgument::REQUIRED, 'Language used')
-            ->setDescription('Execute app:move:all to fetch all moves for language');
+            ->setDescription('Execute app:move-machine:all to fetch all moves for language');
     }
 
     /**
@@ -52,8 +52,8 @@ class MoveCommand extends AbstractCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('');
-        $output->writeln('<info>Fetching all moves for pokemon...');
+        $output->writeln('<info>Fetching all moves-machine...');
 
-        return $this->executeFromManager($input, $output, $this->apiManager->getAllMoveJson()->toArray());
+        return $this->executeFromManager($input, $output, $this->apiManager->getAllMoveMachineJson()->toArray());
     }
 }

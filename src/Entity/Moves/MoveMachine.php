@@ -4,6 +4,7 @@
 namespace App\Entity\Moves;
 
 
+use App\Entity\Traits\TraitDescription;
 use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
 use App\Entity\Traits\TraitSlug;
@@ -33,6 +34,8 @@ class MoveMachine
 
     use TraitLanguage;
 
+    use TraitDescription;
+
     use TraitSlug;
 
     /**
@@ -42,6 +45,18 @@ class MoveMachine
      * @JoinColumn(name="move_id", referencedColumnName="id")
      */
     private Move $move;
+
+    /**
+     * @var string|null
+     * @ORM\Column(name="image_url", type="string", length=255)
+     */
+    private ?string $imageUrl;
+
+    /**
+     * @var int|null
+     * @ORM\Column(name="cost", type="integer", length=8)
+     */
+    private ?int $cost;
 
     /**
      * @var VersionGroup $versionGroup
@@ -89,6 +104,38 @@ class MoveMachine
     public function setVersionGroup(VersionGroup $versionGroup): void
     {
         $this->versionGroup = $versionGroup;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getImageUrl(): ?string
+    {
+        return $this->imageUrl;
+    }
+
+    /**
+     * @param string|null $imageUrl
+     */
+    public function setImageUrl(?string $imageUrl): void
+    {
+        $this->imageUrl = $imageUrl;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getCost(): ?int
+    {
+        return $this->cost;
+    }
+
+    /**
+     * @param int|null $cost
+     */
+    public function setCost(?int $cost): void
+    {
+        $this->cost = $cost;
     }
 
 }
