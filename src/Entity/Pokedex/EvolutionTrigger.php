@@ -16,7 +16,7 @@ class EvolutionTrigger
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     use TraitNomenclature;
 
