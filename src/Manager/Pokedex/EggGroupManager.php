@@ -4,12 +4,14 @@
 namespace App\Manager\Pokedex;
 
 
+use App\Entity\Pokedex\EggGroup;
+use App\Entity\Users\Language;
 use App\Manager\AbstractManager;
 use App\Manager\Api\ApiManager;
 use App\Manager\TextManager;
-use App\Repository\Moves\DamageClassRepository;
 use App\Repository\Pokedex\EggGroupRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class EggGroupManager extends AbstractManager
 {
@@ -26,7 +28,8 @@ class EggGroupManager extends AbstractManager
      * @param ApiManager $apiManager
      * @param TextManager $textManager
      */
-    public function __construct(
+    public function __construct
+    (
         EntityManagerInterface $entityManager,
         EggGroupRepository $eggGroupRepository,
         ApiManager $apiManager,
@@ -36,4 +39,40 @@ class EggGroupManager extends AbstractManager
         $this->eggGroupRepository = $eggGroupRepository;
         parent::__construct($entityManager, $apiManager, $textManager);
     }
+
+    private function getEggGroupBySlug(Language $language, string $slug)
+    {
+        return $this->eggGroupRepository->findOneBy([
+            'slug' => $language->getCode().'/'.$slug
+        ]);
+    }
+
+    /**
+     * @param Language $language
+     * @param $apiEggGroup
+     * @throws TransportExceptionInterface
+     */
+    public function createFromApiResponse(Language $language, $apiEggGroup)
+    {
+        //Check if the data exist in databases
+        $slug = $this->textManager->generateSlugFromClass(EggGroup::class, $apiEggGroup['name']);
+
+        if (($eggGroup = $this->getEggGroupBySlug($language, $slug)) == null)
+        {
+            //Fetch URL details type
+            $urlDamageClassDetailed = $this->apiManager->getDetailed($apiEggGroup['url'])->toArray();
+            // Fetch name & description according the language
+            $eggGroupName = $this->apiManager->getNameBasedOnLanguageFromArray(
+                $language->getCode(),
+                $urlDamageClassDetailed
+            );
+            $eggGroup = new EggGroup();
+            $eggGroup->setName(ucfirst($eggGroupName));
+            $eggGroup->setSlug($slug);
+            $eggGroup->setLanguage($language);
+            $this->entityManager->persist($eggGroup);
+            $this->entityManager->flush();
+        }
+    }
+
 }
