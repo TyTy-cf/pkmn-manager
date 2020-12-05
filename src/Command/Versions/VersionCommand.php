@@ -8,6 +8,7 @@ use App\Command\AbstractCommand;
 use App\Manager\Api\ApiManager;
 use App\Manager\Users\LanguageManager;
 use App\Manager\Versions\VersionManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -24,15 +25,17 @@ class VersionCommand extends AbstractCommand
      * @param VersionManager $versionManager
      * @param LanguageManager $languageManager
      * @param ApiManager $apiManager
+     * @param EntityManagerInterface $em
      */
     public function __construct
     (
         VersionManager $versionManager,
         LanguageManager $languageManager,
-        ApiManager $apiManager
+        ApiManager $apiManager,
+        EntityManagerInterface $em
     )
     {
-        parent::__construct($versionManager, $languageManager, $apiManager);
+        parent::__construct($versionManager, $languageManager, $apiManager, $em);
     }
 
     /**

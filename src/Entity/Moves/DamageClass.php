@@ -6,6 +6,7 @@ namespace App\Entity\Moves;
 
 use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
+use App\Entity\Traits\TraitNomenclature;
 use App\Entity\Traits\TraitSlug;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
@@ -39,11 +40,7 @@ class DamageClass
      */
     private string $image;
 
-    use TraitNames;
-
-    use TraitLanguage;
-
-    use TraitSlug;
+    use TraitNomenclature;
 
     /**
      * @return int

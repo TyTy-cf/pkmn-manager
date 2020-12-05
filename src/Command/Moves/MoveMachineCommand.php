@@ -8,6 +8,7 @@ use App\Command\AbstractCommand;
 use App\Manager\Api\ApiManager;
 use App\Manager\Moves\MoveMachineManager;
 use App\Manager\Users\LanguageManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -21,15 +22,17 @@ class MoveMachineCommand extends AbstractCommand
      * @param MoveMachineManager $moveMachineManager
      * @param ApiManager $apiManager
      * @param LanguageManager $languageManager
+     * @param EntityManagerInterface $em
      */
     public function __construct
     (
         MoveMachineManager $moveMachineManager,
         ApiManager $apiManager,
-        LanguageManager $languageManager
+        LanguageManager $languageManager,
+        EntityManagerInterface $em
     )
     {
-        parent::__construct($moveMachineManager, $languageManager, $apiManager);
+        parent::__construct($moveMachineManager, $languageManager, $apiManager, $em);
     }
 
     /**

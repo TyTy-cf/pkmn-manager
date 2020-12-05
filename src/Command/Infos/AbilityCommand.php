@@ -8,6 +8,7 @@ use App\Command\AbstractCommand;
 use App\Manager\Api\ApiManager;
 use App\Manager\Infos\AbilitiyManager;
 use App\Manager\Users\LanguageManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -21,12 +22,16 @@ class AbilityCommand extends AbstractCommand
      * @param AbilitiyManager $abilitiesManager
      * @param LanguageManager $languageManager
      * @param ApiManager $apiManager
+     * @param EntityManagerInterface $em
      */
-    public function __construct(AbilitiyManager $abilitiesManager,
-                                LanguageManager $languageManager,
-                                ApiManager $apiManager)
+    public function __construct(
+        AbilitiyManager $abilitiesManager,
+        LanguageManager $languageManager,
+        ApiManager $apiManager,
+        EntityManagerInterface $em
+    )
     {
-        parent::__construct($abilitiesManager, $languageManager, $apiManager);
+        parent::__construct($abilitiesManager, $languageManager, $apiManager, $em);
     }
 
     /**

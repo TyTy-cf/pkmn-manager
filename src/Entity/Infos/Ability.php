@@ -4,9 +4,7 @@
 namespace App\Entity\Infos;
 
 use App\Entity\Traits\TraitDescription;
-use App\Entity\Traits\TraitLanguage;
-use App\Entity\Traits\TraitNames;
-use App\Entity\Traits\TraitSlug;
+use App\Entity\Traits\TraitNomenclature;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -39,13 +37,9 @@ class Ability
      */
     private Collection $pokemons;
 
-    use TraitNames;
-
-    use TraitSlug;
-
     use TraitDescription;
 
-    use TraitLanguage;
+    use TraitNomenclature;
 
     public function __construct()
     {

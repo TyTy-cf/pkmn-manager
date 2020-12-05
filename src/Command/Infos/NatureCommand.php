@@ -8,6 +8,7 @@ use App\Command\AbstractCommand;
 use App\Manager\Api\ApiManager;
 use App\Manager\Infos\NatureManager;
 use App\Manager\Users\LanguageManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -21,14 +22,16 @@ class NatureCommand extends AbstractCommand
      * @param NatureManager $natureManager
      * @param LanguageManager $languageManager
      * @param ApiManager $apiManager
+     * @param EntityManagerInterface $em
      */
     public function __construct(
         NatureManager $natureManager,
         LanguageManager $languageManager,
-        ApiManager $apiManager
+        ApiManager $apiManager,
+        EntityManagerInterface $em
     )
     {
-        parent::__construct($natureManager, $languageManager, $apiManager);
+        parent::__construct($natureManager, $languageManager, $apiManager, $em);
     }
 
     /**

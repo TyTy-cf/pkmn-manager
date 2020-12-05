@@ -5,6 +5,7 @@ namespace App\Entity\Infos;
 
 use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
+use App\Entity\Traits\TraitNomenclature;
 use App\Entity\Traits\TraitSlug;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
@@ -32,11 +33,7 @@ class Nature
      */
     private int $id;
 
-    use TraitNames;
-
-    use TraitSlug;
-
-    use TraitLanguage;
+    use TraitNomenclature;
 
     /**
      * @var string|null $statIncreased la stats "bonus" de la nature

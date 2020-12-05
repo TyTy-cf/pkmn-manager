@@ -7,6 +7,7 @@ namespace App\Command;
 use App\Manager\AbstractManager;
 use App\Manager\Api\ApiManager;
 use App\Manager\Users\LanguageManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -35,18 +36,26 @@ abstract class AbstractCommand extends Command
     protected ApiManager $apiManager;
 
     /**
+     * @var EntityManagerInterface
+     */
+    protected EntityManagerInterface $em;
+
+    /**
      * AbstractCommand constructor.
      * @param AbstractManager $manager
      * @param LanguageManager $languageManager
      * @param ApiManager $apiManager
+     * @param EntityManagerInterface $em
      */
     public function __construct
     (
         AbstractManager $manager,
         LanguageManager $languageManager,
-        ApiManager $apiManager
+        ApiManager $apiManager,
+        EntityManagerInterface $em
     )
     {
+        $this->em = $em;
         $this->languageManager = $languageManager;
         $this->manager = $manager;
         $this->apiManager = $apiManager;

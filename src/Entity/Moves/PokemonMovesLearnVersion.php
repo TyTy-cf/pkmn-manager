@@ -14,7 +14,13 @@ use Doctrine\ORM\Mapping\JoinColumn;
  * Class PokemonMovesLearnVersion
  * @package App\Entity\Move
  * @Entity
- * @ORM\Table(name="pokemon_moves_learn_version")
+ * @ORM\Table(
+ *     name="pokemon_moves_learn_version",
+ *     indexes={@ORM\Index(
+ *          name="slug_idx",
+ *          columns={"slug"}
+ *     )}
+ * )
  */
 class PokemonMovesLearnVersion
 {

@@ -12,8 +12,6 @@ class TextManager
      */
     public function slugify(string $text)
     {
-        // replace non letter or digits by -
-        $text = preg_replace('~[^\pL\d]+~u', '-', $text);
         // transliterate
         $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
         // remove unwanted characters
@@ -29,15 +27,10 @@ class TextManager
         {
             $text = substr($text, 1);
         }
-
-        // lowercase
-        $text = strtolower($text);
-
         if (empty($text)) {
             return 'n-a';
         }
-
-        return $text;
+        return strtolower($text);
     }
 
     /**

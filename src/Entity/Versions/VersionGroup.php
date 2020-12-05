@@ -4,6 +4,7 @@ namespace App\Entity\Versions;
 
 use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
+use App\Entity\Traits\TraitNomenclature;
 use App\Entity\Traits\TraitSlug;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
@@ -22,11 +23,7 @@ class VersionGroup
      */
     private int $id;
 
-    use TraitNames;
-
-    use TraitSlug;
-
-    use TraitLanguage;
+    use TraitNomenclature;
 
     /**
      * @var Generation $generation

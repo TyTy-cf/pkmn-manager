@@ -7,6 +7,7 @@ use App\Entity\Infos\Ability;
 use App\Entity\Infos\Type\Type;
 use App\Entity\Moves\PokemonMovesLearnVersion;
 use App\Entity\Stats\StatsEffort;
+use App\Entity\Traits\TraitApi;
 use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
 use App\Entity\Traits\TraitSlug;
@@ -47,6 +48,8 @@ class Pokemon
     use TraitSlug;
 
     use TraitLanguage;
+
+    use TraitApi;
 
     /**
      * @ManyToMany(targetEntity="App\Entity\Infos\Ability", inversedBy="pokemons", cascade={"persist"})

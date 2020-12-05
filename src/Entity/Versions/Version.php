@@ -6,6 +6,7 @@ namespace App\Entity\Versions;
 
 use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
+use App\Entity\Traits\TraitNomenclature;
 use App\Entity\Traits\TraitSlug;
 use App\Entity\Users\Language;
 use Doctrine\ORM\Mapping as ORM;
@@ -28,11 +29,7 @@ class Version
      */
     private int $id;
 
-    use TraitNames;
-
-    use TraitLanguage;
-
-    use TraitSlug;
+    use TraitNomenclature;
 
     /**
      * @var VersionGroup

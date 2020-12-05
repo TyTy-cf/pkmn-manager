@@ -6,6 +6,7 @@ namespace App\Entity\Infos\Type;
 
 use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
+use App\Entity\Traits\TraitNomenclature;
 use App\Entity\Traits\TraitSlug;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -49,11 +50,7 @@ class Type
      */
     private string $codeApi;
 
-    use TraitNames;
-
-    use TraitSlug;
-
-    use TraitLanguage;
+    use TraitNomenclature;
 
     public function __construct()
     {

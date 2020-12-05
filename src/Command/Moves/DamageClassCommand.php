@@ -8,6 +8,7 @@ use App\Command\AbstractCommand;
 use App\Manager\Api\ApiManager;
 use App\Manager\Moves\DamageClassManager;
 use App\Manager\Users\LanguageManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -21,14 +22,16 @@ class DamageClassCommand extends AbstractCommand
      * @param DamageClassManager $damageClassManager
      * @param LanguageManager $languageManager
      * @param ApiManager $apiManager
+     * @param EntityManagerInterface $em
      */
     public function __construct(
         DamageClassManager $damageClassManager,
         LanguageManager $languageManager,
-        ApiManager $apiManager
+        ApiManager $apiManager,
+        EntityManagerInterface $em
     )
     {
-        parent::__construct($damageClassManager, $languageManager, $apiManager);
+        parent::__construct($damageClassManager, $languageManager, $apiManager, $em);
     }
 
     /**

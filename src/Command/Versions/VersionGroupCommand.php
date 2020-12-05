@@ -8,6 +8,7 @@ use App\Command\AbstractCommand;
 use App\Manager\Api\ApiManager;
 use App\Manager\Users\LanguageManager;
 use App\Manager\Versions\VersionGroupManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,14 +23,16 @@ class VersionGroupCommand extends AbstractCommand
      * @param VersionGroupManager $versionGroupManager
      * @param LanguageManager $languageManager
      * @param ApiManager $apiManager
+     * @param EntityManagerInterface $em
      */
     public function __construct(
         VersionGroupManager $versionGroupManager,
         LanguageManager $languageManager,
-        ApiManager $apiManager
+        ApiManager $apiManager,
+        EntityManagerInterface $em
     )
     {
-        parent::__construct($versionGroupManager, $languageManager, $apiManager);
+        parent::__construct($versionGroupManager, $languageManager, $apiManager, $em);
     }
 
     /**

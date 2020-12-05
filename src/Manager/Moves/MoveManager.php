@@ -85,24 +85,32 @@ class MoveManager extends AbstractManager
      */
     public function createFromApiResponse(Language $language, $apiResponse)
     {
-        $name = $apiResponse['name'];
-        $slug = $this->textManager->generateSlugFromClass(Move::class, $name);
+        $slug = $this->textManager->generateSlugFromClass(Move::class, $apiResponse['name']);
+        $urlDetailedMove = $this->apiManager->getDetailed($apiResponse['url'])->toArray();
 
         if ($this->getMoveByLanguageAndSlug($language, $slug) === null && isset($urlDetailedMove['damage_class']))
-        {
-            $urlDetailedMove = $this->apiManager->getDetailed($apiResponse['url'])->toArray();
-            $moveName = $this->apiManager->getNameBasedOnLanguageFromArray($language->getCode(), $urlDetailedMove);
+        {;
+            $moveName = $this->apiManager->getNameBasedOnLanguageFromArray(
+                $language->getCode(),
+                $urlDetailedMove
+            );
             // Get the DamageClass
             $damageClass = $this->damageClassManager->getDamageClassByLanguageAndSlug(
                 $language,
-                $this->textManager->generateSlugFromClass(DamageClass::class, $urlDetailedMove['damage_class']['name'])
+                $this->textManager->generateSlugFromClass(
+                    DamageClass::class,
+                    $urlDetailedMove['damage_class']['name']
+                )
             );
             // Get the Type
             $type = $this->typeManager->getTypeByLanguageAndSlug(
                 $language,
-                $this->textManager->generateSlugFromClass(Type::class, $urlDetailedMove['type']['name'])
+                $this->textManager->generateSlugFromClass(
+                    Type::class,
+                    $urlDetailedMove['type']['name']
+                )
             );
-            if ($urlDetailedMove['pp'] !== null && $urlDetailedMove['power'] && $urlDetailedMove['accuracy'])
+            if ($urlDetailedMove['pp'] !== null || $urlDetailedMove['power'] !== null || $urlDetailedMove['accuracy'] !== null)
             {
                 // Create the Move
                 $move = new Move();
@@ -115,11 +123,15 @@ class MoveManager extends AbstractManager
                 $move->setPower($urlDetailedMove['power']);
                 $move->setPriority($urlDetailedMove['priority']);
                 $move->setAccuracy($urlDetailedMove['accuracy']);
+
                 $this->entityManager->persist($move);
 
                 // Create the MoveDescription
-                $this->moveDescriptionManager->createMoveDescription($language, $move, $urlDetailedMove['flavor_text_entries']);
-
+                $this->moveDescriptionManager->createMoveDescription(
+                    $language,
+                    $move,
+                    $urlDetailedMove['flavor_text_entries']
+                );
                 $this->entityManager->flush();
             }
         }

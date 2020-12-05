@@ -23,6 +23,29 @@ class PokemonRepository extends ServiceEntityRepository
 
     /**
      * @param Language $language
+     * @param int $offset
+     * @param int $limit
+     * @return array|int|string
+     */
+    public function getPokemonOffsetLimiteApiCodeByLanguage
+    (
+        Language $language,
+        int $offset,
+        int $limit
+    )
+    {
+        return $this->createQueryBuilder('pokemon')
+            ->select('pokemon')
+            ->where('pokemon.language = :lang')
+            ->setParameter('lang', $language)
+            ->setMaxResults($limit)
+            ->setFirstResult($offset)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param Language $language
      * @param string $slug
      * @return Pokemon|null
      * @throws NonUniqueResultException
@@ -30,12 +53,12 @@ class PokemonRepository extends ServiceEntityRepository
      */
     public function getPokemonByLanguageAndSlug(Language $language, string $slug): ?Pokemon
     {
-        $qb = $this->createQueryBuilder('pokemon');
-        $qb->where('pokemon.language = :lang');
-        $qb->andWhere('pokemon.slug = :slug');
-        $qb->setParameter('lang', $language);
-        $qb->setParameter('slug', $slug);
-        return $qb->getQuery()->getOneOrNullResult();
+        return $this->createQueryBuilder('pokemon')
+            ->where('pokemon.language = :lang')
+            ->andWhere('pokemon.slug = :slug')
+            ->setParameter('lang', $language)
+            ->setParameter('slug', $slug)
+            ->getQuery()->getOneOrNullResult();
     }
 
     /**
@@ -46,13 +69,13 @@ class PokemonRepository extends ServiceEntityRepository
      */
     public function getPokemonByNameAndLanguageCode(string $name, string $languageCode)
     {
-        $qb = $this->createQueryBuilder('pokemon');
-        $qb->join('pokemon.language', 'language');
-        $qb->where('language.code = :lang');
-        $qb->andWhere('pokemon.name = :name');
-        $qb->setParameter('lang', $languageCode);
-        $qb->setParameter('name', $name);
-        return $qb->getQuery()->getOneOrNullResult();
+        return $this->createQueryBuilder('pokemon')
+            ->join('pokemon.language', 'language')
+            ->where('language.code = :lang')
+            ->andWhere('pokemon.name = :name')
+            ->setParameter('lang', $languageCode)
+            ->setParameter('name', $name)
+            ->getQuery()->getOneOrNullResult();
     }
 
 }

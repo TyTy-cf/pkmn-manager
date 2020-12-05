@@ -6,6 +6,7 @@ use App\Command\AbstractCommand;
 use App\Manager\Api\ApiManager;
 use App\Manager\Pokemon\PokemonManager;
 use App\Manager\Users\LanguageManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -25,15 +26,17 @@ class PokemonCommand extends AbstractCommand
      * @param PokemonManager $pokemonManager
      * @param LanguageManager $languageManager
      * @param ApiManager $apiManager
+     * @param EntityManagerInterface $em
      */
     public function __construct
     (
         PokemonManager $pokemonManager,
         LanguageManager $languageManager,
-        ApiManager $apiManager
+        ApiManager $apiManager,
+        EntityManagerInterface $em
     )
     {
-        parent::__construct($pokemonManager, $languageManager, $apiManager);
+        parent::__construct($pokemonManager, $languageManager, $apiManager, $em);
     }
 
     /**

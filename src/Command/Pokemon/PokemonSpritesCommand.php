@@ -8,6 +8,7 @@ use App\Command\AbstractCommand;
 use App\Manager\Api\ApiManager;
 use App\Manager\Pokemon\PokemonSpritesVersionManager;
 use App\Manager\Users\LanguageManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,15 +22,17 @@ class PokemonSpritesCommand extends AbstractCommand
      * @param PokemonSpritesVersionManager $pokemonManagerVersionManager
      * @param LanguageManager $languageManager
      * @param ApiManager $apiManager
+     * @param EntityManagerInterface $em
      */
     public function __construct
     (
         PokemonSpritesVersionManager $pokemonManagerVersionManager,
         LanguageManager $languageManager,
-        ApiManager $apiManager
+        ApiManager $apiManager,
+        EntityManagerInterface $em
     )
     {
-        parent::__construct($pokemonManagerVersionManager, $languageManager, $apiManager);
+        parent::__construct($pokemonManagerVersionManager, $languageManager, $apiManager, $em);
     }
 
     /**

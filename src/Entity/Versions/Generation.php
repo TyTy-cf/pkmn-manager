@@ -6,6 +6,7 @@ namespace App\Entity\Versions;
 
 use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
+use App\Entity\Traits\TraitNomenclature;
 use App\Entity\Traits\TraitSlug;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -22,11 +23,7 @@ class Generation
      */
     private int $id;
 
-    use TraitNames;
-
-    use TraitLanguage;
-
-    use TraitSlug;
+    use TraitNomenclature;
 
     /**
      * @ORM\Column(type="string", length=2)
@@ -41,7 +38,16 @@ class Generation
     /**
      * @var array|string[]
      */
-    public static array $relationArray = [1 => 'RB', 2 => 'OA', 3 => 'RS', 4 => 'DP', 5 => 'BW', 6 => 'XY', 7 => 'SM', 8 => 'SS'];
+    public static array $relationArray = [
+        1 => 'RB',
+        2 => 'OA',
+        3 => 'RS',
+        4 => 'DP',
+        5 => 'BW',
+        6 => 'XY',
+        7 => 'SM',
+        8 => 'SS'
+    ];
 
     /**
      * @return int

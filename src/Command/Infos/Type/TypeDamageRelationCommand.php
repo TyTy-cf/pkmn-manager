@@ -10,14 +10,13 @@ use App\Manager\Api\ApiManager;
 use App\Manager\Infos\Type\TypeDamageRelationTypeManager;
 use App\Manager\Infos\Type\TypeManager;
 use App\Manager\Users\LanguageManager;
-use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class TypeDamageRelationCommand extends AbstractCommand
 {
@@ -34,15 +33,18 @@ class TypeDamageRelationCommand extends AbstractCommand
      * @param ApiManager $apiManager
      * @param LanguageManager $languageManager
      * @param TypeDamageRelationTypeManager $typeDamageFromTypeManager
+     * @param EntityManagerInterface $em
      */
     public function __construct(
         TypeManager $typeManager,
         ApiManager $apiManager,
         LanguageManager $languageManager,
-        TypeDamageRelationTypeManager $typeDamageFromTypeManager
-    ) {
+        TypeDamageRelationTypeManager $typeDamageFromTypeManager,
+        EntityManagerInterface $em
+    )
+    {
         $this->typeManager = $typeManager;
-        parent::__construct($typeDamageFromTypeManager, $languageManager, $apiManager);
+        parent::__construct($typeDamageFromTypeManager, $languageManager, $apiManager, $em);
     }
 
     /**

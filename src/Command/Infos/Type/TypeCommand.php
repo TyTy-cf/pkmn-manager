@@ -8,6 +8,7 @@ use App\Command\AbstractCommand;
 use App\Manager\Api\ApiManager;
 use App\Manager\Infos\Type\TypeManager;
 use App\Manager\Users\LanguageManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -21,13 +22,16 @@ class TypeCommand extends AbstractCommand
      * @param TypeManager $typeManager
      * @param ApiManager $apiManager
      * @param LanguageManager $languageManager
+     * @param EntityManagerInterface $em
      */
     public function __construct(
         TypeManager $typeManager,
         ApiManager $apiManager,
-        LanguageManager $languageManager
-    ) {
-        parent::__construct($typeManager, $languageManager, $apiManager);
+        LanguageManager $languageManager,
+        EntityManagerInterface $em
+    )
+    {
+        parent::__construct($typeManager, $languageManager, $apiManager, $em);
     }
 
     /**

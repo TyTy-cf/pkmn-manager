@@ -17,6 +17,7 @@ use App\Manager\Moves\MoveManager;
 use App\Manager\TextManager;
 use App\Manager\Versions\VersionGroupManager;
 use App\Repository\Pokemon\PokemonRepository;
+use App\Repository\Stats\StatsEffortRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
@@ -50,6 +51,11 @@ class PokemonManager extends AbstractManager
     private PokemonRepository $pokemonRepository;
 
     /**
+     * @var StatsEffortRepository $statsEffortRepo
+     */
+    private StatsEffortRepository $statsEffortRepo;
+
+    /**
      * PokemonManager constructor.
      *
      * @param EntityManagerInterface $entityManager
@@ -59,6 +65,7 @@ class PokemonManager extends AbstractManager
      * @param ApiManager $apiManager
      * @param TextManager $textManager
      * @param VersionGroupManager $versionGroupManager
+     * @param StatsEffortRepository $statsEffortRepo
      * @param PokemonRepository $pokemonRepository
      */
     public function __construct
@@ -70,10 +77,12 @@ class PokemonManager extends AbstractManager
         ApiManager $apiManager,
         TextManager $textManager,
         VersionGroupManager $versionGroupManager,
+        StatsEffortRepository $statsEffortRepo,
         PokemonRepository $pokemonRepository
     ) {
         $this->typeManager = $typeManager;
         $this->movesManager = $movesManager;
+        $this->statsEffortRepo = $statsEffortRepo;
         $this->abilitiesManager = $abilitiesManager;
         $this->versionGroupManager = $versionGroupManager;
         $this->pokemonRepository = $pokemonRepository;
@@ -114,6 +123,17 @@ class PokemonManager extends AbstractManager
     }
 
     /**
+     * @param Language $language
+     * @param int $offset
+     * @param int $limit
+     * @return array|int|string
+     */
+    public function getPokemonOffsetLimiteApiCodeByLanguage(Language $language, int $offset, int $limit)
+    {
+        return $this->pokemonRepository->getPokemonOffsetLimiteApiCodeByLanguage($language, $offset, $limit);
+    }
+
+    /**
      * @param $name
      * @return Pokemon|object|null
      */
@@ -139,11 +159,12 @@ class PokemonManager extends AbstractManager
 
         if ($this->getPokemonByLanguageAndSlug($language, $slug) === null && sizeof($urlDetailed['stats']) > 0)
         {
-            $apiResponse = $this->apiManager->getPokemonFromName($urlDetailed['name']);
             $pokemonName = $this->apiManager->getNameBasedOnLanguage($language->getCode(), $urlDetailed['species']['url']);
 
             // Create new Pokemon
             $pokemon = new Pokemon();
+            $pokemon->setIdApi($urlDetailed['id']);
+            $pokemon->setNameApi($urlDetailed['name']);
             $pokemon->setName(ucfirst($pokemonName));
             $pokemon->setSlug($slug);
             $pokemon->setWeight($urlDetailed['weight']);
@@ -153,50 +174,86 @@ class PokemonManager extends AbstractManager
             $pokemon->setLanguage($language);
 
             // Add the stats
-            $statsEffort = new StatsEffort();
+            $arrayStatsEffort = array();
             foreach ($urlDetailed['stats'] as $stat) {
                 if ($stat['stat']['name'] == 'hp') {
                     $pokemon->setHp($stat['base_stat']);
-                    $statsEffort->setHp($stat['effort']);
-                } elseif ($stat['stat']['name'] == 'attack') {
+                    $arrayStatsEffort['hp'] = $stat['effort'];
+                }
+                if ($stat['stat']['name'] == 'attack') {
                     $pokemon->setAtk($stat['base_stat']);
-                    $statsEffort->setAtk($stat['effort']);
-                } elseif ($stat['stat']['name'] == 'defense') {
+                    $arrayStatsEffort['atk'] = $stat['effort'];
+                }
+                if ($stat['stat']['name'] == 'defense') {
                     $pokemon->setDef($stat['base_stat']);
-                    $statsEffort->setDef($stat['effort']);
-                } elseif ($stat['stat']['name'] == 'special-attack') {
+                    $arrayStatsEffort['def'] = $stat['effort'];
+                }
+                if ($stat['stat']['name'] == 'special-attack') {
                     $pokemon->setSpa($stat['base_stat']);
-                    $statsEffort->setSpa($stat['effort']);
-                } elseif ($stat['stat']['name'] == 'special-defense') {
+                    $arrayStatsEffort['spa'] = $stat['effort'];
+                }
+                if ($stat['stat']['name'] == 'special-defense') {
                     $pokemon->setSpd($stat['base_stat']);
-                    $statsEffort->setSpd($stat['effort']);
-                } elseif ($stat['stat']['name'] == 'speed') {
+                    $arrayStatsEffort['spd'] = $stat['effort'];
+                }
+                if ($stat['stat']['name'] == 'speed') {
                     $pokemon->setSpe($stat['base_stat']);
-                    $statsEffort->setSpe($stat['effort']);
+                    $arrayStatsEffort['spe'] = $stat['effort'];
                 }
             }
-            // Persist the StatsEffort
-            $this->entityManager->persist($statsEffort);
-            $pokemon->setStatsEffort($statsEffort);
+
+            $pokemon->setStatsEffort($this->getStatsEffortFromArray($arrayStatsEffort));
 
             // Set the Ability
             foreach($urlDetailed['abilities'] as $abilityDetailed)
             {
-                $slugAbility = $this->textManager->generateSlugFromClass(Ability::class, $abilityDetailed['ability']['name']);
-                $ability = $this->abilitiesManager->getAbilitiesByLanguageAndSlug($language, $slugAbility);
+                $ability = $this->abilitiesManager->getAbilitiesByLanguageAndSlug(
+                    $language,
+                    $this->textManager->generateSlugFromClass(
+                        Ability::class,
+                        $abilityDetailed['ability']['name']
+                    )
+                );
                 $pokemon->addAbilities($ability);
             }
 
             // Set the Type
             foreach($urlDetailed['types'] as $typesDetailed)
             {
-                $slugType = $this->textManager->generateSlugFromClass(Type::class, $typesDetailed['type']['name']);
-                $type = $this->typeManager->getTypeByLanguageAndSlug($language, $slugType);
+                $type = $this->typeManager->getTypeByLanguageAndSlug(
+                    $language,
+                    $this->textManager->generateSlugFromClass(
+                        Type::class,
+                        $typesDetailed['type']['name']
+                    )
+                );
                 $pokemon->addType($type);
             }
 
             $this->entityManager->persist($pokemon);
             $this->entityManager->flush();
         }
+    }
+
+    /**
+     * @param array $arrayStatsEffort
+     * @return StatsEffort
+     * @throws NonUniqueResultException
+     */
+    public function getStatsEffortFromArray(array $arrayStatsEffort)
+    {
+        // Add the stats
+        if (($statsEffort = $this->statsEffortRepo->getStatsEffortByStats($arrayStatsEffort)) === null)
+        {
+            $statsEffort = new StatsEffort();
+            $statsEffort->setHp($arrayStatsEffort['hp']);
+            $statsEffort->setAtk($arrayStatsEffort['atk']);
+            $statsEffort->setDef($arrayStatsEffort['def']);
+            $statsEffort->setSpa($arrayStatsEffort['spa']);
+            $statsEffort->setSpd($arrayStatsEffort['spd']);
+            $statsEffort->setSpe($arrayStatsEffort['spe']);
+            $this->entityManager->persist($statsEffort);
+        }
+        return $statsEffort;
     }
 }

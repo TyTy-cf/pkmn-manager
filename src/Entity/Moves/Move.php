@@ -45,26 +45,26 @@ class Move
     use TraitLanguage;
 
     /**
-     * @var Type $type the type of the move
+     * @var Type|null $type the type of the move
      *
      * @ManyToOne(targetEntity="App\Entity\Infos\Type\Type")
-     * @JoinColumn(name="type_id", referencedColumnName="id")
+     * @JoinColumn(name="type_id", referencedColumnName="id", nullable=true)
      */
-    private Type $type;
+    private ?Type $type;
 
     /**
-     * @var DamageClass $damageClass the category of the move
+     * @var DamageClass|null $damageClass the category of the move
      *
      * @ManyToOne(targetEntity="App\Entity\Moves\DamageClass")
-     * @JoinColumn(name="damage_class_id", referencedColumnName="id")
+     * @JoinColumn(name="damage_class_id", referencedColumnName="id", nullable=true)
      */
-    private DamageClass $damageClass;
+    private ?DamageClass $damageClass;
 
     /**
-     * @var int $pp the maximu number of point of power for this move
-     * @ORM\Column(name="pp", type="integer", length=3)
+     * @var int|null $pp the maximu number of point of power for this move
+     * @ORM\Column(name="pp", type="integer", length=3, nullable=true)
      */
-    private int $pp;
+    private ?int $pp;
 
     /**
      * @var int|null $accuracy the accuracy of the move
@@ -80,7 +80,7 @@ class Move
 
     /**
      * @var int|null $priority the power the of the move
-     * @ORM\Column(name="priority", type="smallint", length=1)
+     * @ORM\Column(name="priority", type="smallint", length=1, nullable=true)
      */
     private ?int $priority;
 
@@ -111,49 +111,49 @@ class Move
     }
 
     /**
-     * @return Type
+     * @return Type|null
      */
-    public function getType(): Type
+    public function getType(): ?Type
     {
         return $this->type;
     }
 
     /**
-     * @param Type $type
+     * @param Type|null $type
      */
-    public function setType(Type $type): void
+    public function setType(?Type $type): void
     {
         $this->type = $type;
     }
 
     /**
-     * @return DamageClass
+     * @return DamageClass|null
      */
-    public function getDamageClass(): DamageClass
+    public function getDamageClass(): ?DamageClass
     {
         return $this->damageClass;
     }
 
     /**
-     * @param DamageClass $damageClass
+     * @param DamageClass|null $damageClass
      */
-    public function setDamageClass(DamageClass $damageClass): void
+    public function setDamageClass(?DamageClass $damageClass): void
     {
         $this->damageClass = $damageClass;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getPp(): int
+    public function getPp(): ?int
     {
         return $this->pp;
     }
 
     /**
-     * @param int $pp
+     * @param int|null $pp
      */
-    public function setPp(int $pp): void
+    public function setPp(?int $pp): void
     {
         $this->pp = $pp;
     }
@@ -175,9 +175,9 @@ class Move
     }
 
     /**
-     * @return Integer|null
+     * @return int|null
      */
-    public function getPower(): ?Integer
+    public function getPower(): ?int
     {
         return $this->power;
     }
@@ -190,11 +190,18 @@ class Move
         $this->power = $power;
     }
 
+    /**
+     * @return int|null
+     */
     public function getPriority(): ?int
     {
         return $this->priority;
     }
 
+    /**
+     * @param int $priority
+     * @return $this
+     */
     public function setPriority(int $priority): self
     {
         $this->priority = $priority;
