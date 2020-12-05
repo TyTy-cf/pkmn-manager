@@ -171,6 +171,11 @@ class ApiManager
         return $this->apiConnect("https://pokeapi.co/api/v2/machine/?offset=0&limit=1442");
     }
 
+    public function getEggGroupJson()
+    {
+        return $this->apiConnect("https://pokeapi.co/api/v2/egg-group/");
+    }
+
     /**
      * @param $lang
      * @param $url
@@ -235,5 +240,6 @@ class ApiManager
         $splittedUrl = explode('/', $url);
         return $splittedUrl[6];
     }
+
 
 }
