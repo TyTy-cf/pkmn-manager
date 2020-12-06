@@ -29,10 +29,12 @@ trait TraitLanguage
 
     /**
      * @param Language $language
+     * @return TraitLanguage
      */
-    public function setLanguage(Language $language): void
+    public function setLanguage(Language $language): self
     {
         $this->language = $language;
+        return $this;
     }
 
 }

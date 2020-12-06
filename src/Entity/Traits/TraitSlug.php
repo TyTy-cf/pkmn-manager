@@ -27,10 +27,12 @@ trait TraitSlug
 
     /**
      * @param string $slug
+     * @return TraitSlug
      */
-    public function setSlug(string $slug): void
+    public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+        return $this;
     }
 
 }

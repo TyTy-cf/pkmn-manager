@@ -5,6 +5,7 @@ namespace App\Entity\Pokemon;
 use App\Entity\Pokedex\EggGroup;
 use App\Entity\Traits\TraitNomenclature;
 use App\Repository\Pokemon\PokemonSpeciesRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
@@ -13,6 +14,12 @@ use Doctrine\ORM\Mapping\ManyToMany;
 
 /**
  * @ORM\Entity(repositoryClass=PokemonSpeciesRepository::class)
+ * @ORM\Table(indexes={
+ *     @ORM\Index(
+ *          name="slug_idx",
+ *          columns={"slug"}
+ *     )
+ * })
  */
 class PokemonSpecies
 {
@@ -85,6 +92,14 @@ class PokemonSpecies
      * @JoinColumn(name="evolves_from_species_id", nullable=true)
      */
     private ?PokemonSpecies $evolvesFromSpecies;
+
+    /**
+     * PokemonSpecies constructor.
+     */
+    public function __construct()
+    {
+        $this->eggGroup = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -291,7 +306,7 @@ class PokemonSpecies
     }
 
     /**
-     * @param PokemonSpecie|null $evolvesFromSpecies
+     * @param PokemonSpecies|null $evolvesFromSpecies
      * @return PokemonSpecies
      */
     public function setEvolvesFromSpecies(?PokemonSpecies $evolvesFromSpecies): self

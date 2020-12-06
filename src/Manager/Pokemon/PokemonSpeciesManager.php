@@ -7,10 +7,12 @@ namespace App\Manager\Pokemon;
 use App\Entity\Pokemon\Pokemon;
 use App\Entity\Pokemon\PokemonSpecies;
 use App\Entity\Users\Language;
+use App\Entity\Versions\Version;
 use App\Manager\AbstractManager;
 use App\Manager\Api\ApiManager;
 use App\Manager\Pokedex\EggGroupManager;
 use App\Manager\TextManager;
+use App\Manager\Versions\VersionManager;
 use App\Repository\Pokemon\PokemonSpeciesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
@@ -39,6 +41,16 @@ class PokemonSpeciesManager extends AbstractManager
     private EggGroupManager $eggGroupManager;
 
     /**
+     * @var array $arrayVersions
+     */
+    private static array $arrayVersions;
+
+    /**
+     * @var VersionManager $versionManager
+     */
+    private VersionManager $versionManager;
+
+    /**
      * PokemonManager constructor.
      *
      * @param EntityManagerInterface $entityManager
@@ -46,6 +58,7 @@ class PokemonSpeciesManager extends AbstractManager
      * @param TextManager $textManager
      * @param PokemonManager $pokemonManager
      * @param EggGroupManager $eggGroupManager
+     * @param VersionManager $versionManager
      * @param PokemonSpeciesVersionManager $pokemonSpeciesVersionManager
      * @param PokemonSpeciesRepository $repository
      */
@@ -56,13 +69,16 @@ class PokemonSpeciesManager extends AbstractManager
         TextManager $textManager,
         PokemonManager $pokemonManager,
         EggGroupManager $eggGroupManager,
+        VersionManager $versionManager,
         PokemonSpeciesVersionManager $pokemonSpeciesVersionManager,
         PokemonSpeciesRepository $repository
     ) {
         $this->repository = $repository;
         $this->eggGroupManager = $eggGroupManager;
         $this->pokemonManager = $pokemonManager;
+        $this->versionManager = $versionManager;
         $this->pokemonSpeciesVersionManager = $pokemonSpeciesVersionManager;
+        self::$arrayVersions = array();
         parent::__construct($entityManager, $apiManager, $textManager);
     }
 
@@ -76,6 +92,23 @@ class PokemonSpeciesManager extends AbstractManager
         return $this->repository->findOneBy([
             'slug' => $language->getCode().'/'.$slug
         ]);
+    }
+
+    /**
+     * @param Language $language
+     * @return Version[]|array
+     */
+    public function getArrayVersions(Language $language)
+    {
+        if (self::$arrayVersions == null)
+        {
+            $tmpArrayVersions = $this->versionManager->getAllVersions($language);
+            foreach($tmpArrayVersions as $version)
+            {
+                self::$arrayVersions[$version->getSlug()] = $version;
+            }
+        }
+        return self::$arrayVersions;
     }
 
     /**
@@ -114,7 +147,8 @@ class PokemonSpeciesManager extends AbstractManager
                 ->setIsLegendary($urlDetailed['is_legendary'])
                 ->setBaseHappiness($urlDetailed['base_happiness'])
                 ->setCaptureRate($urlDetailed['capture_rate'])
-                ->setHasGenderDifferences($urlDetailed['has_gender_differences']);
+                ->setHasGenderDifferences($urlDetailed['has_gender_differences'])
+            ;
 
             // Set le evolve from species
             $pokemonSpecies->setEvolvesFromSpecies(
@@ -127,7 +161,7 @@ class PokemonSpeciesManager extends AbstractManager
             foreach($urlDetailed['egg_groups'] as $eggGroupName)
             {
                 $eggGroup = $this->eggGroupManager->getEggGroupBySlug(
-                    $language, 'egg-group' . $eggGroupName['name']
+                    $language, 'egg-group-' . $eggGroupName['name']
                 );
                 if ($eggGroup !== null)
                 {
@@ -148,8 +182,12 @@ class PokemonSpeciesManager extends AbstractManager
             $this->entityManager->persist($pokemon);
 
             // Set PokemonSpeciesVersion
-            
-
+            $this->pokemonSpeciesVersionManager->createFromApi(
+                $language,
+                $urlDetailed['flavor_text_entries'],
+                $pokemonSpecies,
+                $this->getArrayVersions($language)
+            );
 
             $this->entityManager->flush();
         }

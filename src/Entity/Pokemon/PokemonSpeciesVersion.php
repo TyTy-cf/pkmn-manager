@@ -3,6 +3,8 @@
 namespace App\Entity\Pokemon;
 
 use App\Entity\Traits\TraitDescription;
+use App\Entity\Traits\TraitLanguage;
+use App\Entity\Traits\TraitSlug;
 use App\Entity\Versions\Version;
 use App\Repository\Pokemon\PokemonSpeciesVersionRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,6 +23,10 @@ class PokemonSpeciesVersion
     private int $id;
 
     use TraitDescription;
+
+    use TraitSlug;
+
+    use TraitLanguage;
 
     /**
      * @var PokemonSpecies
@@ -51,10 +57,12 @@ class PokemonSpeciesVersion
 
     /**
      * @param PokemonSpecies $pokemonSpecies
+     * @return PokemonSpeciesVersion
      */
-    public function setPokemonSpecies(PokemonSpecies $pokemonSpecies): void
+    public function setPokemonSpecies(PokemonSpecies $pokemonSpecies): self
     {
         $this->pokemonSpecies = $pokemonSpecies;
+        return $this;
     }
 
     /**
@@ -67,10 +75,12 @@ class PokemonSpeciesVersion
 
     /**
      * @param Version $version
+     * @return PokemonSpeciesVersion
      */
-    public function setVersion(Version $version): void
+    public function setVersion(Version $version): self
     {
         $this->version = $version;
+        return $this;
     }
 
 }

@@ -63,6 +63,16 @@ class VersionManager extends AbstractManager
 
     /**
      * @param Language $language
+     */
+    public function getAllVersions(Language $language)
+    {
+        return $this->versionRepository->findBy([
+           'language' => $language,
+        ]);
+    }
+
+    /**
+     * @param Language $language
      * @param $version
      * @throws NonUniqueResultException
      * @throws TransportExceptionInterface
