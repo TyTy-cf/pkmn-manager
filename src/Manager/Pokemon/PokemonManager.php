@@ -90,36 +90,23 @@ class PokemonManager extends AbstractManager
     }
 
     /**
-     * Get pokemon based on criterias
+     * Get pokemon based on criteria
      *
      * @param array $array
      * @return Pokemon[]|object[]
      */
-    public function findby(array $array)
+    public function findBy(array $array)
     {
         return $this->pokemonRepository->findBy($array);
     }
 
     /**
-     * @param string $name
-     * @param string $languageCode
-     * @return Pokemon|null
-     * @throws NonUniqueResultException
-     */
-    public function getPokemonByNameAndLanguageCode(string $name, string $languageCode): ?Pokemon
-    {
-        return $this->pokemonRepository->getPokemonByNameAndLanguageCode($name, $languageCode);
-    }
-
-    /**
-     * @param Language $language
      * @param string $slug
      * @return Pokemon|null
-     * @throws NonUniqueResultException
      */
-    public function getPokemonByLanguageAndSlug(Language $language, string $slug): ?Pokemon
+    public function getPokemonBySlug(string $slug): ?Pokemon
     {
-        return $this->pokemonRepository->getPokemonByLanguageAndSlug($language, $slug);
+        return $this->pokemonRepository->findOneBySlug($slug);
     }
 
     /**
@@ -128,9 +115,9 @@ class PokemonManager extends AbstractManager
      * @param int $limit
      * @return array|int|string
      */
-    public function getPokemonOffsetLimiteApiCodeByLanguage(Language $language, int $offset, int $limit)
+    public function getPokemonOffsetLimitApiCodeByLanguage(Language $language, int $offset, int $limit)
     {
-        return $this->pokemonRepository->getPokemonOffsetLimiteApiCodeByLanguage($language, $offset, $limit);
+        return $this->pokemonRepository->getPokemonOffsetLimitApiCodeByLanguage($language, $offset, $limit);
     }
 
     /**
@@ -154,24 +141,28 @@ class PokemonManager extends AbstractManager
      */
     public function createFromApiResponse(Language $language, $apiResponse)
     {
-        $slug = $this->textManager->generateSlugFromClass(Pokemon::class, $apiResponse['name']);
+        $slug = $this->textManager->generateSlugFromClassWithLanguage($language, Pokemon::class, $apiResponse['name']);
         $urlDetailed = $this->apiManager->getDetailed($apiResponse['url'])->toArray();
 
-        if ($this->getPokemonByLanguageAndSlug($language, $slug) === null && sizeof($urlDetailed['stats']) > 0)
+        if ($this->getPokemonBySlug($slug) === null && sizeof($urlDetailed['stats']) > 0)
         {
-            $pokemonName = $this->apiManager->getNameBasedOnLanguage($language->getCode(), $urlDetailed['species']['url']);
+            $pokemonName = $this->apiManager->getNameBasedOnLanguage(
+                $language->getCode(),
+                $urlDetailed['species']['url']
+            );
 
             // Create new Pokemon
-            $pokemon = new Pokemon();
-            $pokemon->setIdApi($urlDetailed['id']);
-            $pokemon->setNameApi($urlDetailed['name']);
-            $pokemon->setName(ucfirst($pokemonName));
-            $pokemon->setSlug($slug);
-            $pokemon->setWeight($urlDetailed['weight']);
-            $pokemon->setHeight($urlDetailed['height']);
-            $pokemon->setUrlIcon($urlDetailed['sprites']['versions']['generation-viii']['icons']['front_default']);
-            $pokemon->setUrlSpriteImg($urlDetailed['sprites']['other']['official-artwork']['front_default']);
-            $pokemon->setLanguage($language);
+            $pokemon = (new Pokemon())
+                ->setIdApi($urlDetailed['id'])
+                ->setNameApi($urlDetailed['name'])
+                ->setName(ucfirst($pokemonName))
+                ->setSlug($slug)
+                ->setWeight($urlDetailed['weight'])
+                ->setHeight($urlDetailed['height'])
+                ->setUrlIcon($urlDetailed['sprites']['versions']['generation-viii']['icons']['front_default'])
+                ->setUrlSpriteImg($urlDetailed['sprites']['other']['official-artwork']['front_default'])
+                ->setLanguage($language)
+            ;
 
             // Add the stats
             $arrayStatsEffort = array();
@@ -207,9 +198,9 @@ class PokemonManager extends AbstractManager
             // Set the Ability
             foreach($urlDetailed['abilities'] as $abilityDetailed)
             {
-                $ability = $this->abilitiesManager->getAbilitiesByLanguageAndSlug(
-                    $language,
-                    $this->textManager->generateSlugFromClass(
+                $ability = $this->abilitiesManager->getAbilitiesBySlug(
+                    $this->textManager->generateSlugFromClassWithLanguage(
+                        $language,
                         Ability::class,
                         $abilityDetailed['ability']['name']
                     )
@@ -221,8 +212,8 @@ class PokemonManager extends AbstractManager
             foreach($urlDetailed['types'] as $typesDetailed)
             {
                 $type = $this->typeManager->getTypeByLanguageAndSlug(
-                    $language,
-                    $this->textManager->generateSlugFromClass(
+                    $this->textManager->generateSlugFromClassWithLanguage(
+                        $language,
                         Type::class,
                         $typesDetailed['type']['name']
                     )
@@ -245,13 +236,14 @@ class PokemonManager extends AbstractManager
         // Add the stats
         if (($statsEffort = $this->statsEffortRepo->getStatsEffortByStats($arrayStatsEffort)) === null)
         {
-            $statsEffort = new StatsEffort();
-            $statsEffort->setHp($arrayStatsEffort['hp']);
-            $statsEffort->setAtk($arrayStatsEffort['atk']);
-            $statsEffort->setDef($arrayStatsEffort['def']);
-            $statsEffort->setSpa($arrayStatsEffort['spa']);
-            $statsEffort->setSpd($arrayStatsEffort['spd']);
-            $statsEffort->setSpe($arrayStatsEffort['spe']);
+            $statsEffort = (new StatsEffort())
+                ->setHp($arrayStatsEffort['hp'])
+                ->setAtk($arrayStatsEffort['atk'])
+                ->setDef($arrayStatsEffort['def'])
+                ->setSpa($arrayStatsEffort['spa'])
+                ->setSpd($arrayStatsEffort['spd'])
+                ->setSpe($arrayStatsEffort['spe'])
+            ;
             $this->entityManager->persist($statsEffort);
         }
         return $statsEffort;

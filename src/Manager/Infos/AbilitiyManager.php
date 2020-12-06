@@ -11,7 +11,6 @@ use App\Manager\Api\ApiManager;
 use App\Manager\TextManager;
 use App\Repository\Infos\AbilityRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class AbilitiyManager extends AbstractManager
@@ -42,19 +41,17 @@ class AbilitiyManager extends AbstractManager
     }
 
     /**
-     * @param Language $language
      * @param string $slug
      * @return Ability|null
      */
-    public function getAbilitiesByLanguageAndSlug(Language $language, string $slug): ?Ability
+    public function getAbilitiesBySlug(string $slug): ?Ability
     {
-        return $this->abilitiesRepository->getAbilitiesByLanguageAndSlug($language, $slug);
+        return $this->abilitiesRepository->findOneBySlug($slug);
     }
 
     /**
      * @param Language $language
      * @param $apiResponse
-     * @throws NonUniqueResultException
      * @throws TransportExceptionInterface
      */
     public function createFromApiResponse(Language $language, $apiResponse)
@@ -65,9 +62,9 @@ class AbilitiyManager extends AbstractManager
         if (!empty($urlDetailed['pokemon']))
         {
             //Check if the data exist in databases
-            $slug = $this->textManager->generateSlugFromClass(Ability::class, $apiResponse['name']);
+            $slug = $this->textManager->generateSlugFromClassWithLanguage($language, Ability::class, $apiResponse['name']);
 
-            if (($newAbility = $this->getAbilitiesByLanguageAndSlug($language, $slug)) === null)
+            if (($newAbility = $this->getAbilitiesBySlug($slug)) === null)
             {
                 // Fetch name & description according the language
                 $abilityNameLang = $this->apiManager->getNameBasedOnLanguageFromArray($language->getCode(), $urlDetailed);

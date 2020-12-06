@@ -61,10 +61,12 @@ trait TraitStatsPkmn
 
     /**
      * @param int $hp
+     * @return TraitStatsPkmn
      */
-    public function setHp(int $hp): void
+    public function setHp(int $hp): self
     {
         $this->hp = $hp;
+        return $this;
     }
 
     /**
@@ -77,10 +79,12 @@ trait TraitStatsPkmn
 
     /**
      * @param int $atk
+     * @return TraitStatsPkmn
      */
-    public function setAtk(int $atk): void
+    public function setAtk(int $atk): self
     {
         $this->atk = $atk;
+        return $this;
     }
 
     /**
@@ -93,10 +97,12 @@ trait TraitStatsPkmn
 
     /**
      * @param int $def
+     * @return TraitStatsPkmn
      */
-    public function setDef(int $def): void
+    public function setDef(int $def): self
     {
         $this->def = $def;
+        return $this;
     }
 
     /**
@@ -109,10 +115,12 @@ trait TraitStatsPkmn
 
     /**
      * @param int $spa
+     * @return TraitStatsPkmn
      */
-    public function setSpa(int $spa): void
+    public function setSpa(int $spa): self
     {
         $this->spa = $spa;
+        return $this;
     }
 
     /**
@@ -125,10 +133,12 @@ trait TraitStatsPkmn
 
     /**
      * @param int $spd
+     * @return TraitStatsPkmn
      */
-    public function setSpd(int $spd): void
+    public function setSpd(int $spd): self
     {
         $this->spd = $spd;
+        return $this;
     }
 
     /**
@@ -141,9 +151,12 @@ trait TraitStatsPkmn
 
     /**
      * @param int $spe
+     * @return TraitStatsPkmn
      */
-    public function setSpe(int $spe): void
+    public function setSpe(int $spe): self
     {
         $this->spe = $spe;
+        return $this;
     }
+
 }

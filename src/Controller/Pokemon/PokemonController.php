@@ -42,7 +42,12 @@ class PokemonController extends AbstractController
      * @param ApiManager $apiManager
      * @param SessionInterface $session
      */
-    public function __construct(PokemonManager $pokemonManager, ApiManager $apiManager, SessionInterface $session)
+    public function __construct
+    (
+        PokemonManager $pokemonManager,
+        ApiManager $apiManager,
+        SessionInterface $session
+    )
     {
         $this->pokemonManager = $pokemonManager;
         $this->apiManager = $apiManager;
@@ -60,7 +65,7 @@ class PokemonController extends AbstractController
     public function index(Request $request, PaginatorInterface $paginator): Response
     {
         $pokemons = $paginator->paginate(
-            $this->pokemonManager->findby(['id' => 'DESC']),
+            $this->pokemonManager->findBy(['id' => 'DESC']),
             $request->query->getInt('page', '1'),
             8
         );
@@ -144,7 +149,6 @@ class PokemonController extends AbstractController
         ]);
     }
 
-
     /**
      * Display the characteristic for one pokemon
      *
@@ -153,22 +157,11 @@ class PokemonController extends AbstractController
      * @param Request $request
      * @return Response
      *
-     * @throws TransportExceptionInterface
      */
     function displayProfile(Request $request): Response
     {
-        $pokemonName = $request->get('pokeName');
-
-        // Check if the pokemon exists inside the database
-        if (($pokemon = $this->pokemonManager->findByName($pokemonName)) == null) {
-            // Not existing, we are looking for it in the API
-            $apiResponse = $this->apiManager->getPokemonFromName($pokemonName)->toArray();
-            // And create the new pokemon
-            $pokemon = $this->pokemonManager->saveNewPokemon('fr', $apiResponse, $pokemonName);
-        }
-
         return $this->render('Pokemon/profile.html.twig', [
-            'pokemon' => $pokemon,
+            'pokemon' => $pokemon = $this->pokemonManager->findByName($request->get('pokeName')),
         ]);
     }
 }

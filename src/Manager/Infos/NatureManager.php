@@ -29,7 +29,8 @@ class NatureManager extends AbstractManager
      * @param ApiManager $apiManager
      * @param TextManager $textManager
      */
-    public function __construct(
+    public function __construct
+    (
         EntityManagerInterface $entityManager,
         NatureRepository $natureRepository,
         ApiManager $apiManager,
@@ -41,29 +42,42 @@ class NatureManager extends AbstractManager
     }
 
     /**
+     * @param string $slug
+     * @return object|null
+     */
+    private function getNatureBySlug(string $slug)
+    {
+        return $this->natureRepository->findOneBySlug($slug);
+    }
+
+    /**
      * Create a Nature if not already existing in DB
      *
      * @param Language $language
      * @param $urlContent
-     * @throws NonUniqueResultException
      * @throws TransportExceptionInterface
      */
     public function createFromApiResponse(Language $language, $urlContent)
     {
-        $slug = $this->textManager->generateSlugFromClass(Nature::class, $urlContent['name']);
+        $slug = $this->textManager->generateSlugFromClassWithLanguage(
+            $language,
+            Nature::class,
+            $urlContent['name']
+        );
         $codeLang = $language->getCode();
 
-        if ($this->natureRepository->getNatureByLanguageAndSlug($codeLang, $slug) === null)
+        if ($this->getNatureBySlug($slug) === null)
         {
             $urlContent = $this->apiManager->getDetailed($urlContent['url'])->toArray();
             $decreasedStat = $this->getModifiedStat($codeLang, $urlContent['decreased_stat']);
             $increasedStat = $this->getModifiedStat($codeLang, $urlContent['increased_stat']);
-            $nature = new Nature();
-            $nature->setSlug($slug);
-            $nature->setName($this->apiManager->getNameBasedOnLanguageFromArray($codeLang, $urlContent));
-            $nature->setLanguage($language);
-            $nature->setStatDecreased($decreasedStat);
-            $nature->setStatsIncreased($increasedStat);
+            $nature = (new Nature())
+                ->setSlug($slug)
+                ->setName($this->apiManager->getNameBasedOnLanguageFromArray($codeLang, $urlContent))
+                ->setLanguage($language)
+                ->setStatDecreased($decreasedStat)
+                ->setStatIncreased($increasedStat)
+            ;
             $this->entityManager->persist($nature);
             $this->entityManager->flush();
         }

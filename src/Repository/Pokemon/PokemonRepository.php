@@ -4,7 +4,7 @@ namespace App\Repository\Pokemon;
 
 use App\Entity\Pokemon\Pokemon;
 use App\Entity\Users\Language;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Repository\AbstractRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,7 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Pokemon[]    findAll()
  * @method Pokemon[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class PokemonRepository extends ServiceEntityRepository
+class PokemonRepository extends AbstractRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -27,7 +27,7 @@ class PokemonRepository extends ServiceEntityRepository
      * @param int $limit
      * @return array|int|string
      */
-    public function getPokemonOffsetLimiteApiCodeByLanguage
+    public function getPokemonOffsetLimitApiCodeByLanguage
     (
         Language $language,
         int $offset,

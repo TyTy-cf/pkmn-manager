@@ -58,43 +58,39 @@ class Nature
     }
 
     /**
-     * @param int $id
+     * @return string|null
      */
-    public function setId(int $id): void
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getStatIncreased(): string
+    public function getStatIncreased(): ?string
     {
         return $this->statIncreased;
     }
 
     /**
      * @param string|null $statIncreased
+     * @return Nature
      */
-    public function setStatsIncreased(?string $statIncreased): void
+    public function setStatIncreased(?string $statIncreased): self
     {
         $this->statIncreased = $statIncreased;
+        return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getStatDecreased(): string
+    public function getStatDecreased(): ?string
     {
         return $this->statDecreased;
     }
 
     /**
      * @param string|null $statDecreased
+     * @return Nature
      */
-    public function setStatDecreased(?string $statDecreased): void
+    public function setStatDecreased(?string $statDecreased): self
     {
         $this->statDecreased = $statDecreased;
+        return $this;
     }
 
 }

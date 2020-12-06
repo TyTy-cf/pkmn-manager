@@ -11,6 +11,7 @@ use App\Repository\Infos\Type\TypeDamageRelationTypeRepository;
 use App\Repository\Infos\Type\TypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class TypeDamageRelationTypeManager extends AbstractManager
@@ -34,7 +35,8 @@ class TypeDamageRelationTypeManager extends AbstractManager
      * @param TextManager $textManager
      * @param TypeDamageRelationTypeRepository $typeDamageRelationTypeRepository
      */
-    public function __construct(
+    public function __construct
+    (
         TypeRepository $typeRepository,
         ApiManager $apiManager,
         EntityManagerInterface $em,
@@ -72,10 +74,19 @@ class TypeDamageRelationTypeManager extends AbstractManager
      * @param string $lang
      * @param array $urlDetailedType
      * @param string $field
+     * @param string $damageRelation
      * @param float $coef
      * @throws NonUniqueResultException
      */
-    public function iterateOverJson(Type $type, string $lang, array $urlDetailedType, string $field, string $damageRelation, float $coef)
+    public function iterateOverJson
+    (
+        Type $type,
+        string $lang,
+        array $urlDetailedType,
+        string $field,
+        string $damageRelation,
+        float $coef
+    )
     {
         if (!empty($urlDetailedType['damage_relations'][$field]))
         {
@@ -83,7 +94,10 @@ class TypeDamageRelationTypeManager extends AbstractManager
             foreach($urlDetailedType['damage_relations'][$field] as $jsonType)
             {
                 // Find the type impact in _from or _to
-                $typeFrom = $this->typeRepository->getTypeByLanguageAndCodeApi($lang, $this->apiManager->getIdFromUrl($jsonType['url']));
+                $typeFrom = $this->typeRepository->getTypeByLanguageAndCodeApi(
+                    $lang,
+                    $this->apiManager->getIdFromUrl($jsonType['url'])
+                );
                 if ($typeFrom != null)
                 {
                     $this->createTypeDamageRelationType($type, $typeFrom, $damageRelation, $coef);
@@ -100,13 +114,14 @@ class TypeDamageRelationTypeManager extends AbstractManager
      */
     public function createTypeDamageRelationType(Type $type, Type $typeFrom, string $damageRelation, float $coef)
     {
-        $typeDamageFromType = new TypeDamageRelationType();
-        $typeDamageFromType->setType($type);
-        $typeDamageFromType->setDamageRelationType($typeFrom);
-        $typeDamageFromType->setDamageRelationCoefficient($coef);
-        $typeDamageFromType->setDamageRelation($damageRelation);
-        $damageFromTypeSlug = $type->getSlug() . '-' . $damageRelation . '-' . $typeFrom->getSlug();
-        $typeDamageFromType->setSlug($damageFromTypeSlug);
+        $damageFromTypeSlug = $type->getSlug() . '-' . $damageRelation . '-' . substr($typeFrom->getSlug(), 3);
+        $typeDamageFromType = (new TypeDamageRelationType())
+            ->setType($type)
+            ->setDamageRelationType($typeFrom)
+            ->setDamageRelationCoefficient($coef)
+            ->setDamageRelation($damageRelation)
+            ->setSlug($damageFromTypeSlug)
+        ;
         $this->entityManager->persist($typeDamageFromType);
     }
 }

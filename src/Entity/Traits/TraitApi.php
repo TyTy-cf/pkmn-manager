@@ -32,10 +32,12 @@ trait TraitApi
 
     /**
      * @param string $idApi
+     * @return TraitApi
      */
-    public function setIdApi(string $idApi): void
+    public function setIdApi(string $idApi): TraitApi
     {
         $this->idApi = $idApi;
+        return $this;
     }
 
     /**
@@ -48,10 +50,12 @@ trait TraitApi
 
     /**
      * @param string $nameApi
+     * @return TraitApi
      */
-    public function setNameApi(string $nameApi): void
+    public function setNameApi(string $nameApi): TraitApi
     {
         $this->nameApi = $nameApi;
+        return $this;
     }
 
 }

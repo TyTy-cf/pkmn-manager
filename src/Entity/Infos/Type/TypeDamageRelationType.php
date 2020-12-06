@@ -73,42 +73,12 @@ class TypeDamageRelationType
 
     /**
      * @param Type $type
+     * @return TypeDamageRelationType
      */
-    public function setType(Type $type): void
+    public function setType(Type $type): self
     {
         $this->type = $type;
-    }
-
-    /**
-     * @return Type
-     */
-    public function getDamageRelationType(): Type
-    {
-        return $this->damageRelationType;
-    }
-
-    /**
-     * @param Type $damageRelationType
-     */
-    public function setDamageRelationType(Type $damageRelationType): void
-    {
-        $this->damageRelationType = $damageRelationType;
-    }
-
-    /**
-     * @return float
-     */
-    public function getDamageRelationCoefficient(): float
-    {
-        return $this->damageRelationCoefficient;
-    }
-
-    /**
-     * @param float $damageRelationCoefficient
-     */
-    public function setDamageRelationCoefficient(float $damageRelationCoefficient): void
-    {
-        $this->damageRelationCoefficient = $damageRelationCoefficient;
+        return $this;
     }
 
     /**
@@ -121,10 +91,48 @@ class TypeDamageRelationType
 
     /**
      * @param string $damageRelation
+     * @return TypeDamageRelationType
      */
-    public function setDamageRelation(string $damageRelation): void
+    public function setDamageRelation(string $damageRelation): self
     {
         $this->damageRelation = $damageRelation;
+        return $this;
+    }
+
+    /**
+     * @return Type
+     */
+    public function getDamageRelationType(): Type
+    {
+        return $this->damageRelationType;
+    }
+
+    /**
+     * @param Type $damageRelationType
+     * @return TypeDamageRelationType
+     */
+    public function setDamageRelationType(Type $damageRelationType): self
+    {
+        $this->damageRelationType = $damageRelationType;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getDamageRelationCoefficient(): float
+    {
+        return $this->damageRelationCoefficient;
+    }
+
+    /**
+     * @param float $damageRelationCoefficient
+     * @return TypeDamageRelationType
+     */
+    public function setDamageRelationCoefficient(float $damageRelationCoefficient): self
+    {
+        $this->damageRelationCoefficient = $damageRelationCoefficient;
+        return $this;
     }
 
 }

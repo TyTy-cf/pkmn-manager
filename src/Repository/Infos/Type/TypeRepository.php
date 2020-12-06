@@ -3,8 +3,7 @@
 namespace App\Repository\Infos\Type;
 
 use App\Entity\Infos\Type\Type;
-use App\Entity\Users\Language;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Repository\AbstractRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,7 +13,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Type[]    findAll()
  * @method Type[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TypeRepository extends ServiceEntityRepository
+class TypeRepository extends AbstractRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -27,11 +26,11 @@ class TypeRepository extends ServiceEntityRepository
      */
     public function getAllTypeByLanguage(string $lang): array
     {
-        $qb = $this->createQueryBuilder('type');
-        $qb->join('type.language', 'language');
-        $qb->where('language.code = :lang');
-        $qb->setParameter('lang', $lang);
-        return $qb->getQuery()->getResult();
+        return $this->createQueryBuilder('type')
+            ->join('type.language', 'language')
+            ->where('language.code = :lang')
+            ->setParameter('lang', $lang)
+            ->getQuery()->getResult();
     }
 
     /**
@@ -42,29 +41,13 @@ class TypeRepository extends ServiceEntityRepository
      */
     public function getTypeByLanguageAndCodeApi(string $lang, $codeApi): ?Type
     {
-        $qb = $this->createQueryBuilder('type');
-        $qb->join('type.language', 'language');
-        $qb->where('language.code = :lang');
-        $qb->andWhere('type.codeApi = :codeApi');
-        $qb->setParameter('lang', $lang);
-        $qb->setParameter('codeApi', $codeApi);
-        return $qb->getQuery()->getOneOrNullResult();
+        return $this->createQueryBuilder('type')
+            ->join('type.language', 'language')
+            ->where('language.code = :lang')
+            ->andWhere('type.codeApi = :codeApi')
+            ->setParameter('lang', $lang)
+            ->setParameter('codeApi', $codeApi)
+            ->getQuery()->getOneOrNullResult();
     }
 
-    /**
-     * @param Language $language
-     * @param string $slug
-     * @return Type|null
-     * @throws NonUniqueResultException
-     */
-    public function getTypeByLanguageAndSlug(Language $language, string $slug): ?Type
-    {
-        $qb = $this->createQueryBuilder('type');
-        $qb->join('type.language', 'language');
-        $qb->where('language = :lang');
-        $qb->andWhere('type.slug = :slug');
-        $qb->setParameter('lang', $language);
-        $qb->setParameter('slug', $slug);
-        return $qb->getQuery()->getOneOrNullResult();
-    }
 }

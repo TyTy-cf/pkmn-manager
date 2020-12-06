@@ -64,14 +64,10 @@ class TypeManager extends AbstractManager
      * @param Language $language
      * @param string $slug
      * @return Type|null
-     * @throws NonUniqueResultException
      */
-    public function getTypeByLanguageAndSlug(Language $language, string $slug): ?Type
+    public function getTypeByLanguageAndSlug(string $slug): ?Type
     {
-        return $this->typeRepository->getTypeByLanguageAndSlug(
-            $language,
-            $slug
-        );
+        return $this->typeRepository->findOneBySlug($slug);
     }
 
     /**

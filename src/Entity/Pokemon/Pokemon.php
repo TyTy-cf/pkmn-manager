@@ -130,11 +130,39 @@ class Pokemon
     }
 
     /**
-     * @param int $id
+     * @return StatsEffort
      */
-    public function setId(int $id): void
+    public function getStatsEffort(): StatsEffort
     {
-        $this->id = $id;
+        return $this->statsEffort;
+    }
+
+    /**
+     * @param StatsEffort $statsEffort
+     * @return Pokemon
+     */
+    public function setStatsEffort(StatsEffort $statsEffort): Pokemon
+    {
+        $this->statsEffort = $statsEffort;
+        return $this;
+    }
+
+    /**
+     * @return PokemonSpecies
+     */
+    public function getPokemonSpecies(): PokemonSpecies
+    {
+        return $this->pokemonSpecies;
+    }
+
+    /**
+     * @param PokemonSpecies $pokemonSpecies
+     * @return Pokemon
+     */
+    public function setPokemonSpecies(PokemonSpecies $pokemonSpecies): Pokemon
+    {
+        $this->pokemonSpecies = $pokemonSpecies;
+        return $this;
     }
 
     /**
@@ -147,10 +175,12 @@ class Pokemon
 
     /**
      * @param string|null $urlIcon
+     * @return Pokemon
      */
-    public function setUrlIcon(?string $urlIcon): void
+    public function setUrlIcon(?string $urlIcon): Pokemon
     {
         $this->urlIcon = $urlIcon;
+        return $this;
     }
 
     /**
@@ -163,10 +193,12 @@ class Pokemon
 
     /**
      * @param string|null $urlSpriteImg
+     * @return Pokemon
      */
-    public function setUrlSpriteImg(?string $urlSpriteImg): void
+    public function setUrlSpriteImg(?string $urlSpriteImg): Pokemon
     {
         $this->urlSpriteImg = $urlSpriteImg;
+        return $this;
     }
 
     /**
@@ -179,10 +211,12 @@ class Pokemon
 
     /**
      * @param int|null $weight
+     * @return Pokemon
      */
-    public function setWeight(?int $weight): void
+    public function setWeight(?int $weight): Pokemon
     {
         $this->weight = $weight;
+        return $this;
     }
 
     /**
@@ -195,37 +229,25 @@ class Pokemon
 
     /**
      * @param int|null $height
+     * @return Pokemon
      */
-    public function setHeight(?int $height): void
+    public function setHeight(?int $height): Pokemon
     {
         $this->height = $height;
-    }
-
-    /**
-     * @return StatsEffort
-     */
-    public function getStatsEffort(): StatsEffort
-    {
-        return $this->statsEffort;
-    }
-
-    /**
-     * @param StatsEffort $statsEffort
-     */
-    public function setStatsEffort(StatsEffort $statsEffort): void
-    {
-        $this->statsEffort = $statsEffort;
+        return $this;
     }
 
     /**
      * @param Ability|null $abilities
+     * @return Pokemon
      */
-    public function addAbilities(?Ability $abilities): void
+    public function addAbilities(?Ability $abilities): self
     {
-        if ($abilities === null) return;
+        if ($abilities === null) return $this;
         if (!$this->abilities->contains($abilities)) {
             $this->abilities->add($abilities);
         }
+        return $this;
     }
 
     /**
@@ -248,12 +270,14 @@ class Pokemon
 
     /**
      * @param Type $type
+     * @return Pokemon
      */
-    public function addType(Type $type): void
+    public function addType(Type $type): self
     {
         if (!$this->types->contains($type)) {
             $this->types->add($type);
         }
+        return $this;
     }
 
     /**
@@ -284,12 +308,14 @@ class Pokemon
 
     /**
      * @param PokemonMovesLearnVersion $pokemonMovesLearnVersion
+     * @return Pokemon
      */
-    public function addPokemonMovesLearnVersion(PokemonMovesLearnVersion $pokemonMovesLearnVersion)
+    public function addPokemonMovesLearnVersion(PokemonMovesLearnVersion $pokemonMovesLearnVersion): self
     {
         if (!$this->pokemonMovesLearnVersion->contains($pokemonMovesLearnVersion)) {
             $this->pokemonMovesLearnVersion[] = $pokemonMovesLearnVersion;
         }
+        return $this;
     }
 
     /**
@@ -300,24 +326,6 @@ class Pokemon
         if ($this->pokemonMovesLearnVersion->contains($pokemonMovesLearnVersion)) {
             $this->pokemonMovesLearnVersion->remove($pokemonMovesLearnVersion);
         }
-    }
-
-    /**
-     * @return PokemonSpecies
-     */
-    public function getPokemonSpecies(): PokemonSpecies
-    {
-        return $this->pokemonSpecies;
-    }
-
-    /**
-     * @param PokemonSpecies $pokemonSpecies
-     * @return Pokemon
-     */
-    public function setPokemonSpecies(PokemonSpecies $pokemonSpecies): self
-    {
-        $this->pokemonSpecies = $pokemonSpecies;
-        return $this;
     }
 
 }
