@@ -54,11 +54,10 @@ class VersionManager extends AbstractManager
      * @param Language $language
      * @param string $slug
      * @return Version|null
-     * @throws NonUniqueResultException
      */
     private function getVersionByLanguageAndSlug(Language $language, string $slug): ?Version
     {
-        return $this->versionRepository->getVersionByLanguageAndSlug($language, $slug);
+        return $this->versionRepository->findOneBySlug($language, $slug);
     }
 
     /**
@@ -80,7 +79,11 @@ class VersionManager extends AbstractManager
     public function createFromApiResponse(Language $language, $version)
     {
         //Check if the data exist in databases
-        $slug = $this->textManager->generateSlugFromClass(Version::class, $version['name']);
+        $slug = $this->textManager->generateSlugFromClassWithLanguage(
+            $language,
+            Version::class,
+            $version['name']
+        );
 
         if ($this->getVersionByLanguageAndSlug($language, $slug) === null)
         {

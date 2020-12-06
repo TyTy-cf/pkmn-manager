@@ -6,6 +6,7 @@ namespace App\Repository\Versions;
 
 use App\Entity\Users\Language;
 use App\Entity\Versions\Version;
+use App\Repository\AbstractRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -16,27 +17,11 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Version[]    findAll()
  * @method Version[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class VersionRepository  extends ServiceEntityRepository
+class VersionRepository  extends AbstractRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Version::class);
-    }
-
-    /**
-     * @param Language $language
-     * @param string $slug
-     * @return int|mixed|string|null
-     * @throws NonUniqueResultException
-     */
-    public function getVersionByLanguageAndSlug(Language $language, string $slug)
-    {
-        $qb = $this->createQueryBuilder('version');
-        $qb->where('version.language = :lang');
-        $qb->andWhere('version.slug = :slug');
-        $qb->setParameter('lang', $language);
-        $qb->setParameter('slug', $slug);
-        return $qb->getQuery()->getOneOrNullResult();
     }
 
 }

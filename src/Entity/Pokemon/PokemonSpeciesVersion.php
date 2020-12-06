@@ -12,6 +12,12 @@ use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
  * @ORM\Entity(repositoryClass=PokemonSpeciesVersionRepository::class)
+ * @ORM\Table(indexes={
+ *     @ORM\Index(
+ *          name="slug_idx",
+ *          columns={"slug"}
+ *     )
+ * })
  */
 class PokemonSpeciesVersion
 {

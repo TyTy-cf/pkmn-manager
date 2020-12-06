@@ -119,4 +119,12 @@ class Language
             $this->users->removeElement($user);
         }
     }
+
+    /**
+     * @return string return the code language
+     */
+    public function __toString()
+    {
+        return $this->getCode();
+    }
 }

@@ -10,6 +10,7 @@ use App\Entity\Stats\StatsEffort;
 use App\Entity\Traits\TraitApi;
 use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
+use App\Entity\Traits\TraitNomenclature;
 use App\Entity\Traits\TraitSlug;
 use App\Entity\Traits\TraitStatsPkmn;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -24,7 +25,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * Class Pokemon
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\Pokemon\PokemonRepository")
- * @ORM\Table(name="pokemon")
+ * @ORM\Table(name="pokemon", indexes={
+ *     @ORM\Index(
+ *          name="slug_idx",
+ *          columns={"slug"}
+ *     )
+ * })
  * @UniqueEntity(
  *     fields={"name"},
  *     message="Ce pokémon existe déjà !"
@@ -43,11 +49,7 @@ class Pokemon
 
     use TraitStatsPkmn;
 
-    use TraitNames;
-
-    use TraitSlug;
-
-    use TraitLanguage;
+    use TraitNomenclature;
 
     use TraitApi;
 

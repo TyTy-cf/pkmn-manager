@@ -190,6 +190,15 @@ class ApiManager
     }
 
     /**
+     * @return mixed
+     * @throws TransportExceptionInterface
+     */
+    public function getAllPokedexJson()
+    {
+        return $this->apiConnect('https://pokeapi.co/api/v2/pokedex?offset=0&limit=28');
+    }
+
+    /**
      * @param $lang
      * @param $url
      * @return mixed

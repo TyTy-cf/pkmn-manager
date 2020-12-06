@@ -41,14 +41,14 @@ class PokemonSpeciesManager extends AbstractManager
     private EggGroupManager $eggGroupManager;
 
     /**
-     * @var array $arrayVersions
-     */
-    private static array $arrayVersions;
-
-    /**
      * @var VersionManager $versionManager
      */
     private VersionManager $versionManager;
+
+    /**
+     * @var array $arrayVersions
+     */
+    private static array $arrayVersions;
 
     /**
      * PokemonManager constructor.
@@ -83,15 +83,12 @@ class PokemonSpeciesManager extends AbstractManager
     }
 
     /**
-     * @param Language $language
      * @param string $slug
      * @return PokemonSpecies|null
      */
-    private function getPokemonSpeciesByLanguageAndSlug(Language $language, string $slug)
+    public function getPokemonSpeciesBySlug(string $slug)
     {
-        return $this->repository->findOneBy([
-            'slug' => $language->getCode().'/'.$slug
-        ]);
+        return $this->repository->findOneBySlug($slug);
     }
 
     /**
@@ -124,9 +121,11 @@ class PokemonSpeciesManager extends AbstractManager
     public function createFromApiResponse(Language $language, $apiResponse)
     {
         $urlDetailed = $this->apiManager->getDetailed($apiResponse['url'])->toArray();
-        $slug = $this->textManager->generateSlugFromClass(PokemonSpecies::class, $apiResponse['name']);
+        $slug = $this->textManager->generateSlugFromClassWithLanguage(
+            $language, PokemonSpecies::class, $apiResponse['name']
+        );
 
-        if ($this->getPokemonSpeciesByLanguageAndSlug($language, $slug) === null)
+        if ($this->getPokemonSpeciesBySlug($slug) === null)
         {
             $codeLang = $language->getCode();
             $pokemonSpeciesName = $this->apiManager->getNameBasedOnLanguageFromArray(
@@ -150,12 +149,17 @@ class PokemonSpeciesManager extends AbstractManager
                 ->setHasGenderDifferences($urlDetailed['has_gender_differences'])
             ;
 
-            // Set le evolve from species
-            $pokemonSpecies->setEvolvesFromSpecies(
-                $this->getPokemonSpeciesByLanguageAndSlug(
-                    $language, $urlDetailed['name']
-                )
-            );
+            if (sizeof($urlDetailed['evolves_from_species']) > 0)
+            {
+                // Set le evolve from species
+                $pokemonSpecies->setEvolvesFromSpecies(
+                    $this->getPokemonSpeciesBySlug(
+                        $this->textManager->generateSlugFromClassWithLanguage(
+                            $language, PokemonSpecies::class, $urlDetailed['evolves_from_species']['name']
+                        )
+                    )
+                );
+            }
 
             // Set the egg(s) group
             foreach($urlDetailed['egg_groups'] as $eggGroupName)
@@ -174,8 +178,8 @@ class PokemonSpeciesManager extends AbstractManager
             // Finally get the pokemon linked to this species and update it
             $pokemon = $this->pokemonManager->getPokemonByLanguageAndSlug(
                 $language,
-                $this->textManager->generateSlugFromClass(
-                    Pokemon::class, $urlDetailed['varieties'][0]['pokemon']['name']
+                $this->textManager->generateSlugFromClassWithLanguage(
+                    $language,Pokemon::class, $urlDetailed['varieties'][0]['pokemon']['name']
                 )
             );
             $pokemon->setPokemonSpecies($pokemonSpecies);

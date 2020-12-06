@@ -17,7 +17,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * Class Type *
  * @package App\Entity\Infos\Type
  *
- * @ORM\Table(name="type")
+ * @ORM\Table(name="type", indexes={
+ *     @ORM\Index(
+ *          name="slug_idx",
+ *          columns={"slug"}
+ *     )
+ * })
  * @ORM\Entity(repositoryClass="App\Repository\Infos\Type\TypeRepository")
  * @UniqueEntity(
  *     fields={"name"},

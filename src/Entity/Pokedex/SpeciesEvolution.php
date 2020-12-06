@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
  */
 class SpeciesEvolution
 {
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -40,7 +41,6 @@ class SpeciesEvolution
     {
         return $this->id;
     }
-
 
     /**
      * @return PokemonSpecies

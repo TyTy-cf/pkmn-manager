@@ -9,11 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
 trait TraitDescription
 {
     /**
-     * @var string $description
+     * @var string|null $description
      *
      * @ORM\Column(name="description", type="string", length=255, nullable=true)
      */
-    private string $description;
+    private ?string $description;
 
     /**
      * @return string
@@ -24,10 +24,10 @@ trait TraitDescription
     }
 
     /**
-     * @param string $description
+     * @param string|null $description
      * @return TraitDescription
      */
-    public function setDescription(string $description): self
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
         return $this;

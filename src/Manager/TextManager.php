@@ -4,6 +4,8 @@
 namespace App\Manager;
 
 
+use App\Entity\Users\Language;
+
 class TextManager
 {
     /**
@@ -42,6 +44,17 @@ class TextManager
     {
         $splitClass = explode('\\', $className);
         return $this->slugify($splitClass[sizeof($splitClass)-1]) . '-' . $text;
+    }
+
+    /**
+     * @param Language $language
+     * @param string $className
+     * @param string $text
+     * @return string
+     */
+    public function generateSlugFromClassWithLanguage(Language $language, string $className, string $text): string
+    {
+        return $language.'/'.$this->generateSlugFromClass($className, $text);
     }
 
     /**

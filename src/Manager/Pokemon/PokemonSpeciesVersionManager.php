@@ -73,12 +73,13 @@ class PokemonSpeciesVersionManager
         array $arrayVersions
     )
     {
+        $codeLang = $language->getCode();
         foreach($urlDetailed as $flavorTextDetail)
         {
-            if ($flavorTextDetail['language']['name'] === $language->getCode())
+            if ($flavorTextDetail['language']['name'] === $codeLang)
             {
                 /** @var Version $version */
-                $version = $arrayVersions['version-'.$flavorTextDetail['version']['name']];
+                $version = $arrayVersions[$codeLang.'/version-'.$flavorTextDetail['version']['name']];
                 $slug = $pokemonSpecies->getSlug().'-'.$version->getSlug();
                 if ($this->getPokemonSpeciesVersionBySlug($language, $slug) === null) {
                     $pokemonSpeciesVersion = (new PokemonSpeciesVersion())

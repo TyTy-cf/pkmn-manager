@@ -21,7 +21,7 @@ class PokedexSpecies
 
     /**
      * @var PokemonSpecies
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pokedex\PokedexSpecies")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Pokemon\PokemonSpecies")
      * @JoinColumn(name="pokemon_species_id")
      */
     private PokemonSpecies $pokemonSpecies;
@@ -65,10 +65,12 @@ class PokedexSpecies
 
     /**
      * @param PokemonSpecies $pokemonSpecies
+     * @return PokedexSpecies
      */
-    public function setPokemonSpecies(PokemonSpecies $pokemonSpecies): void
+    public function setPokemonSpecies(PokemonSpecies $pokemonSpecies): self
     {
         $this->pokemonSpecies = $pokemonSpecies;
+        return $this;
     }
 
     /**
@@ -81,9 +83,12 @@ class PokedexSpecies
 
     /**
      * @param Pokedex $pokedex
+     * @return PokedexSpecies
      */
-    public function setPokedex(Pokedex $pokedex): void
+    public function setPokedex(Pokedex $pokedex): self
     {
         $this->pokedex = $pokedex;
+        return $this;
     }
+
 }

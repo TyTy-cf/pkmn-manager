@@ -47,6 +47,8 @@ class EvolutionChain
      */
     private EvolutionDetail $evolutionDetail;
 
+
+
     public function getId(): ?int
     {
         return $this->id;

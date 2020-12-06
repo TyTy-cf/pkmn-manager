@@ -40,11 +40,14 @@ class EggGroupManager extends AbstractManager
         parent::__construct($entityManager, $apiManager, $textManager);
     }
 
+    /**
+     * @param Language $language
+     * @param string $slug
+     * @return EggGroup|null
+     */
     public function getEggGroupBySlug(Language $language, string $slug)
     {
-        return $this->eggGroupRepository->findOneBy([
-            'slug' => $language->getCode().'/'.$slug
-        ]);
+        return $this->eggGroupRepository->findOneBySlug($language, $slug);
     }
 
     /**
@@ -56,8 +59,7 @@ class EggGroupManager extends AbstractManager
     {
         //Check if the data exist in databases
         $slug = $this->textManager->generateSlugFromClass(EggGroup::class, $apiEggGroup['name']);
-
-        if (($eggGroup = $this->getEggGroupBySlug($language, $slug)) == null)
+        if ($this->getEggGroupBySlug($language, $slug) === null)
         {
             //Fetch URL details type
             $urlDamageClassDetailed = $this->apiManager->getDetailed($apiEggGroup['url'])->toArray();

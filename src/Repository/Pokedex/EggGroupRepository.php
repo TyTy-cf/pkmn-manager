@@ -3,6 +3,7 @@
 namespace App\Repository\Pokedex;
 
 use App\Entity\Pokedex\EggGroup;
+use App\Repository\AbstractRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -12,7 +13,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method EggGroup[]    findAll()
  * @method EggGroup[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class EggGroupRepository extends ServiceEntityRepository
+class EggGroupRepository extends AbstractRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

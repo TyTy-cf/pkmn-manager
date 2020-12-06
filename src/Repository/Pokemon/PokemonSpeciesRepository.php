@@ -3,7 +3,7 @@
 namespace App\Repository\Pokemon;
 
 use App\Entity\Pokemon\PokemonSpecies;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Repository\AbstractRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -12,7 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method PokemonSpecies[]    findAll()
  * @method PokemonSpecies[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class PokemonSpeciesRepository extends ServiceEntityRepository
+class PokemonSpeciesRepository extends AbstractRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

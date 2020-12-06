@@ -13,7 +13,7 @@ trait TraitNomenclature
     /**
      * @var string $name
      *
-     * @ORM\Column(name="name", type="string", length=36)
+     * @ORM\Column(name="name", type="string", length=120)
      */
     private string $name;
 

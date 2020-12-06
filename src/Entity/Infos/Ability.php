@@ -14,7 +14,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * Class Ability
  * @package App\Entity\Infos
  *
- * @ORM\Table(name="ability")
+ * @ORM\Table(name="ability", indexes={
+ *     @ORM\Index(
+ *          name="slug_idx",
+ *          columns={"slug"}
+ *     )
+ * })
  * @ORM\Entity(repositoryClass="App\Repository\Infos\AbilityRepository")
  * @UniqueEntity(
  *     fields={"name"},
