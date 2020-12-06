@@ -3,9 +3,13 @@
 namespace App\Entity\Pokemon;
 
 use App\Entity\Pokedex\EggGroup;
+use App\Entity\Traits\TraitNomenclature;
 use App\Repository\Pokemon\PokemonSpeciesRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\JoinTable;
+use Doctrine\ORM\Mapping\ManyToMany;
 
 /**
  * @ORM\Entity(repositoryClass=PokemonSpeciesRepository::class)
@@ -19,6 +23,8 @@ class PokemonSpecies
      */
     private int $id;
 
+    use TraitNomenclature;
+
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
@@ -30,9 +36,9 @@ class PokemonSpecies
     private int $captureRate;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
-    private int $growthRate;
+    private ?string $growthRate;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -60,33 +66,46 @@ class PokemonSpecies
     private bool $isBaby;
 
     /**
-     * @var EggGroup
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pokedex\EggGroup")
-     * @JoinColumn(name="egg_group_id")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private EggGroup $eggGroup;
+    private ?string $genera;
 
     /**
-     * @var PokemonSpecies
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pokemon\PokemonSpecies")
-     * @JoinColumn(name="evolves_from_species_id")
+     * @ManyToMany(targetEntity="App\Entity\Pokedex\EggGroup", inversedBy="pokemonSpecies", cascade={"persist"})
+     * @JoinTable(name="pokemon_species_eggs",
+     *      joinColumns={@JoinColumn(name="pokemon_species_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@JoinColumn(name="egg_group_id", referencedColumnName="id")}
+ *      )
      */
-    private PokemonSpecies $evolvesFromSpecies;
+    private Collection $eggGroup;
 
-    public function getId(): ?int
+    /**
+     * @var PokemonSpecies|null
+     * @ORM\ManyToOne(targetEntity="App\Entity\Pokemon\PokemonSpecies")
+     * @JoinColumn(name="evolves_from_species_id", nullable=true)
+     */
+    private ?PokemonSpecies $evolvesFromSpecies;
+
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getBaseHappiness(): ?int
+    /**
+     * @return int
+     */
+    public function getBaseHappiness(): int
     {
         return $this->baseHappiness;
     }
 
+    /**
+     * @param int $baseHappiness
+     * @return PokemonSpecies
+     */
     public function setBaseHappiness(int $baseHappiness): self
     {
         $this->baseHappiness = $baseHappiness;
-
         return $this;
     }
 
@@ -100,26 +119,30 @@ class PokemonSpecies
 
     /**
      * @param int $captureRate
+     * @return PokemonSpecies
      */
-    public function setCaptureRate(int $captureRate): void
+    public function setCaptureRate(int $captureRate): self
     {
         $this->captureRate = $captureRate;
+        return $this;
     }
 
     /**
-     * @return int
+     * @return string|null
      */
-    public function getGrowthRate(): int
+    public function getGrowthRate(): ?string
     {
         return $this->growthRate;
     }
 
     /**
-     * @param int $growthRate
+     * @param string|null $growthRate
+     * @return PokemonSpecies
      */
-    public function setGrowthRate(int $growthRate): void
+    public function setGrowthRate(?string $growthRate): self
     {
         $this->growthRate = $growthRate;
+        return $this;
     }
 
     /**
@@ -132,10 +155,12 @@ class PokemonSpecies
 
     /**
      * @param int $hatchCounter
+     * @return PokemonSpecies
      */
-    public function setHatchCounter(int $hatchCounter): void
+    public function setHatchCounter(int $hatchCounter): self
     {
         $this->hatchCounter = $hatchCounter;
+        return $this;
     }
 
     /**
@@ -148,10 +173,12 @@ class PokemonSpecies
 
     /**
      * @param bool $isLegendary
+     * @return PokemonSpecies
      */
-    public function setIsLegendary(bool $isLegendary): void
+    public function setIsLegendary(bool $isLegendary): self
     {
         $this->isLegendary = $isLegendary;
+        return $this;
     }
 
     /**
@@ -164,10 +191,12 @@ class PokemonSpecies
 
     /**
      * @param bool $hasGenderDifferences
+     * @return PokemonSpecies
      */
-    public function setHasGenderDifferences(bool $hasGenderDifferences): void
+    public function setHasGenderDifferences(bool $hasGenderDifferences): self
     {
         $this->hasGenderDifferences = $hasGenderDifferences;
+        return $this;
     }
 
     /**
@@ -180,10 +209,12 @@ class PokemonSpecies
 
     /**
      * @param bool $isMythical
+     * @return PokemonSpecies
      */
-    public function setIsMythical(bool $isMythical): void
+    public function setIsMythical(bool $isMythical): self
     {
         $this->isMythical = $isMythical;
+        return $this;
     }
 
     /**
@@ -196,16 +227,47 @@ class PokemonSpecies
 
     /**
      * @param bool $isBaby
+     * @return PokemonSpecies
      */
-    public function setIsBaby(bool $isBaby): void
+    public function setIsBaby(bool $isBaby): self
     {
         $this->isBaby = $isBaby;
+        return $this;
     }
 
     /**
-     * @return EggGroup
+     * @return string|null
      */
-    public function getEggGroup(): EggGroup
+    public function getGenera(): ?string
+    {
+        return $this->genera;
+    }
+
+    /**
+     * @param string|null $genera
+     * @return PokemonSpecies
+     */
+    public function setGenera(?string $genera): self
+    {
+        $this->genera = $genera;
+        return $this;
+    }
+
+    /**
+     * @param EggGroup|null $eggGroup
+     */
+    public function addEggGroup(?EggGroup $eggGroup): void
+    {
+        if ($eggGroup === null) return;
+        if (!$this->eggGroup->contains($eggGroup)) {
+            $this->eggGroup->add($eggGroup);
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEggGroup(): Collection
     {
         return $this->eggGroup;
     }
@@ -213,25 +275,29 @@ class PokemonSpecies
     /**
      * @param EggGroup $eggGroup
      */
-    public function setEggGroup(EggGroup $eggGroup): void
+    public function removeEggGroup(EggGroup $eggGroup)
     {
-        $this->eggGroup = $eggGroup;
+        if ($this->eggGroup->contains($eggGroup)) {
+            $this->eggGroup->removeElement($eggGroup);
+        }
     }
 
     /**
-     * @return PokemonSpecies
+     * @return PokemonSpecies|null
      */
-    public function getEvolvesFromSpecies(): PokemonSpecies
+    public function getEvolvesFromSpecies(): ?PokemonSpecies
     {
         return $this->evolvesFromSpecies;
     }
 
     /**
-     * @param PokemonSpecies $evolvesFromSpecies
+     * @param PokemonSpecie|null $evolvesFromSpecies
+     * @return PokemonSpecies
      */
-    public function setEvolvesFromSpecies(PokemonSpecies $evolvesFromSpecies): void
+    public function setEvolvesFromSpecies(?PokemonSpecies $evolvesFromSpecies): self
     {
         $this->evolvesFromSpecies = $evolvesFromSpecies;
+        return $this;
     }
 
 }

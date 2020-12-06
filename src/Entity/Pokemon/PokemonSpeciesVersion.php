@@ -18,14 +18,9 @@ class PokemonSpeciesVersion
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     use TraitDescription;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private ?string $genera;
 
     /**
      * @var PokemonSpecies
@@ -41,21 +36,9 @@ class PokemonSpeciesVersion
      */
     private Version $version;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
-    }
-
-    public function getGenera(): ?string
-    {
-        return $this->genera;
-    }
-
-    public function setGenera(?string $genera): self
-    {
-        $this->genera = $genera;
-
-        return $this;
     }
 
     /**

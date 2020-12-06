@@ -58,7 +58,7 @@ class ApiManager
      */
     public function getPokemonFromName($pokemonName)
     {
-        return $this->apiConnect("https://pokeapi.co/api/v2/pokemon/" . $pokemonName);
+        return $this->apiConnect('https://pokeapi.co/api/v2/pokemon/' . $pokemonName);
     }
 
     /**
@@ -78,7 +78,7 @@ class ApiManager
      */
     public function getAllPokemonJson()
     {
-        return $this->apiConnect("https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1117");
+        return $this->apiConnect('https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1117');
     }
 
     /**
@@ -87,7 +87,7 @@ class ApiManager
      */
     public function getAllTypeJson()
     {
-        return $this->apiConnect("https://pokeapi.co/api/v2/type");
+        return $this->apiConnect('https://pokeapi.co/api/v2/type');
     }
 
     /**
@@ -96,7 +96,7 @@ class ApiManager
      */
     public function getAllNatureJson()
     {
-        return $this->apiConnect("https://pokeapi.co/api/v2/nature?offset=0&limit=25");
+        return $this->apiConnect('https://pokeapi.co/api/v2/nature?offset=0&limit=25');
     }
 
     /**
@@ -105,7 +105,7 @@ class ApiManager
      */
     public function getAllAbilitiesJson()
     {
-        return $this->apiConnect("http://pokeapi.co/api/v2/ability/?offset=0&limit=299");
+        return $this->apiConnect('http://pokeapi.co/api/v2/ability/?offset=0&limit=299');
     }
 
     /**
@@ -114,7 +114,7 @@ class ApiManager
      */
     public function getAllDamageClassJson()
     {
-        return $this->apiConnect("https://pokeapi.co/api/v2/move-damage-class/");
+        return $this->apiConnect('https://pokeapi.co/api/v2/move-damage-class/');
     }
 
     /**
@@ -123,7 +123,7 @@ class ApiManager
      */
     public function getAllGenerationJson()
     {
-        return $this->apiConnect("https://pokeapi.co/api/v2/generation/");
+        return $this->apiConnect('https://pokeapi.co/api/v2/generation/');
     }
 
     /**
@@ -132,7 +132,7 @@ class ApiManager
      */
     public function getAllVersionGroupJson()
     {
-        return $this->apiConnect("https://pokeapi.co/api/v2/version-group/");
+        return $this->apiConnect('https://pokeapi.co/api/v2/version-group/');
     }
 
     /**
@@ -141,7 +141,7 @@ class ApiManager
      */
     public function getAllVersionJson()
     {
-        return $this->apiConnect("https://pokeapi.co/api/v2/version?offset=0&limit=34");
+        return $this->apiConnect('https://pokeapi.co/api/v2/version?offset=0&limit=34');
     }
 
     /**
@@ -150,7 +150,7 @@ class ApiManager
      */
     public function getAllMoveLearnMethodJson()
     {
-        return $this->apiConnect("https://pokeapi.co/api/v2/move-learn-method/");
+        return $this->apiConnect('https://pokeapi.co/api/v2/move-learn-method/');
     }
 
     /**
@@ -159,7 +159,16 @@ class ApiManager
      */
     public function getAllMoveJson()
     {
-        return $this->apiConnect("https://pokeapi.co/api/v2/move/?offset=0&limit=813");
+        return $this->apiConnect('https://pokeapi.co/api/v2/move/?offset=0&limit=813');
+    }
+
+    /**
+     *
+     * @throws TransportExceptionInterface
+     */
+    public function getAllPokemonSpeciesJson()
+    {
+        return $this->apiConnect('https://pokeapi.co/api/v2/pokemon-species/?offset=0&limit=898');
     }
 
     /**
@@ -168,12 +177,16 @@ class ApiManager
      */
     public function getAllMoveMachineJson()
     {
-        return $this->apiConnect("https://pokeapi.co/api/v2/machine/?offset=0&limit=1442");
+        return $this->apiConnect('https://pokeapi.co/api/v2/machine/?offset=0&limit=1442');
     }
 
+    /**
+     * @return mixed
+     * @throws TransportExceptionInterface
+     */
     public function getEggGroupJson()
     {
-        return $this->apiConnect("https://pokeapi.co/api/v2/egg-group/");
+        return $this->apiConnect('https://pokeapi.co/api/v2/egg-group/');
     }
 
     /**
@@ -240,6 +253,5 @@ class ApiManager
         $splittedUrl = explode('/', $url);
         return $splittedUrl[6];
     }
-
 
 }

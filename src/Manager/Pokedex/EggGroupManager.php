@@ -40,7 +40,7 @@ class EggGroupManager extends AbstractManager
         parent::__construct($entityManager, $apiManager, $textManager);
     }
 
-    private function getEggGroupBySlug(Language $language, string $slug)
+    public function getEggGroupBySlug(Language $language, string $slug)
     {
         return $this->eggGroupRepository->findOneBy([
             'slug' => $language->getCode().'/'.$slug

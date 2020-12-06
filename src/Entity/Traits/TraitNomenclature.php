@@ -43,10 +43,12 @@ trait TraitNomenclature
 
     /**
      * @param string $name
+     * @return TraitNomenclature
      */
-    public function setName(string $name): void
+    public function setName(string $name): self
     {
         $this->name = $name;
+        return $this;
     }
 
     /**
@@ -59,10 +61,12 @@ trait TraitNomenclature
 
     /**
      * @param Language $language
+     * @return TraitNomenclature
      */
-    public function setLanguage(Language $language): void
+    public function setLanguage(Language $language): self
     {
         $this->language = $language;
+        return $this;
     }
 
     /**
@@ -75,10 +79,12 @@ trait TraitNomenclature
 
     /**
      * @param string $slug
+     * @return TraitNomenclature
      */
-    public function setSlug(string $slug): void
+    public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+        return $this;
     }
 
 }

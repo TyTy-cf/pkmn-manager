@@ -4,6 +4,7 @@ namespace App\Entity\Pokedex;
 
 use App\Entity\Traits\TraitNomenclature;
 use App\Repository\Pokedex\EggGroupRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,6 +20,11 @@ class EggGroup
     private int $id;
 
     use TraitNomenclature;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Pokemon\PokemonSpecies", mappedBy="eggGroup")
+     */
+    private Collection $pokemonSpecies;
 
     public function getId(): ?int
     {

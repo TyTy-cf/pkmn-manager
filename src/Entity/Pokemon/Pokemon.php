@@ -82,6 +82,13 @@ class Pokemon
     private StatsEffort $statsEffort;
 
     /**
+     * @var PokemonSpecies
+     * @ORM\ManyToOne(targetEntity="App\Entity\Pokemon\PokemonSpecies")
+     * @JoinColumn(name="pokemon_species_id", nullable=true)
+     */
+    private PokemonSpecies $pokemonSpecies;
+
+    /**
      * @ORM\Column(name="url_icon", type="string", length=255, nullable=true)
      */
     private ?string $urlIcon;
@@ -292,4 +299,23 @@ class Pokemon
             $this->pokemonMovesLearnVersion->remove($pokemonMovesLearnVersion);
         }
     }
+
+    /**
+     * @return PokemonSpecies
+     */
+    public function getPokemonSpecies(): PokemonSpecies
+    {
+        return $this->pokemonSpecies;
+    }
+
+    /**
+     * @param PokemonSpecies $pokemonSpecies
+     * @return Pokemon
+     */
+    public function setPokemonSpecies(PokemonSpecies $pokemonSpecies): self
+    {
+        $this->pokemonSpecies = $pokemonSpecies;
+        return $this;
+    }
+
 }
