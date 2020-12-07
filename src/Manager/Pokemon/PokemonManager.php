@@ -110,23 +110,45 @@ class PokemonManager extends AbstractManager
     }
 
     /**
-     * @param Language $language
-     * @param int $offset
-     * @param int $limit
-     * @return array|int|string
-     */
-    public function getPokemonOffsetLimitApiCodeByLanguage(Language $language, int $offset, int $limit)
-    {
-        return $this->pokemonRepository->getPokemonOffsetLimitApiCodeByLanguage($language, $offset, $limit);
-    }
-
-    /**
      * @param $name
      * @return Pokemon|object|null
      */
     public function findByName($name)
     {
         return $this->pokemonRepository->findOneBy(['name' => $name]);
+    }
+
+    /**
+     * @param string $name
+     * @param Language $language
+     * @return Pokemon|null
+     */
+    public function getPokemonByNameAndLanguage(string $name, Language $language)
+    {
+        return $this->pokemonRepository->findOneBy([
+           'name' => $name,
+            'language' => $language
+        ]);
+    }
+
+    /**
+     * @param Language $language
+     * @return Pokemon|object|null
+     */
+    public function getAllPokemonNameForLanguage(Language $language)
+    {
+        return $this->pokemonRepository->getAllPokemonNameForLanguage($language);
+    }
+
+    /**
+     * @param Language $language
+     * @param int $offset
+     * @param int $limit
+     * @return array|int|string
+     */
+    public function getPokemonOffsetLimitByLanguage(Language $language, int $offset, int $limit)
+    {
+        return $this->pokemonRepository->getPokemonOffsetLimitByLanguage($language, $offset, $limit);
     }
 
     /**

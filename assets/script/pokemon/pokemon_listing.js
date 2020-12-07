@@ -23,14 +23,14 @@ function autocomplete(inp) {
         /*for each item in the array...*/
         for (let i = 0; i < arrayPokemonNames.length; i++) {
             /*check if the item starts with the same letters as the text field value:*/
-            if (arrayPokemonNames[i].substr(0, val.length).toUpperCase() === val.toUpperCase()) {
+            if (arrayPokemonNames[i]['name'].substr(0, val.length).toUpperCase() === val.toUpperCase()) {
                 /*create a DIV element for each matching element:*/
                 b = document.createElement("DIV");
                 /*make the matching letters bold:*/
-                b.innerHTML = "<strong>" + arrayPokemonNames[i].substr(0, val.length) + "</strong>";
-                b.innerHTML += arrayPokemonNames[i].substr(val.length);
+                b.innerHTML = "<strong>" + arrayPokemonNames[i]['name'].substr(0, val.length) + "</strong>";
+                b.innerHTML += arrayPokemonNames[i]['name'].substr(val.length);
                 /*insert a input field that will hold the current array item's value:*/
-                b.innerHTML += "<input type='hidden' value='" + arrayPokemonNames[i] + "'>";
+                b.innerHTML += "<input type='hidden' value='" + arrayPokemonNames[i]['name'] + "'>";
                 /*execute a function when someone clicks on the item value (DIV element):*/
                 b.addEventListener("click", function(e) {
                     /*insert the value for the autocomplete text field:*/

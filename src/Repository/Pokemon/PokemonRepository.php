@@ -26,7 +26,7 @@ class PokemonRepository extends AbstractRepository
      * @param int $limit
      * @return array|int|string
      */
-    public function getPokemonOffsetLimitApiCodeByLanguage
+    public function getPokemonOffsetLimitByLanguage
     (
         Language $language,
         int $offset,
@@ -40,7 +40,23 @@ class PokemonRepository extends AbstractRepository
             ->setMaxResults($limit)
             ->setFirstResult($offset)
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @param Language $language
+     * @return int|mixed|string
+     */
+    public function getAllPokemonNameForLanguage(Language $language)
+    {
+        return $this->createQueryBuilder('pokemon')
+            ->select('pokemon.name')
+            ->where('pokemon.language = :language')
+            ->setParameter('language', $language)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
 }

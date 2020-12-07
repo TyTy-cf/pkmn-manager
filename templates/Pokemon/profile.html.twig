@@ -1,32 +1,30 @@
 {% extends 'base.html.twig' %}
+
 {% block title %}Catch 'em all{% endblock %}
+
 {% block body %}
-    <h1 class="text-center mb-1 mt-3">Profil de {{ pokemon.name }}</h1>
+    <h1 class="text-center mb-1 mt-3">{{ pokemon.name }}</h1>
     <hr>
-    <div class="row justify-content-center mb-3 mt-3">
-        <img src="{{ pokemon.urlSpriteImg }}" width="15%" height="15%" alt="Image de {{ pokemon.name|capitalize }}">
+    <div class="text-center">
+        <div class="col-md-6 d-flex">
+            <img src="{{ pokemon.urlSpriteImg }}" alt="Image de {{ pokemon.name|capitalize }}">
+
+            <div class="col-md-6">
+                <h2 class="text-center">Capacité(s)</h2>
+                {% for ability in pokemon.abilities %}
+                    <strong>{{ ability.name|capitalize }}</strong>: {{ ability.description }}<br>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-md-6">
+            {% for type in pokemon.types %}
+                <img class="size-50" src="{{ type.img }}" alt="Type {{ type.name|lower }}"></li>
+            {% endfor %}
+        </div>
     </div>
     <hr>
     <div class="container">
         <div class="row pt-2">
-            <div class="col-md-6">
-                <h2 class="text-center">Type(s)</h2>
-                <div class="row text-center">
-                    {% for type in pokemon.types %}
-                        <div class="col-md-6">
-                            <img src="{{ type.img }}" alt="Type {{ type.name|lower }}"></li>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="col-md-6">
-                <h2 class="text-center">Capacité(s)</h2>
-                <ul>
-                    {% for ability in pokemon.abilities %}
-                        <li><strong>{{ ability.name|capitalize }}</strong>: {{ ability.description }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
             <hr>
             <div class="col-md-12 mt-3">
                 <h2 class="text-center mb-3">Stats de base</h2>

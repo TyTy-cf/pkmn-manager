@@ -109,7 +109,7 @@ class PokemonMovesLearnVersionCommand extends AbstractCommand
             $versionGroupArray = $this->versionGroupManager->getAllVersionGroupByLanguage($language);
             $methodLearnMethodArray = $this->moveLearnMethodManager->getAllMoveLearnMethodByLanguage($language);
             $arrayIdMax = $this->manager->getLastPokemonIdInDataBase();
-            $arrayPokemon = $this->pokemonManager->getPokemonOffsetLimitApiCodeByLanguage(
+            $arrayPokemon = $this->pokemonManager->getPokemonOffsetLimitByLanguage(
                 $language,
                 $arrayIdMax[0][1] == null ? $offset : $arrayIdMax[0][1],
                 $limit

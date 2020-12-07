@@ -6,6 +6,7 @@ namespace App\Controller\Pokemon;
 use App\Manager\Api\ApiManager;
 use App\Manager\Pokemon\PokemonManager;
 use App\Form\SearchPokemonType;
+use App\Manager\Users\LanguageManager;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,8 +19,6 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 class PokemonController extends AbstractController
 {
 
-    const POKEMON_NAMES_SESSION = 'pokemonNamesSession';
-
     /**
      * @var PokemonManager
      */
@@ -31,72 +30,50 @@ class PokemonController extends AbstractController
     private ApiManager $apiManager;
 
     /**
-     * @var SessionInterface
+     * @var LanguageManager $languageManager
      */
-    private SessionInterface $session;
+    private LanguageManager $languageManager;
 
     /**
      * PokemonController constructor.
      *
      * @param PokemonManager $pokemonManager
      * @param ApiManager $apiManager
-     * @param SessionInterface $session
+     * @param LanguageManager $languageManager
      */
     public function __construct
     (
         PokemonManager $pokemonManager,
         ApiManager $apiManager,
-        SessionInterface $session
+        LanguageManager $languageManager
     )
     {
         $this->pokemonManager = $pokemonManager;
         $this->apiManager = $apiManager;
-        $this->session = $session;
+        $this->languageManager = $languageManager;
     }
 
     /**
      * Display the last pokemon add in the database
      *
      * @Route (path="/", name="index")
-     * @param Request $request
-     * @param PaginatorInterface $paginator
      * @return Response
      */
-    public function index(Request $request, PaginatorInterface $paginator): Response
+    public function index(): Response
     {
-        $pokemons = $paginator->paginate(
-            $this->pokemonManager->findBy(['id' => 'DESC']),
-            $request->query->getInt('page', '1'),
-            8
-        );
-
-        return $this->render('Pokemon/index.html.twig', [
-            'pokemons' => $pokemons,
-        ]);
+        return $this->redirectToRoute('listing', array('offset' => 0));
     }
 
     /**
      * @Route(path="/pokemons/getAll", name="get_all_pokemon_names")
      *
      * @return JsonResponse
-     * @throws TransportExceptionInterface
      */
     function getAllPokemonNamesJson(): JsonResponse
     {
-        $pokemonNames = array ();
-        //Vérification si la variable existe
-        if ($this->session->get(PokemonController::POKEMON_NAMES_SESSION) == null) {
-            $apiResponse = $this->apiManager->getAllPokemonJson();
-            $apiResponse = $apiResponse->toArray();
-            //Récupération du pokéName
-            foreach ($apiResponse['results'] as $result) {
-                $pokemonNames[] = $result['name'];
-            }
-            $this->session->set(PokemonController::POKEMON_NAMES_SESSION, $pokemonNames);
-        } else {
-            $pokemonNames = $this->session->get(PokemonController::POKEMON_NAMES_SESSION);
-        }
-        return new JsonResponse($pokemonNames);
+        return new JsonResponse($this->pokemonManager->getAllPokemonNameForLanguage(
+            $this->languageManager->getLanguageByCode('fr')
+        ));
     }
 
     /**
@@ -107,42 +84,39 @@ class PokemonController extends AbstractController
      * @param Request $request
      * @return Response
      *
-     * @throws TransportExceptionInterface
      */
     function listing(Request $request): Response
     {
-
         //Création du formulaire de recherche
         $searchPokemonForm = $this->createForm(SearchPokemonType::class);
         $searchPokemonForm->handleRequest($request);
 
         //Si formulaire est soumis ET valide
         if ($searchPokemonForm->isSubmitted() && $searchPokemonForm->isValid()) {
-            $nameSearchPoke = $searchPokemonForm->getData();
-            return $this->redirectToRoute('profile_pokemon', ['pokeName' => $nameSearchPoke['name_pokemon']]);
+            $namePokemon = $searchPokemonForm->getData();
+            $pokemon = $this->pokemonManager->getPokemonByNameAndLanguage(
+                $namePokemon['name_pokemon'], $this->languageManager->getLanguageByCode('fr')
+            );
+            return $this->redirectToRoute('profile_pokemon', ['slug' => $pokemon->getSlug()]);
         }
 
         //Affichage de la liste
         $offset = $request->get('offset');
-
+        $limit = 42;
         //Récupération de la pagination
         if ($offset < 42) {
             $offset = 0;
         }
 
-        $apiResponse = $this->apiManager->getPokemonsListing($offset);
-        $apiResponse = $apiResponse->toArray();
-
-        //Récupération du pokéName
-        foreach ($apiResponse['results'] as $result) {
-            $pokemonNames[] = $result['name'];
-        }
+        $pokemonsList = $this->pokemonManager->getPokemonOffsetLimitByLanguage(
+            $this->languageManager->getLanguageByCode('fr'), $offset, $limit
+        );
 
         //Données pour autocompletion
         $jsonAllPokemon = $this->getAllPokemonNamesJson();
 
         return $this->render('Pokemon/listing.html.twig', [
-            'pokemonNames' => $pokemonNames,
+            'pokemonsList' => $pokemonsList,
             'formSearchPokemon' => $searchPokemonForm->createView(),
             'offset' => $offset,
             'jsonAllPokemon' => $jsonAllPokemon,
@@ -152,7 +126,7 @@ class PokemonController extends AbstractController
     /**
      * Display the characteristic for one pokemon
      *
-     * @Route(path="/pokemon/{pokeName}", name="profile_pokemon")
+     * @Route(path="/pokemon/{slug}", name="profile_pokemon", requirements={"slug": ".+"})
      *
      * @param Request $request
      * @return Response
@@ -161,7 +135,7 @@ class PokemonController extends AbstractController
     function displayProfile(Request $request): Response
     {
         return $this->render('Pokemon/profile.html.twig', [
-            'pokemon' => $pokemon = $this->pokemonManager->findByName($request->get('pokeName')),
+            'pokemon' => $pokemon = $this->pokemonManager->getPokemonBySlug($request->get('slug')),
         ]);
     }
 }

@@ -1,7 +1,7 @@
 {
 "version": 3,
-"mappings": "AAGA,OAAQ;EACN,QAAQ,EAAE,QAAQ;EAClB,MAAM,EAAE,CAAC;EACT,KAAK,EAAE,IAAI;EACX,gBAAgB,ECNJ,WAAW;EDOvB,UAAU,EAAE,KAAK",
-"sources": ["footer.scss","variables.scss"],
+"mappings": "AAIA,OAAQ;EACN,QAAQ,EAAE,QAAQ;EAClB,MAAM,EAAE,CAAC;EACT,KAAK,EAAE,IAAI;EACX,gBAAgB,EAAE,OAAO;EACzB,UAAU,EAAE,KAAK",
+"sources": ["footer.scss"],
 "names": [],
 "file": "footer.css"
 }

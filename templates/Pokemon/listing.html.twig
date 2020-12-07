@@ -2,7 +2,7 @@
 {% block title %}Catch 'em all{% endblock %}
 
 {% block body %}
-    <div class="container-fluid col-10 mb-2">
+    <div class="container-fluid col-8 mb-2">
         {{ include('search.html.twig') }}
         <div class="row justify-content-center">
             {% if offset > 0 %}
@@ -15,14 +15,41 @@
             </a>
         </div>
         <hr>
-        <div class="row">
-            {% for pokemonName in pokemonNames %}
-                <div class="col-md-2 col-sm-8 text-center border pb-2">
-                    <h5 class="mt-2">
-                        <a href="{{ path('profile_pokemon', {pokeName: pokemonName }) }}">{{ pokemonName|capitalize }}</a>
-                    </h5>
-                </div>
-            {% endfor %}
+        <div>
+            <table class="table-striped w-100">
+                <tbody>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Nom</th>
+                        <th>Type(s)</th>
+                        <th>HP</th>
+                        <th>ATK</th>
+                        <th>DEF</th>
+                        <th>SPA</th>
+                        <th>SPD</th>
+                        <th>SPE</th>
+                    </tr>
+                </thead>
+                {% for pokemon in pokemonsList %}
+                    <tr>
+                        <td><img class="size-150" src="{{ pokemon.urlIcon }}" alt="Pokemon {{ pokemon.name }}"></td>
+                        <td><a href="{{ path('profile_pokemon', {slug: pokemon.slug }) }}">{{ pokemon.name }}</a></td>
+                        <td>
+                            {% for type in pokemon.types %}
+                                <img class="size-25" src="{{ type.img }}" alt="Type {{ type.name }}"><br>
+                            {% endfor %}
+                        </td>
+                        <td>{{ pokemon.hp }}</td>
+                        <td>{{ pokemon.atk }}</td>
+                        <td>{{ pokemon.def }}</td>
+                        <td>{{ pokemon.spa }}</td>
+                        <td>{{ pokemon.spd }}</td>
+                        <td>{{ pokemon.spe }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 {% endblock %}
