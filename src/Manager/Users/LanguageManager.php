@@ -25,7 +25,8 @@ class LanguageManager
      */
     private ApiManager $apiManager;
 
-    public function __construct(
+    public function __construct
+    (
         EntityManagerInterface $em,
         ApiManager $apiManager,
         LanguageRepository $languageRepository
@@ -43,46 +44,5 @@ class LanguageManager
      */
     public function getLanguageByCode(string $code) {
         return $this->languageRepository->findOneBy(['code' => $code]);
-    }
-
-    /**
-     * Check if the language exists. If it does not exist, create the language in database
-     * @param string $lang
-     * @return Language
-     * @throws TransportExceptionInterface
-     */
-    public function createLanguage(string $lang)
-    {
-        if (($newLanguage = $this->languageRepository->findOneBy(['code' => $lang])) === null) {
-
-            $apiResponse = $this->apiManager->getDetailed("https://pokeapi.co/api/v2/language/");
-            $languages = $apiResponse->toarray();
-
-            foreach ($languages['results'] as $language) {
-
-                if ($language['name'] === $lang) {
-
-                    //Search more informations
-                    $apiResponse = $this->apiManager->getDetailed($language['url']);
-                    $detailedLanguages = $apiResponse->toarray();
-
-                    //Match search
-                    foreach ($detailedLanguages['names'] as $detailedLanguage) {
-
-                        if ($detailedLanguage['language']['name'] === 'fr') {
-                            //Create new language
-                            $newLanguage = new Language();
-                            $newLanguage->setCode($language['name']);
-                            $newLanguage->setTitle($detailedLanguage['name']);
-
-                            $this->em->persist($newLanguage);
-                            $this->em->flush();
-                        }
-                    }
-                }
-            }
-        }
-
-        return $newLanguage;
     }
 }

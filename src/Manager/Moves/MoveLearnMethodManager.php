@@ -11,7 +11,6 @@ use App\Manager\Api\ApiManager;
 use App\Manager\TextManager;
 use App\Repository\Moves\MoveLearnMethodRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class MoveLearnMethodManager extends AbstractManager
@@ -50,14 +49,12 @@ class MoveLearnMethodManager extends AbstractManager
     }
 
     /**
-     * @param Language $language
      * @param string $slug
      * @return MoveLearnMethod|null
-     * @throws NonUniqueResultException
      */
-    public function getMoveLearnMethodByLanguageAndSlug(Language $language, string $slug): ?MoveLearnMethod
+    public function getMoveLearnMethodBySlug(string $slug): object
     {
-        return $this->repo->getMoveLearnMethodByLanguageAndSlug($language, $slug);
+        return $this->repo->findOneBySlug($slug);
     }
 
     /**
@@ -81,25 +78,30 @@ class MoveLearnMethodManager extends AbstractManager
      * @param Language $language
      * @param $apiLearnMethod
      * @throws TransportExceptionInterface
-     * @throws NonUniqueResultException
      */
     public function createFromApiResponse(Language $language, $apiLearnMethod)
     {
         //Fetch URL details type
         $urlLearnMethodDetailed = $this->apiManager->getDetailed($apiLearnMethod['url'])->toArray();
-        $slug = $this->textManager->generateSlugFromClass(MoveLearnMethod::class, $urlLearnMethodDetailed['name']);
+        $slug = $this->textManager->generateSlugFromClassWithLanguage(
+            $language, MoveLearnMethod::class, $urlLearnMethodDetailed['name']
+        );
 
-        if ($this->getMoveLearnMethodByLanguageAndSlug($language, $slug) === null)
+        if ($this->getMoveLearnMethodBySlug($slug) === null)
         {
             // For french there is currently no traduction avalaible, we'll actually make traduction there
             if (array_key_exists($urlLearnMethodDetailed['name'], $this->arrayTraduction))
             {
-                $description = $this->apiManager->getFieldContentFromLanguage('en', $urlLearnMethodDetailed, 'descriptions', 'description');
-                $learnMethod = new MoveLearnMethod();
-                $learnMethod->setSlug($slug);
-                $learnMethod->setLanguage($language);
-                $learnMethod->setName($this->arrayTraduction[$urlLearnMethodDetailed['name']]);
-                $learnMethod->setDescription($description);
+                $description = $this->apiManager->getFieldContentFromLanguage(
+                    'en', $urlLearnMethodDetailed, 'descriptions', 'description'
+                );
+
+                $learnMethod = (new MoveLearnMethod())
+                    ->setSlug($slug)
+                    ->setLanguage($language)
+                    ->setName($this->arrayTraduction[$urlLearnMethodDetailed['name']])
+                    ->setDescription($description)
+                ;
                 $this->entityManager->persist($learnMethod);
             }
             $this->entityManager->flush();

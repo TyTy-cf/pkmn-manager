@@ -72,11 +72,21 @@ class PokemonMovesLearnVersion
     }
 
     /**
-     * @param string $id
+     * @return int
      */
-    public function setId(string $id): void
+    public function getLevel(): int
     {
-        $this->id = $id;
+        return $this->level;
+    }
+
+    /**
+     * @param int $level
+     * @return PokemonMovesLearnVersion
+     */
+    public function setLevel(int $level): self
+    {
+        $this->level = $level;
+        return $this;
     }
 
     /**
@@ -89,10 +99,12 @@ class PokemonMovesLearnVersion
 
     /**
      * @param Pokemon $pokemon
+     * @return PokemonMovesLearnVersion
      */
-    public function setPokemon(Pokemon $pokemon): void
+    public function setPokemon(Pokemon $pokemon): self
     {
         $this->pokemon = $pokemon;
+        return $this;
     }
 
     /**
@@ -105,10 +117,12 @@ class PokemonMovesLearnVersion
 
     /**
      * @param Move $move
+     * @return PokemonMovesLearnVersion
      */
-    public function setMove(Move $move): void
+    public function setMove(Move $move): self
     {
         $this->move = $move;
+        return $this;
     }
 
     /**
@@ -121,26 +135,12 @@ class PokemonMovesLearnVersion
 
     /**
      * @param MoveLearnMethod $moveLearnMethod
+     * @return PokemonMovesLearnVersion
      */
-    public function setMoveLearnMethod(MoveLearnMethod $moveLearnMethod): void
+    public function setMoveLearnMethod(MoveLearnMethod $moveLearnMethod): self
     {
         $this->moveLearnMethod = $moveLearnMethod;
-    }
-
-    /**
-     * @return int
-     */
-    public function getLevel(): int
-    {
-        return $this->level;
-    }
-
-    /**
-     * @param int $level
-     */
-    public function setLevel(int $level): void
-    {
-        $this->level = $level;
+        return $this;
     }
 
     /**
@@ -153,10 +153,12 @@ class PokemonMovesLearnVersion
 
     /**
      * @param VersionGroup $versionGroup
+     * @return PokemonMovesLearnVersion
      */
-    public function setVersionGroup(VersionGroup $versionGroup): void
+    public function setVersionGroup(VersionGroup $versionGroup): self
     {
         $this->versionGroup = $versionGroup;
+        return $this;
     }
 
 }

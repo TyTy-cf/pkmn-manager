@@ -37,7 +37,8 @@ class VersionManager extends AbstractManager
      * @param VersionRepository $versionRepository
      * @param VersionGroupRepository $versionGroupRepository
      */
-    public function __construct(
+    public function __construct
+    (
         EntityManagerInterface $entityManager,
         ApiManager $apiManager,
         TextManager $textManager,
@@ -51,13 +52,12 @@ class VersionManager extends AbstractManager
     }
 
     /**
-     * @param Language $language
      * @param string $slug
      * @return Version|null
      */
-    private function getVersionByLanguageAndSlug(Language $language, string $slug): ?Version
+    private function getVersionBySlug(string $slug): ?Version
     {
-        return $this->versionRepository->findOneBySlug($language, $slug);
+        return $this->versionRepository->findOneBySlug($slug);
     }
 
     /**
@@ -85,21 +85,26 @@ class VersionManager extends AbstractManager
             $version['name']
         );
 
-        if ($this->getVersionByLanguageAndSlug($language, $slug) === null)
+        if ($this->getVersionBySlug($slug) === null)
         {
             // fetch the generation according to the group-version
             $urlDetailed = $this->apiManager->getDetailed($version['url'])->toArray();
-            $versionGroup = $this->versionGroupRepository->getVersionGroupByLanguageAndName($language, $urlDetailed['version_group']['name']);
-            $versionLang = $this->apiManager->getNameBasedOnLanguageFromArray($language->getCode(), $urlDetailed);
+            $versionGroup = $this->versionGroupRepository->getVersionGroupByLanguageAndName(
+                $language, $urlDetailed['version_group']['name']
+            );
+            $versionLang = $this->apiManager->getNameBasedOnLanguageFromArray(
+                $language->getCode(), $urlDetailed
+            );
 
             $newVersion = new Version();
-            $newVersion->setSlug($slug);
-            $newVersion->setLanguage($language);
             if (empty($versionLang)) {
                 $versionLang = ucfirst($urlDetailed['name']);
             }
-            $newVersion->setName($versionLang);
-            $newVersion->setVersionGroup($versionGroup);
+            $newVersion->setSlug($slug)
+                ->setLanguage($language)
+                ->setName($versionLang)
+                ->setVersionGroup($versionGroup)
+            ;
             $this->entityManager->persist($newVersion);
             $this->entityManager->flush();
         }

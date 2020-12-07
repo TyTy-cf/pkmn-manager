@@ -66,14 +66,12 @@ class MoveManager extends AbstractManager
     }
 
     /**
-     * @param Language $language
      * @param string $slug
      * @return Move|null
-     * @throws NonUniqueResultException
      */
-    public function getMoveByLanguageAndSlug(Language $language, string $slug): ?Move
+    public function getMoveBySlug(string $slug): ?Move
     {
-        return $this->movesRepository->getMoveByLanguageAndSlug($language, $slug);
+        return $this->movesRepository->findOneBySlug($slug);
     }
 
     /**
@@ -85,27 +83,29 @@ class MoveManager extends AbstractManager
      */
     public function createFromApiResponse(Language $language, $apiResponse)
     {
-        $slug = $this->textManager->generateSlugFromClass(Move::class, $apiResponse['name']);
+        $slug = $this->textManager->generateSlugFromClassWithLanguage(
+            $language, Move::class, $apiResponse['name']
+        );
         $urlDetailedMove = $this->apiManager->getDetailed($apiResponse['url'])->toArray();
 
-        if ($this->getMoveByLanguageAndSlug($language, $slug) === null && isset($urlDetailedMove['damage_class']))
+        if ($this->getMoveBySlug($slug) === null && isset($urlDetailedMove['damage_class']))
         {;
             $moveName = $this->apiManager->getNameBasedOnLanguageFromArray(
                 $language->getCode(),
                 $urlDetailedMove
             );
             // Get the DamageClass
-            $damageClass = $this->damageClassManager->getDamageClassByLanguageAndSlug(
-                $language,
-                $this->textManager->generateSlugFromClass(
+            $damageClass = $this->damageClassManager->getDamageClassBySlug(
+                $this->textManager->generateSlugFromClassWithLanguage(
+                    $language,
                     DamageClass::class,
                     $urlDetailedMove['damage_class']['name']
                 )
             );
             // Get the Type
-            $type = $this->typeManager->getTypeByLanguageAndSlug(
-                $language,
-                $this->textManager->generateSlugFromClass(
+            $type = $this->typeManager->getTypeBySlug(
+                $this->textManager->generateSlugFromClassWithLanguage(
+                    $language,
                     Type::class,
                     $urlDetailedMove['type']['name']
                 )
@@ -113,16 +113,17 @@ class MoveManager extends AbstractManager
             if ($urlDetailedMove['pp'] !== null || $urlDetailedMove['power'] !== null || $urlDetailedMove['accuracy'] !== null)
             {
                 // Create the Move
-                $move = new Move();
-                $move->setType($type);
-                $move->setSlug($slug);
-                $move->setName($moveName);
-                $move->setLanguage($language);
-                $move->setPp($urlDetailedMove['pp']);
-                $move->setDamageClass($damageClass);
-                $move->setPower($urlDetailedMove['power']);
-                $move->setPriority($urlDetailedMove['priority']);
-                $move->setAccuracy($urlDetailedMove['accuracy']);
+                $move = (new Move())
+                    ->setType($type)
+                    ->setSlug($slug)
+                    ->setName($moveName)
+                    ->setLanguage($language)
+                    ->setPp($urlDetailedMove['pp'])
+                    ->setDamageClass($damageClass)
+                    ->setPower($urlDetailedMove['power'])
+                    ->setPriority($urlDetailedMove['priority'])
+                    ->setAccuracy($urlDetailedMove['accuracy'])
+                ;
 
                 $this->entityManager->persist($move);
 

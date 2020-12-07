@@ -51,10 +51,12 @@ class VersionGroup
 
     /**
      * @param Generation $generation
+     * @return VersionGroup
      */
-    public function setGeneration(Generation $generation): void
+    public function setGeneration(Generation $generation): VersionGroup
     {
         $this->generation = $generation;
+        return $this;
     }
 
 }

@@ -4,10 +4,7 @@
 namespace App\Entity\Moves;
 
 
-use App\Entity\Traits\TraitLanguage;
-use App\Entity\Traits\TraitNames;
 use App\Entity\Traits\TraitNomenclature;
-use App\Entity\Traits\TraitSlug;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -51,14 +48,6 @@ class DamageClass
     }
 
     /**
-     * @param int $id
-     */
-    public function setId(int $id): void
-    {
-        $this->id = $id;
-    }
-
-    /**
      * @return string
      */
     public function getImage(): string
@@ -68,10 +57,12 @@ class DamageClass
 
     /**
      * @param string $image
+     * @return DamageClass
      */
-    public function setImage(string $image): void
+    public function setImage(string $image): DamageClass
     {
         $this->image = $image;
+        return $this;
     }
 
 }

@@ -41,13 +41,12 @@ class EggGroupManager extends AbstractManager
     }
 
     /**
-     * @param Language $language
      * @param string $slug
      * @return EggGroup|null
      */
-    public function getEggGroupBySlug(Language $language, string $slug)
+    public function getEggGroupBySlug(string $slug)
     {
-        return $this->eggGroupRepository->findOneBySlug($language, $slug);
+        return $this->eggGroupRepository->findOneBySlug($slug);
     }
 
     /**
@@ -58,8 +57,10 @@ class EggGroupManager extends AbstractManager
     public function createFromApiResponse(Language $language, $apiEggGroup)
     {
         //Check if the data exist in databases
-        $slug = $this->textManager->generateSlugFromClass(EggGroup::class, $apiEggGroup['name']);
-        if ($this->getEggGroupBySlug($language, $slug) === null)
+        $slug = $this->textManager->generateSlugFromClassWithLanguage(
+            $language, EggGroup::class, $apiEggGroup['name']
+        );
+        if ($this->getEggGroupBySlug($slug) === null)
         {
             //Fetch URL details type
             $urlDamageClassDetailed = $this->apiManager->getDetailed($apiEggGroup['url'])->toArray();
@@ -68,10 +69,11 @@ class EggGroupManager extends AbstractManager
                 $language->getCode(),
                 $urlDamageClassDetailed
             );
-            $eggGroup = new EggGroup();
-            $eggGroup->setName(ucfirst($eggGroupName));
-            $eggGroup->setSlug($slug);
-            $eggGroup->setLanguage($language);
+            $eggGroup = (new EggGroup())
+                ->setName(ucfirst($eggGroupName))
+                ->setSlug($slug)
+                ->setLanguage($language)
+            ;
             $this->entityManager->persist($eggGroup);
             $this->entityManager->flush();
         }

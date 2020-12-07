@@ -7,7 +7,6 @@ namespace App\Manager\Pokedex;
 use App\Entity\Pokedex\Pokedex;
 use App\Entity\Pokedex\PokedexSpecies;
 use App\Entity\Pokemon\PokemonSpecies;
-use App\Entity\Pokemon\PokemonSpeciesVersion;
 use App\Entity\Users\Language;
 use App\Entity\Versions\Version;
 use App\Manager\AbstractManager;

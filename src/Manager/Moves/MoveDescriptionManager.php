@@ -52,14 +52,12 @@ class MoveDescriptionManager extends AbstractManager
     }
 
     /**
-     * @param Language $lang
      * @param string $slug
      * @return MoveDescription|null
-     * @throws NonUniqueResultException
      */
-    private function getMoveDescriptionByLanguageAndSlug(Language $lang, string $slug): ?MoveDescription
+    private function getMoveDescriptionBySlug(string $slug): ?MoveDescription
     {
-        return $this->repo->getMoveDescriptionByLanguageAndSlug($lang, $slug);
+        return $this->repo->findOneBySlug($slug);
     }
 
     /**
@@ -74,24 +72,27 @@ class MoveDescriptionManager extends AbstractManager
         {
             if ($descriptionDetailed['language']['name'] === $lang->getCode())
             {
-                $slugVersion = $this->textManager->generateSlugFromClass(
+                $slugVersion = $this->textManager->generateSlugFromClassWithLanguage(
+                    $lang,
                     VersionGroup::class,
                     $descriptionDetailed['version_group']['name']
                 );
-                $slug = $this->textManager->generateSlugFromClass(
+                $slug = $this->textManager->generateSlugFromClassWithLanguage(
+                    $lang,
                     MoveDescription::class,
                     $move->getSlug().'-'.$slugVersion
                 );
-                if ($this->getMoveDescriptionByLanguageAndSlug($lang, $slug) === null)
+                if ($this->getMoveDescriptionBySlug($slug) === null)
                 {
                     $description = $descriptionDetailed['flavor_text'];
-                    $versionGroup = $this->versionGroupManager->getVersionGroupByLanguageAndSlug($lang, $slugVersion);
-                    $moveDescription = new MoveDescription();
-                    $moveDescription->setMove($move);
-                    $moveDescription->setSlug($slug);
-                    $moveDescription->setLanguage($lang);
-                    $moveDescription->setVersionGroup($versionGroup);
-                    $moveDescription->setDescription($this->textManager->removeReturnLineFromText($description));
+                    $versionGroup = $this->versionGroupManager->getVersionGroupBySlug($slugVersion);
+                    $moveDescription = (new MoveDescription())
+                        ->setMove($move)
+                        ->setSlug($slug)
+                        ->setLanguage($lang)
+                        ->setVersionGroup($versionGroup)
+                        ->setDescription($this->textManager->removeReturnLineFromText($description))
+                    ;
                     $this->entityManager->persist($moveDescription);
                 }
             }

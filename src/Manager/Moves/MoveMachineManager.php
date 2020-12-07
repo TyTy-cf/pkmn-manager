@@ -91,7 +91,7 @@ class MoveMachineManager extends AbstractManager
             );
             if ($move !== null)
             {
-                $groupVersion = $this->versionGroupManager->getVersionGroupByLanguageAndSlug(
+                $groupVersion = $this->versionGroupManager->getVersionGroupBySlug(
                     $language,
                     $this->textManager->generateSlugFromClass(VersionGroup::class, $urlDetailed['version_group']['name'])
                 );

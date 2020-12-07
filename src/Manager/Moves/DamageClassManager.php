@@ -29,7 +29,8 @@ class DamageClassManager extends AbstractManager
      * @param ApiManager $apiManager
      * @param TextManager $textManager
      */
-    public function __construct(
+    public function __construct
+    (
         EntityManagerInterface $entityManager,
         DamageClassRepository $damageClassRepository,
         ApiManager $apiManager,
@@ -41,43 +42,40 @@ class DamageClassManager extends AbstractManager
     }
 
     /**
-     * The name is always in english and the slug is generate there
-     *
-     * @param Language $language
      * @param string $slug
      * @return DamageClass|null
-     * @throws NonUniqueResultException
      */
-    public function getDamageClassByLanguageAndSlug(Language $language, string $slug): ?DamageClass
+    public function getDamageClassBySlug(string $slug): ?object
     {
-        return $this->damageClassRepository->getDamageClassByLanguageAndSlug(
-            $language,
-            $slug
-        );
+        return $this->damageClassRepository->findOneBySlug($slug);
     }
 
     /**
      * @param Language $language
      * @param $apiDamageClass
-     * @throws NonUniqueResultException
      * @throws TransportExceptionInterface
      */
     public function createFromApiResponse(Language $language, $apiDamageClass)
     {
         //Check if the data exist in databases
-        $slug = $this->textManager->generateSlugFromClass(DamageClass::class, $apiDamageClass['name']);
+        $slug = $this->textManager->generateSlugFromClassWithLanguage(
+            $language, DamageClass::class, $apiDamageClass['name']
+        );
 
-        if (($newDamageClass = $this->getDamageClassByLanguageAndSlug($language, $slug)) == null)
+        if ($this->getDamageClassBySlug($slug) === null)
         {
             //Fetch URL details type
             $urlDamageClassDetailed = $this->apiManager->getDetailed($apiDamageClass['url'])->toArray();
             // Fetch name & description according the language
-            $damageClassNameLang = $this->apiManager->getNameBasedOnLanguageFromArray($language->getCode(), $urlDamageClassDetailed);
-            $damageClass = new DamageClass();
-            $damageClass->setName(ucfirst($damageClassNameLang));
-            $damageClass->setSlug($slug);
-            $damageClass->setLanguage($language);
-            $damageClass->setImage('/images/moves/damage_class/' . $slug . '.png');
+            $damageClassNameLang = $this->apiManager->getNameBasedOnLanguageFromArray(
+                $language->getCode(), $urlDamageClassDetailed
+            );
+            $damageClass = (new DamageClass())
+                ->setName(ucfirst($damageClassNameLang))
+                ->setSlug($slug)
+                ->setLanguage($language)
+                ->setImage('/images/moves/damage_class/' . $slug . '.png')
+            ;
             $this->entityManager->persist($damageClass);
             $this->entityManager->flush();
         }

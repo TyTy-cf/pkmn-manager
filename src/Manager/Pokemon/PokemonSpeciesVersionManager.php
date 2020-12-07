@@ -48,15 +48,12 @@ class PokemonSpeciesVersionManager
     }
 
     /**
-     * @param Language $language
-     * @param string $string
+     * @param string $slug
      * @return PokemonSpeciesVersion|null
      */
-    private function getPokemonSpeciesVersionBySlug(Language $language, string $string)
+    private function getPokemonSpeciesVersionBySlug(string $slug)
     {
-        return $this->repository->findOneBy([
-            'slug' => $language->getCode().'/'.$string
-        ]);
+        return $this->repository->findOneBySlug($slug);
     }
 
     /**
@@ -81,7 +78,7 @@ class PokemonSpeciesVersionManager
                 /** @var Version $version */
                 $version = $arrayVersions[$codeLang.'/version-'.$flavorTextDetail['version']['name']];
                 $slug = $pokemonSpecies->getSlug().'-'.$version->getSlug();
-                if ($this->getPokemonSpeciesVersionBySlug($language, $slug) === null) {
+                if ($this->getPokemonSpeciesVersionBySlug($slug) === null) {
                     $pokemonSpeciesVersion = (new PokemonSpeciesVersion())
                         ->setPokemonSpecies($pokemonSpecies)
                         ->setVersion($version)

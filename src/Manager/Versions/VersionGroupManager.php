@@ -52,14 +52,12 @@ class VersionGroupManager extends AbstractManager
     }
 
     /**
-     * @param Language $language
      * @param string $slug
      * @return VersionGroup|null
-     * @throws NonUniqueResultException
      */
-    public function getVersionGroupByLanguageAndSlug(Language $language, string $slug): ?VersionGroup
+    public function getVersionGroupBySlug(string $slug): ?VersionGroup
     {
-        return $this->versionGroupRepository->getVersionGroupByLanguageAndSlug($language, $slug);
+        return $this->versionGroupRepository->findOneBySlug($slug);
     }
 
     /**
@@ -115,21 +113,26 @@ class VersionGroupManager extends AbstractManager
     public function createFromApiResponse(Language $language, $versionGroup)
     {
         //Check if the data exist in databases
-        $slug = $this->textManager->generateSlugFromClass(VersionGroup::class, $versionGroup['name']);
+        $slug = $this->textManager->generateSlugFromClassWithLanguage(
+            $language,VersionGroup::class, $versionGroup['name']
+        );
 
-        if (($newVersionGroup = $this->getVersionGroupByLanguageAndSlug($language, $slug)) == null)
+        if ($this->getVersionGroupBySlug($slug) === null)
         {
             $urlDetailed = $this->apiManager->getDetailed($versionGroup['url'])->toArray();
 
             // fetch the generation according to the group-version
             $generationNumber = $this->apiManager->getIdFromUrl($urlDetailed['generation']['url']);
-            $generation = $this->generationRepository->getGenerationByLanguageAndGenerationNumber($language, $generationNumber);
+            $generation = $this->generationRepository->getGenerationByLanguageAndGenerationNumber(
+                $language, $generationNumber
+            );
 
-            $newVersionGroup = new VersionGroup();
-            $newVersionGroup->setSlug($slug);
-            $newVersionGroup->setLanguage($language);
-            $newVersionGroup->setName($urlDetailed['name']);
-            $newVersionGroup->setGeneration($generation);
+            $newVersionGroup = (new VersionGroup())
+                ->setSlug($slug)
+                ->setLanguage($language)
+                ->setName($urlDetailed['name'])
+                ->setGeneration($generation)
+            ;
             $this->entityManager->persist($newVersionGroup);
             $this->entityManager->flush();
         }

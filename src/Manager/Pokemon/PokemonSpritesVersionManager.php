@@ -57,7 +57,6 @@ class PokemonSpritesVersionManager extends AbstractManager
     /**
      * @param Language $language
      * @param $apiResponse
-     * @throws NonUniqueResultException
      * @throws TransportExceptionInterface
      */
     public function createFromApiResponse(Language $language, $apiResponse)
@@ -69,8 +68,10 @@ class PokemonSpritesVersionManager extends AbstractManager
             // Iterate over each content of generation-i
             foreach($version as $key => $spriteVersion)
             {
-                $slugKey = $this->textManager->generateSlugFromClass(VersionGroup::class, $key);
-                $versionGroup = $this->versionGroupManager->getVersionGroupByLanguageAndSlug($language, $slugKey);
+                $slugKey = $this->textManager->generateSlugFromClassWithLanguage(
+                    $language,VersionGroup::class, $key
+                );
+                $versionGroup = $this->versionGroupManager->getVersionGroupBySlug($slugKey);
                 if ($versionGroup != null)
                 {
                     $frontDefault = isset($spriteVersion['front_default']) ? $spriteVersion['front_default'] : null;
@@ -80,15 +81,19 @@ class PokemonSpritesVersionManager extends AbstractManager
                     // if at least one of the default sprites key are set we can create the object
                     if ($frontDefault != null || $frontShiny != null || $frontFemale != null || $frontFemaleShiny != null)
                     {
-                        $slug = $this->textManager->generateSlugFromClass(Pokemon::class, $urlDetailed['name']);
-                        $pokemon = $this->pokemonManager->getPokemonByLanguageAndSlug($language, $slug);
-                        $pokemonSpritesVersion = new PokemonSpritesVersion();
-                        $pokemonSpritesVersion->setPokemon($pokemon);
-                        $pokemonSpritesVersion->setVersionGroup($versionGroup);
-                        $pokemonSpritesVersion->setUrlDefault($frontDefault);
-                        $pokemonSpritesVersion->setUrlDefaultShiny($frontShiny);
-                        $pokemonSpritesVersion->setUrlDefaultFemale($frontFemale);
-                        $pokemonSpritesVersion->setUrlDefaultFemaleShiny($frontFemaleShiny);
+                        $slug = $this->textManager->generateSlugFromClassWithLanguage(
+                            $language, Pokemon::class, $urlDetailed['name']
+                        );
+                        $pokemon = $this->pokemonManager->getPokemonBySlug($slug);
+
+                        $pokemonSpritesVersion = (new PokemonSpritesVersion())
+                            ->setPokemon($pokemon)
+                            ->setVersionGroup($versionGroup)
+                            ->setUrlDefault($frontDefault)
+                            ->setUrlDefaultShiny($frontShiny)
+                            ->setUrlDefaultFemale($frontFemale)
+                            ->setUrlDefaultFemaleShiny($frontFemaleShiny)
+                        ;
                         $this->entityManager->persist($pokemonSpritesVersion);
                     }
                 }

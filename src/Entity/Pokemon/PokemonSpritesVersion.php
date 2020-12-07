@@ -77,10 +77,12 @@ class PokemonSpritesVersion
 
     /**
      * @param Pokemon $pokemon
+     * @return PokemonSpritesVersion
      */
-    public function setPokemon(Pokemon $pokemon): void
+    public function setPokemon(Pokemon $pokemon): self
     {
         $this->pokemon = $pokemon;
+        return $this;
     }
 
     /**
@@ -93,10 +95,12 @@ class PokemonSpritesVersion
 
     /**
      * @param VersionGroup $versionGroup
+     * @return PokemonSpritesVersion
      */
-    public function setVersionGroup(VersionGroup $versionGroup): void
+    public function setVersionGroup(VersionGroup $versionGroup): self
     {
         $this->versionGroup = $versionGroup;
+        return $this;
     }
 
     /**
@@ -109,10 +113,12 @@ class PokemonSpritesVersion
 
     /**
      * @param string|null $urlDefault
+     * @return PokemonSpritesVersion
      */
-    public function setUrlDefault(?string $urlDefault): void
+    public function setUrlDefault(?string $urlDefault): self
     {
         $this->urlDefault = $urlDefault;
+        return $this;
     }
 
     /**
@@ -125,10 +131,12 @@ class PokemonSpritesVersion
 
     /**
      * @param string|null $urlDefaultShiny
+     * @return PokemonSpritesVersion
      */
-    public function setUrlDefaultShiny(?string $urlDefaultShiny): void
+    public function setUrlDefaultShiny(?string $urlDefaultShiny): self
     {
         $this->urlDefaultShiny = $urlDefaultShiny;
+        return $this;
     }
 
     /**
@@ -141,10 +149,12 @@ class PokemonSpritesVersion
 
     /**
      * @param string|null $urlDefaultFemale
+     * @return PokemonSpritesVersion
      */
-    public function setUrlDefaultFemale(?string $urlDefaultFemale): void
+    public function setUrlDefaultFemale(?string $urlDefaultFemale): self
     {
         $this->urlDefaultFemale = $urlDefaultFemale;
+        return $this;
     }
 
     /**
@@ -157,10 +167,12 @@ class PokemonSpritesVersion
 
     /**
      * @param string|null $urlDefaultFemaleShiny
+     * @return PokemonSpritesVersion
      */
-    public function setUrlDefaultFemaleShiny(?string $urlDefaultFemaleShiny): void
+    public function setUrlDefaultFemaleShiny(?string $urlDefaultFemaleShiny): self
     {
         $this->urlDefaultFemaleShiny = $urlDefaultFemaleShiny;
+        return $this;
     }
 
 }

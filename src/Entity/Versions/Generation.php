@@ -60,22 +60,6 @@ class Generation
     /**
      * @return string
      */
-    public function getCode(): string
-    {
-        return $this->code;
-    }
-
-    /**
-     * @param string $code
-     */
-    public function setCode(string $code): void
-    {
-        $this->code = $code;
-    }
-
-    /**
-     * @return string
-     */
     public function getNumber(): string
     {
         return $this->number;
@@ -83,10 +67,30 @@ class Generation
 
     /**
      * @param string $number
+     * @return Generation
      */
-    public function setNumber(string $number): void
+    public function setNumber(string $number): Generation
     {
         $this->number = $number;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCode(): string
+    {
+        return $this->code;
+    }
+
+    /**
+     * @param string $code
+     * @return Generation
+     */
+    public function setCode(string $code): Generation
+    {
+        $this->code = $code;
+        return $this;
     }
 
 }

@@ -4,16 +4,12 @@
 namespace App\Entity\Moves;
 
 use App\Entity\Infos\Type\Type;
-use App\Entity\Traits\TraitDescription;
-use App\Entity\Traits\TraitLanguage;
-use App\Entity\Traits\TraitNames;
-use App\Entity\Traits\TraitSlug;
+use App\Entity\Traits\TraitNomenclature;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
-use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -38,11 +34,7 @@ class Move
      */
     private int $id;
 
-    use TraitNames;
-
-    use TraitSlug;
-
-    use TraitLanguage;
+    use TraitNomenclature;
 
     /**
      * @var Type|null $type the type of the move
@@ -103,14 +95,6 @@ class Move
     }
 
     /**
-     * @param int $id
-     */
-    public function setId(int $id): void
-    {
-        $this->id = $id;
-    }
-
-    /**
      * @return Type|null
      */
     public function getType(): ?Type
@@ -120,10 +104,12 @@ class Move
 
     /**
      * @param Type|null $type
+     * @return Move
      */
-    public function setType(?Type $type): void
+    public function setType(?Type $type): self
     {
         $this->type = $type;
+        return $this;
     }
 
     /**
@@ -136,10 +122,12 @@ class Move
 
     /**
      * @param DamageClass|null $damageClass
+     * @return Move
      */
-    public function setDamageClass(?DamageClass $damageClass): void
+    public function setDamageClass(?DamageClass $damageClass): self
     {
         $this->damageClass = $damageClass;
+        return $this;
     }
 
     /**
@@ -152,10 +140,12 @@ class Move
 
     /**
      * @param int|null $pp
+     * @return Move
      */
-    public function setPp(?int $pp): void
+    public function setPp(?int $pp): self
     {
         $this->pp = $pp;
+        return $this;
     }
 
     /**
@@ -168,10 +158,12 @@ class Move
 
     /**
      * @param int|null $accuracy
+     * @return Move
      */
-    public function setAccuracy(?int $accuracy): void
+    public function setAccuracy(?int $accuracy): self
     {
         $this->accuracy = $accuracy;
+        return $this;
     }
 
     /**
@@ -184,10 +176,12 @@ class Move
 
     /**
      * @param int|null $power
+     * @return Move
      */
-    public function setPower(?int $power): void
+    public function setPower(?int $power): self
     {
         $this->power = $power;
+        return $this;
     }
 
     /**
@@ -199,13 +193,12 @@ class Move
     }
 
     /**
-     * @param int $priority
-     * @return $this
+     * @param int|null $priority
+     * @return Move
      */
-    public function setPriority(int $priority): self
+    public function setPriority(?int $priority): self
     {
         $this->priority = $priority;
-
         return $this;
     }
 

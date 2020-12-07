@@ -141,7 +141,9 @@ class PokemonManager extends AbstractManager
      */
     public function createFromApiResponse(Language $language, $apiResponse)
     {
-        $slug = $this->textManager->generateSlugFromClassWithLanguage($language, Pokemon::class, $apiResponse['name']);
+        $slug = $this->textManager->generateSlugFromClassWithLanguage(
+            $language, Pokemon::class, $apiResponse['name']
+        );
         $urlDetailed = $this->apiManager->getDetailed($apiResponse['url'])->toArray();
 
         if ($this->getPokemonBySlug($slug) === null && sizeof($urlDetailed['stats']) > 0)
@@ -211,7 +213,7 @@ class PokemonManager extends AbstractManager
             // Set the Type
             foreach($urlDetailed['types'] as $typesDetailed)
             {
-                $type = $this->typeManager->getTypeByLanguageAndSlug(
+                $type = $this->typeManager->getTypeBySlug(
                     $this->textManager->generateSlugFromClassWithLanguage(
                         $language,
                         Type::class,

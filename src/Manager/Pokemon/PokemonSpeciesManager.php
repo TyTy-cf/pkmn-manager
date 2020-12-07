@@ -165,7 +165,7 @@ class PokemonSpeciesManager extends AbstractManager
             foreach($urlDetailed['egg_groups'] as $eggGroupName)
             {
                 $eggGroup = $this->eggGroupManager->getEggGroupBySlug(
-                    $language, 'egg-group-' . $eggGroupName['name']
+                    $language->getCode().'/egg-group-' . $eggGroupName['name']
                 );
                 if ($eggGroup !== null)
                 {
@@ -176,8 +176,7 @@ class PokemonSpeciesManager extends AbstractManager
             $this->entityManager->persist($pokemonSpecies);
 
             // Finally get the pokemon linked to this species and update it
-            $pokemon = $this->pokemonManager->getPokemonByLanguageAndSlug(
-                $language,
+            $pokemon = $this->pokemonManager->getPokemonBySlug(
                 $this->textManager->generateSlugFromClassWithLanguage(
                     $language,Pokemon::class, $urlDetailed['varieties'][0]['pokemon']['name']
                 )

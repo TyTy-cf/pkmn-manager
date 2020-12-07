@@ -3,6 +3,7 @@
 namespace App\Repository\Pokemon;
 
 use App\Entity\Pokemon\PokemonSpeciesVersion;
+use App\Repository\AbstractRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -12,7 +13,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method PokemonSpeciesVersion[]    findAll()
  * @method PokemonSpeciesVersion[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class PokemonSpeciesVersionRepository extends ServiceEntityRepository
+class PokemonSpeciesVersionRepository extends AbstractRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

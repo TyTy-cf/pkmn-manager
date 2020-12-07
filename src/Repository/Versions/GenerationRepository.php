@@ -6,6 +6,7 @@ namespace App\Repository\Versions;
 
 use App\Entity\Users\Language;
 use App\Entity\Versions\Generation;
+use App\Repository\AbstractRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -16,7 +17,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Generation[]    findAll()
  * @method Generation[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class GenerationRepository extends ServiceEntityRepository
+class GenerationRepository extends AbstractRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -25,28 +26,14 @@ class GenerationRepository extends ServiceEntityRepository
 
     /**
      * @param Language $language
-     * @param string $slug
-     * @return int|mixed|string|null
-     * @throws NonUniqueResultException
-     */
-    public function getGenerationByLanguageAndSlug(Language $language, string $slug): ?Generation
-    {
-        $qb = $this->createQueryBuilder('generation');
-        $qb->join('generation.language', 'language');
-        $qb->where('language = :lang');
-        $qb->andWhere('generation.slug = :slug');
-        $qb->setParameter('lang', $language);
-        $qb->setParameter('slug', $slug);
-        return $qb->getQuery()->getOneOrNullResult();
-    }
-
-    /**
-     * @param Language $language
      * @param string $number
      * @return int|mixed|string|null
      * @throws NonUniqueResultException
      */
-    public function getGenerationByLanguageAndGenerationNumber(Language $language, string $number): ?Generation
+    public function getGenerationByLanguageAndGenerationNumber
+    (
+        Language $language, string $number
+    ): ?Generation
     {
         $qb = $this->createQueryBuilder('generation');
         $qb->join('generation.language', 'language');

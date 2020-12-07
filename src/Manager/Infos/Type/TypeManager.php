@@ -36,7 +36,8 @@ class TypeManager extends AbstractManager
      * @param TextManager $textManager
      * @param TypeRepository $typeRepository
      */
-    public function __construct(
+    public function __construct
+    (
         EntityManagerInterface $entityManager,
         ApiManager $apiManager,
         TypeDamageRelationTypeManager $typeDamageFromTypeManager,
@@ -61,11 +62,10 @@ class TypeManager extends AbstractManager
     }
 
     /**
-     * @param Language $language
      * @param string $slug
      * @return Type|null
      */
-    public function getTypeByLanguageAndSlug(string $slug): ?Type
+    public function getTypeBySlug(string $slug): ?Type
     {
         return $this->typeRepository->findOneBySlug($slug);
     }
@@ -75,13 +75,14 @@ class TypeManager extends AbstractManager
      * @param Language $language
      * @param mixed $type
      * @throws TransportExceptionInterface
-     * @throws NonUniqueResultException
      */
     public function createFromApiResponse(Language $language, $type)
     {
-        $slug = $this->textManager->generateSlugFromClass(Type::class, $type['name']);
+        $slug = $this->textManager->generateSlugFromClassWithLanguage(
+            $language, Type::class, $type['name']
+        );
 
-        if ($this->getTypeByLanguageAndSlug($language, $slug) === null)
+        if ($this->getTypeBySlug($slug) === null)
         {
             //Fetch URL details type
             $urlType = $type['url'];

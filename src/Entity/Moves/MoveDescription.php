@@ -30,11 +30,11 @@ class MoveDescription
      */
     private int $id;
 
-    use TraitDescription;
-
     use TraitLanguage;
 
     use TraitSlug;
+
+    use TraitDescription;
 
     /**
      * @var Move $move
@@ -70,10 +70,12 @@ class MoveDescription
 
     /**
      * @param Move $move
+     * @return MoveDescription
      */
-    public function setMove(Move $move): void
+    public function setMove(Move $move): self
     {
         $this->move = $move;
+        return $this;
     }
 
     /**
@@ -86,10 +88,12 @@ class MoveDescription
 
     /**
      * @param VersionGroup $versionGroup
+     * @return MoveDescription
      */
-    public function setVersionGroup(VersionGroup $versionGroup): void
+    public function setVersionGroup(VersionGroup $versionGroup): self
     {
         $this->versionGroup = $versionGroup;
+        return $this;
     }
 
 }

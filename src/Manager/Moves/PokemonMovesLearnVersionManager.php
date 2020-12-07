@@ -104,9 +104,8 @@ class PokemonMovesLearnVersionManager extends AbstractManager
         {
             // Fetch the move from data
             $moveName = $detailedMove['move']['name'];
-            $move = $this->moveManager->getMoveByLanguageAndSlug(
-                $language,
-                'move-'.$moveName
+            $move = $this->moveManager->getMoveBySlug(
+                $language->getCode() . '/move-'.$moveName
             );
             foreach ($detailedMove['version_group_details'] as $detailGroup)
             {
@@ -125,13 +124,14 @@ class PokemonMovesLearnVersionManager extends AbstractManager
 
                     if (($pokemonMoveLearn = $this->getPokemonMovesLearnVersionBySlug($slug)) === null)
                     {
-                        $pokemonMoveLearn = new PokemonMovesLearnVersion();
-                        $pokemonMoveLearn->setMove($move);
-                        $pokemonMoveLearn->setPokemon($pokemon);
-                        $pokemonMoveLearn->setVersionGroup($versionGroup);
-                        $pokemonMoveLearn->setMoveLearnMethod($moveLearnMethod);
-                        $pokemonMoveLearn->setLevel($detailGroup['level_learned_at']);
-                        $pokemonMoveLearn->setSlug($slug);
+                        $pokemonMoveLearn = (new PokemonMovesLearnVersion())
+                            ->setMove($move)
+                            ->setPokemon($pokemon)
+                            ->setVersionGroup($versionGroup)
+                            ->setMoveLearnMethod($moveLearnMethod)
+                            ->setLevel($detailGroup['level_learned_at'])
+                            ->setSlug($slug)
+                        ;
                     } else {
                         if ($pokemonMoveLearn->getLevel() !== $detailGroup['level_learned_at'])
                         {
@@ -140,7 +140,6 @@ class PokemonMovesLearnVersionManager extends AbstractManager
                     }
                     $this->entityManager->persist($pokemonMoveLearn);
                     $this->entityManager->flush();
-
                 }
             }
         }
