@@ -5,7 +5,6 @@ namespace App\Repository\Versions;
 use App\Entity\Users\Language;
 use App\Entity\Versions\VersionGroup;
 use App\Repository\AbstractRepository;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -31,8 +30,7 @@ class VersionGroupRepository extends AbstractRepository
     public function getVersionGroupByLanguageAndName(Language $language, string $name)
     {
         $qb = $this->createQueryBuilder('version_group');
-        $qb->join('version_group.language', 'language');
-        $qb->where('language = :lang');
+        $qb->where('version_group.language = :lang');
         $qb->andWhere('version_group.name = :name');
         $qb->setParameter('lang', $language);
         $qb->setParameter('name', $name);

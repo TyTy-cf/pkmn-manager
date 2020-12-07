@@ -23,9 +23,9 @@ class MoveMachineManager extends AbstractManager
 {
 
     /**
-     * @var MoveRepository
+     * @var MoveManager $movesManager
      */
-    private MoveRepository $movesRepository;
+    private MoveManager $movesManager;
 
     /**
      * @var MoveMachineRepository
@@ -42,7 +42,7 @@ class MoveMachineManager extends AbstractManager
      * @param EntityManagerInterface $em
      * @param ApiManager $apiManager
      * @param TextManager $textManager
-     * @param MoveRepository $moveRepository
+     * @param MoveManager $movesManager
      * @param VersionGroupManager $versionGroupManager
      * @param MoveMachineRepository $moveMachineRepository
      */
@@ -51,61 +51,64 @@ class MoveMachineManager extends AbstractManager
         EntityManagerInterface $em,
         ApiManager $apiManager,
         TextManager $textManager,
-        MoveRepository $moveRepository,
+        MoveManager $movesManager,
         VersionGroupManager $versionGroupManager,
         MoveMachineRepository $moveMachineRepository
     )
     {
         $this->moveMachineRepository = $moveMachineRepository;
-        $this->movesRepository = $moveRepository;
+        $this->movesManager = $movesManager;
         $this->versionGroupManager = $versionGroupManager;
         parent::__construct($em, $apiManager, $textManager);
     }
 
     /**
-     * @param Language $language
      * @param string $slug
      * @return MoveMachine|null
-     * @throws NonUniqueResultException
      */
-    private function getMoveMachineByLanguageAndSlug(Language $language, string $slug): ?MoveMachine
+    private function getMoveMachineBySlug(string $slug): ?object
     {
-        return $this->moveMachineRepository->getMoveMachineByLanguageAndSlug($language, $slug);
+        return $this->moveMachineRepository->findOneBySlug($slug);
     }
 
     /**
      * @param Language $language
      * @param $apiResponse
-     * @throws NonUniqueResultException
      * @throws TransportExceptionInterface
      */
     public function createFromApiResponse(Language $language, $apiResponse)
     {
         $urlDetailed = $this->apiManager->getDetailed($apiResponse['url'])->toArray();
-        $slug = $this->textManager->generateSlugFromClass(MoveMachine::class, $urlDetailed['item']['name']);
-        if ($this->getMoveMachineByLanguageAndSlug($language, $slug) === null)
+        $slug = $this->textManager->generateSlugFromClassWithLanguage(
+            $language, MoveMachine::class, $urlDetailed['item']['name']
+        );
+        if ($this->getMoveMachineBySlug($slug) === null)
         {
-            $move = $this->movesRepository->getMoveByLanguageAndSlug(
-                $language,
-                $this->textManager->generateSlugFromClass(Move::class, $urlDetailed['move']['name'])
+            $move = $this->movesManager->getMoveBySlug(
+                $this->textManager->generateSlugFromClassWithLanguage(
+                    $language,Move::class, $urlDetailed['move']['name']
+                )
             );
             if ($move !== null)
             {
                 $groupVersion = $this->versionGroupManager->getVersionGroupBySlug(
-                    $language,
-                    $this->textManager->generateSlugFromClass(VersionGroup::class, $urlDetailed['version_group']['name'])
+                    $this->textManager->generateSlugFromClassWithLanguage(
+                        $language, VersionGroup::class, $urlDetailed['version_group']['name']
+                    )
                 );
                 $urlDetailedItem = $this->apiManager->getDetailed($urlDetailed['item']['url'])->toArray();
-                $moveMachine = new MoveMachine();
-                $moveMachine->setLanguage($language);
-                $moveMachine->setSlug($slug.'-'.$groupVersion->getSlug());
-                $moveMachine->setVersionGroup($groupVersion);
-                $moveMachine->setName($this->apiManager->getNameBasedOnLanguageFromArray(
-                    $language->getCode(),
-                    $urlDetailedItem
-                ));
-                $moveMachine->setMove($move);
-                $moveMachine->setCost($urlDetailedItem['cost']);
+
+                $moveMachine = (new MoveMachine())
+                    ->setLanguage($language)
+                    ->setSlug($slug.'-'.substr($groupVersion->getSlug(), 3))
+                    ->setVersionGroup($groupVersion)
+                    ->setName($this->apiManager->getNameBasedOnLanguageFromArray(
+                        $language->getCode(),
+                        $urlDetailedItem
+                    ))
+                    ->setMove($move)
+                    ->setCost($urlDetailedItem['cost'])
+                ;
                 if (isset($urlDetailedItem['sprites']['default']))
                 {
                     $moveMachine->setImageUrl($urlDetailedItem['sprites']['default']);
@@ -113,7 +116,8 @@ class MoveMachineManager extends AbstractManager
                 // Fetch the description
                 foreach($urlDetailedItem['flavor_text_entries'] as $flavorTextEntry)
                 {
-                    $slugVersion = $this->textManager->generateSlugFromClass(
+                    $slugVersion = $this->textManager->generateSlugFromClassWithLanguage(
+                        $language,
                         VersionGroup::class,
                         $flavorTextEntry['version_group']['name']
                     );

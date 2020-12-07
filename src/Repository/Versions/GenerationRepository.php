@@ -7,7 +7,6 @@ namespace App\Repository\Versions;
 use App\Entity\Users\Language;
 use App\Entity\Versions\Generation;
 use App\Repository\AbstractRepository;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 

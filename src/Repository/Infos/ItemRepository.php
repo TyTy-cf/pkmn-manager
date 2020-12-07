@@ -3,7 +3,7 @@
 namespace App\Repository\Infos;
 
 use App\Entity\Infos\Item;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Repository\AbstractRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -12,7 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Item[]    findAll()
  * @method Item[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ItemRepository extends ServiceEntityRepository
+class ItemRepository extends AbstractRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

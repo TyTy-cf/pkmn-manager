@@ -6,11 +6,12 @@ namespace App\Repository\Moves;
 
 use App\Entity\Moves\MoveMachine;
 use App\Entity\Users\Language;
+use App\Repository\AbstractRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
-class MoveMachineRepository extends ServiceEntityRepository
+class MoveMachineRepository extends AbstractRepository
 {
     /**
      * MoveMachineRepository constructor.

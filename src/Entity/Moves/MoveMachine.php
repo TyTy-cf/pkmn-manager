@@ -7,6 +7,7 @@ namespace App\Entity\Moves;
 use App\Entity\Traits\TraitDescription;
 use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
+use App\Entity\Traits\TraitNomenclature;
 use App\Entity\Traits\TraitSlug;
 use App\Entity\Versions\VersionGroup;
 use Doctrine\ORM\Mapping as ORM;
@@ -30,13 +31,9 @@ class MoveMachine
      */
     private int $id;
 
-    use TraitNames;
-
-    use TraitLanguage;
+    use TraitNomenclature;
 
     use TraitDescription;
-
-    use TraitSlug;
 
     /**
      * @var Move $move
@@ -84,26 +81,12 @@ class MoveMachine
 
     /**
      * @param Move $move
+     * @return MoveMachine
      */
-    public function setMove(Move $move): void
+    public function setMove(Move $move): MoveMachine
     {
         $this->move = $move;
-    }
-
-    /**
-     * @return VersionGroup
-     */
-    public function getVersionGroup(): VersionGroup
-    {
-        return $this->versionGroup;
-    }
-
-    /**
-     * @param VersionGroup $versionGroup
-     */
-    public function setVersionGroup(VersionGroup $versionGroup): void
-    {
-        $this->versionGroup = $versionGroup;
+        return $this;
     }
 
     /**
@@ -116,10 +99,12 @@ class MoveMachine
 
     /**
      * @param string|null $imageUrl
+     * @return MoveMachine
      */
-    public function setImageUrl(?string $imageUrl): void
+    public function setImageUrl(?string $imageUrl): MoveMachine
     {
         $this->imageUrl = $imageUrl;
+        return $this;
     }
 
     /**
@@ -132,10 +117,30 @@ class MoveMachine
 
     /**
      * @param int|null $cost
+     * @return MoveMachine
      */
-    public function setCost(?int $cost): void
+    public function setCost(?int $cost): MoveMachine
     {
         $this->cost = $cost;
+        return $this;
+    }
+
+    /**
+     * @return VersionGroup
+     */
+    public function getVersionGroup(): VersionGroup
+    {
+        return $this->versionGroup;
+    }
+
+    /**
+     * @param VersionGroup $versionGroup
+     * @return MoveMachine
+     */
+    public function setVersionGroup(VersionGroup $versionGroup): MoveMachine
+    {
+        $this->versionGroup = $versionGroup;
+        return $this;
     }
 
 }
