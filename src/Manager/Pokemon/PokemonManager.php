@@ -11,7 +11,7 @@ use App\Entity\Stats\StatsEffort;
 use App\Entity\Users\Language;
 use App\Manager\AbstractManager;
 use App\Manager\Api\ApiManager;
-use App\Manager\Infos\AbilitiyManager;
+use App\Manager\Infos\AbilityManager;
 use App\Manager\Infos\Type\TypeManager;
 use App\Manager\Moves\MoveManager;
 use App\Manager\TextManager;
@@ -26,9 +26,9 @@ class PokemonManager extends AbstractManager
 {
 
     /**
-     * @var AbilitiyManager
+     * @var AbilityManager
      */
-    private AbilitiyManager $abilitiesManager;
+    private AbilityManager $abilitiesManager;
 
     /**
      * @var TypeManager
@@ -59,7 +59,7 @@ class PokemonManager extends AbstractManager
      * PokemonManager constructor.
      *
      * @param EntityManagerInterface $entityManager
-     * @param AbilitiyManager $abilitiesManager
+     * @param AbilityManager $abilitiesManager
      * @param TypeManager $typeManager
      * @param MoveManager $movesManager
      * @param ApiManager $apiManager
@@ -71,7 +71,7 @@ class PokemonManager extends AbstractManager
     public function __construct
     (
         EntityManagerInterface $entityManager,
-        AbilitiyManager $abilitiesManager,
+        AbilityManager $abilitiesManager,
         TypeManager $typeManager,
         MoveManager $movesManager,
         ApiManager $apiManager,
@@ -107,6 +107,16 @@ class PokemonManager extends AbstractManager
     public function getPokemonBySlug(string $slug): ?Pokemon
     {
         return $this->pokemonRepository->findOneBySlug($slug);
+    }
+
+    /**
+     * @param string $slug
+     * @return Pokemon|null
+     * @throws NonUniqueResultException
+     */
+    public function getPokemonAndSpeciesBySlug(string $slug): ?Pokemon
+    {
+        return $this->pokemonRepository->getPokemonAndSpeciesBySlug($slug);
     }
 
     /**

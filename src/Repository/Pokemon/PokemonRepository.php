@@ -5,6 +5,7 @@ namespace App\Repository\Pokemon;
 use App\Entity\Pokemon\Pokemon;
 use App\Entity\Users\Language;
 use App\Repository\AbstractRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -41,6 +42,23 @@ class PokemonRepository extends AbstractRepository
             ->setFirstResult($offset)
             ->getQuery()
             ->getResult()
+        ;
+    }
+
+    /**
+     * @param string $slug
+     * @return int|mixed|string|null
+     * @throws NonUniqueResultException
+     */
+    public function getPokemonAndSpeciesBySlug(string $slug)
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p', 'ps')
+            ->leftJoin('p.pokemonSpecies', 'ps')
+            ->andWhere('p.slug = :slug')
+            ->setParameter('slug', $slug)
+            ->getQuery()
+            ->getOneOrNullResult()
         ;
     }
 

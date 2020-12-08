@@ -1,3 +1,11 @@
+.size-10 {
+  max-width: 10% !important;
+  max-height: 10% !important; }
+
+.size-15 {
+  max-width: 15% !important;
+  max-height: 15% !important; }
+
 .size-20 {
   max-width: 20% !important;
   max-height: 20% !important; }

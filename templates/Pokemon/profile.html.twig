@@ -1,25 +1,48 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Catch 'em all{% endblock %}
-
 {% block body %}
     <h1 class="text-center mb-1 mt-3">{{ pokemon.name }}</h1>
     <hr>
-    <div class="text-center">
-        <div class="col-md-6 d-flex">
-            <img src="{{ pokemon.urlSpriteImg }}" alt="Image de {{ pokemon.name|capitalize }}">
-
-            <div class="col-md-6">
-                <h2 class="text-center">Capacité(s)</h2>
-                {% for ability in pokemon.abilities %}
-                    <strong>{{ ability.name|capitalize }}</strong>: {{ ability.description }}<br>
-                {% endfor %}
-            </div>
+    <div class="grid-row">
+        <div class="col-md-6 d-flex text-center">
+            <img class="size-75" src="{{ pokemon.urlSpriteImg }}" alt="Image de {{ pokemon.name|capitalize }}">
         </div>
         <div class="col-md-6">
-            {% for type in pokemon.types %}
-                <img class="size-50" src="{{ type.img }}" alt="Type {{ type.name|lower }}"></li>
-            {% endfor %}
+            <table class="table table-striped">
+                <tbody>
+                    <tr>
+                        <th>Type(s)</th>
+                        <td>
+                            {% for type in pokemon.types %}
+                                <img class="size-20" src="{{ type.img }}" alt="Type {{ type.name|lower }}"></li>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% if pokemon.pokemonSpecies is defined %}
+                        <tr>
+                            <th>Espèce</th>
+                            <td>{{ pokemon.pokemonSpecies.genera }}</td>
+                        </tr>
+                    {% endif %}
+                    <tr>
+                        <th>Taille</th>
+                        <td>{{ pokemon.height }} m</td>
+                    </tr>
+                    <tr>
+                        <th>Poids</th>
+                        <td>{{ pokemon.weight }} kg</td>
+                    </tr>
+                    <tr>
+                        <th>Capacités</th>
+                        <td>
+{#                            {{ ability.description }}#}
+                            {% for ability in pokemon.abilities %}
+                                <a href="{{ path('ability_detail', {slug: ability.slug}) }}">{{ ability.name|capitalize }}</a><br>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
     <hr>

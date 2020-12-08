@@ -141,16 +141,16 @@ class Pokemon
      * @param StatsEffort $statsEffort
      * @return Pokemon
      */
-    public function setStatsEffort(StatsEffort $statsEffort): Pokemon
+    public function setStatsEffort(StatsEffort $statsEffort): self
     {
         $this->statsEffort = $statsEffort;
         return $this;
     }
 
     /**
-     * @return PokemonSpecies
+     * @return PokemonSpecies|null
      */
-    public function getPokemonSpecies(): PokemonSpecies
+    public function getPokemonSpecies(): ?PokemonSpecies
     {
         return $this->pokemonSpecies;
     }
@@ -159,7 +159,7 @@ class Pokemon
      * @param PokemonSpecies $pokemonSpecies
      * @return Pokemon
      */
-    public function setPokemonSpecies(PokemonSpecies $pokemonSpecies): Pokemon
+    public function setPokemonSpecies(PokemonSpecies $pokemonSpecies): self
     {
         $this->pokemonSpecies = $pokemonSpecies;
         return $this;
@@ -177,7 +177,7 @@ class Pokemon
      * @param string|null $urlIcon
      * @return Pokemon
      */
-    public function setUrlIcon(?string $urlIcon): Pokemon
+    public function setUrlIcon(?string $urlIcon): self
     {
         $this->urlIcon = $urlIcon;
         return $this;
@@ -195,7 +195,7 @@ class Pokemon
      * @param string|null $urlSpriteImg
      * @return Pokemon
      */
-    public function setUrlSpriteImg(?string $urlSpriteImg): Pokemon
+    public function setUrlSpriteImg(?string $urlSpriteImg): self
     {
         $this->urlSpriteImg = $urlSpriteImg;
         return $this;
@@ -213,7 +213,7 @@ class Pokemon
      * @param int|null $weight
      * @return Pokemon
      */
-    public function setWeight(?int $weight): Pokemon
+    public function setWeight(?int $weight): self
     {
         $this->weight = $weight;
         return $this;
@@ -231,7 +231,7 @@ class Pokemon
      * @param int|null $height
      * @return Pokemon
      */
-    public function setHeight(?int $height): Pokemon
+    public function setHeight(?int $height): self
     {
         $this->height = $height;
         return $this;

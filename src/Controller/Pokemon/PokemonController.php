@@ -7,6 +7,7 @@ use App\Manager\Api\ApiManager;
 use App\Manager\Pokemon\PokemonManager;
 use App\Form\SearchPokemonType;
 use App\Manager\Users\LanguageManager;
+use Doctrine\ORM\NonUniqueResultException;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -131,11 +132,12 @@ class PokemonController extends AbstractController
      * @param Request $request
      * @return Response
      *
+     * @throws NonUniqueResultException
      */
     function displayProfile(Request $request): Response
     {
         return $this->render('Pokemon/profile.html.twig', [
-            'pokemon' => $pokemon = $this->pokemonManager->getPokemonBySlug($request->get('slug')),
+            'pokemon' => $this->pokemonManager->getPokemonAndSpeciesBySlug($request->get('slug')),
         ]);
     }
 }

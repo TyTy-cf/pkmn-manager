@@ -13,7 +13,7 @@ use App\Repository\Infos\AbilityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-class AbilitiyManager extends AbstractManager
+class AbilityManager extends AbstractManager
 {
     /**
      * @var AbilityRepository

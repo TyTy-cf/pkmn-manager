@@ -4,6 +4,8 @@ namespace App\Entity\Pokedex;
 
 use App\Entity\Pokemon\PokemonSpecies;
 use App\Repository\Pokedex\PokedexSpeciesRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 
@@ -21,7 +23,7 @@ class PokedexSpecies
 
     /**
      * @var PokemonSpecies
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pokemon\PokemonSpecies")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Pokemon\PokemonSpecies", inversedBy="pokemonSpecies")
      * @JoinColumn(name="pokemon_species_id")
      */
     private PokemonSpecies $pokemonSpecies;
