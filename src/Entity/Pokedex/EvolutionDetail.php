@@ -3,14 +3,13 @@
 namespace App\Entity\Pokedex;
 
 use App\Entity\Infos\Gender;
-use App\Entity\Infos\Item;
 use App\Entity\Infos\Type\Type;
+use App\Entity\Items\Item;
 use App\Entity\Moves\Move;
 use App\Entity\Pokemon\PokemonSpecies;
 use App\Repository\Pokedex\EvolutionDetailRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
-use phpDocumentor\Reflection\Types\Boolean;
 
 /**
  * @ORM\Entity(repositoryClass=EvolutionDetailRepository::class)
@@ -34,7 +33,7 @@ class EvolutionDetail
     /**
      * Required held item to evolve
      * @var Item|null
-     * @ORM\ManyToOne(targetEntity="App\Entity\Infos\Item")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Items\Item")
      * @JoinColumn(name="held_item_id", nullable=true)
      */
     private ?Item $heldItem;
@@ -42,7 +41,7 @@ class EvolutionDetail
     /**
      * Required used item to evolve
      * @var Item|null
-     * @ORM\ManyToOne(targetEntity="App\Entity\Infos\Item")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Items\Item")
      * @JoinColumn(name="used_item_id", nullable=true)
      */
     private ?Item $usedItem;

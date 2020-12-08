@@ -199,6 +199,15 @@ class ApiManager
     }
 
     /**
+     * @return mixed
+     * @throws TransportExceptionInterface
+     */
+    public function getAllItemsJson()
+    {
+        return $this->apiConnect('https://pokeapi.co/api/v2/item?offset=0&limit=954');
+    }
+
+    /**
      * @param $lang
      * @param $url
      * @return mixed

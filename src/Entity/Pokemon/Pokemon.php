@@ -238,6 +238,15 @@ class Pokemon
     }
 
     /**
+     * Return the sum of stats
+     * @return int
+     */
+    public function getTotalStats()
+    {
+        return ($this->hp + $this->atk + $this->def + $this->spa + $this->spd + $this->spe);
+    }
+
+    /**
      * @param Ability|null $abilities
      * @return Pokemon
      */

@@ -29,6 +29,11 @@ class VersionManager extends AbstractManager
     private VersionRepository $versionRepository;
 
     /**
+     * @var array $arrayVersions
+     */
+    private static array $arrayVersions;
+
+    /**
      * PokemonManager constructor.
      *
      * @param EntityManagerInterface $entityManager
@@ -48,7 +53,25 @@ class VersionManager extends AbstractManager
     {
         $this->versionGroupRepository = $versionGroupRepository;
         $this->versionRepository = $versionRepository;
+        self::$arrayVersions = array();
         parent::__construct($entityManager, $apiManager, $textManager);
+    }
+
+    /**
+     * @param Language $language
+     * @return Version[]|array
+     */
+    public function getArrayVersions(Language $language)
+    {
+        if (self::$arrayVersions == null)
+        {
+            $tmpArrayVersions = $this->getAllVersions($language);
+            foreach($tmpArrayVersions as $version)
+            {
+                self::$arrayVersions[$version->getSlug()] = $version;
+            }
+        }
+        return self::$arrayVersions;
     }
 
     /**

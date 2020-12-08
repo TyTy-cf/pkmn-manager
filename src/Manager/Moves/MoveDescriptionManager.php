@@ -64,7 +64,6 @@ class MoveDescriptionManager extends AbstractManager
      * @param Language $lang
      * @param Move $move
      * @param array $apiResponse
-     * @throws NonUniqueResultException
      */
     public function createMoveDescription(Language $lang, Move $move, array $apiResponse)
     {
@@ -91,7 +90,9 @@ class MoveDescriptionManager extends AbstractManager
                         ->setSlug($slug)
                         ->setLanguage($lang)
                         ->setVersionGroup($versionGroup)
-                        ->setDescription($this->textManager->removeReturnLineFromText($description))
+                        ->setDescription($this->textManager->removeReturnLineFromText(
+                            $description
+                        ))
                     ;
                     $this->entityManager->persist($moveDescription);
                 }

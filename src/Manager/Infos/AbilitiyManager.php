@@ -64,10 +64,12 @@ class AbilitiyManager extends AbstractManager
             //Check if the data exist in databases
             $slug = $this->textManager->generateSlugFromClassWithLanguage($language, Ability::class, $apiResponse['name']);
 
-            if (($newAbility = $this->getAbilitiesBySlug($slug)) === null)
+            if ($this->getAbilitiesBySlug($slug) === null)
             {
                 // Fetch name & description according the language
-                $abilityNameLang = $this->apiManager->getNameBasedOnLanguageFromArray($language->getCode(), $urlDetailed);
+                $abilityNameLang = $this->apiManager->getNameBasedOnLanguageFromArray(
+                    $language->getCode(), $urlDetailed
+                );
 
                 if ($abilityNameLang !== null)
                 {
@@ -75,11 +77,12 @@ class AbilitiyManager extends AbstractManager
                         $this->apiManager->getFlavorTextBasedOnLanguageFromArray($language->getCode(), $urlDetailed)
                     );
 
-                    $newAbility = new Ability();
-                    $newAbility->setName($abilityNameLang);
-                    $newAbility->setDescription($abilityDescription);
-                    $newAbility->setSlug($slug);
-                    $newAbility->setLanguage($language);
+                    $newAbility = (new Ability())
+                        ->setName($abilityNameLang)
+                        ->setDescription($abilityDescription)
+                        ->setSlug($slug)
+                        ->setLanguage($language)
+                    ;
                     $this->entityManager->persist($newAbility);
                     $this->entityManager->flush();
                 }

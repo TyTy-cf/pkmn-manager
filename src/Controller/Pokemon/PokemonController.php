@@ -102,9 +102,9 @@ class PokemonController extends AbstractController
 
         //Affichage de la liste
         $offset = $request->get('offset');
-        $limit = 42;
+        $limit = 150;
         //Récupération de la pagination
-        if ($offset < 42) {
+        if ($offset < 150) {
             $offset = 0;
         }
 

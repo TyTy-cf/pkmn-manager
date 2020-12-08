@@ -46,11 +46,6 @@ class PokemonSpeciesManager extends AbstractManager
     private VersionManager $versionManager;
 
     /**
-     * @var array $arrayVersions
-     */
-    private static array $arrayVersions;
-
-    /**
      * PokemonManager constructor.
      *
      * @param EntityManagerInterface $entityManager
@@ -78,7 +73,6 @@ class PokemonSpeciesManager extends AbstractManager
         $this->pokemonManager = $pokemonManager;
         $this->versionManager = $versionManager;
         $this->pokemonSpeciesVersionManager = $pokemonSpeciesVersionManager;
-        self::$arrayVersions = array();
         parent::__construct($entityManager, $apiManager, $textManager);
     }
 
@@ -92,23 +86,6 @@ class PokemonSpeciesManager extends AbstractManager
     }
 
     /**
-     * @param Language $language
-     * @return Version[]|array
-     */
-    public function getArrayVersions(Language $language)
-    {
-        if (self::$arrayVersions == null)
-        {
-            $tmpArrayVersions = $this->versionManager->getAllVersions($language);
-            foreach($tmpArrayVersions as $version)
-            {
-                self::$arrayVersions[$version->getSlug()] = $version;
-            }
-        }
-        return self::$arrayVersions;
-    }
-
-    /**
      * Save a new pokemon from API to the database
      * Create his abilities and type(s) if necessary
      *
@@ -116,7 +93,6 @@ class PokemonSpeciesManager extends AbstractManager
      * @param $apiResponse
      * @return void
      * @throws TransportExceptionInterface
-     * @throws NonUniqueResultException
      */
     public function createFromApiResponse(Language $language, $apiResponse)
     {
@@ -189,7 +165,7 @@ class PokemonSpeciesManager extends AbstractManager
                 $language,
                 $urlDetailed['flavor_text_entries'],
                 $pokemonSpecies,
-                $this->getArrayVersions($language)
+                $this->versionManager->getArrayVersions($language)
             );
 
             $this->entityManager->flush();

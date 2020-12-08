@@ -36,11 +36,6 @@ class PokedexManager extends AbstractManager
     private PokemonSpeciesManager $pokemonSpeciesManager;
 
     /**
-     * @var array $arrayVersionGroup
-     */
-    private static array $arrayVersionGroup;
-
-    /**
      * PokemonManager constructor.
      *
      * @param EntityManagerInterface $entityManager
@@ -63,7 +58,6 @@ class PokedexManager extends AbstractManager
         $this->versionGroupManager = $versionGroup;
         $this->pokedexRepository = $pokedexRepository;
         $this->pokemonSpeciesManager = $pokemonSpeciesManager;
-        self::$arrayVersionGroup = array();
         parent::__construct($entityManager, $apiManager, $textManager);
     }
 
@@ -74,23 +68,6 @@ class PokedexManager extends AbstractManager
     private function getPokedexBySlug(string $slug)
     {
         return $this->pokedexRepository->findOneBySlug($slug);
-    }
-
-    /**
-     * @param Language $language
-     * @return Version[]|array
-     */
-    public function getArrayVersionsGroup(Language $language)
-    {
-        if (empty(self::$arrayVersionGroup))
-        {
-            $tmpArrayVersions = $this->versionGroupManager->getAllVersionGroupByLanguage($language);
-            foreach($tmpArrayVersions as $version)
-            {
-                self::$arrayVersionGroup[$version->getSlug()] = $version;
-            }
-        }
-        return self::$arrayVersionGroup;
     }
 
     /**
@@ -132,7 +109,9 @@ class PokedexManager extends AbstractManager
             {
                 foreach($urlPokedexDetailed['version_groups'] as $versionGroupName)
                 {
-                    $versionGroup = $this->getArrayVersionsGroup($language)[$codeLang.'/version-group-'.$versionGroupName['name']];
+                    $versionGroup = $this->versionGroupManager->getArrayVersionGroup(
+                        $language
+                    )[$codeLang.'/version-group-'.$versionGroupName['name']];
                     $pokedex->addVersionGroup($versionGroup);
                 }
             }
