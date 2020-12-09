@@ -1,7 +1,17 @@
-.grid-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  margin: 0 -1rem; }
+.barchart-bar {
+  height: .75rem;
+  border-radius: 4px;
+  background-color: #ff5145;
+  border: 1px solid rgba(0, 0, 0, 0.15); }
+
+.cell-barchart {
+  width: 100%;
+  min-width: 255px; }
+
+.profile-table th {
+  color: #737373;
+  font-size: .875rem;
+  font-weight: normal;
+  text-align: right; }
 
 /*# sourceMappingURL=profile.css.map */

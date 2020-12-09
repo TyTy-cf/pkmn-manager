@@ -10,19 +10,21 @@
     </thead>
     <tbody>
     {% for pokemon in ability.pokemons %}
-        <tr>
-            <td>
-                <img class="size-150" src="{{ pokemon.urlIcon }}" alt="Pokemon {{ pokemon.name }}">
-            </td>
-            <td>
-                <a href="{{ path('profile_pokemon', {slug: pokemon.slug }) }}">{{ pokemon.name }}</a>
-            </td>
-            <td>
-                {% for type in pokemon.types %}
-                    <img class="size-20" src="{{ type.img }}" alt="Type {{ type.name|lower }}">
-                {% endfor %}
-            </td>
-        </tr>
+        {% if pokemon.urlIcon is not null %}
+            <tr>
+                <td>
+                    <img class="size-150" src="{{ pokemon.urlIcon }}" alt="Pokemon {{ pokemon.name }}">
+                </td>
+                <td>
+                    <a href="{{ path('profile_pokemon', {slug: pokemon.slug }) }}">{{ pokemon.name }}</a>
+                </td>
+                <td>
+                    {% for type in pokemon.types %}
+                        <img class="size-20" src="{{ type.img }}" alt="Type {{ type.name|lower }}">
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endif %}
     {% endfor %}
     </tbody>
 </table>

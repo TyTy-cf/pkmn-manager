@@ -2,7 +2,7 @@
 {% block title %}Catch 'em all{% endblock %}
 
 {% block body %}
-    <div class="container-fluid col-8 mb-2">
+    <div class="container col-8 mb-2">
         {{ include('search.html.twig') }}
         <div class="row justify-content-center">
             {% if offset > 0 %}
@@ -41,7 +41,7 @@
                                 <img class="size-20" src="{{ type.img }}" alt="Type {{ type.name }}"><br>
                             {% endfor %}
                         </td>
-                        <td>{{ pokemon.totalStats }}</td>
+                        <td><strong>{{ pokemon.totalStats }}</strong></td>
                         <td>{{ pokemon.hp }}</td>
                         <td>{{ pokemon.atk }}</td>
                         <td>{{ pokemon.def }}</td>

@@ -50,11 +50,13 @@ class PokemonRepository extends AbstractRepository
      * @return int|mixed|string|null
      * @throws NonUniqueResultException
      */
-    public function getPokemonAndSpeciesBySlug(string $slug)
+    public function getPokemonPofileBySlug(string $slug)
     {
         return $this->createQueryBuilder('p')
-            ->select('p', 'ps')
+            ->select('p', 'ps', 'eg', 'se')
             ->leftJoin('p.pokemonSpecies', 'ps')
+            ->leftJoin('ps.eggGroup', 'eg')
+            ->leftJoin('p.statsEffort', 'se')
             ->andWhere('p.slug = :slug')
             ->setParameter('slug', $slug)
             ->getQuery()

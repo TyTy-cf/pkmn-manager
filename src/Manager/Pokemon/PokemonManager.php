@@ -114,9 +114,9 @@ class PokemonManager extends AbstractManager
      * @return Pokemon|null
      * @throws NonUniqueResultException
      */
-    public function getPokemonAndSpeciesBySlug(string $slug): ?Pokemon
+    public function getPokemonPofileBySlug(string $slug): ?Pokemon
     {
-        return $this->pokemonRepository->getPokemonAndSpeciesBySlug($slug);
+        return $this->pokemonRepository->getPokemonPofileBySlug($slug);
     }
 
     /**
@@ -178,7 +178,7 @@ class PokemonManager extends AbstractManager
         );
         $urlDetailed = $this->apiManager->getDetailed($apiResponse['url'])->toArray();
 
-        if ($this->getPokemonBySlug($slug) === null && sizeof($urlDetailed['stats']) > 0)
+        if (($pokemon = $this->getPokemonBySlug($slug)) === null && sizeof($urlDetailed['stats']) > 0)
         {
             $pokemonName = $this->apiManager->getNameBasedOnLanguage(
                 $language->getCode(),
@@ -256,8 +256,8 @@ class PokemonManager extends AbstractManager
             }
 
             $this->entityManager->persist($pokemon);
-            $this->entityManager->flush();
         }
+        $this->entityManager->flush();
     }
 
     /**

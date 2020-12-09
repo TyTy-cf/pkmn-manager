@@ -113,6 +113,12 @@ class Pokemon
     private ?int $height;
 
     /**
+     * @var int|null
+     * @ORM\Column(name="base_experience", type="integer", length=12, nullable=true)
+     */
+    private ?int $baseExperience;
+
+    /**
      * Pokemon constructor.
      */
     public function __construct() {
@@ -234,6 +240,24 @@ class Pokemon
     public function setHeight(?int $height): self
     {
         $this->height = $height;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getBaseExperience(): ?int
+    {
+        return $this->baseExperience;
+    }
+
+    /**
+     * @param int|null $baseExperience
+     * @return Pokemon
+     */
+    public function setBaseExperience(?int $baseExperience): Pokemon
+    {
+        $this->baseExperience = $baseExperience;
         return $this;
     }
 

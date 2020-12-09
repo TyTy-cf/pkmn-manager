@@ -101,7 +101,7 @@ class PokemonSpeciesManager extends AbstractManager
             $language, PokemonSpecies::class, $apiResponse['name']
         );
 
-        if ($this->getPokemonSpeciesBySlug($slug) === null)
+        if (($pokemonSpecies = $this->getPokemonSpeciesBySlug($slug)) === null)
         {
             $codeLang = $language->getCode();
             $pokemonSpeciesName = $this->apiManager->getNameBasedOnLanguageFromArray(
@@ -125,7 +125,7 @@ class PokemonSpeciesManager extends AbstractManager
                 ->setHasGenderDifferences($urlDetailed['has_gender_differences'])
             ;
 
-            if (sizeof($urlDetailed['evolves_from_species']) > 0)
+            if (count($urlDetailed['evolves_from_species']) > 0)
             {
                 // Set le evolve from species
                 $pokemonSpecies->setEvolvesFromSpecies(
@@ -167,8 +167,20 @@ class PokemonSpeciesManager extends AbstractManager
                 $pokemonSpecies,
                 $this->versionManager->getArrayVersions($language)
             );
-
-            $this->entityManager->flush();
+        } else {
+            if (!empty($urlDetailed['hatch_counter']))
+            {
+//                $pokemonSpecies->setHatchCounter($urlDetailed['hatch_counter']);
+                // Set le evolve from species
+//                $pokemonSpecies->setEvolvesFromSpecies(
+//                    $this->getPokemonSpeciesBySlug(
+//                        $this->textManager->generateSlugFromClassWithLanguage(
+//                            $language, PokemonSpecies::class, $urlDetailed['evolves_from_species']['name']
+//                        )
+//                    )
+//                );
+            }
         }
+        $this->entityManager->flush();
     }
 }

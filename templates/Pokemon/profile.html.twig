@@ -1,83 +1,147 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1 class="text-center mb-1 mt-3">{{ pokemon.name }}</h1>
-    <hr>
-    <div class="grid-row">
-        <div class="col-md-6 d-flex text-center">
-            <img class="size-75" src="{{ pokemon.urlSpriteImg }}" alt="Image de {{ pokemon.name|capitalize }}">
-        </div>
-        <div class="col-md-6">
-            <table class="table table-striped">
-                <tbody>
-                    <tr>
-                        <th>Type(s)</th>
-                        <td>
-                            {% for type in pokemon.types %}
-                                <img class="size-20" src="{{ type.img }}" alt="Type {{ type.name|lower }}"></li>
-                            {% endfor %}
-                        </td>
-                    </tr>
-                    {% if pokemon.pokemonSpecies is defined %}
-                        <tr>
-                            <th>Espèce</th>
-                            <td>{{ pokemon.pokemonSpecies.genera }}</td>
-                        </tr>
-                    {% endif %}
-                    <tr>
-                        <th>Taille</th>
-                        <td>{{ pokemon.height }} m</td>
-                    </tr>
-                    <tr>
-                        <th>Poids</th>
-                        <td>{{ pokemon.weight }} kg</td>
-                    </tr>
-                    <tr>
-                        <th>Capacités</th>
-                        <td>
-{#                            {{ ability.description }}#}
-                            {% for ability in pokemon.abilities %}
-                                <a href="{{ path('ability_detail', {slug: ability.slug}) }}">{{ ability.name|capitalize }}</a><br>
-                            {% endfor %}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <hr>
+
     <div class="container">
-        <div class="row pt-2">
-            <hr>
-            <div class="col-md-12 mt-3">
-                <h2 class="text-center mb-3">Stats de base</h2>
-                <table class="table text-center">
-                    <thead>
-                    <tr>
-                        <th scope="col">HP</th>
-                        <th scope="col">ATK</th>
-                        <th scope="col">DEF</th>
-                        <th scope="col">SPA</th>
-                        <th scope="col">SPD</th>
-                        <th scope="col">SPE</th>
-                    </tr>
-                    </thead>
+        <h1 class="text-center mb-1 mt-3">{{ pokemon.name }}</h1>
+        <hr>
+        <div class="grid-row">
+            <div class="col-md-6 d-flex text-center">
+                <img class="size-100" src="{{ pokemon.urlSpriteImg }}" alt="Image de {{ pokemon.name|capitalize }}">
+            </div>
+            <div class="col-md-6">
+                <table class="table table-striped profile-table w-100">
                     <tbody>
-                    <tr>
-                        <td>{{ pokemon.hp }}</td>
-                        <td>{{ pokemon.atk }}</td>
-                        <td>{{ pokemon.def }}</td>
-                        <td>{{ pokemon.spa }}</td>
-                        <td>{{ pokemon.spd }}</td>
-                        <td>{{ pokemon.spe }}</td>
-                    </tr>
+                        <tr>
+                            <th>Type(s)</th>
+                            <td>
+                                {% for type in pokemon.types %}
+                                    <img class="size-20" src="{{ type.img }}" alt="Type {{ type.name|lower }}"></li>
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        {% if pokemon.pokemonSpecies is defined %}
+                            <tr>
+                                <th>Espèce</th>
+                                <td>{{ pokemon.pokemonSpecies.genera }}</td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <th>Taille</th>
+                            <td>{{ (pokemon.height/10) }} m</td>
+                        </tr>
+                        <tr>
+                            <th>Poids</th>
+                            <td>{{ (pokemon.weight/10) }} kg</td>
+                        </tr>
+                        <tr>
+                            <th>Capacités</th>
+                            <td>
+                                {% for ability in pokemon.abilities %}
+                                    <a href="{{ path('ability_detail', {slug: ability.slug}) }}">{{ ability.name|capitalize }}</a><br>
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Taux de capture</th>
+                            <td>{{ pokemon.pokemonSpecies.captureRate }}</td>
+                        </tr>
+                        <tr>
+                            <th>Bonheur initial</th>
+                            <td>{{ pokemon.pokemonSpecies.baseHappiness }}</td>
+                        </tr>
+                        <tr>
+                            <th>Expérience de base</th>
+                            <td>{{ pokemon.baseExperience }}</td>
+                        </tr>
+                        <tr>
+                            <th>Groupe d'oeufs</th>
+                            <td>
+                                {% for eggGroup in pokemon.pokemonSpecies.eggGroup %}
+                                    {{ eggGroup.name }}
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Eclosion</th>
+                            <td>
+                                ~{{ (pokemon.pokemonSpecies.hatchCounter * 257) }} pas
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
         <hr>
-        <div class="row justify-content-center">
-            <a href="{{ path('listing', { offset: 0 }) }}" class="btn btn-danger">Retour</a>
+        <div class="container">
+            <div class="row pt-2">
+                <hr>
+                <div class="col-md-12 mt-3">
+                    <h2>Stats</h2>
+                    <table class="table table-striped profile-table text-center">
+                        <tbody>
+                            <tr>
+                                <th></th>
+                                <td><strong>EV</strong></td>
+                                <td><strong>Base</strong></td>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <th>HP</th>
+                                <td>{{ pokemon.statsEffort.hp }}</td>
+                                <td>{{ pokemon.hp }}</td>
+                                <td class="cell-barchart">
+                                    <div class="barchart-bar" style="width: {{ (pokemon.hp/255) * 100 }}%"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>ATK</th>
+                                <td>{{ pokemon.statsEffort.atk }}</td>
+                                <td>{{ pokemon.atk }}</td>
+                                <td class="cell-barchart">
+                                    <div class="barchart-bar" style="width: {{ (pokemon.atk/255) * 100 }}%"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>DEF</th>
+                                <td>{{ pokemon.statsEffort.def }}</td>
+                                <td>{{ pokemon.def }}</td>
+                                <td class="cell-barchart">
+                                    <div class="barchart-bar" style="width: {{ (pokemon.def/255) * 100 }}%"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>SPA</th>
+                                <td>{{ pokemon.statsEffort.spa }}</td>
+                                <td>{{ pokemon.spa }}</td>
+                                <td class="cell-barchart">
+                                    <div class="barchart-bar" style="width: {{ (pokemon.spa/255) * 100 }}%"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>SPD</th>
+                                <td>{{ pokemon.statsEffort.spd }}</td>
+                                <td>{{ pokemon.spd }}</td>
+                                <td class="cell-barchart">
+                                    <div class="barchart-bar" style="width: {{ (pokemon.spd/255) * 100 }}%"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>SPE</th>
+                                <td>{{ pokemon.statsEffort.spe }}</td>
+                                <td>{{ pokemon.spe }}</td>
+                                <td class="cell-barchart">
+                                    <div class="barchart-bar" style="width: {{ (pokemon.spe/255) * 100 }}%"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Total</th>
+                                <td><strong>{{ pokemon.totalStats }}</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
