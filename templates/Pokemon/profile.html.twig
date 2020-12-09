@@ -13,7 +13,7 @@
                 <table class="table table-striped profile-table w-100">
                     <tbody>
                         <tr>
-                            <th>Type(s)</th>
+                            <th>{{ 'pokemon.type'|trans }}</th>
                             <td>
                                 {% for type in pokemon.types %}
                                     <img class="size-20" src="{{ type.img }}" alt="Type {{ type.name|lower }}"></li>
@@ -22,20 +22,20 @@
                         </tr>
                         {% if pokemon.pokemonSpecies is defined %}
                             <tr>
-                                <th>Espèce</th>
+                                <th>{{ 'pokemon.species'|trans }}</th>
                                 <td>{{ pokemon.pokemonSpecies.genera }}</td>
                             </tr>
                         {% endif %}
                         <tr>
-                            <th>Taille</th>
+                            <th>{{ 'pokemon.height'|trans }}</th>
                             <td>{{ (pokemon.height/10) }} m</td>
                         </tr>
                         <tr>
-                            <th>Poids</th>
+                            <th>{{ 'pokemon.weight'|trans }}</th>
                             <td>{{ (pokemon.weight/10) }} kg</td>
                         </tr>
                         <tr>
-                            <th>Capacités</th>
+                            <th>{{ 'pokemon.abilities'|trans }}</th>
                             <td>
                                 {% for ability in pokemon.abilities %}
                                     <a href="{{ path('ability_detail', {slug: ability.slug}) }}">{{ ability.name|capitalize }}</a><br>
@@ -43,19 +43,19 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>Taux de capture</th>
+                            <th>{{ 'pokemon.capture_rate'|trans }}</th>
                             <td>{{ pokemon.pokemonSpecies.captureRate }}</td>
                         </tr>
                         <tr>
-                            <th>Bonheur initial</th>
+                            <th>{{ 'pokemon.base_happiness'|trans }}</th>
                             <td>{{ pokemon.pokemonSpecies.baseHappiness }}</td>
                         </tr>
                         <tr>
-                            <th>Expérience de base</th>
+                            <th>{{ 'pokemon.base_experience'|trans }}</th>
                             <td>{{ pokemon.baseExperience }}</td>
                         </tr>
                         <tr>
-                            <th>Groupe d'oeufs</th>
+                            <th>{{ 'pokemon.egg_group'|trans }}</th>
                             <td>
                                 {% for eggGroup in pokemon.pokemonSpecies.eggGroup %}
                                     {{ eggGroup.name }}
@@ -63,7 +63,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>Eclosion</th>
+                            <th>{{ 'pokemon.hatch_counter'|trans }}</th>
                             <td>
                                 ~{{ (pokemon.pokemonSpecies.hatchCounter * 257) }} pas
                             </td>
@@ -77,17 +77,17 @@
             <div class="row pt-2">
                 <hr>
                 <div class="col-md-12 mt-3">
-                    <h2>Stats</h2>
+                    <h2>{{ 'pokemon.stats.title'|trans }}</h2>
                     <table class="table table-striped profile-table text-center">
                         <tbody>
                             <tr>
                                 <th></th>
-                                <td><strong>EV</strong></td>
-                                <td><strong>Base</strong></td>
+                                <td><strong>{{ 'pokemon.stats.ev'|trans }}</strong></td>
+                                <td><strong>{{ 'pokemon.stats.base'|trans }}</strong></td>
                                 <th></th>
                             </tr>
                             <tr>
-                                <th>HP</th>
+                                <th>{{ 'pokemon.stats.hp'|trans }}</th>
                                 <td>{{ pokemon.statsEffort.hp }}</td>
                                 <td>{{ pokemon.hp }}</td>
                                 <td class="cell-barchart">
@@ -95,7 +95,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>ATK</th>
+                                <th>{{ 'pokemon.stats.atk'|trans }}</th>
                                 <td>{{ pokemon.statsEffort.atk }}</td>
                                 <td>{{ pokemon.atk }}</td>
                                 <td class="cell-barchart">
@@ -103,7 +103,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>DEF</th>
+                                <th>{{ 'pokemon.stats.def'|trans }}</th>
                                 <td>{{ pokemon.statsEffort.def }}</td>
                                 <td>{{ pokemon.def }}</td>
                                 <td class="cell-barchart">
@@ -111,7 +111,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>SPA</th>
+                                <th>{{ 'pokemon.stats.spa'|trans }}</th>
                                 <td>{{ pokemon.statsEffort.spa }}</td>
                                 <td>{{ pokemon.spa }}</td>
                                 <td class="cell-barchart">
@@ -119,7 +119,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>SPD</th>
+                                <th>{{ 'pokemon.stats.spd'|trans }}</th>
                                 <td>{{ pokemon.statsEffort.spd }}</td>
                                 <td>{{ pokemon.spd }}</td>
                                 <td class="cell-barchart">
@@ -127,7 +127,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>SPE</th>
+                                <th>{{ 'pokemon.stats.spe'|trans }}</th>
                                 <td>{{ pokemon.statsEffort.spe }}</td>
                                 <td>{{ pokemon.spe }}</td>
                                 <td class="cell-barchart">
@@ -135,7 +135,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>Total</th>
+                                <th>{{ 'pokemon.stats.total'|trans }}</th>
                                 <td><strong>{{ pokemon.totalStats }}</strong></td>
                             </tr>
                         </tbody>

@@ -21,15 +21,15 @@
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Nom</th>
-                        <th>Type(s)</th>
-                        <th>Total</th>
-                        <th>HP</th>
-                        <th>ATK</th>
-                        <th>DEF</th>
-                        <th>SPA</th>
-                        <th>SPD</th>
-                        <th>SPE</th>
+                        <th>{{ 'pokemon.name'|trans }}</th>
+                        <th>{{ 'pokemon.type'|trans }}</th>
+                        <th>{{ 'pokemon.stats.total'|trans }}</th>
+                        <th>{{ 'pokemon.stats.hp'|trans }}</th>
+                        <th>{{ 'pokemon.stats.atk'|trans }}</th>
+                        <th>{{ 'pokemon.stats.def'|trans }}</th>
+                        <th>{{ 'pokemon.stats.spa'|trans }}</th>
+                        <th>{{ 'pokemon.stats.spd'|trans }}</th>
+                        <th>{{ 'pokemon.stats.spe'|trans }}</th>
                     </tr>
                 </thead>
                 {% for pokemon in pokemonsList %}

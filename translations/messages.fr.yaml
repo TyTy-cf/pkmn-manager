@@ -1,0 +1,29 @@
+
+pokemon:
+    name: "Nom"
+    type: "Type(s)"
+    species: "Espèce"
+    height: "Taille"
+    weight: "Poids"
+    abilities: "Capacités"
+    capture_rate: "Taux de capture"
+    base_happiness: "Bonheur initial"
+    base_experience: "Expérience de base"
+    egg_group: "Groupe d'oeufs"
+    hatch_counter: "Eclosion"
+    stats:
+        title: "Stats"
+        ev: "EV"
+        base: "Base"
+        hp: "HP"
+        atk: "ATK"
+        def: "DEF"
+        spa: "SPA"
+        spd: "SPD"
+        spe: "SPE"
+        total: "Total"
+
+index:
+    ability:
+        name: "Nom"
+        pokemons: "Pokémons avec cette capacité"

@@ -7,11 +7,11 @@
         <hr>
         <div class="grid-row">
             <div class="grid-col ">
-                <h2>Effet</h2>
+                <h2>{{ 'index.ability.name'|trans }}</h2>
                 <p>{{ ability.description }}</p>
             </div>
             <div class="grid-col ">
-                <h2>Pokémons avec cette capacité</h2>
+                <h2>{{ 'index.ability.pokemons'|trans }}</h2>
                 <div>
                     {% include 'Pokemon/table-pokemon.html.twig' %}
                 </div>
