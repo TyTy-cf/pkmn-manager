@@ -2,6 +2,7 @@
 
 namespace App\Entity\Pokedex;
 
+use App\Entity\Locations\Region;
 use App\Entity\Traits\TraitDescription;
 use App\Entity\Traits\TraitNomenclature;
 use App\Entity\Versions\VersionGroup;
@@ -36,20 +37,25 @@ class Pokedex
 
     /**
      * @var Collection
-     * @ORM\ManyToMany(targetEntity="App\Entity\Versions\VersionGroup")
-     * @JoinTable(name="pokedex_version_group",
-     *      joinColumns={@JoinColumn(name="pokedex_id", referencedColumnName="id", nullable=true)},
-     *      inverseJoinColumns={@JoinColumn(name="version_group_id", referencedColumnName="id", nullable=true)}
- *      )
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\Versions\VersionGroup", inversedBy="pokedex")
+     * @JoinTable(name="pokedex_version_group")
      */
-    private Collection $versionsGroup;
+    private Collection $versionGroup;
+
+    /**
+     * @var Region
+     * @ORM\ManyToOne(targetEntity="App\Entity\Locations\Region")
+     * @JoinColumn(name="region_id", nullable=true)
+     */
+    private Region $region;
 
     /**
      * Pokedex constructor.
      */
     public function __construct()
     {
-        $this->versionsGroup = new ArrayCollection();
+        $this->versionGroup = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -62,8 +68,8 @@ class Pokedex
      */
     public function addVersionGroup(VersionGroup $versionGroup): void
     {
-        if (!$this->versionsGroup->contains($versionGroup)) {
-            $this->versionsGroup->add($versionGroup);
+        if (!$this->versionGroup->contains($versionGroup)) {
+            $this->versionGroup->add($versionGroup);
         }
     }
 
@@ -72,7 +78,7 @@ class Pokedex
      */
     public function getVersionsGroup(): Collection
     {
-        return $this->versionsGroup;
+        return $this->versionGroup;
     }
 
     /**
@@ -80,9 +86,27 @@ class Pokedex
      */
     public function removeVersionGroup(VersionGroup $versionGroup)
     {
-        if ($this->versionsGroup->contains($versionGroup)) {
-            $this->versionsGroup->removeElement($versionGroup);
+        if ($this->versionGroup->contains($versionGroup)) {
+            $this->versionGroup->removeElement($versionGroup);
         }
+    }
+
+    /**
+     * @return Region
+     */
+    public function getRegion(): Region
+    {
+        return $this->region;
+    }
+
+    /**
+     * @param Region $region
+     * @return Pokedex
+     */
+    public function setRegion(Region $region): self
+    {
+        $this->region = $region;
+        return $this;
     }
 
 }

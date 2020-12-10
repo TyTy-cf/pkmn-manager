@@ -26,12 +26,26 @@ class PokedexRepository extends AbstractRepository
      */
     public function getAllPokedexDetailed(Language $language)
     {
-        return $this->createQueryBuilder('pokedex')
-            ->select('pokedex.description', 'pokedex.name', 'pokedex.slug')
+        $qb = $this->createQueryBuilder('pokedex')
+            ->select('pokedex')
             ->where('pokedex.language = :language')
+            ->andWhere('pokedex.name = :national')
+            ->setParameter('national', 'National')
             ->setParameter('language', $language)
             ->getQuery()
             ->getResult()
-            ;
+        ;
+
+        return array_merge($qb, $this->createQueryBuilder('pokedex')
+            ->select('pokedex', 'versions', 'versionGroup', 'region')
+            ->join('pokedex.region', 'region')
+            ->leftJoin('pokedex.versionGroup', 'versionGroup')
+            ->leftJoin('versionGroup.versions', 'versions')
+            ->where('pokedex.language = :language')
+            ->setParameter('language', $language)
+            ->orderBy('versionGroup.generation', 'DESC')
+            ->getQuery()
+            ->getResult()
+        );
     }
 }

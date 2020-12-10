@@ -4,10 +4,13 @@
 namespace App\Controller\Pokedex;
 
 
+use App\Entity\Versions\Version;
 use App\Manager\Api\ApiManager;
 use App\Manager\Pokedex\PokedexManager;
 use App\Manager\Pokemon\PokemonManager;
 use App\Manager\Users\LanguageManager;
+use App\Manager\Versions\VersionGroupManager;
+use App\Manager\Versions\VersionManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -72,6 +75,6 @@ class PokedexController extends AbstractController
      * @return Response
      */
     public function pokedexShow(Request $request): Response {
-
+        
     }
 }

@@ -15,28 +15,7 @@
                 <div class="list-card-pkmn list-card-pkmn-lg">
                     {% for pokemonAbility in ability.pokemonsAbility %}
                         {% if pokemonAbility.pokemon.pokemonSprites.spriteFrontDefault is not null %}
-                            <div class="pkmn-card">
-                                <div>
-                                    <span>
-                                        <a href="{{ path('profile_pokemon', {slug: pokemonAbility.pokemon.slug }) }}"></a>
-                                        <img class="size-100 mb-2" src="{{ pokemonAbility.pokemon.pokemonSprites.spriteFrontDefault }}"
-                                             alt="Pokemon {{ pokemonAbility.pokemon.name }}"
-                                        >
-                                    </span>
-                                </div>
-                                <div>
-                                    <span>
-                                        <a href="{{ path('profile_pokemon', {slug: pokemonAbility.pokemon.slug }) }}">
-                                            {{ pokemonAbility.pokemon.name }}
-                                        </a>
-                                    </span>
-                                    <div class="row justify-content-center">
-                                        {% for type in pokemonAbility.pokemon.types %}
-                                            <img class="size-40" src="{{ type.img }}" alt="Type {{ type.name|lower }}">
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            </div>
+                            {% include'Pokemon/pokemon_card.html.twig' with {'pokemon' : pokemonAbility.pokemon} %}
                         {% endif %}
                     {% endfor %}
                 </div>

@@ -174,6 +174,17 @@ class PokemonManager extends AbstractManager
     }
 
     /**
+     * @param Language $language
+     * @param int $offset
+     * @param int $limit
+     * @return array|int|string
+     */
+    public function getAllPokemonsListByLanguage(Language $language)
+    {
+        return $this->pokemonRepository->getAllPokemonsListByLanguage($language);
+    }
+
+    /**
      * Save a new pokemon from API to the database
      * Create his abilities and type(s) if necessary
      *

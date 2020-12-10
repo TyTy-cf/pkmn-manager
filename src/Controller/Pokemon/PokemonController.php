@@ -91,12 +91,13 @@ class PokemonController extends AbstractController
         //Création du formulaire de recherche
         $searchPokemonForm = $this->createForm(SearchPokemonType::class);
         $searchPokemonForm->handleRequest($request);
+        $language = $this->languageManager->getLanguageByCode('fr');
 
         //Si formulaire est soumis ET valide
         if ($searchPokemonForm->isSubmitted() && $searchPokemonForm->isValid()) {
             $namePokemon = $searchPokemonForm->getData();
             $pokemon = $this->pokemonManager->getPokemonByNameAndLanguage(
-                $namePokemon['name_pokemon'], $this->languageManager->getLanguageByCode('fr')
+                $namePokemon['name_pokemon'], $language
             );
             return $this->redirectToRoute('profile_pokemon', ['slug' => $pokemon->getSlug()]);
         }
@@ -109,10 +110,10 @@ class PokemonController extends AbstractController
             $offset = 0;
         }
 
-        $pokemonsList = $this->pokemonManager->getPokemonOffsetLimitByLanguage(
-            $this->languageManager->getLanguageByCode('fr'), $offset, $limit
-        );
-
+        $pokemonsList = $this->pokemonManager->getPokemonOffsetLimitByLanguage($language, $offset, $limit);
+        $pokemonsList = $this->pokemonManager->getAllPokemonsListByLanguage($language);
+        dump($pokemonsList);
+        die();
         //Données pour autocompletion
         $jsonAllPokemon = $this->getAllPokemonNamesJson();
 

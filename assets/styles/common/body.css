@@ -4,7 +4,8 @@ body {
 .container {
   background-color: #d9e7ff !important; }
 
-a {
-  font-weight: 700 !important; }
+.bold-link {
+  font-weight: 700 !important;
+  font-size: 80%; }
 
 /*# sourceMappingURL=body.css.map */

@@ -1,0 +1,21 @@
+
+<div class="pkmn-card">
+    <div>
+        <span>
+            <a href="{{ path('profile_pokemon', {slug: pokemon.slug }) }}"></a>
+            <img class="size-100 mb-2" src="{{ pokemon.pokemonSprites.spriteFrontDefault }}" alt="Pokemon {{ pokemon.name }}">
+        </span>
+    </div>
+    <div>
+        <span>
+            <a class="bold-link" href="{{ path('profile_pokemon', {slug: pokemon.slug }) }}">
+                {{ pokemon.name }}
+            </a>
+        </span>
+        <div class="row justify-content-center">
+            {% for type in pokemon.types %}
+                <img class="size-40" src="{{ type.img }}" alt="Type {{ type.name|lower }}">
+            {% endfor %}
+        </div>
+    </div>
+</div>

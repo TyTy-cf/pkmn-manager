@@ -9,6 +9,7 @@ use App\Entity\Traits\TraitNames;
 use App\Entity\Traits\TraitNomenclature;
 use App\Entity\Traits\TraitSlug;
 use App\Entity\Users\Language;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\JoinColumn;
@@ -34,7 +35,7 @@ class Version
     /**
      * @var VersionGroup
      *
-     * @ManyToOne(targetEntity="App\Entity\Versions\VersionGroup")
+     * @ManyToOne(targetEntity="App\Entity\Versions\VersionGroup", inversedBy="versions")
      * @JoinColumn(name="version_group_id", referencedColumnName="id")
      */
     private VersionGroup $versionGroup;

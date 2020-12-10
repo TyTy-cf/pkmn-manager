@@ -4,6 +4,7 @@
 namespace App\Manager\Pokedex;
 
 
+use App\Entity\Locations\Region;
 use App\Entity\Pokedex\Pokedex;
 use App\Entity\Pokedex\PokedexSpecies;
 use App\Entity\Pokemon\PokemonSpecies;
@@ -14,6 +15,7 @@ use App\Manager\Api\ApiManager;
 use App\Manager\Pokemon\PokemonSpeciesManager;
 use App\Manager\TextManager;
 use App\Manager\Versions\VersionGroupManager;
+use App\Repository\Location\RegionRepository;
 use App\Repository\Pokedex\PokedexRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
@@ -36,10 +38,16 @@ class PokedexManager extends AbstractManager
     private PokemonSpeciesManager $pokemonSpeciesManager;
 
     /**
+     * @var RegionRepository $regionRepo
+     */
+    private RegionRepository $regionRepo;
+
+    /**
      * PokemonManager constructor.
      *
      * @param EntityManagerInterface $entityManager
      * @param PokedexRepository $pokedexRepository
+     * @param RegionRepository $regionRepo
      * @param VersionGroupManager $versionGroup
      * @param PokemonSpeciesManager $pokemonSpeciesManager
      * @param ApiManager $apiManager
@@ -49,6 +57,7 @@ class PokedexManager extends AbstractManager
     (
         EntityManagerInterface $entityManager,
         PokedexRepository $pokedexRepository,
+        RegionRepository $regionRepo,
         VersionGroupManager $versionGroup,
         PokemonSpeciesManager $pokemonSpeciesManager,
         ApiManager $apiManager,
@@ -56,6 +65,7 @@ class PokedexManager extends AbstractManager
     )
     {
         $this->versionGroupManager = $versionGroup;
+        $this->regionRepo = $regionRepo;
         $this->pokedexRepository = $pokedexRepository;
         $this->pokemonSpeciesManager = $pokemonSpeciesManager;
         parent::__construct($entityManager, $apiManager, $textManager);
@@ -72,7 +82,7 @@ class PokedexManager extends AbstractManager
 
     /**
      * @param Language $language
-     * @return
+     * @return int|mixed|string
      */
     public function getAllPokedexDetailed(Language $language)
     {
@@ -88,7 +98,6 @@ class PokedexManager extends AbstractManager
     {
         //Fetch URL details type
         $urlPokedexDetailed = $this->apiManager->getDetailed($apiResponse['url'])->toArray();
-
         //Check if the pokedex exist in databases
         $slug = $this->textManager->generateSlugFromClassWithLanguage(
             $language,
@@ -96,7 +105,7 @@ class PokedexManager extends AbstractManager
             $urlPokedexDetailed['name']
         );
 
-        if ($this->getPokedexBySlug($slug) === null)
+        if (($pokedex = $this->getPokedexBySlug($slug)) === null)
         {
             $codeLang = $language->getCode();
             // Fetch name & description according the language
@@ -146,9 +155,44 @@ class PokedexManager extends AbstractManager
                     $this->entityManager->persist($pokedexSpecies);
                 }
             }
-
-            $this->entityManager->flush();
+            if (!empty($urlPokedexDetailed['pokemon_entries'])) {
+                foreach($urlPokedexDetailed['pokemon_entries'] as $pokemonSpeciesName)
+                {
+                    $pokemonSpecies = $this->pokemonSpeciesManager->getPokemonSpeciesBySlug(
+                        $this->textManager->generateSlugFromClassWithLanguage(
+                            $language,
+                            PokemonSpecies::class,
+                            $pokemonSpeciesName['pokemon_species']['name']
+                        )
+                    );
+                    $pokedexSpecies = (new PokedexSpecies())
+                        ->setNumber($pokemonSpeciesName['entry_number'])
+                        ->setPokedex($pokedex)
+                        ->setPokemonSpecies($pokemonSpecies)
+                    ;
+                    $this->entityManager->persist($pokedexSpecies);
+                }
+            }
+            if ($urlPokedexDetailed['region'] !== null) {
+                $urlDetailedRegion = $this->apiManager->getDetailed($urlPokedexDetailed['region']['url'])->toArray();
+                $slug = $this->textManager->generateSlugFromClassWithLanguage(
+                    $language, Region::class, $urlDetailedRegion['name']
+                );
+                if ($this->regionRepo->findOneBySlug($slug) === null) {
+                    // Create the region
+                    $region = (new Region())
+                        ->setSlug($slug)
+                        ->setLanguage($language)
+                        ->setName(
+                            $this->apiManager->getNameBasedOnLanguageFromArray($language->getCode(), $urlDetailedRegion)
+                        )
+                    ;
+                    $pokedex->setRegion($region);
+                    $this->entityManager->persist($region);
+                }
+            }
         }
+        $this->entityManager->flush();
     }
 
 }
