@@ -30,3 +30,7 @@ index:
         pokemons: "Pokémons avec cette capacité"
     egg_group:
         pokemons: "Pokémons ayant ce groupe d'oeuf"
+
+pokedex:
+    all:
+        title: "Tous les pokedex :"

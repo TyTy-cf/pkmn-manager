@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+{% block title %}Catch 'em all{% endblock %}
+
+{% block body %}
+    <div class="container col-8">
+        <h2>{{ 'pokedex.all.title'|trans }}</h2>
+        <div>
+            <table class="table-striped w-100">
+                <tbody>
+                    {% for pokedex in pokedexList %}
+                        <tr>
+                            <td>
+                                <span>
+                                    <a href="{{ path('pokedex_detailed', {slug: pokedex.slug }) }}">{{ pokedex.name }}</a>
+                                </span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

@@ -72,6 +72,15 @@ class PokedexManager extends AbstractManager
 
     /**
      * @param Language $language
+     * @return
+     */
+    public function getAllPokedexDetailed(Language $language)
+    {
+        return $this->pokedexRepository->getAllPokedexDetailed($language);
+    }
+
+    /**
+     * @param Language $language
      * @param $apiResponse
      * @throws TransportExceptionInterface
      */
