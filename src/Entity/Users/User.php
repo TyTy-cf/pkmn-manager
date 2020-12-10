@@ -48,8 +48,8 @@ class User implements UserInterface
     private string $email;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Pokemon\PokemonSheet", mappedBy="user")
      * @var Collection
+     * @ORM\OneToMany(targetEntity="App\Entity\Pokemon\PokemonSheet", mappedBy="user")
      */
     private Collection $pokemonsSheet;
 

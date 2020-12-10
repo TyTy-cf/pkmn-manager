@@ -4,7 +4,6 @@
 namespace App\Entity\Users;
 
 
-use App\Entity\Infos\Ability;
 use App\Entity\Traits\TraitNames;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -39,8 +38,8 @@ class Language
     private string $image;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Users\User", mappedBy="language")
      * @var Collection
+     * @ORM\OneToMany(targetEntity="App\Entity\Users\User", mappedBy="language")
      */
     private Collection $users;
 

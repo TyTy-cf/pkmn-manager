@@ -12,6 +12,18 @@
   color: #737373;
   font-size: .875rem;
   font-weight: normal;
-  text-align: right; }
+  text-align: right;
+  min-width: 144px; }
+
+.hidden-talent {
+  font-style: italic;
+  display: inline;
+  font-size: 75%;
+  font-weight: 750;
+  line-height: 1;
+  padding: 0.2em;
+  white-space: nowrap;
+  text-align: center;
+  color: #737373; }
 
 /*# sourceMappingURL=profile.css.map */

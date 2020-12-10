@@ -5,6 +5,7 @@ namespace App\Manager\Pokemon;
 
 
 use App\Entity\Infos\Ability;
+use App\Entity\Infos\PokemonAbility;
 use App\Entity\Infos\Type\Type;
 use App\Entity\Pokemon\Pokemon;
 use App\Entity\Stats\StatsEffort;
@@ -101,6 +102,17 @@ class PokemonManager extends AbstractManager
     }
 
     /**
+     * @param Language $language
+     * @return Pokemon[]
+     */
+    public function getAllPokemonByLanguage(Language $language)
+    {
+        return $this->pokemonRepository->findBy([
+            'language' => $language,
+        ]);
+    }
+
+    /**
      * @param string $slug
      * @return Pokemon|null
      */
@@ -143,9 +155,9 @@ class PokemonManager extends AbstractManager
 
     /**
      * @param Language $language
-     * @return Pokemon|object|null
+     * @return array
      */
-    public function getAllPokemonNameForLanguage(Language $language)
+    public function getAllPokemonNameForLanguage(Language $language): array
     {
         return $this->pokemonRepository->getAllPokemonNameForLanguage($language);
     }
@@ -229,19 +241,6 @@ class PokemonManager extends AbstractManager
 
             $pokemon->setStatsEffort($this->getStatsEffortFromArray($arrayStatsEffort));
 
-            // Set the Ability
-            foreach($urlDetailed['abilities'] as $abilityDetailed)
-            {
-                $ability = $this->abilitiesManager->getAbilitiesBySlug(
-                    $this->textManager->generateSlugFromClassWithLanguage(
-                        $language,
-                        Ability::class,
-                        $abilityDetailed['ability']['name']
-                    )
-                );
-                $pokemon->addAbilities($ability);
-            }
-
             // Set the Type
             foreach($urlDetailed['types'] as $typesDetailed)
             {
@@ -254,8 +253,27 @@ class PokemonManager extends AbstractManager
                 );
                 $pokemon->addType($type);
             }
-
             $this->entityManager->persist($pokemon);
+        } else {
+            // Set the Ability
+            foreach($urlDetailed['abilities'] as $abilityDetailed)
+            {
+                $ability = $this->abilitiesManager->getAbilitiesBySlug(
+                    $this->textManager->generateSlugFromClassWithLanguage(
+                        $language,
+                        Ability::class,
+                        $abilityDetailed['ability']['name']
+                    )
+                );
+                if ($ability !== null) {
+                    $pokemonAbility = (new PokemonAbility())
+                        ->setPokemon($pokemon)
+                        ->setAbility($ability)
+                        ->setHidden($abilityDetailed['is_hidden'])
+                    ;
+                    $this->entityManager->persist($pokemonAbility);
+                }
+            }
         }
         $this->entityManager->flush();
     }

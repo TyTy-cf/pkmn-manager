@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="container-md">
+        <h1 class="text-center mb-1 mt-3">{{ eggGroup.name }}</h1>
+        <hr>
+        <div class="grid-row">
+            <div class="grid-col ">
+                <h2>{{ 'index.egg_group.pokemons'|trans }}</h2>
+                <div class="list-card-pkmn list-card-pkmn-lg">
+                    {% for pokemonSpecies in eggGroup.pokemonSpecies %}
+                        {% for pokemon in pokemonSpecies.pokemons %}
+                            {% if pokemon.urlIcon is not null %}
+                                <div class="pkmn-card">
+                                    <span>
+                                        <div>
+                                            <a href="{{ path('profile_pokemon', {slug: pokemon.slug }) }}"></a>
+                                            <img class="size-200 mb-2" src="{{ pokemon.urlIcon }}" alt="Pokemon {{ pokemon.name }}">
+                                        </div>
+                                    </span>
+                                    <span>
+                                        <a href="{{ path('profile_pokemon', {slug: pokemon.slug }) }}">
+                                            {{ pokemon.name }}
+                                        </a>
+                                        <div>
+                                            {% for type in pokemon.types %}
+                                                <img class="size-40" src="{{ type.img }}" alt="Type {{ type.name|lower }}">
+                                            {% endfor %}
+                                        </div>
+                                    </span>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+        </div>
+    </div>
+
+{% endblock %}

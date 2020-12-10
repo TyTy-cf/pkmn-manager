@@ -7,13 +7,42 @@
         <hr>
         <div class="grid-row">
             <div class="grid-col ">
-                <h2>{{ 'index.ability.name'|trans }}</h2>
+                <h2>{{ 'index.ability.description'|trans }}</h2>
                 <p>{{ ability.description }}</p>
             </div>
             <div class="grid-col ">
                 <h2>{{ 'index.ability.pokemons'|trans }}</h2>
                 <div>
-                    {% include 'Pokemon/table-pokemon.html.twig' %}
+                    <table class="table table-striped w-auto">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>{{ 'pokemon.name'|trans }}</th>
+                            <th>{{ 'pokemon.type'|trans }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for pokemonAbility in ability.pokemonsAbility %}
+                            {% if pokemonAbility.pokemon.urlIcon is not null %}
+                                <tr>
+                                    <td>
+                                        <img class="size-150 mb-2" src="{{ pokemonAbility.pokemon.urlIcon }}" alt="Pokemon {{ pokemonAbility.pokemon.name }}">
+                                    </td>
+                                    <td>
+                                        <a href="{{ path('profile_pokemon', {slug: pokemonAbility.pokemon.slug }) }}">
+                                            {{ pokemonAbility.pokemon.name }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        {% for type in pokemonAbility.pokemon.types %}
+                                            <img class="size-20" src="{{ type.img }}" alt="Type {{ type.name|lower }}">
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

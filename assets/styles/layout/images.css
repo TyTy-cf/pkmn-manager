@@ -14,6 +14,10 @@
   max-width: 25% !important;
   max-height: 25% !important; }
 
+.size-40 {
+  max-width: 40% !important;
+  max-height: 40% !important; }
+
 .size-50 {
   max-width: 50% !important;
   max-height: 50% !important; }
@@ -25,5 +29,9 @@
 .size-150 {
   max-width: 150% !important;
   max-height: 150% !important; }
+
+.size-200 {
+  max-width: 200% !important;
+  max-height: 200% !important; }
 
 /*# sourceMappingURL=images.css.map */

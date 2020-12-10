@@ -110,7 +110,7 @@ class PokemonSheet
     /**
      * @var User|null
      *
-     * @ManyToOne(targetEntity="App\Entity\Users\User", inversedBy="pokemonSheet")
+     * @ManyToOne(targetEntity="App\Entity\Users\User", inversedBy="pokemonsSheet")
      * @JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
      */
     private ?User $user;

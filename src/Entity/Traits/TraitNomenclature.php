@@ -11,11 +11,11 @@ use Doctrine\ORM\Mapping\JoinColumn;
 trait TraitNomenclature
 {
     /**
-     * @var string $name
+     * @var string|null $name
      *
-     * @ORM\Column(name="name", type="string", length=120)
+     * @ORM\Column(name="name", type="string", length=120, nullable=true)
      */
-    private string $name;
+    private ?string $name;
 
     /**
      * @var Language $language
@@ -34,18 +34,18 @@ trait TraitNomenclature
     private string $slug;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      * @return TraitNomenclature
      */
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
         return $this;

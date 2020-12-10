@@ -11,6 +11,7 @@ pokemon:
     base_experience: "Expérience de base"
     egg_group: "Groupe d'oeufs"
     hatch_counter: "Eclosion"
+    hidden_talent: "Talent caché"
     stats:
         title: "Stats"
         ev: "EV"
@@ -25,5 +26,7 @@ pokemon:
 
 index:
     ability:
-        name: "Nom"
+        description: "Description"
         pokemons: "Pokémons avec cette capacité"
+    egg_group:
+        pokemons: "Pokémons ayant le même groupe d'oeuf"

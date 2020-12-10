@@ -3,7 +3,6 @@
 namespace App\Entity\Pokemon;
 
 use App\Entity\Pokedex\EggGroup;
-use App\Entity\Pokedex\PokedexSpecies;
 use App\Entity\Traits\TraitNomenclature;
 use App\Repository\Pokemon\PokemonSpeciesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -95,6 +94,11 @@ class PokemonSpecies
     private ?PokemonSpecies $evolvesFromSpecies;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Pokemon\Pokemon", mappedBy="pokemonSpecies")
+     */
+    private Collection $pokemons;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Pokedex\PokedexSpecies", mappedBy="pokemonSpecies")
      */
     private Collection $pokedexSpecies;
@@ -106,6 +110,7 @@ class PokemonSpecies
     {
         $this->eggGroup = new ArrayCollection();
         $this->pokedexSpecies = new ArrayCollection();
+        $this->pokemons = new ArrayCollection();
     }
 
     public function getId(): int
@@ -326,6 +331,22 @@ class PokemonSpecies
      * @return mixed
      */
     public function getPokedexSpeciesCollection(): Collection
+    {
+        return $this->pokedexSpecies;
+    }
+
+    /**
+     * @return ArrayCollection|Collection
+     */
+    public function getPokemons()
+    {
+        return $this->pokemons;
+    }
+
+    /**
+     * @return ArrayCollection|Collection
+     */
+    public function getPokedexSpecies()
     {
         return $this->pokedexSpecies;
     }

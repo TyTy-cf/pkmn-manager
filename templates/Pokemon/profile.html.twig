@@ -37,8 +37,16 @@
                         <tr>
                             <th>{{ 'pokemon.abilities'|trans }}</th>
                             <td>
-                                {% for ability in pokemon.abilities %}
-                                    <a href="{{ path('ability_detail', {slug: ability.slug}) }}">{{ ability.name|capitalize }}</a><br>
+                                {% for pokemon_ability in pokemon.pokemonsAbility %}
+                                    <a href="{{ path('ability_detail', {slug: pokemon_ability.ability.slug}) }}"
+                                       title="{{ pokemon_ability.ability.description|capitalize }}"
+                                    >
+                                        {{ pokemon_ability.ability.name|capitalize }}
+                                    </a>
+                                    {% if pokemon_ability.hidden %}
+                                        <span class="hidden-talent">{{ 'pokemon.hidden_talent'|trans }}</span>
+                                    {% endif %}
+                                    <br>
                                 {% endfor %}
                             </td>
                         </tr>
@@ -58,7 +66,9 @@
                             <th>{{ 'pokemon.egg_group'|trans }}</th>
                             <td>
                                 {% for eggGroup in pokemon.pokemonSpecies.eggGroup %}
-                                    {{ eggGroup.name }}
+                                    <a href="{{ path('egg_group_detail', {slug: eggGroup.slug}) }}">
+                                        {{ eggGroup.name }}
+                                    </a>
                                 {% endfor %}
                             </td>
                         </tr>

@@ -34,7 +34,7 @@ trait TraitApi
      * @param string $idApi
      * @return TraitApi
      */
-    public function setIdApi(string $idApi): TraitApi
+    public function setIdApi(string $idApi): self
     {
         $this->idApi = $idApi;
         return $this;
@@ -52,7 +52,7 @@ trait TraitApi
      * @param string $nameApi
      * @return TraitApi
      */
-    public function setNameApi(string $nameApi): TraitApi
+    public function setNameApi(string $nameApi): self
     {
         $this->nameApi = $nameApi;
         return $this;

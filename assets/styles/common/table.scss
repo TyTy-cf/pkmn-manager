@@ -5,3 +5,21 @@
     vertical-align: middle !important;
   }
 }
+
+.list-card-pkmn {
+  margin-bottom: 1rem;
+  display: grid;
+  grid-gap: 2rem .75rem;
+
+  .pkmn-card {
+    display: inline-block;
+    line-height: 1.25;
+    text-align: center;
+    width: auto;
+    padding: 0;
+  }
+}
+
+.list-card-pkmn-lg {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}

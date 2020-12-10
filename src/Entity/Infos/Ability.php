@@ -8,6 +8,7 @@ use App\Entity\Traits\TraitNomenclature;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OneToMany;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -38,9 +39,9 @@ class Ability
     private int $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Pokemon\Pokemon", mappedBy="abilities")
+     * @OneToMany(targetEntity="App\Entity\Infos\PokemonAbility", mappedBy="ability", cascade={"persist"})
      */
-    private Collection $pokemons;
+    private Collection $pokemonsAbility;
 
     use TraitDescription;
 
@@ -48,7 +49,7 @@ class Ability
 
     public function __construct()
     {
-        $this->pokemons = new ArrayCollection();
+        $this->pokemonsAbility = new ArrayCollection();
     }
 
     /**
@@ -62,28 +63,28 @@ class Ability
     /**
      * @return mixed
      */
-    public function getPokemons()
+    public function getPokemonsAbility()
     {
-        return $this->pokemons;
+        return $this->pokemonsAbility;
     }
 
     /**
      * @param $pokemon
      */
-    public function addPokemon($pokemon): void
+    public function addPokemonAbility($pokemon): void
     {
-        if (!$this->pokemons->contains($pokemon)) {
-            $this->pokemons->add($pokemon);
+        if (!$this->pokemonsAbility->contains($pokemon)) {
+            $this->pokemonsAbility->add($pokemon);
         }
     }
 
     /**
      * @param $pokemon
      */
-    public function removePokemon($pokemon): void
+    public function removePokemonAbility($pokemon): void
     {
-        if ($this->pokemons->contains($pokemon)) {
-            $this->pokemons->remove($pokemon);
+        if ($this->pokemonsAbility->contains($pokemon)) {
+            $this->pokemonsAbility->remove($pokemon);
         }
     }
 

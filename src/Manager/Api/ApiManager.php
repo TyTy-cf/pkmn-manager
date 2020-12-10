@@ -4,6 +4,7 @@
 namespace App\Manager\Api;
 
 
+use App\Entity\Pokemon\Pokemon;
 use http\Exception\RuntimeException;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
@@ -59,6 +60,19 @@ class ApiManager
     public function getPokemonFromName($pokemonName)
     {
         return $this->apiConnect('https://pokeapi.co/api/v2/pokemon/' . $pokemonName);
+    }
+
+    /**
+     * Return from the API the informations of the $pokemonName passed in parameter
+     *
+     * @param Pokemon $pokemon
+     * @return mixed
+     *
+     * @throws TransportExceptionInterface
+     */
+    public function getPokemonDetailedFromPokemon(Pokemon $pokemon)
+    {
+        return $this->apiConnect('https://pokeapi.co/api/v2/pokemon/'.$pokemon->getIdApi().'/');
     }
 
     /**

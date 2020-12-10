@@ -6,8 +6,6 @@ namespace App\Repository\Infos;
 
 use App\Entity\Infos\Nature;
 use App\Repository\AbstractRepository;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**

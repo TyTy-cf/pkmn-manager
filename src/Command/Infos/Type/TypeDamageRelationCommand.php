@@ -81,7 +81,6 @@ class TypeDamageRelationCommand extends AbstractCommand
             $progressBar->start();
 
             foreach ($types as $type) {
-                /** @var TypeDamageRelationType $this->manager */
                 $this->manager->createDamageFromType($type, $lang);
                 $progressBar->advance();
             }

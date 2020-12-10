@@ -19,6 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\ManyToMany;
+use Doctrine\ORM\Mapping\OneToMany;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -54,13 +55,14 @@ class Pokemon
     use TraitApi;
 
     /**
-     * @ManyToMany(targetEntity="App\Entity\Infos\Ability", inversedBy="pokemons", cascade={"persist"})
-     * @JoinTable(name="pokemon_abilities",
-     *      joinColumns={@JoinColumn(name="pokemon_id", referencedColumnName="id", nullable=true)},
-     *      inverseJoinColumns={@JoinColumn(name="ability_id", referencedColumnName="id", nullable=true)}
-     *      )
+     * @OneToMany(targetEntity="App\Entity\Infos\PokemonAbility", mappedBy="pokemon", cascade={"persist"})
      */
-    private Collection $abilities;
+    private Collection $pokemonsAbility;
+
+    /**
+     * @OneToMany(targetEntity="App\Entity\Pokemon\PokemonForm", mappedBy="pokemon", cascade={"persist"})
+     */
+    private Collection $pokemonForms;
 
     /**
      * @ManyToMany(targetEntity="App\Entity\Infos\Type\Type", inversedBy="pokemons", cascade={"persist"})
@@ -85,7 +87,7 @@ class Pokemon
 
     /**
      * @var PokemonSpecies
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pokemon\PokemonSpecies")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Pokemon\PokemonSpecies", inversedBy="pokemons")
      * @JoinColumn(name="pokemon_species_id", nullable=true)
      */
     private PokemonSpecies $pokemonSpecies;
@@ -123,7 +125,8 @@ class Pokemon
      */
     public function __construct() {
         $this->types = new ArrayCollection();
-        $this->abilities = new ArrayCollection();
+        $this->pokemonForms = new ArrayCollection();
+        $this->pokemonsAbility = new ArrayCollection();
         $this->pokemonMovesLearnVersion = new ArrayCollection();
     }
 
@@ -271,34 +274,19 @@ class Pokemon
     }
 
     /**
-     * @param Ability|null $abilities
-     * @return Pokemon
+     * @return mixed
      */
-    public function addAbilities(?Ability $abilities): self
+    public function getPokemonsAbility(): Collection
     {
-        if ($abilities === null) return $this;
-        if (!$this->abilities->contains($abilities)) {
-            $this->abilities->add($abilities);
-        }
-        return $this;
+        return $this->pokemonsAbility;
     }
 
     /**
      * @return mixed
      */
-    public function getAbilities(): Collection
+    public function getPokemonForms(): Collection
     {
-        return $this->abilities;
-    }
-
-    /**
-     * @param Ability $ability
-     */
-    public function removeAbilities(Ability $ability)
-    {
-        if ($this->abilities->contains($ability)) {
-            $this->abilities->removeElement($ability);
-        }
+        return $this->pokemonForms;
     }
 
     /**

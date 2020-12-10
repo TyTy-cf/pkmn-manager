@@ -2,7 +2,7 @@
 {% block title %}Catch 'em all{% endblock %}
 
 {% block body %}
-    <div class="container col-8 mb-2">
+    <div class="container col-8">
         {{ include('search.html.twig') }}
         <div class="row justify-content-center">
             {% if offset > 0 %}
@@ -34,7 +34,7 @@
                 </thead>
                 {% for pokemon in pokemonsList %}
                     <tr>
-                        <td><img class="size-150" src="{{ pokemon.urlIcon }}" alt="Pokemon {{ pokemon.name }}"></td>
+                        <td><img class="size-150 mb-2" src="{{ pokemon.urlIcon }}" alt="Pokemon {{ pokemon.name }}"></td>
                         <td><a href="{{ path('profile_pokemon', {slug: pokemon.slug }) }}">{{ pokemon.name }}</a></td>
                         <td>
                             {% for type in pokemon.types %}

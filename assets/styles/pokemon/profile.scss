@@ -1,4 +1,6 @@
 
+$font-special-color: #737373;
+
 .barchart-bar {
   height: .75rem;
   border-radius: 4px;
@@ -12,8 +14,21 @@
 }
 
 .profile-table th {
-  color: #737373;
+  color: $font-special-color;
   font-size: .875rem;
   font-weight: normal;
   text-align: right;
+  min-width: 144px;
+}
+
+.hidden-talent {
+  font-style: italic;
+  display: inline;
+  font-size: 75%;
+  font-weight: 750;
+  line-height: 1;
+  padding: 0.2em;
+  white-space: nowrap;
+  text-align: center;
+  color: $font-special-color;
 }
