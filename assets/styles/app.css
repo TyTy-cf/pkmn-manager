@@ -3,6 +3,7 @@
 @import 'layout/autocomplete/autocomplete.css';
 @import 'pokemon/profile.css';
 @import 'layout/images.css';
+@import 'common/body.css';
 @import 'common/header.css';
 @import 'common/footer.css';
 @import 'common/grid.css';

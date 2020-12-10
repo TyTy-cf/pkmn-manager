@@ -205,8 +205,6 @@ class PokemonManager extends AbstractManager
                 ->setSlug($slug)
                 ->setWeight($urlDetailed['weight'])
                 ->setHeight($urlDetailed['height'])
-                ->setUrlIcon($urlDetailed['sprites']['versions']['generation-viii']['icons']['front_default'])
-                ->setUrlSpriteImg($urlDetailed['sprites']['other']['official-artwork']['front_default'])
                 ->setLanguage($language)
             ;
 

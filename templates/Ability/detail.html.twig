@@ -12,37 +12,33 @@
             </div>
             <div class="grid-col ">
                 <h2>{{ 'index.ability.pokemons'|trans }}</h2>
-                <div>
-                    <table class="table table-striped w-auto">
-                        <thead>
-                        <tr>
-                            <th></th>
-                            <th>{{ 'pokemon.name'|trans }}</th>
-                            <th>{{ 'pokemon.type'|trans }}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for pokemonAbility in ability.pokemonsAbility %}
-                            {% if pokemonAbility.pokemon.urlIcon is not null %}
-                                <tr>
-                                    <td>
-                                        <img class="size-150 mb-2" src="{{ pokemonAbility.pokemon.urlIcon }}" alt="Pokemon {{ pokemonAbility.pokemon.name }}">
-                                    </td>
-                                    <td>
+                <div class="list-card-pkmn list-card-pkmn-lg">
+                    {% for pokemonAbility in ability.pokemonsAbility %}
+                        {% if pokemonAbility.pokemon.pokemonSprites.spriteFrontDefault is not null %}
+                            <div class="pkmn-card">
+                                <div>
+                                    <span>
+                                        <a href="{{ path('profile_pokemon', {slug: pokemonAbility.pokemon.slug }) }}"></a>
+                                        <img class="size-100 mb-2" src="{{ pokemonAbility.pokemon.pokemonSprites.spriteFrontDefault }}"
+                                             alt="Pokemon {{ pokemonAbility.pokemon.name }}"
+                                        >
+                                    </span>
+                                </div>
+                                <div>
+                                    <span>
                                         <a href="{{ path('profile_pokemon', {slug: pokemonAbility.pokemon.slug }) }}">
                                             {{ pokemonAbility.pokemon.name }}
                                         </a>
-                                    </td>
-                                    <td>
+                                    </span>
+                                    <div class="row justify-content-center">
                                         {% for type in pokemonAbility.pokemon.types %}
-                                            <img class="size-20" src="{{ type.img }}" alt="Type {{ type.name|lower }}">
+                                            <img class="size-40" src="{{ type.img }}" alt="Type {{ type.name|lower }}">
                                         {% endfor %}
-                                    </td>
-                                </tr>
-                            {% endif %}
-                        {% endfor %}
-                        </tbody>
-                    </table>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
                 </div>
             </div>
         </div>

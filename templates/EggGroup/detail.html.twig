@@ -2,7 +2,7 @@
 
 {% block body %}
 
-    <div class="container-md">
+    <div class="container">
         <h1 class="text-center mb-1 mt-3">{{ eggGroup.name }}</h1>
         <hr>
         <div class="grid-row">
@@ -11,24 +11,26 @@
                 <div class="list-card-pkmn list-card-pkmn-lg">
                     {% for pokemonSpecies in eggGroup.pokemonSpecies %}
                         {% for pokemon in pokemonSpecies.pokemons %}
-                            {% if pokemon.urlIcon is not null %}
+                            {% if pokemon.pokemonSprites.spriteFrontDefault is not null %}
                                 <div class="pkmn-card">
-                                    <span>
-                                        <div>
+                                    <div>
+                                        <span>
                                             <a href="{{ path('profile_pokemon', {slug: pokemon.slug }) }}"></a>
-                                            <img class="size-200 mb-2" src="{{ pokemon.urlIcon }}" alt="Pokemon {{ pokemon.name }}">
-                                        </div>
-                                    </span>
-                                    <span>
-                                        <a href="{{ path('profile_pokemon', {slug: pokemon.slug }) }}">
-                                            {{ pokemon.name }}
-                                        </a>
-                                        <div>
+                                            <img class="size-100 mb-2" src="{{ pokemon.pokemonSprites.spriteFrontDefault }}" alt="Pokemon {{ pokemon.name }}">
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span>
+                                            <a href="{{ path('profile_pokemon', {slug: pokemon.slug }) }}">
+                                                {{ pokemon.name }}
+                                            </a>
+                                        </span>
+                                        <div class="row justify-content-center">
                                             {% for type in pokemon.types %}
                                                 <img class="size-40" src="{{ type.img }}" alt="Type {{ type.name|lower }}">
                                             {% endfor %}
                                         </div>
-                                    </span>
+                                    </div>
                                 </div>
                             {% endif %}
                         {% endfor %}

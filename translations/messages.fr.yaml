@@ -29,4 +29,4 @@ index:
         description: "Description"
         pokemons: "Pokémons avec cette capacité"
     egg_group:
-        pokemons: "Pokémons ayant le même groupe d'oeuf"
+        pokemons: "Pokémons ayant ce groupe d'oeuf"

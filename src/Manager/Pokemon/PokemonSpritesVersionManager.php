@@ -30,26 +30,32 @@ class PokemonSpritesVersionManager extends AbstractManager
     private VersionGroupManager $versionGroupManager;
 
     /**
+     * @var PokemonSpritesManager $pokemonSpritesManager
+     */
+    private PokemonSpritesManager $pokemonSpritesManager;
+
+    /**
      * PokemonManager constructor.
      *
-     * @param LanguageManager $languageManager
      * @param EntityManagerInterface $entityManager
      * @param ApiManager $apiManager
      * @param VersionGroupManager $versionGroupManager
+     * @param PokemonSpritesManager $pokemonSpritesManager
      * @param TextManager $textManager
      * @param PokemonManager $pokemonManager
      */
     public function __construct
     (
-        LanguageManager $languageManager,
         EntityManagerInterface $entityManager,
         ApiManager $apiManager,
         VersionGroupManager $versionGroupManager,
+        PokemonSpritesManager $pokemonSpritesManager,
         TextManager $textManager,
         PokemonManager $pokemonManager
     )
     {
         $this->pokemonManager = $pokemonManager;
+        $this->pokemonSpritesManager = $pokemonSpritesManager;
         $this->versionGroupManager = $versionGroupManager;
         parent::__construct($entityManager, $apiManager, $textManager);
     }
@@ -95,6 +101,13 @@ class PokemonSpritesVersionManager extends AbstractManager
                             ->setUrlDefaultFemaleShiny($frontFemaleShiny)
                         ;
                         $this->entityManager->persist($pokemonSpritesVersion);
+                        // Update default sprites
+                        $this->pokemonSpritesManager->createPokemonSprites(
+                            $this->entityManager,
+                            $pokemon,
+                            $this->textManager,
+                            $urlDetailed['sprites']
+                        );
                     }
                 }
             }

@@ -20,6 +20,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\OneToOne;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -65,6 +66,13 @@ class Pokemon
     private Collection $pokemonForms;
 
     /**
+     * @var PokemonSprites $pokemonSprites
+     * @OneToOne(targetEntity="App\Entity\Pokemon\PokemonSprites")
+     * @JoinColumn(name="pokemon_sprites_id", referencedColumnName="id")
+     */
+    private PokemonSprites $pokemonSprites;
+
+    /**
      * @ManyToMany(targetEntity="App\Entity\Infos\Type\Type", inversedBy="pokemons", cascade={"persist"})
      * @JoinTable(name="pokemon_types",
      *      joinColumns={@JoinColumn(name="pokemon_id", referencedColumnName="id")},
@@ -91,16 +99,6 @@ class Pokemon
      * @JoinColumn(name="pokemon_species_id", nullable=true)
      */
     private PokemonSpecies $pokemonSpecies;
-
-    /**
-     * @ORM\Column(name="url_icon", type="string", length=255, nullable=true)
-     */
-    private ?string $urlIcon;
-
-    /**
-     * @ORM\Column(name="url_sprite_img", type="string", length=255, nullable=true)
-     */
-    private ?string $urlSpriteImg;
 
     /**
      * @var int|null
@@ -171,42 +169,6 @@ class Pokemon
     public function setPokemonSpecies(PokemonSpecies $pokemonSpecies): self
     {
         $this->pokemonSpecies = $pokemonSpecies;
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getUrlIcon(): ?string
-    {
-        return $this->urlIcon;
-    }
-
-    /**
-     * @param string|null $urlIcon
-     * @return Pokemon
-     */
-    public function setUrlIcon(?string $urlIcon): self
-    {
-        $this->urlIcon = $urlIcon;
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getUrlSpriteImg(): ?string
-    {
-        return $this->urlSpriteImg;
-    }
-
-    /**
-     * @param string|null $urlSpriteImg
-     * @return Pokemon
-     */
-    public function setUrlSpriteImg(?string $urlSpriteImg): self
-    {
-        $this->urlSpriteImg = $urlSpriteImg;
         return $this;
     }
 
@@ -347,6 +309,24 @@ class Pokemon
         if ($this->pokemonMovesLearnVersion->contains($pokemonMovesLearnVersion)) {
             $this->pokemonMovesLearnVersion->remove($pokemonMovesLearnVersion);
         }
+    }
+
+    /**
+     * @return PokemonSprites
+     */
+    public function getPokemonSprites(): PokemonSprites
+    {
+        return $this->pokemonSprites;
+    }
+
+    /**
+     * @param PokemonSprites $pokemonSprites
+     * @return Pokemon
+     */
+    public function setPokemonSprites(PokemonSprites $pokemonSprites): self
+    {
+        $this->pokemonSprites = $pokemonSprites;
+        return $this;
     }
 
 }
