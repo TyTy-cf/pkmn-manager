@@ -44,6 +44,11 @@ class Pokedex
     private Collection $versionGroup;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Pokedex\PokedexSpecies", mappedBy="pokedex")
+     */
+    private Collection $pokedexSpecies;
+
+    /**
      * @var Region
      * @ORM\ManyToOne(targetEntity="App\Entity\Locations\Region")
      * @JoinColumn(name="region_id", nullable=true)
@@ -56,11 +61,40 @@ class Pokedex
     public function __construct()
     {
         $this->versionGroup = new ArrayCollection();
+        $this->pokedexSpecies = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @param PokedexSpecies $pokedexSpecies
+     */
+    public function addPokedexSpecies(PokedexSpecies $pokedexSpecies): void
+    {
+        if (!$this->pokedexSpecies->contains($pokedexSpecies)) {
+            $this->pokedexSpecies->add($pokedexSpecies);
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPokedexSpecies(): Collection
+    {
+        return $this->pokedexSpecies;
+    }
+
+    /**
+     * @param PokedexSpecies $versionGroup
+     */
+    public function removePokedexSpecies(PokedexSpecies $pokedexSpecies)
+    {
+        if ($this->pokedexSpecies->contains($pokedexSpecies)) {
+            $this->pokedexSpecies->removeElement($pokedexSpecies);
+        }
     }
 
     /**

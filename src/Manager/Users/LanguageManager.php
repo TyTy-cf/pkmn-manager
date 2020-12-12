@@ -6,7 +6,6 @@ use App\Entity\Users\Language;
 use App\Manager\Api\ApiManager;
 use App\Repository\Users\LanguageRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class LanguageManager
 {
@@ -25,6 +24,17 @@ class LanguageManager
      */
     private ApiManager $apiManager;
 
+    /**
+     * @var Language|null $languageUsed
+     */
+    private static ?Language $languageUsed;
+
+    /**
+     * LanguageManager constructor.
+     * @param EntityManagerInterface $em
+     * @param ApiManager $apiManager
+     * @param LanguageRepository $languageRepository
+     */
     public function __construct
     (
         EntityManagerInterface $em,
@@ -32,17 +42,19 @@ class LanguageManager
         LanguageRepository $languageRepository
     ) {
         $this->em = $em;
+        self::$languageUsed = null;
         $this->apiManager = $apiManager;
         $this->languageRepository = $languageRepository;
     }
 
     /**
-     * Return a language based on the code
-     *
      * @param string $code
      * @return Language|null
      */
     public function getLanguageByCode(string $code) {
-        return $this->languageRepository->findOneBy(['code' => $code]);
+        if (self::$languageUsed === null) {
+            self::$languageUsed =  $this->languageRepository->findOneBy(['code' => $code]);
+        }
+        return self::$languageUsed;
     }
 }

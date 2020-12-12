@@ -3,15 +3,11 @@
 
 namespace App\Entity\Pokemon;
 
-use App\Entity\Infos\Ability;
 use App\Entity\Infos\Type\Type;
 use App\Entity\Moves\PokemonMovesLearnVersion;
 use App\Entity\Stats\StatsEffort;
 use App\Entity\Traits\TraitApi;
-use App\Entity\Traits\TraitLanguage;
-use App\Entity\Traits\TraitNames;
 use App\Entity\Traits\TraitNomenclature;
-use App\Entity\Traits\TraitSlug;
 use App\Entity\Traits\TraitStatsPkmn;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -67,13 +63,13 @@ class Pokemon
 
     /**
      * @var PokemonSprites $pokemonSprites
-     * @OneToOne(targetEntity="App\Entity\Pokemon\PokemonSprites")
+     * @OneToOne(targetEntity="App\Entity\Pokemon\PokemonSprites", fetch="EAGER")
      * @JoinColumn(name="pokemon_sprites_id", referencedColumnName="id")
      */
     private PokemonSprites $pokemonSprites;
 
     /**
-     * @ManyToMany(targetEntity="App\Entity\Infos\Type\Type", inversedBy="pokemons", cascade={"persist"})
+     * @ManyToMany(targetEntity="App\Entity\Infos\Type\Type", inversedBy="pokemons", fetch="EAGER")
      * @JoinTable(name="pokemon_types",
      *      joinColumns={@JoinColumn(name="pokemon_id", referencedColumnName="id")},
      *      inverseJoinColumns={@JoinColumn(name="type_id", referencedColumnName="id")}
@@ -82,7 +78,7 @@ class Pokemon
     private Collection $types;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Moves\PokemonMovesLearnVersion", mappedBy="pokemon", fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="App\Entity\Moves\PokemonMovesLearnVersion", mappedBy="pokemon", fetch="EAGER")
      */
     private Collection $pokemonMovesLearnVersion;
 
@@ -95,7 +91,7 @@ class Pokemon
 
     /**
      * @var PokemonSpecies
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pokemon\PokemonSpecies", inversedBy="pokemons")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Pokemon\PokemonSpecies", inversedBy="pokemons", fetch="EAGER")
      * @JoinColumn(name="pokemon_species_id", nullable=true)
      */
     private PokemonSpecies $pokemonSpecies;

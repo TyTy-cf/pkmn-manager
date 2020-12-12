@@ -34,12 +34,33 @@ class GenerationRepository extends AbstractRepository
         Language $language, string $number
     ): ?Generation
     {
-        $qb = $this->createQueryBuilder('generation');
-        $qb->join('generation.language', 'language');
-        $qb->where('language = :lang');
-        $qb->andWhere('generation.number = :number');
-        $qb->setParameter('lang', $language);
-        $qb->setParameter('number', $number);
-        return $qb->getQuery()->getOneOrNullResult();
+        return $this->createQueryBuilder('generation')
+            ->select('generation')
+            ->join('generation.language', 'language')
+            ->where('language = :lang')
+            ->andWhere('generation.number = :number')
+            ->setParameter('lang', $language)
+            ->setParameter('number', $number)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
     }
+
+    /**
+     * @param Language $language
+     * @return int|mixed|string
+     */
+    public function getGenerationByLanguage(Language $language)
+    {
+        return $this->createQueryBuilder('generation')
+            ->select('generation', 'region')
+            ->join('generation.language', 'language')
+            ->join('generation.mainRegion', 'region')
+            ->where('language = :language')
+            ->setParameter(':language', $language)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 }

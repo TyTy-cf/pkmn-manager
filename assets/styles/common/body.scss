@@ -10,4 +10,10 @@ body {
 .bold-link {
   font-weight: 700 !important;
   font-size: 80%;
+
+  &.fs-120 {
+    font-size: 120%;
+  }
+
 }
+

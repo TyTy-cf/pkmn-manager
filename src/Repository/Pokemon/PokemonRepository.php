@@ -4,6 +4,7 @@ namespace App\Repository\Pokemon;
 
 use App\Entity\Pokemon\Pokemon;
 use App\Entity\Users\Language;
+use App\Entity\Versions\Generation;
 use App\Repository\AbstractRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -73,6 +74,45 @@ class PokemonRepository extends AbstractRepository
         return $this->createQueryBuilder('pokemon')
             ->select('pokemon.name')
             ->where('pokemon.language = :language')
+            ->setParameter('language', $language)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @param Language $language
+     * @return int|mixed|string
+     */
+    public function getAllPokemonsListByLanguage(Language $language)
+    {
+        return $this->createQueryBuilder('pokemon')
+            ->select('pokemon', 'types')
+            ->leftJoin('pokemon.pokemonSprites', 'pokemonSprites')
+            ->join('pokemon.types', 'types')
+            ->where('pokemon.language = :lang')
+            ->setParameter('lang', $language)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @param Generation $generation
+     * @param Language|null $language
+     * @return int|mixed|string
+     */
+    public function getPokemonsByGenerationAndLanguage(Generation $generation, Language $language)
+    {
+        return $this->createQueryBuilder('pokemon')
+            ->select('pokemon', 'types', 'sprites')
+            ->join('pokemon.types', 'types')
+            ->join('pokemon.pokemonSprites', 'sprites')
+            ->join('pokemon.pokemonSpecies', 'pokemonSpecies')
+            ->join('pokemonSpecies.generation', 'generation')
+            ->where('pokemon.language = :language')
+            ->andWhere('generation = :generation')
+            ->setParameter('generation', $generation)
             ->setParameter('language', $language)
             ->getQuery()
             ->getResult()

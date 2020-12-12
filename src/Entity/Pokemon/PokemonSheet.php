@@ -41,7 +41,7 @@ class PokemonSheet
     private int $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="pokemon")
+     * @ORM\OneToOne(targetEntity="App\Entity\Pokemon\Pokemon")
      * @ORM\JoinColumn(name="name_pokemon", referencedColumnName="id")
      */
     private $namePokemon;

@@ -90,6 +90,16 @@ class PokedexManager extends AbstractManager
     }
 
     /**
+     * @param Region $region
+     * @param Language $language
+     * @return
+     */
+    public function getPokedexByRegion(Region $region, Language $language)
+    {
+        return $this->pokedexRepository->getPokedexByRegion($region, $language);
+    }
+
+    /**
      * @param Language $language
      * @param $apiResponse
      * @throws TransportExceptionInterface

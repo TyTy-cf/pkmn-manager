@@ -4,11 +4,13 @@
 namespace App\Manager\Versions;
 
 
+use App\Entity\Locations\Region;
 use App\Entity\Users\Language;
 use App\Entity\Versions\Generation;
 use App\Manager\AbstractManager;
 use App\Manager\Api\ApiManager;
 use App\Manager\TextManager;
+use App\Repository\Location\RegionRepository;
 use App\Repository\Versions\GenerationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
@@ -21,11 +23,17 @@ class GenerationManager extends AbstractManager
     private GenerationRepository $generationRepository;
 
     /**
+     * @var RegionRepository $regionRepo
+     */
+    private RegionRepository $regionRepo;
+
+    /**
      * PokemonManager constructor.
      *
      * @param EntityManagerInterface $entityManager
      * @param ApiManager $apiManager
      * @param TextManager $textManager
+     * @param RegionRepository $regionRepo
      * @param GenerationRepository $generationRepository
      */
     public function __construct
@@ -33,9 +41,11 @@ class GenerationManager extends AbstractManager
         EntityManagerInterface $entityManager,
         ApiManager $apiManager,
         TextManager $textManager,
+        RegionRepository $regionRepo,
         GenerationRepository $generationRepository
     )
     {
+        $this->regionRepo = $regionRepo;
         $this->generationRepository = $generationRepository;
         parent::__construct($entityManager, $apiManager, $textManager);
     }
@@ -51,6 +61,15 @@ class GenerationManager extends AbstractManager
 
     /**
      * @param Language $language
+     * @return int|mixed|string
+     */
+    public function getAllGenerationsByLanguage(Language $language)
+    {
+        return $this->generationRepository->getGenerationByLanguage($language);
+    }
+
+    /**
+     * @param Language $language
      * @param $generation
      * @throws TransportExceptionInterface
      */
@@ -61,30 +80,34 @@ class GenerationManager extends AbstractManager
             $language, Generation::class, $generation['name']
         );
 
-        if ($this->getGenerationBySlug($slug) === null)
+        //Fetch URL details type
+        $urlDetailed = $this->apiManager->getDetailed($generation['url'])->toArray();
+        if (($newGeneration = $this->getGenerationBySlug($slug)) === null)
         {
-            //Fetch URL details type
-            $urlDetailed = $this->apiManager->getDetailed($generation['url'])->toArray();
+            // Fetch name & description according the language
+            $generationLang = $this->apiManager->getNameBasedOnLanguageFromArray(
+                $language->getCode(), $urlDetailed
+            );
+            $splittedGeneration = explode(' ', $generationLang);
 
-            if ($this->getGenerationBySlug($slug) === null)
-            {
-                // Fetch name & description according the language
-                $generationLang = $this->apiManager->getNameBasedOnLanguageFromArray(
-                    $language->getCode(), $urlDetailed
+            $region = null;
+            if ($urlDetailed['main_region'] !== null) {
+                $slug = $this->textManager->generateSlugFromClassWithLanguage(
+                    $language, Region::class, $urlDetailed['main_region']['name']
                 );
-                $splittedGeneration = explode(' ', $generationLang);
-
-                $newGeneration = (new Generation())
-                    ->setSlug($slug)
-                    ->setCode(Generation::$relationArray[$urlDetailed['id']])
-                    ->setLanguage($language)
-                    ->setNumber($urlDetailed['id'])
-                    ->setName($splittedGeneration[0] . ' ' . $urlDetailed['id'])
-                ;
-                $this->entityManager->persist($newGeneration);
-                $this->entityManager->flush();
+                $region = $this->regionRepo->findOneBySlug($slug);
             }
+            $newGeneration = (new Generation())
+                ->setSlug($slug)
+                ->setCode(Generation::$relationArray[$urlDetailed['id']])
+                ->setLanguage($language)
+                ->setNumber($urlDetailed['id'])
+                ->setName($splittedGeneration[0] . ' ' . $urlDetailed['id'])
+                ->setMainRegion($region)
+            ;
+            $this->entityManager->persist($newGeneration);
         }
+        $this->entityManager->flush();
     }
 
 }

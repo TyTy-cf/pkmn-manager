@@ -4,11 +4,11 @@
 namespace App\Entity\Versions;
 
 
-use App\Entity\Traits\TraitLanguage;
-use App\Entity\Traits\TraitNames;
+use App\Entity\Locations\Region;
 use App\Entity\Traits\TraitNomenclature;
-use App\Entity\Traits\TraitSlug;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\OneToOne;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Versions\GenerationRepository")
@@ -34,6 +34,14 @@ class Generation
      * @ORM\Column(type="string", length=2)
      */
     private string $code;
+
+    /**
+     * @var Region
+     *
+     * @OneToOne(targetEntity="App\Entity\Locations\Region", inversedBy="generation")
+     * @JoinColumn(name="main_region_id", referencedColumnName="id")
+     */
+    private Region $mainRegion;
 
     /**
      * @var array|string[]
@@ -69,7 +77,7 @@ class Generation
      * @param string $number
      * @return Generation
      */
-    public function setNumber(string $number): Generation
+    public function setNumber(string $number): self
     {
         $this->number = $number;
         return $this;
@@ -87,9 +95,27 @@ class Generation
      * @param string $code
      * @return Generation
      */
-    public function setCode(string $code): Generation
+    public function setCode(string $code): self
     {
         $this->code = $code;
+        return $this;
+    }
+
+    /**
+     * @return Region
+     */
+    public function getMainRegion(): Region
+    {
+        return $this->mainRegion;
+    }
+
+    /**
+     * @param Region $mainRegion
+     * @return Generation
+     */
+    public function setMainRegion(Region $mainRegion): self
+    {
+        $this->mainRegion = $mainRegion;
         return $this;
     }
 

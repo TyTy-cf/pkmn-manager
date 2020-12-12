@@ -7,5 +7,7 @@ body {
 .bold-link {
   font-weight: 700 !important;
   font-size: 80%; }
+  .bold-link.fs-120 {
+    font-size: 120%; }
 
 /*# sourceMappingURL=body.css.map */

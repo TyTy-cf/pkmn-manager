@@ -3,19 +3,18 @@
 
 namespace App\Controller\Pokemon;
 
+use App\Entity\Pokemon\Pokemon;
+use App\Entity\Versions\Generation;
 use App\Manager\Api\ApiManager;
 use App\Manager\Pokemon\PokemonManager;
 use App\Form\SearchPokemonType;
 use App\Manager\Users\LanguageManager;
-use Doctrine\ORM\NonUniqueResultException;
-use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class PokemonController extends AbstractController
 {
@@ -55,14 +54,46 @@ class PokemonController extends AbstractController
     }
 
     /**
-     * Display the last pokemon add in the database
+     * Display the characteristic for one pokemon
      *
-     * @Route (path="/", name="index")
+     * @Route(path="/pokemon/{slug}", name="profile_pokemon", requirements={"slug": ".+"})
+     * @ParamConverter(class="App\Entity\Pokemon\Pokemon", options={"mapping": {"slug" : "slug"}})
+     *
+     * @param Request $request
+     * @param Pokemon $pokemon
+     * @return Response
+     *
+     */
+    function displayProfile(Request $request, Pokemon $pokemon): Response
+    {
+        return $this->render('Pokemon/profile.html.twig', [
+            'pokemon' => $pokemon,
+        ]);
+    }
+
+    /**
+     * @Route(path="/pokemon/search", name="pokemon_search")
+     *
+     * @param Request $request
      * @return Response
      */
-    public function index(): Response
-    {
-        return $this->redirectToRoute('listing', array('offset' => 0));
+    function searchPokemon(Request $request): Response {
+        $language = $this->languageManager->getLanguageByCode('fr');
+        // Création du formulaire de recherche
+        $searchPokemonForm = $this->createForm(SearchPokemonType::class);
+        $searchPokemonForm->handleRequest($request);
+
+        //Si formulaire est soumis ET valide
+        if ($searchPokemonForm->isSubmitted() && $searchPokemonForm->isValid()) {
+            $pokemon = $this->pokemonManager->getPokemonByNameAndLanguage(
+                $searchPokemonForm->getData()['name_pokemon'], $language
+            );
+            return $this->redirectToRoute('profile_pokemon', ['slug' => $pokemon->getSlug()]);
+        }
+
+        return $this->render('Pokemon/listing.html.twig', [
+            'pokemonsList' => $this->pokemonManager->getAllPokemonsListByLanguage($language),
+        ]);
     }
 
     /**
@@ -75,71 +106,5 @@ class PokemonController extends AbstractController
         return new JsonResponse($this->pokemonManager->getAllPokemonNameForLanguage(
             $this->languageManager->getLanguageByCode('fr')
         ));
-    }
-
-    /**
-     * Display pokemon list
-     *
-     * @Route(path="/pokemons/{offset}", name="listing")
-     *
-     * @param Request $request
-     * @return Response
-     *
-     */
-    function listing(Request $request): Response
-    {
-        //Création du formulaire de recherche
-        $searchPokemonForm = $this->createForm(SearchPokemonType::class);
-        $searchPokemonForm->handleRequest($request);
-        $language = $this->languageManager->getLanguageByCode('fr');
-
-        //Si formulaire est soumis ET valide
-        if ($searchPokemonForm->isSubmitted() && $searchPokemonForm->isValid()) {
-            $namePokemon = $searchPokemonForm->getData();
-            $pokemon = $this->pokemonManager->getPokemonByNameAndLanguage(
-                $namePokemon['name_pokemon'], $language
-            );
-            return $this->redirectToRoute('profile_pokemon', ['slug' => $pokemon->getSlug()]);
-        }
-
-        //Affichage de la liste
-        $offset = $request->get('offset');
-        $limit = 150;
-        //Récupération de la pagination
-        if ($offset < 150) {
-            $offset = 0;
-        }
-
-        $pokemonsList = $this->pokemonManager->getPokemonOffsetLimitByLanguage($language, $offset, $limit);
-        $pokemonsList = $this->pokemonManager->getAllPokemonsListByLanguage($language);
-        dump($pokemonsList);
-        die();
-        //Données pour autocompletion
-        $jsonAllPokemon = $this->getAllPokemonNamesJson();
-
-        return $this->render('Pokemon/listing.html.twig', [
-            'pokemonsList' => $pokemonsList,
-            'formSearchPokemon' => $searchPokemonForm->createView(),
-            'offset' => $offset,
-            'jsonAllPokemon' => $jsonAllPokemon,
-        ]);
-    }
-
-    /**
-     * Display the characteristic for one pokemon
-     *
-     * @Route(path="/pokemon/{slug}", name="profile_pokemon", requirements={"slug": ".+"})
-     *
-     * @param Request $request
-     * @return Response
-     *
-     * @throws NonUniqueResultException
-     */
-    function displayProfile(Request $request): Response
-    {
-        $pokemon = $this->pokemonManager->getPokemonPofileBySlug($request->get('slug'));
-        return $this->render('Pokemon/profile.html.twig', [
-            'pokemon' => $this->pokemonManager->getPokemonPofileBySlug($request->get('slug')),
-        ]);
     }
 }

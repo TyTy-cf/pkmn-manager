@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+{% block title %}Catch 'em all{% endblock %}
+
+{% block body %}
+    <div class="container col-9 p-2">
+        <h2>{{ 'index.generation.all.title'|trans }}</h2>
+        <div>
+            <table class="table-striped w-100">
+                <tbody>
+                {% for generation in generationList %}
+                    <tr>
+                        <td class="p-4 m-2">
+                            <span>
+                                <a class="bold-link fs-120" href="{{ path('pokemon_list_generation', {slug_generation: generation.slug }) }}">
+                                    {{ 'index.generation.all.content'|trans
+                                        ({'%num%': generation.number, '%region%': generation.mainRegion.name})
+                                    }}
+                                </a>
+                            </span>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

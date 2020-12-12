@@ -30,7 +30,13 @@ index:
         pokemons: "Pokémons avec cette capacité"
     egg_group:
         pokemons: "Pokémons ayant ce groupe d'oeuf"
+    generation:
+        all:
+            title: "Voir les pokémons de toutes les générations :"
+            content: "Voir les pokémons de la génération %num%, pour le Pokedex de %region%"
 
 pokedex:
     all:
         title: "Tous les pokedex :"
+    description:
+        listing: "Liste des Pokemons du %pokedex%"

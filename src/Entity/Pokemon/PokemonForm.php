@@ -3,6 +3,7 @@
 namespace App\Entity\Pokemon;
 
 use App\Entity\Traits\TraitNomenclature;
+use App\Entity\Versions\VersionGroup;
 use App\Repository\Pokemon\PokemonFormRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;

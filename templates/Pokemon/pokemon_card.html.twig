@@ -2,8 +2,10 @@
 <div class="pkmn-card">
     <div>
         <span>
-            <a href="{{ path('profile_pokemon', {slug: pokemon.slug }) }}"></a>
-            <img class="size-100 mb-2" src="{{ pokemon.pokemonSprites.spriteFrontDefault }}" alt="Pokemon {{ pokemon.name }}">
+            {% if pokemon.pokemonSprites.spriteFrontDefault is not null %}
+                <a href="{{ path('profile_pokemon', {slug: pokemon.slug }) }}"></a>
+                <img class="size-100 mb-2" src="{{ pokemon.pokemonSprites.spriteFrontDefault }}" alt="Pokemon {{ pokemon.name }}">
+            {% endif %}
         </span>
     </div>
     <div>

@@ -77,7 +77,6 @@ class PokemonFormCommand extends AbstractCommand
             //Initialise progress bar
             $progressBar = new ProgressBar($output, sizeof($arrayPokemons));
             $progressBar->start();
-
             foreach ($arrayPokemons as $pokemon) {
                 $this->manager->createPokemonFormFromPokemon($pokemon, $language);
                 $progressBar->advance();

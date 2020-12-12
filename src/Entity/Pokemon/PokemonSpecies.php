@@ -4,6 +4,7 @@ namespace App\Entity\Pokemon;
 
 use App\Entity\Pokedex\EggGroup;
 use App\Entity\Traits\TraitNomenclature;
+use App\Entity\Versions\Generation;
 use App\Repository\Pokemon\PokemonSpeciesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -102,6 +103,13 @@ class PokemonSpecies
      * @ORM\OneToMany(targetEntity="App\Entity\Pokedex\PokedexSpecies", mappedBy="pokemonSpecies")
      */
     private Collection $pokedexSpecies;
+
+    /**
+     * @var Generation|null
+     * @ORM\ManyToOne(targetEntity="App\Entity\Versions\Generation")
+     * @JoinColumn(name="generation_id", nullable=true)
+     */
+    private ?Generation $generation;
 
     /**
      * PokemonSpecies constructor.
@@ -349,6 +357,24 @@ class PokemonSpecies
     public function getPokedexSpecies()
     {
         return $this->pokedexSpecies;
+    }
+
+    /**
+     * @return Generation|null
+     */
+    public function getGeneration(): ?Generation
+    {
+        return $this->generation;
+    }
+
+    /**
+     * @param Generation|null $generation
+     * @return PokemonSpecies
+     */
+    public function setGeneration(?Generation $generation): self
+    {
+        $this->generation = $generation;
+        return $this;
     }
 
 }

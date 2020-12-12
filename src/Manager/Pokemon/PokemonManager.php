@@ -10,6 +10,7 @@ use App\Entity\Infos\Type\Type;
 use App\Entity\Pokemon\Pokemon;
 use App\Entity\Stats\StatsEffort;
 use App\Entity\Users\Language;
+use App\Entity\Versions\Generation;
 use App\Manager\AbstractManager;
 use App\Manager\Api\ApiManager;
 use App\Manager\Infos\AbilityManager;
@@ -174,14 +175,13 @@ class PokemonManager extends AbstractManager
     }
 
     /**
-     * @param Language $language
-     * @param int $offset
-     * @param int $limit
-     * @return array|int|string
+     * @param Generation $generation
+     * @param Language|null $language
+     * @return int|mixed|string
      */
-    public function getAllPokemonsListByLanguage(Language $language)
+    public function getPokemonsByGenerationAndLanguage(Generation $generation, ?Language $language)
     {
-        return $this->pokemonRepository->getAllPokemonsListByLanguage($language);
+        return $this->pokemonRepository->getPokemonsByGenerationAndLanguage($generation, $language);
     }
 
     /**

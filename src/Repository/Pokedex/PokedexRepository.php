@@ -2,6 +2,7 @@
 
 namespace App\Repository\Pokedex;
 
+use App\Entity\Locations\Region;
 use App\Entity\Pokedex\Pokedex;
 use App\Entity\Users\Language;
 use App\Repository\AbstractRepository;
@@ -47,5 +48,23 @@ class PokedexRepository extends AbstractRepository
             ->getQuery()
             ->getResult()
         );
+    }
+
+    /**
+     * @param Region $region
+     * @param Language $language
+     * @return int|mixed|string
+     */
+    public function getPokedexByRegion(Region $region, Language $language)
+    {
+        return $this->createQueryBuilder('pokedex')
+            ->select('pokedex')
+            ->where('pokedex.region = :region')
+            ->andWhere('pokedex.language = :language')
+            ->setParameter('region', $region)
+            ->setParameter('language', $language)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

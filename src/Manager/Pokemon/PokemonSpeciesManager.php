@@ -7,15 +7,14 @@ namespace App\Manager\Pokemon;
 use App\Entity\Pokemon\Pokemon;
 use App\Entity\Pokemon\PokemonSpecies;
 use App\Entity\Users\Language;
-use App\Entity\Versions\Version;
 use App\Manager\AbstractManager;
 use App\Manager\Api\ApiManager;
 use App\Manager\Pokedex\EggGroupManager;
 use App\Manager\TextManager;
+use App\Manager\Versions\GenerationManager;
 use App\Manager\Versions\VersionManager;
 use App\Repository\Pokemon\PokemonSpeciesRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class PokemonSpeciesManager extends AbstractManager
@@ -46,6 +45,11 @@ class PokemonSpeciesManager extends AbstractManager
     private VersionManager $versionManager;
 
     /**
+     * @var GenerationManager $generationManager
+     */
+    private GenerationManager $generationManager;
+
+    /**
      * PokemonManager constructor.
      *
      * @param EntityManagerInterface $entityManager
@@ -54,6 +58,7 @@ class PokemonSpeciesManager extends AbstractManager
      * @param PokemonManager $pokemonManager
      * @param EggGroupManager $eggGroupManager
      * @param VersionManager $versionManager
+     * @param GenerationManager $generationManager
      * @param PokemonSpeciesVersionManager $pokemonSpeciesVersionManager
      * @param PokemonSpeciesRepository $repository
      */
@@ -65,11 +70,13 @@ class PokemonSpeciesManager extends AbstractManager
         PokemonManager $pokemonManager,
         EggGroupManager $eggGroupManager,
         VersionManager $versionManager,
+        GenerationManager $generationManager,
         PokemonSpeciesVersionManager $pokemonSpeciesVersionManager,
         PokemonSpeciesRepository $repository
     ) {
         $this->repository = $repository;
         $this->eggGroupManager = $eggGroupManager;
+        $this->generationManager = $generationManager;
         $this->pokemonManager = $pokemonManager;
         $this->versionManager = $versionManager;
         $this->pokemonSpeciesVersionManager = $pokemonSpeciesVersionManager;
@@ -167,18 +174,13 @@ class PokemonSpeciesManager extends AbstractManager
                 $pokemonSpecies,
                 $this->versionManager->getArrayVersions($language)
             );
-        } else {
-            if (!empty($urlDetailed['hatch_counter']))
+
+            if (!empty($urlDetailed['generation']))
             {
-//                $pokemonSpecies->setHatchCounter($urlDetailed['hatch_counter']);
-                // Set le evolve from species
-//                $pokemonSpecies->setEvolvesFromSpecies(
-//                    $this->getPokemonSpeciesBySlug(
-//                        $this->textManager->generateSlugFromClassWithLanguage(
-//                            $language, PokemonSpecies::class, $urlDetailed['evolves_from_species']['name']
-//                        )
-//                    )
-//                );
+                $generation = $this->generationManager->getGenerationBySlug(
+                    'fr/generation-'.$urlDetailed['generation']['name']
+                );
+                $pokemonSpecies->setGeneration($generation);
             }
         }
         $this->entityManager->flush();

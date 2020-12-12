@@ -4,13 +4,11 @@
 namespace App\Controller\Pokedex;
 
 
-use App\Entity\Versions\Version;
-use App\Manager\Api\ApiManager;
+use App\Entity\Versions\Generation;
 use App\Manager\Pokedex\PokedexManager;
 use App\Manager\Pokemon\PokemonManager;
 use App\Manager\Users\LanguageManager;
-use App\Manager\Versions\VersionGroupManager;
-use App\Manager\Versions\VersionManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -54,27 +52,22 @@ class PokedexController extends AbstractController
     }
 
     /**
-     * @Route(path="/pokedex", name="pokedex_index")
+     * Display pokemon list
+     *
+     * @Route(path="/pokemons/{slug_generation}", name="pokemon_list_generation", requirements={"slug_generation": ".+"})
+     * @ParamConverter(class="App\Entity\Versions\Generation", name="generation", options={"mapping": {"slug_generation" : "slug"}})
      *
      * @param Request $request
+     * @param Generation $generation
      * @return Response
      */
-    public function pokedexIndex(Request $request): Response {
-        $pokedex = $this->pokedexManager->getAllPokedexDetailed(
-            $this->languageManager->getLanguageByCode('fr')
-        );
-        return $this->render('Pokedex/index.html.twig', [
-            'pokedexList' => $pokedex,
+    function listing(Request $request, Generation $generation): Response
+    {
+        $language = $this->languageManager->getLanguageByCode('fr');
+        return $this->render('Pokemon/listing.html.twig', [
+            'pokedex' => $this->pokedexManager->getPokedexByRegion($generation->getMainRegion(), $language),
+            'pokemons' => $this->pokemonManager->getPokemonsByGenerationAndLanguage($generation, $language),
         ]);
     }
 
-    /**
-     * @Route(path="/pokedex/{slug}", name="pokedex_detailed", requirements={"slug": ".+"})
-     *
-     * @param Request $request
-     * @return Response
-     */
-    public function pokedexShow(Request $request): Response {
-        
-    }
 }
