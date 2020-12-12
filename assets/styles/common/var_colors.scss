@@ -1,0 +1,63 @@
+
+/**************************** Color variables ****************************/
+
+$font-special-color: #737373;
+$background : #d9e7ff;
+$background-lighter : #ebf1ff;
+
+/**************************** Classes ****************************/
+
+/**************************** Body ****************************/
+
+body {
+  background-color: $background-lighter !important;
+}
+
+.container {
+  background-color: $background !important;
+}
+
+/**************************** Global ****************************/
+
+.barchart-bar {
+  height: .75rem;
+  border-radius: 4px;
+  background-color: #ff5145;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.detailed {
+  color: $font-special-color !important;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.profile-table th {
+  color: $font-special-color;
+  font-size: .875rem;
+  font-weight: normal;
+  text-align: right;
+  min-width: 144px;
+}
+
+.hidden-talent {
+  font-style: italic;
+  display: inline;
+  font-size: 75%;
+  font-weight: 750;
+  line-height: 1;
+  padding: 0.2em;
+  white-space: nowrap;
+  text-align: center;
+  color: $font-special-color;
+}
+
+/**************************** Footer ****************************/
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: $background;
+  margin-top: 0.1em;
+}

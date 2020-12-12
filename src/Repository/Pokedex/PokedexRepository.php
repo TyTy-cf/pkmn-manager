@@ -59,8 +59,8 @@ class PokedexRepository extends AbstractRepository
     {
         return $this->createQueryBuilder('pokedex')
             ->select('pokedex')
-            ->where('pokedex.region = :region')
-            ->andWhere('pokedex.language = :language')
+            ->where('pokedex.language = :language')
+            ->andwhere('pokedex.region = :region')
             ->setParameter('region', $region)
             ->setParameter('language', $language)
             ->getQuery()

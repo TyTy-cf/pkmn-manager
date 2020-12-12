@@ -56,8 +56,8 @@ class PokemonController extends AbstractController
     /**
      * Display the characteristic for one pokemon
      *
-     * @Route(path="/pokemon/{slug}", name="profile_pokemon", requirements={"slug": ".+"})
-     * @ParamConverter(class="App\Entity\Pokemon\Pokemon", options={"mapping": {"slug" : "slug"}})
+     * @Route(path="/pokemon/{slug_pokemon}", name="profile_pokemon", requirements={"slug_pokemon": ".+"})
+     * @ParamConverter(class="App\Entity\Pokemon\Pokemon", name="pokemon", options={"mapping": {"slug_pokemon" : "slug"}})
      *
      * @param Request $request
      * @param Pokemon $pokemon

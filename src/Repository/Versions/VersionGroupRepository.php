@@ -3,6 +3,7 @@
 namespace App\Repository\Versions;
 
 use App\Entity\Users\Language;
+use App\Entity\Versions\Generation;
 use App\Entity\Versions\VersionGroup;
 use App\Repository\AbstractRepository;
 use Doctrine\ORM\NonUniqueResultException;
@@ -29,11 +30,30 @@ class VersionGroupRepository extends AbstractRepository
      */
     public function getVersionGroupByLanguageAndName(Language $language, string $name)
     {
-        $qb = $this->createQueryBuilder('version_group');
-        $qb->where('version_group.language = :lang');
-        $qb->andWhere('version_group.name = :name');
-        $qb->setParameter('lang', $language);
-        $qb->setParameter('name', $name);
-        return $qb->getQuery()->getOneOrNullResult();
+        return $this->createQueryBuilder('version_group')
+            ->where('version_group.language = :lang')
+            ->andWhere('version_group.name = :name')
+            ->setParameter('lang', $language)
+            ->setParameter('name', $name)
+            ->getQuery()->getOneOrNullResult()
+        ;
+    }
+
+    /**
+     * @param Generation $generation
+     * @param Language $language
+     * @return int|mixed|string|null
+     */
+    public function getVersionGroupOrderFromGeneration(Generation $generation, Language $language)
+    {
+        return $this->createQueryBuilder('version_group')
+            ->select('version_group.order')
+            ->where('version_group.generation = :generation')
+            ->andWhere('version_group.language = :lang')
+            ->setParameter('lang', $language)
+            ->setParameter('generation', $generation)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

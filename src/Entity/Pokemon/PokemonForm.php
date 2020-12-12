@@ -30,6 +30,13 @@ class PokemonForm
     private Pokemon $pokemon;
 
     /**
+     * @var VersionGroup|null
+     * @ORM\ManyToOne(targetEntity="App\Entity\Versions\VersionGroup")
+     * @JoinColumn(name="version_group_id")
+     */
+    private ?VersionGroup $versionGroup;
+
+    /**
      * @var bool $mega
      * @ORM\Column(name="is_mega", type="boolean", nullable=true)
      */
@@ -170,6 +177,24 @@ class PokemonForm
     public function setFormSprite(?string $formSprite): self
     {
         $this->formSprite = $formSprite;
+        return $this;
+    }
+
+    /**
+     * @return VersionGroup|null
+     */
+    public function getVersionGroup(): ?VersionGroup
+    {
+        return $this->versionGroup;
+    }
+
+    /**
+     * @param VersionGroup|null $versionGroup
+     * @return PokemonForm
+     */
+    public function setVersionGroup(?VersionGroup $versionGroup): self
+    {
+        $this->versionGroup = $versionGroup;
         return $this;
     }
 

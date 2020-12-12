@@ -15,7 +15,6 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class PokemonFormCommand extends AbstractCommand
 {
@@ -26,6 +25,7 @@ class PokemonFormCommand extends AbstractCommand
 
     /**
      * ExcecCommand constructor
+     *
      * @param PokemonFormManager $pokemonFormManager
      * @param PokemonManager $pokemonManager
      * @param LanguageManager $languageManager
@@ -50,14 +50,15 @@ class PokemonFormCommand extends AbstractCommand
      */
     protected function configure()
     {
-        $this
-            ->setName('app:pokemon-form:all')
+        $this->setName('app:pokemon-form:all')
             ->addArgument('lang', InputArgument::REQUIRED, 'Language used')
-            ->setDescription('Execute app:pokemon to fetch all pokemon for language');
+            ->setDescription('Execute app:pokemon to fetch all pokemon for language')
+        ;
     }
 
     /**
      * Execute app:pokemon:all
+     *
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int
@@ -73,7 +74,6 @@ class PokemonFormCommand extends AbstractCommand
         {
             $language = $this->languageManager->getLanguageByCode($lang);
             $arrayPokemons = $this->pokemonManager->getAllPokemonByLanguage($language);
-
             //Initialise progress bar
             $progressBar = new ProgressBar($output, sizeof($arrayPokemons));
             $progressBar->start();

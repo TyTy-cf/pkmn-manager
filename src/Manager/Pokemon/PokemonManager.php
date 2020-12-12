@@ -7,6 +7,7 @@ namespace App\Manager\Pokemon;
 use App\Entity\Infos\Ability;
 use App\Entity\Infos\PokemonAbility;
 use App\Entity\Infos\Type\Type;
+use App\Entity\Locations\Region;
 use App\Entity\Pokemon\Pokemon;
 use App\Entity\Stats\StatsEffort;
 use App\Entity\Users\Language;
@@ -92,25 +93,12 @@ class PokemonManager extends AbstractManager
     }
 
     /**
-     * Get pokemon based on criteria
-     *
-     * @param array $array
-     * @return Pokemon[]|object[]
-     */
-    public function findBy(array $array)
-    {
-        return $this->pokemonRepository->findBy($array);
-    }
-
-    /**
      * @param Language $language
      * @return Pokemon[]
      */
     public function getAllPokemonByLanguage(Language $language)
     {
-        return $this->pokemonRepository->findBy([
-            'language' => $language,
-        ]);
+        return $this->pokemonRepository->getAllPokemonByLanguage($language);
     }
 
     /**
@@ -182,6 +170,17 @@ class PokemonManager extends AbstractManager
     public function getPokemonsByGenerationAndLanguage(Generation $generation, ?Language $language)
     {
         return $this->pokemonRepository->getPokemonsByGenerationAndLanguage($generation, $language);
+    }
+
+    /**
+     * @param Region $region
+     * @param array $versionGroupIds
+     * @param Language $language
+     * @return int|mixed|string
+     */
+    public function getPokemonsByRegion(Region $region, array $versionGroupIds, Language $language)
+    {
+        return $this->pokemonRepository->getPokemonsByRegion($region, $versionGroupIds, $language);
     }
 
     /**

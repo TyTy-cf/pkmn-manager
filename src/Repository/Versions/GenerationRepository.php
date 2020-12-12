@@ -58,6 +58,7 @@ class GenerationRepository extends AbstractRepository
             ->join('generation.mainRegion', 'region')
             ->where('language = :language')
             ->setParameter(':language', $language)
+            ->orderBy('generation.number')
             ->getQuery()
             ->getResult()
         ;

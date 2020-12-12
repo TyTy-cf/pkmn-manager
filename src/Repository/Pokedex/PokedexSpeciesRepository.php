@@ -2,7 +2,9 @@
 
 namespace App\Repository\Pokedex;
 
+use App\Entity\Locations\Region;
 use App\Entity\Pokedex\PokedexSpecies;
+use App\Entity\Users\Language;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -18,33 +20,4 @@ class PokedexSpeciesRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, PokedexSpecies::class);
     }
-
-    // /**
-    //  * @return PokedexSpecies[] Returns an array of PokedexSpecies objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?PokedexSpecies
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

@@ -47,6 +47,13 @@ class VersionGroup
     private Generation $generation;
 
     /**
+     * @var int $order
+     *
+     * @ORM\Column(name="order", type="integer", nullable=true)
+     */
+    private int $order;
+
+    /**
      * Pokedex constructor.
      */
     public function __construct()
@@ -139,6 +146,24 @@ class VersionGroup
         if ($this->pokedex->contains($pokedex)) {
             $this->pokedex->removeElement($pokedex);
         }
+    }
+
+    /**
+     * @return int
+     */
+    public function getOrder(): int
+    {
+        return $this->order;
+    }
+
+    /**
+     * @param int $order
+     * @return VersionGroup
+     */
+    public function setOrder(int $order): self
+    {
+        $this->order = $order;
+        return $this;
     }
 
 }

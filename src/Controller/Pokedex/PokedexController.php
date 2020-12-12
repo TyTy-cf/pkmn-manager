@@ -4,10 +4,13 @@
 namespace App\Controller\Pokedex;
 
 
+use App\Entity\Pokedex\PokedexSpecies;
 use App\Entity\Versions\Generation;
 use App\Manager\Pokedex\PokedexManager;
 use App\Manager\Pokemon\PokemonManager;
 use App\Manager\Users\LanguageManager;
+use App\Manager\Versions\VersionGroupManager;
+use App\Repository\Pokedex\PokedexSpeciesRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -59,14 +62,19 @@ class PokedexController extends AbstractController
      *
      * @param Request $request
      * @param Generation $generation
+     * @param VersionGroupManager $managerVg
      * @return Response
      */
-    function listing(Request $request, Generation $generation): Response
+    function listing(Request $request, Generation $generation, VersionGroupManager $managerVg): Response
     {
         $language = $this->languageManager->getLanguageByCode('fr');
         return $this->render('Pokemon/listing.html.twig', [
             'pokedex' => $this->pokedexManager->getPokedexByRegion($generation->getMainRegion(), $language),
-            'pokemons' => $this->pokemonManager->getPokemonsByGenerationAndLanguage($generation, $language),
+            'pokemons' => $this->pokemonManager->getPokemonsByRegion(
+                $generation->getMainRegion(),
+                $managerVg->getVersionGroupOrderFromGeneration($generation, $language),
+                $language
+            ),
         ]);
     }
 

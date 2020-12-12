@@ -33,7 +33,6 @@ index:
     generation:
         all:
             title: "Voir les pokémons de toutes les générations :"
-            content: "Voir les pokémons de la génération %num%, pour le Pokedex de %region%"
 
 pokedex:
     all:

@@ -5,6 +5,7 @@ namespace App\Manager\Versions;
 
 
 use App\Entity\Users\Language;
+use App\Entity\Versions\Generation;
 use App\Entity\Versions\VersionGroup;
 use App\Manager\AbstractManager;
 use App\Manager\Api\ApiManager;
@@ -84,12 +85,13 @@ class VersionGroupManager extends AbstractManager
     }
 
     /**
-     * @param int $generation
+     * @param Generation $generation
+     * @param Language $language
      * @return VersionGroup[]
      */
-    public function getVersionGroupFromGenerationId(int $generation)
+    public function getVersionGroupOrderFromGeneration(Generation $generation, Language $language)
     {
-        return $this->versionGroupRepository->findBy(['generation' => $generation]);
+        return $this->versionGroupRepository->getVersionGroupOrderFromGeneration($generation, $language);
     }
 
     /**
@@ -155,6 +157,7 @@ class VersionGroupManager extends AbstractManager
                 ->setLanguage($language)
                 ->setName($urlDetailed['name'])
                 ->setGeneration($generation)
+                ->setOrder($urlDetailed['order'])
             ;
             $this->entityManager->persist($newVersionGroup);
             $this->entityManager->flush();

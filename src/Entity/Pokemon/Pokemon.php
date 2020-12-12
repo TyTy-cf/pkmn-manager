@@ -63,13 +63,13 @@ class Pokemon
 
     /**
      * @var PokemonSprites $pokemonSprites
-     * @OneToOne(targetEntity="App\Entity\Pokemon\PokemonSprites", fetch="EAGER")
+     * @OneToOne(targetEntity="App\Entity\Pokemon\PokemonSprites")
      * @JoinColumn(name="pokemon_sprites_id", referencedColumnName="id")
      */
     private PokemonSprites $pokemonSprites;
 
     /**
-     * @ManyToMany(targetEntity="App\Entity\Infos\Type\Type", inversedBy="pokemons", fetch="EAGER")
+     * @ManyToMany(targetEntity="App\Entity\Infos\Type\Type", inversedBy="pokemons")
      * @JoinTable(name="pokemon_types",
      *      joinColumns={@JoinColumn(name="pokemon_id", referencedColumnName="id")},
      *      inverseJoinColumns={@JoinColumn(name="type_id", referencedColumnName="id")}
@@ -78,7 +78,7 @@ class Pokemon
     private Collection $types;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Moves\PokemonMovesLearnVersion", mappedBy="pokemon", fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="App\Entity\Moves\PokemonMovesLearnVersion", mappedBy="pokemon")
      */
     private Collection $pokemonMovesLearnVersion;
 
@@ -91,7 +91,7 @@ class Pokemon
 
     /**
      * @var PokemonSpecies
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pokemon\PokemonSpecies", inversedBy="pokemons", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Pokemon\PokemonSpecies", inversedBy="pokemons")
      * @JoinColumn(name="pokemon_species_id", nullable=true)
      */
     private PokemonSpecies $pokemonSpecies;

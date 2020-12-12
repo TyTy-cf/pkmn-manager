@@ -12,10 +12,11 @@
                         <td class="p-4 m-2">
                             <span>
                                 <a class="bold-link fs-120" href="{{ path('pokemon_list_generation', {slug_generation: generation.slug }) }}">
-                                    {{ 'index.generation.all.content'|trans
-                                        ({'%num%': generation.number, '%region%': generation.mainRegion.name})
-                                    }}
+                                    {{ generation.name }}
                                 </a>
+                                <div class="detailed">
+                                    ({{ generation.mainRegion.name }})
+                                </div>
                             </span>
                         </td>
                     </tr>

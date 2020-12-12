@@ -1,0 +1,48 @@
+/**************************** Color variables ****************************/
+/**************************** Classes ****************************/
+/**************************** Body ****************************/
+body {
+  background-color: #ebf1ff !important; }
+
+.container {
+  background-color: #d9e7ff !important; }
+
+/**************************** Global ****************************/
+.barchart-bar {
+  height: .75rem;
+  border-radius: 4px;
+  background-color: #ff5145;
+  border: 1px solid rgba(0, 0, 0, 0.15); }
+
+.detailed {
+  color: #737373 !important;
+  font-size: 1em;
+  font-weight: bold; }
+
+.profile-table th {
+  color: #737373;
+  font-size: .875rem;
+  font-weight: normal;
+  text-align: right;
+  min-width: 144px; }
+
+.hidden-talent {
+  font-style: italic;
+  display: inline;
+  font-size: 75%;
+  font-weight: 750;
+  line-height: 1;
+  padding: 0.2em;
+  white-space: nowrap;
+  text-align: center;
+  color: #737373; }
+
+/**************************** Footer ****************************/
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: #d9e7ff;
+  margin-top: 0.1em; }
+
+/*# sourceMappingURL=var_colors.css.map */

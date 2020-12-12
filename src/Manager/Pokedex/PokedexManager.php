@@ -9,7 +9,6 @@ use App\Entity\Pokedex\Pokedex;
 use App\Entity\Pokedex\PokedexSpecies;
 use App\Entity\Pokemon\PokemonSpecies;
 use App\Entity\Users\Language;
-use App\Entity\Versions\Version;
 use App\Manager\AbstractManager;
 use App\Manager\Api\ApiManager;
 use App\Manager\Pokemon\PokemonSpeciesManager;
@@ -81,18 +80,9 @@ class PokedexManager extends AbstractManager
     }
 
     /**
-     * @param Language $language
-     * @return int|mixed|string
-     */
-    public function getAllPokedexDetailed(Language $language)
-    {
-        return $this->pokedexRepository->getAllPokedexDetailed($language);
-    }
-
-    /**
      * @param Region $region
      * @param Language $language
-     * @return
+     * @return int|mixed|string
      */
     public function getPokedexByRegion(Region $region, Language $language)
     {
@@ -146,25 +136,6 @@ class PokedexManager extends AbstractManager
             $this->entityManager->persist($pokedex);
 
             // Create the link between pokedexes and the pokemon species number inside the pokedex
-            if (sizeof($urlPokedexDetailed['version_groups']) > 0)
-            {
-                foreach($urlPokedexDetailed['pokemon_entries'] as $pokemonSpeciesName)
-                {
-                    $pokemonSpecies = $this->pokemonSpeciesManager->getPokemonSpeciesBySlug(
-                        $this->textManager->generateSlugFromClassWithLanguage(
-                            $language,
-                            PokemonSpecies::class,
-                            $pokemonSpeciesName['pokemon_species']['name']
-                        )
-                    );
-                    $pokedexSpecies = (new PokedexSpecies())
-                        ->setNumber($pokemonSpeciesName['entry_number'])
-                        ->setPokedex($pokedex)
-                        ->setPokemonSpecies($pokemonSpecies)
-                    ;
-                    $this->entityManager->persist($pokedexSpecies);
-                }
-            }
             if (!empty($urlPokedexDetailed['pokemon_entries'])) {
                 foreach($urlPokedexDetailed['pokemon_entries'] as $pokemonSpeciesName)
                 {

@@ -2,7 +2,9 @@
 
 namespace App\Repository\Pokemon;
 
+use App\Entity\Locations\Region;
 use App\Entity\Pokemon\Pokemon;
+use App\Entity\Pokemon\PokemonForm;
 use App\Entity\Users\Language;
 use App\Entity\Versions\Generation;
 use App\Repository\AbstractRepository;
@@ -20,6 +22,21 @@ class PokemonRepository extends AbstractRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Pokemon::class);
+    }
+
+    /**
+     * @param Language $language
+     * @return int|mixed|string
+     */
+    public function getAllPokemonByLanguage(Language $language)
+    {
+        return $this->createQueryBuilder('pokemon')
+            ->select('pokemon')
+            ->where('pokemon.language = :lang')
+            ->setParameter('lang', $language)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
     /**
@@ -117,6 +134,49 @@ class PokemonRepository extends AbstractRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    /**
+     * @param Region $region
+     * @param array $versionGroupOrder
+     * @param Language $language
+     * @return int|mixed|string
+     */
+    public function getPokemonsByRegion(Region $region, array $versionGroupOrder, Language $language)
+    {
+        $qb = $this->createQueryBuilder('pokemon')
+            ->select('pokemon', 'pokemon_species', 'pokemon_sprites', 'pokedex_species', 'forms')
+            ->join('pokemon.pokemonSpecies', 'pokemon_species')
+            ->join('pokemon.pokemonSprites', 'pokemon_sprites')
+            ->join('pokemon_species.pokedexSpecies', 'pokedex_species')
+            ->join('pokedex_species.pokedex', 'pokedex')
+            ->leftJoin('pokemon.pokemonForms', 'forms')
+            ->where('pokedex.region = :region')
+            ->andwhere('pokemon.language = :language')
+            ->setParameter('region', $region)
+            ->setParameter('language', $language)
+            ->orderBy('pokedex_species.number', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+
+        // Remove pokemon with form from newest generations
+        foreach ($qb as $key => $pokemon) {
+            /** @var Pokemon $pokemon */
+            $pokemonForms = $pokemon->getPokemonForms();
+            if (sizeof($pokemonForms) !== 0) {
+                foreach($pokemonForms as $form) {
+                    foreach($versionGroupOrder as $vgOrder) {
+                        /** @var PokemonForm $form */
+                        if ($form->getVersionGroup()->getId() >= $vgOrder['order']) {
+                            unset($qb[$key]);
+                        }
+                    }
+                }
+            }
+        }
+
+        return $qb;
     }
 
 }

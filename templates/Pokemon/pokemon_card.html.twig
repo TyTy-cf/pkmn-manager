@@ -3,14 +3,22 @@
     <div>
         <span>
             {% if pokemon.pokemonSprites.spriteFrontDefault is not null %}
-                <a href="{{ path('profile_pokemon', {slug: pokemon.slug }) }}"></a>
-                <img class="size-100 mb-2" src="{{ pokemon.pokemonSprites.spriteFrontDefault }}" alt="Pokemon {{ pokemon.name }}">
+                <a href="{{ path('profile_pokemon', {slug_pokemon: pokemon.slug }) }}"></a>
+                <img class="mb-2" src="{{ pokemon.pokemonSprites.spriteFrontDefault }}" alt="Pokemon {{ pokemon.name }}">
+            {% else %}
+                <div class="h-100 mt-1">
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                </div>
             {% endif %}
         </span>
     </div>
     <div>
         <span>
-            <a class="bold-link" href="{{ path('profile_pokemon', {slug: pokemon.slug }) }}">
+            <a class="bold-link" href="{{ path('profile_pokemon', {slug_pokemon: pokemon.slug }) }}">
                 {{ pokemon.name }}
             </a>
         </span>

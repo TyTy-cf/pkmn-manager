@@ -4,7 +4,6 @@ namespace App\Entity\Pokedex;
 
 use App\Entity\Pokemon\PokemonSpecies;
 use App\Repository\Pokedex\PokedexSpeciesRepository;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 

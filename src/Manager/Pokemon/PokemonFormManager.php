@@ -109,10 +109,12 @@ class PokemonFormManager extends AbstractManager
                     $pokemon->setName($name);
                 }
             } else {
-                $versionGroup = $this->versionGroupManager->getVersionGroupBySlug(
-                    $language->getCode().'/'.$urlDetailed['version_group']['name']
-                );
-                $newPokemonForm->setVersionGroup($versionGroup);
+                if ($newPokemonForm !== null) {
+                    $versionGroup = $this->versionGroupManager->getVersionGroupBySlug(
+                        $language->getCode().'/version-group-'.$urlDetailed['version_group']['name']
+                    );
+                    $newPokemonForm->setVersionGroup($versionGroup);
+                }
             }
         }
         $this->entityManager->flush();
