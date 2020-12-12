@@ -38,4 +38,5 @@ pokedex:
     all:
         title: "Tous les pokedex :"
     description:
-        listing: "Liste des Pokemons du %pokedex%"
+        goto: "Aller au : "
+        listing: "Pokemons du %pokedex%"

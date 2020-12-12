@@ -4,7 +4,10 @@ namespace App\Repository\Pokedex;
 
 use App\Entity\Locations\Region;
 use App\Entity\Pokedex\Pokedex;
+use App\Entity\Pokemon\Pokemon;
+use App\Entity\Pokemon\PokemonForm;
 use App\Entity\Users\Language;
+use App\Entity\Versions\Generation;
 use App\Repository\AbstractRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -22,47 +25,22 @@ class PokedexRepository extends AbstractRepository
     }
 
     /**
+     * @param Generation $generation
      * @param Language $language
      * @return int|mixed|string
      */
-    public function getAllPokedexDetailed(Language $language)
-    {
-        $qb = $this->createQueryBuilder('pokedex')
-            ->select('pokedex')
-            ->where('pokedex.language = :language')
-            ->andWhere('pokedex.name = :national')
-            ->setParameter('national', 'National')
-            ->setParameter('language', $language)
-            ->getQuery()
-            ->getResult()
-        ;
-
-        return array_merge($qb, $this->createQueryBuilder('pokedex')
-            ->select('pokedex', 'versions', 'versionGroup', 'region')
-            ->join('pokedex.region', 'region')
-            ->leftJoin('pokedex.versionGroup', 'versionGroup')
-            ->leftJoin('versionGroup.versions', 'versions')
-            ->where('pokedex.language = :language')
-            ->setParameter('language', $language)
-            ->orderBy('versionGroup.generation', 'DESC')
-            ->getQuery()
-            ->getResult()
-        );
-    }
-
-    /**
-     * @param Region $region
-     * @param Language $language
-     * @return int|mixed|string
-     */
-    public function getPokedexByRegion(Region $region, Language $language)
+    public function getPokedexByGeneration(Generation $generation, Language $language)
     {
         return $this->createQueryBuilder('pokedex')
-            ->select('pokedex')
-            ->where('pokedex.language = :language')
-            ->andwhere('pokedex.region = :region')
-            ->setParameter('region', $region)
+            ->select('pokedex', 'versionGroup')
+            ->leftJoin('pokedex.versionGroup', 'versionGroup')
+
+            ->where('pokedex.generation = :generation')
+            ->andwhere('pokedex.language = :language')
+
+            ->setParameter('generation', $generation)
             ->setParameter('language', $language)
+
             ->getQuery()
             ->getResult()
         ;

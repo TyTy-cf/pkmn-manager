@@ -3,10 +3,12 @@
 namespace App\Repository\Pokemon;
 
 use App\Entity\Locations\Region;
+use App\Entity\Pokedex\Pokedex;
 use App\Entity\Pokemon\Pokemon;
 use App\Entity\Pokemon\PokemonForm;
 use App\Entity\Users\Language;
 use App\Entity\Versions\Generation;
+use App\Entity\Versions\VersionGroup;
 use App\Repository\AbstractRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -115,68 +117,31 @@ class PokemonRepository extends AbstractRepository
     }
 
     /**
-     * @param Generation $generation
-     * @param Language|null $language
+     * @param Pokedex $pokedex
      * @return int|mixed|string
      */
-    public function getPokemonsByGenerationAndLanguage(Generation $generation, Language $language)
+    public function getPokemonsByPokedex(Pokedex $pokedex)
     {
         return $this->createQueryBuilder('pokemon')
-            ->select('pokemon', 'types', 'sprites')
+            ->select('pokemon', 'types', 'sprites', 'pokemonSpecies', 'pokedexSpecies', 'pokemonForms')
+
             ->join('pokemon.types', 'types')
             ->join('pokemon.pokemonSprites', 'sprites')
             ->join('pokemon.pokemonSpecies', 'pokemonSpecies')
-            ->join('pokemonSpecies.generation', 'generation')
-            ->where('pokemon.language = :language')
-            ->andWhere('generation = :generation')
-            ->setParameter('generation', $generation)
-            ->setParameter('language', $language)
+            ->join('pokemonSpecies.pokedexSpecies', 'pokedexSpecies')
+            ->join('pokedexSpecies.pokedex', 'pokedex')
+            ->leftJoin('pokemon.pokemonForms', 'pokemonForms')
+
+            ->where('pokedex = :pokedex')
+            ->andWhere('pokemon.isDefault = 1')
+
+            ->setParameter('pokedex', $pokedex)
+
+            ->orderBy('pokedexSpecies.number', 'ASC')
+
             ->getQuery()
             ->getResult()
         ;
-    }
-
-    /**
-     * @param Region $region
-     * @param array $versionGroupOrder
-     * @param Language $language
-     * @return int|mixed|string
-     */
-    public function getPokemonsByRegion(Region $region, array $versionGroupOrder, Language $language)
-    {
-        $qb = $this->createQueryBuilder('pokemon')
-            ->select('pokemon', 'pokemon_species', 'pokemon_sprites', 'pokedex_species', 'forms')
-            ->join('pokemon.pokemonSpecies', 'pokemon_species')
-            ->join('pokemon.pokemonSprites', 'pokemon_sprites')
-            ->join('pokemon_species.pokedexSpecies', 'pokedex_species')
-            ->join('pokedex_species.pokedex', 'pokedex')
-            ->leftJoin('pokemon.pokemonForms', 'forms')
-            ->where('pokedex.region = :region')
-            ->andwhere('pokemon.language = :language')
-            ->setParameter('region', $region)
-            ->setParameter('language', $language)
-            ->orderBy('pokedex_species.number', 'ASC')
-            ->getQuery()
-            ->getResult()
-        ;
-
-        // Remove pokemon with form from newest generations
-        foreach ($qb as $key => $pokemon) {
-            /** @var Pokemon $pokemon */
-            $pokemonForms = $pokemon->getPokemonForms();
-            if (sizeof($pokemonForms) !== 0) {
-                foreach($pokemonForms as $form) {
-                    foreach($versionGroupOrder as $vgOrder) {
-                        /** @var PokemonForm $form */
-                        if ($form->getVersionGroup()->getId() >= $vgOrder['order']) {
-                            unset($qb[$key]);
-                        }
-                    }
-                }
-            }
-        }
-
-        return $qb;
     }
 
 }

@@ -164,6 +164,7 @@ class PokemonSpeciesManager extends AbstractManager
                     $language,Pokemon::class, $urlDetailed['varieties'][0]['pokemon']['name']
                 )
             );
+
             $pokemon->setPokemonSpecies($pokemonSpecies);
             $this->entityManager->persist($pokemon);
 

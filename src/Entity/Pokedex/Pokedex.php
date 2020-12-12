@@ -2,9 +2,9 @@
 
 namespace App\Entity\Pokedex;
 
-use App\Entity\Locations\Region;
 use App\Entity\Traits\TraitDescription;
 use App\Entity\Traits\TraitNomenclature;
+use App\Entity\Versions\Generation;
 use App\Entity\Versions\VersionGroup;
 use App\Repository\Pokedex\PokedexRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -49,11 +49,11 @@ class Pokedex
     private Collection $pokedexSpecies;
 
     /**
-     * @var Region
-     * @ORM\ManyToOne(targetEntity="App\Entity\Locations\Region")
-     * @JoinColumn(name="region_id", nullable=true)
+     * @var Generation
+     * @ORM\ManyToOne(targetEntity="App\Entity\Versions\Generation")
+     * @JoinColumn(name="generation_id", nullable=true)
      */
-    private Region $region;
+    private Generation $generation;
 
     /**
      * Pokedex constructor.
@@ -88,7 +88,7 @@ class Pokedex
     }
 
     /**
-     * @param PokedexSpecies $versionGroup
+     * @param PokedexSpecies $pokedexSpecies
      */
     public function removePokedexSpecies(PokedexSpecies $pokedexSpecies)
     {
@@ -126,20 +126,20 @@ class Pokedex
     }
 
     /**
-     * @return Region
+     * @return Generation
      */
-    public function getRegion(): Region
+    public function getGeneration(): Generation
     {
-        return $this->region;
+        return $this->generation;
     }
 
     /**
-     * @param Region $region
+     * @param Generation $generation
      * @return Pokedex
      */
-    public function setRegion(Region $region): self
+    public function setGeneration(Generation $generation): Pokedex
     {
-        $this->region = $region;
+        $this->generation = $generation;
         return $this;
     }
 

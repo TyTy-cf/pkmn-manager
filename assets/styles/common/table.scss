@@ -23,3 +23,26 @@
 .list-card-pkmn-lg {
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
 }
+
+.link-pokedex {
+  background-color: lightcyan;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-left: 0;
+  text-align: center;
+
+  > li {
+    padding: 0.1rem;
+  }
+
+  .title {
+    padding: 0.2rem;
+    font-weight: bold;
+  }
+}
+
+.pokedex-title {
+  background-color: #5eb5e0;
+}

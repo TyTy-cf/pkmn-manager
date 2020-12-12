@@ -9,6 +9,7 @@ use App\Entity\Pokedex\Pokedex;
 use App\Entity\Pokedex\PokedexSpecies;
 use App\Entity\Pokemon\PokemonSpecies;
 use App\Entity\Users\Language;
+use App\Entity\Versions\Generation;
 use App\Manager\AbstractManager;
 use App\Manager\Api\ApiManager;
 use App\Manager\Pokemon\PokemonSpeciesManager;
@@ -16,6 +17,7 @@ use App\Manager\TextManager;
 use App\Manager\Versions\VersionGroupManager;
 use App\Repository\Location\RegionRepository;
 use App\Repository\Pokedex\PokedexRepository;
+use App\Repository\Versions\GenerationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
@@ -42,6 +44,11 @@ class PokedexManager extends AbstractManager
     private RegionRepository $regionRepo;
 
     /**
+     * @var GenerationRepository $generationRepo
+     */
+    private GenerationRepository $generationRepo;
+
+    /**
      * PokemonManager constructor.
      *
      * @param EntityManagerInterface $entityManager
@@ -49,6 +56,7 @@ class PokedexManager extends AbstractManager
      * @param RegionRepository $regionRepo
      * @param VersionGroupManager $versionGroup
      * @param PokemonSpeciesManager $pokemonSpeciesManager
+     * @param GenerationRepository $generationRepo
      * @param ApiManager $apiManager
      * @param TextManager $textManager
      */
@@ -59,12 +67,14 @@ class PokedexManager extends AbstractManager
         RegionRepository $regionRepo,
         VersionGroupManager $versionGroup,
         PokemonSpeciesManager $pokemonSpeciesManager,
+        GenerationRepository $generationRepo,
         ApiManager $apiManager,
         TextManager $textManager
     )
     {
         $this->versionGroupManager = $versionGroup;
         $this->regionRepo = $regionRepo;
+        $this->generationRepo = $generationRepo;
         $this->pokedexRepository = $pokedexRepository;
         $this->pokemonSpeciesManager = $pokemonSpeciesManager;
         parent::__construct($entityManager, $apiManager, $textManager);
@@ -80,13 +90,13 @@ class PokedexManager extends AbstractManager
     }
 
     /**
-     * @param Region $region
+     * @param Generation $generation
      * @param Language $language
      * @return int|mixed|string
      */
-    public function getPokedexByRegion(Region $region, Language $language)
+    public function getPokedexByGeneration(Generation $generation, Language $language)
     {
-        return $this->pokedexRepository->getPokedexByRegion($region, $language);
+        return $this->pokedexRepository->getPokedexByGeneration($generation, $language);
     }
 
     /**
@@ -156,20 +166,13 @@ class PokedexManager extends AbstractManager
             }
             if ($urlPokedexDetailed['region'] !== null) {
                 $urlDetailedRegion = $this->apiManager->getDetailed($urlPokedexDetailed['region']['url'])->toArray();
-                $slug = $this->textManager->generateSlugFromClassWithLanguage(
-                    $language, Region::class, $urlDetailedRegion['name']
-                );
-                if ($this->regionRepo->findOneBySlug($slug) === null) {
-                    // Create the region
-                    $region = (new Region())
-                        ->setSlug($slug)
-                        ->setLanguage($language)
-                        ->setName(
-                            $this->apiManager->getNameBasedOnLanguageFromArray($language->getCode(), $urlDetailedRegion)
-                        )
-                    ;
-                    $pokedex->setRegion($region);
-                    $this->entityManager->persist($region);
+                $region = $this->regionRepo->findOneBySlug($language->getCode().'/region-'.$urlDetailedRegion['name']);
+                $generation = $this->generationRepo->findOneBy([
+                    'mainRegion' => $region
+                ]);
+
+                if ($generation !== null) {
+                    $pokedex->setGeneration($generation);
                 }
             }
         }

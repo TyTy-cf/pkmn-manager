@@ -115,6 +115,12 @@ class Pokemon
     private ?int $baseExperience;
 
     /**
+     * @var bool|null
+     * @ORM\Column(name="is_default", type="smallint", nullable=true)
+     */
+    private ?bool $isDefault;
+
+    /**
      * Pokemon constructor.
      */
     public function __construct() {
@@ -322,6 +328,24 @@ class Pokemon
     public function setPokemonSprites(PokemonSprites $pokemonSprites): self
     {
         $this->pokemonSprites = $pokemonSprites;
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getIsDefault(): ?bool
+    {
+        return $this->isDefault;
+    }
+
+    /**
+     * @param bool|null $isDefault
+     * @return Pokemon
+     */
+    public function setIsDefault(?bool $isDefault): Pokemon
+    {
+        $this->isDefault = $isDefault;
         return $this;
     }
 

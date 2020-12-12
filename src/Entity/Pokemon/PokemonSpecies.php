@@ -344,11 +344,31 @@ class PokemonSpecies
     }
 
     /**
-     * @return ArrayCollection|Collection
+     * @return Collection
      */
     public function getPokemons()
     {
         return $this->pokemons;
+    }
+
+    /**
+     * @param Pokemon $pokemon
+     */
+    public function removePokemons(Pokemon $pokemon)
+    {
+        if ($this->pokemons->contains($pokemon)) {
+            $this->pokemons->removeElement($pokemon);
+        }
+    }
+
+    /**
+     * @param Pokemon $pokemon
+     */
+    public function addPokemons(Pokemon $pokemon): void
+    {
+        if (!$this->pokemons->contains($pokemon)) {
+            $this->pokemons->add($pokemon);
+        }
     }
 
     /**

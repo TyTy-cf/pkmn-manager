@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+{% block title %}Catch 'em all{% endblock %}
+
+{% block body %}
+    <div class="container col-9 p-3">
+        {% if arrayPokedex|length > 1 %}
+            <ul class="p-3 link-pokedex title">
+                {% for pokedex in arrayPokedex %}
+                    {% if loop.index != 1 %}
+                        <li class="p-1 ml-3">
+                    {% else %}
+                        <li class="p-1">
+                    {% endif %}
+                            <a href="#id-{{ pokedex.pokedex.slug }}">{{ pokedex.pokedex.description }}</a>
+                        </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <div>
+        </div>
+        {% for pokedex in arrayPokedex %}
+            <hr>
+            <div class="border pokedex-title p-3">
+                <h2 id="id-{{ pokedex.pokedex.slug }}">
+                    {{ 'pokedex.description.listing'|trans({'%pokedex%': pokedex.pokedex.description}) }}
+                    <span class="hidden-talent">({{ pokedex.pokedex.generation.name }})</span>
+                </h2>
+            </div>
+            <hr>
+            <div class="list-card-pkmn list-card-pkmn-lg">
+                {% for pokemon in pokedex.pokemons %}
+                    {% if pokemon.isDefault is same as(true) %}
+                        {% include'Pokemon/pokemon_card.html.twig' with {'pokemon' : pokemon } %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

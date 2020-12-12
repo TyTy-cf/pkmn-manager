@@ -62,19 +62,24 @@ class PokedexController extends AbstractController
      *
      * @param Request $request
      * @param Generation $generation
-     * @param VersionGroupManager $managerVg
      * @return Response
      */
-    function listing(Request $request, Generation $generation, VersionGroupManager $managerVg): Response
+    function listing(Request $request, Generation $generation): Response
     {
         $language = $this->languageManager->getLanguageByCode('fr');
-        return $this->render('Pokemon/listing.html.twig', [
-            'pokedex' => $this->pokedexManager->getPokedexByRegion($generation->getMainRegion(), $language),
-            'pokemons' => $this->pokemonManager->getPokemonsByRegion(
-                $generation->getMainRegion(),
-                $managerVg->getVersionGroupOrderFromGeneration($generation, $language),
-                $language
-            ),
+
+        $arrayPokedex = [];
+        $pokedexes = $this->pokedexManager->getPokedexByGeneration(
+            $generation, $language
+        );
+        foreach($pokedexes as $pokedex) {
+            $arrayPokedex[] = [
+                'pokedex' => $pokedex,
+                'pokemons' => $this->pokemonManager->getPokemonsByPokedex($pokedex),
+            ];
+        }
+        return $this->render('Pokedex/listing.html.twig', [
+            'arrayPokedex' => $arrayPokedex,
         ]);
     }
 

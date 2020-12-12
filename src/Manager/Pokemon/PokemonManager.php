@@ -8,6 +8,7 @@ use App\Entity\Infos\Ability;
 use App\Entity\Infos\PokemonAbility;
 use App\Entity\Infos\Type\Type;
 use App\Entity\Locations\Region;
+use App\Entity\Pokedex\Pokedex;
 use App\Entity\Pokemon\Pokemon;
 use App\Entity\Stats\StatsEffort;
 use App\Entity\Users\Language;
@@ -163,24 +164,20 @@ class PokemonManager extends AbstractManager
     }
 
     /**
-     * @param Generation $generation
-     * @param Language|null $language
+     * @param Pokedex $pokedex
      * @return int|mixed|string
      */
-    public function getPokemonsByGenerationAndLanguage(Generation $generation, ?Language $language)
+    public function getPokemonsByPokedex(Pokedex $pokedex)
     {
-        return $this->pokemonRepository->getPokemonsByGenerationAndLanguage($generation, $language);
+        return $this->pokemonRepository->getPokemonsByPokedex($pokedex);
     }
 
     /**
-     * @param Region $region
-     * @param array $versionGroupIds
-     * @param Language $language
+     * @param Generation $generation
      * @return int|mixed|string
      */
-    public function getPokemonsByRegion(Region $region, array $versionGroupIds, Language $language)
-    {
-        return $this->pokemonRepository->getPokemonsByRegion($region, $versionGroupIds, $language);
+    public function getPokemonsByGeneration(Generation $generation) {
+        return $this->pokemonRepository->getPokemonsByGeneration($generation);
     }
 
     /**
@@ -216,6 +213,7 @@ class PokemonManager extends AbstractManager
                 ->setWeight($urlDetailed['weight'])
                 ->setHeight($urlDetailed['height'])
                 ->setLanguage($language)
+                ->setIsDefault($urlDetailed['is_default']);
             ;
 
             // Add the stats
@@ -261,8 +259,7 @@ class PokemonManager extends AbstractManager
                 );
                 $pokemon->addType($type);
             }
-            $this->entityManager->persist($pokemon);
-        } else {
+
             // Set the Ability
             foreach($urlDetailed['abilities'] as $abilityDetailed)
             {
@@ -282,6 +279,8 @@ class PokemonManager extends AbstractManager
                     $this->entityManager->persist($pokemonAbility);
                 }
             }
+
+            $this->entityManager->persist($pokemon);
         }
         $this->entityManager->flush();
     }
