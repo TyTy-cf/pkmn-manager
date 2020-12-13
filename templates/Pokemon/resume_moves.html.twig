@@ -1,0 +1,18 @@
+
+<h2>{{ 'pokemon.moves'|trans }}</h2>
+<hr>
+
+<div>
+    <ul class="nav nav-tabs">
+        {% for pokemonMoves in arrayMoves %}
+{#            <li class="nav-item">#}
+{#                <a class="nav-link active" href="#nav-{{ pokemonMoves.versionGroup.name }}">{{ pokemonMoves.versionGroup.name }}</a>#}
+{#            </li>#}
+{#            <div>#}
+{#                {{ pokemonMoves.level }}#}
+{#                {{ pokemonMoves.move.name }}#}
+{#                {{ pokemonMoves.moveLearnMethod.name }}#}
+{#            </div>#}
+        {% endfor %}
+    </ul>
+</div>

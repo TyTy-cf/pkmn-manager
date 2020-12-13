@@ -12,10 +12,13 @@ pokemon:
     egg_group: "Groupe d'oeufs"
     hatch_counter: "Eclosion"
     hidden_talent: "Talent caché"
+    moves: "Attaques apprises"
     stats:
         title: "Stats"
         ev: "EV"
         base: "Base"
+        min: "Min"
+        max: "Max"
         hp: "HP"
         atk: "ATK"
         def: "DEF"

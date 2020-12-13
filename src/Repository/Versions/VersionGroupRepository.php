@@ -56,4 +56,24 @@ class VersionGroupRepository extends AbstractRepository
             ->getResult()
         ;
     }
+
+    /**
+     * @param Generation $generation
+     * @param Language $language
+     * @return int|mixed|string
+     */
+    public function getVersionGroupByGenerationAndLanguage(Generation $generation, Language $language)
+    {
+        return $this->createQueryBuilder('version_group')
+            ->select('version_group')
+            ->join('version_group.generation', 'generation')
+            ->join('version_group.language', 'language')
+            ->where('generation = :generation')
+            ->andWhere('language = :language')
+            ->setParameter('language', $language)
+            ->setParameter('generation', $generation)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

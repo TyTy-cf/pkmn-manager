@@ -1,0 +1,80 @@
+
+<h2>{{ 'pokemon.stats.title'|trans }}</h2>
+<hr>
+<table class="table table-striped profile-table text-center">
+    <tbody>
+    <tr>
+        <th></th>
+        <td><strong>{{ 'pokemon.stats.ev'|trans }}</strong></td>
+        <td><strong>{{ 'pokemon.stats.base'|trans }}</strong></td>
+        <td></td>
+        <td><strong>{{ 'pokemon.stats.min'|trans }}</strong></td>
+        <td><strong>{{ 'pokemon.stats.max'|trans }}</strong></td>
+    </tr>
+    <tr>
+        <th>{{ 'pokemon.stats.hp'|trans }}</th>
+        <td>{{ pokemon.statsEffort.hp }}</td>
+        <td>{{ pokemon.hp }}</td>
+        <td class="cell-barchart">
+            <div class="barchart-bar" style="width: {{ (pokemon.hp/255) * 100 }}%"></div>
+        </td>
+        <td>{{ pokemon.hpFormula(0, 0, 100) }}</td>
+        <td>{{ pokemon.hpFormula(31, 255, 100) }}</td>
+    </tr>
+    <tr>
+        <th>{{ 'pokemon.stats.atk'|trans }}</th>
+        <td>{{ pokemon.statsEffort.atk }}</td>
+        <td>{{ pokemon.atk }}</td>
+        <td class="cell-barchart">
+            <div class="barchart-bar" style="width: {{ (pokemon.atk/255) * 100 }}%"></div>
+        </td>
+        <td>{{ pokemon.atkFormula(0, 0, 100, 1) }}</td>
+        <td>{{ pokemon.atkFormula(31, 255, 100, 1) }}</td>
+    </tr>
+    <tr>
+        <th>{{ 'pokemon.stats.def'|trans }}</th>
+        <td>{{ pokemon.statsEffort.def }}</td>
+        <td>{{ pokemon.def }}</td>
+        <td class="cell-barchart">
+            <div class="barchart-bar" style="width: {{ (pokemon.def/255) * 100 }}%"></div>
+        </td>
+        <td>{{ pokemon.defFormula(0, 0, 100, 1) }}</td>
+        <td>{{ pokemon.defFormula(31, 255, 100, 1) }}</td>
+    </tr>
+    <tr>
+        <th>{{ 'pokemon.stats.spa'|trans }}</th>
+        <td>{{ pokemon.statsEffort.spa }}</td>
+        <td>{{ pokemon.spa }}</td>
+        <td class="cell-barchart">
+            <div class="barchart-bar" style="width: {{ (pokemon.spa/255) * 100 }}%"></div>
+        </td>
+        <td>{{ pokemon.spaFormula(0, 0, 100, 1) }}</td>
+        <td>{{ pokemon.spaFormula(31, 255, 100, 1) }}</td>
+    </tr>
+    <tr>
+        <th>{{ 'pokemon.stats.spd'|trans }}</th>
+        <td>{{ pokemon.statsEffort.spd }}</td>
+        <td>{{ pokemon.spd }}</td>
+        <td class="cell-barchart">
+            <div class="barchart-bar" style="width: {{ (pokemon.spd/255) * 100 }}%"></div>
+        </td>
+        <td>{{ pokemon.spdFormula(0, 0, 100, 1) }}</td>
+        <td>{{ pokemon.spdFormula(31, 255, 100, 1) }}</td>
+    </tr>
+    <tr>
+        <th>{{ 'pokemon.stats.spe'|trans }}</th>
+        <td>{{ pokemon.statsEffort.spe }}</td>
+        <td>{{ pokemon.spe }}</td>
+        <td class="cell-barchart">
+            <div class="barchart-bar" style="width: {{ (pokemon.spe/255) * 100 }}%"></div>
+        </td>
+        <td>{{ pokemon.spdFormula(0, 0, 100, 1) }}</td>
+        <td>{{ pokemon.spdFormula(31, 255, 100, 1) }}</td>
+    </tr>
+    <tr>
+        <th>{{ 'pokemon.stats.total'|trans }}</th>
+        <td></td>
+        <td><strong>{{ pokemon.totalStats }}</strong></td>
+    </tr>
+    </tbody>
+</table>

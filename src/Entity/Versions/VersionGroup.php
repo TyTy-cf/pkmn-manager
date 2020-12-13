@@ -54,6 +54,14 @@ class VersionGroup
     private int $order;
 
     /**
+     * @var array|string[]
+     */
+    public static array $avoidList = [
+        1 => 'colosseum',
+        2 => 'xd',
+    ];
+
+    /**
      * Pokedex constructor.
      */
     public function __construct()

@@ -4,13 +4,18 @@
 namespace App\Manager\Moves;
 
 
+use App\Entity\Moves\MoveLearnMethod;
 use App\Entity\Moves\PokemonMovesLearnVersion;
 use App\Entity\Pokemon\Pokemon;
 use App\Entity\Users\Language;
+use App\Entity\Versions\Generation;
+use App\Entity\Versions\Version;
+use App\Entity\Versions\VersionGroup;
 use App\Manager\AbstractManager;
 use App\Manager\Api\ApiManager;
 use App\Manager\Pokemon\PokemonManager;
 use App\Manager\TextManager;
+use App\Manager\Versions\GenerationManager;
 use App\Manager\Versions\VersionGroupManager;
 use App\Repository\Moves\PokemonMovesLearnVersionRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -36,11 +41,23 @@ class PokemonMovesLearnVersionManager extends AbstractManager
     private MoveLearnMethodManager $moveLearnMethodManager;
 
     /**
+     * @var VersionGroupManager $versionGroupManager
+     */
+    private VersionGroupManager $versionGroupManager;
+
+    /**
+     * @var GenerationManager $generationManager
+     */
+    private GenerationManager $generationManager;
+
+    /**
      * MoveManager constructor
      * @param EntityManagerInterface $em
      * @param ApiManager $apiManager
      * @param TextManager $textManager
      * @param MoveManager $moveManager
+     * @param GenerationManager $generationManager
+     * @param VersionGroupManager $versionGroupManager
      * @param MoveLearnMethodManager $moveLearnMethodManager
      * @param PokemonMovesLearnVersionRepository $repoPokemonMoves
      */
@@ -50,13 +67,17 @@ class PokemonMovesLearnVersionManager extends AbstractManager
         ApiManager $apiManager,
         TextManager $textManager,
         MoveManager $moveManager,
+        GenerationManager $generationManager,
+        VersionGroupManager $versionGroupManager,
         MoveLearnMethodManager $moveLearnMethodManager,
         PokemonMovesLearnVersionRepository $repoPokemonMoves
     )
     {
         $this->moveManager = $moveManager;
-        $this->moveLearnMethodManager = $moveLearnMethodManager;
         $this->repoPokemonMoves = $repoPokemonMoves;
+        $this->generationManager = $generationManager;
+        $this->versionGroupManager = $versionGroupManager;
+        $this->moveLearnMethodManager = $moveLearnMethodManager;
         parent::__construct($em, $apiManager, $textManager);
     }
 
@@ -76,6 +97,45 @@ class PokemonMovesLearnVersionManager extends AbstractManager
     public function getLastPokemonIdInDataBase()
     {
         return $this->repoPokemonMoves->getLastPokemonIdInDataBase();
+    }
+
+    /**
+     * @param Pokemon $pokemon
+     * @param Language $language
+     * @return array
+     */
+    public function generateArrayMovesForPokemon(Pokemon $pokemon, Language $language) {
+        // Initialise the array of Generation / VersionGroup
+        $arrayMoves = [];
+        $generations = $this->generationManager->getAllGenerationsByLanguage($language);
+        $allMoveLearnMethod = $this->moveLearnMethodManager->getAllMoveLearnMethodByLanguage($language);
+        foreach($generations as $generation) {
+            /** @var Generation $generation */
+            $versionsGroups = $this->versionGroupManager->getVersionGroupByGenerationAndLanguage($generation, $language);
+            if (sizeof($versionsGroups) > 0) {
+                $arrayVersionGroup = [];
+                foreach($versionsGroups as $versionGroup) {
+                    /** @var VersionGroup $versionGroup */
+                    if (!in_array($versionGroup->getName(), VersionGroup::$avoidList)) {
+                        $arrayMovesLearn = [];
+                        foreach($allMoveLearnMethod as $moveLearnMethod) {
+                            /** @var MoveLearnMethod $moveLearnMethod */
+                            $moves = $this->repoPokemonMoves->getMovesLearnBy($pokemon, $moveLearnMethod, $versionGroup);
+                            if (!empty($moves)) {
+                                $arrayMovesLearn[$moveLearnMethod->getName()] = $moves;
+                            }
+                        }
+                        if (count($arrayMovesLearn) > 0) {
+                            $arrayVersionGroup[$versionGroup->getName()] = $arrayMovesLearn;
+                        }
+                    }
+                }
+                if (count($arrayVersionGroup) > 0) {
+                    $arrayMoves[$generation->getNumber()] = $arrayVersionGroup;
+                }
+            }
+        }
+        return $arrayMoves;
     }
 
     /**

@@ -229,15 +229,6 @@ class Pokemon
     }
 
     /**
-     * Return the sum of stats
-     * @return int
-     */
-    public function getTotalStats()
-    {
-        return ($this->hp + $this->atk + $this->def + $this->spa + $this->spd + $this->spe);
-    }
-
-    /**
      * @return mixed
      */
     public function getPokemonsAbility(): Collection
@@ -349,4 +340,54 @@ class Pokemon
         return $this;
     }
 
+    /**
+     * Return the sum of stats
+     * @return int
+     */
+    public function getTotalStats()
+    {
+        return ($this->hp + $this->atk + $this->def + $this->spa + $this->spd + $this->spe);
+    }
+
+    /**
+     * @param int $iv
+     * @param int $ev
+     * @param int $level
+     * @return float|int
+     */
+    public function getHpFormula(int $iv, int $ev, int $level) {
+        return floor(0.01 * (2 * $this->hp + $iv + floor(0.25 * $ev)) * $level) + $level + 10;
+    }
+
+    /**
+     * @param int $iv
+     * @param int $ev
+     * @param int $level
+     * @param int $multNature
+     * @param int $stats
+     * @return float|int
+     */
+    public function getStatsFormula(int $iv, int $ev, int $level, int $multNature, int $stats) {
+        return (floor(0.01 * (2 * $stats + $iv + floor(0.25 * $ev)) * $level) + 5) * $multNature;
+    }
+
+    public function getAtkFormula(int $iv, int $ev, int $level, int $multNature) {
+        return $this->getStatsFormula($iv, $ev, $level, $multNature, $this->atk);
+    }
+
+    public function getDefFormula(int $iv, int $ev, int $level, int $multNature) {
+        return $this->getStatsFormula($iv, $ev, $level, $multNature, $this->def);
+    }
+
+    public function getSpaFormula(int $iv, int $ev, int $level, int $multNature) {
+        return $this->getStatsFormula($iv, $ev, $level, $multNature, $this->spa);
+    }
+
+    public function getSpdFormula(int $iv, int $ev, int $level, int $multNature) {
+        return $this->getStatsFormula($iv, $ev, $level, $multNature, $this->spd);
+    }
+
+    public function getSpeFormula(int $iv, int $ev, int $level, int $multNature) {
+        return $this->getStatsFormula($iv, $ev, $level, $multNature, $this->spe);
+    }
 }

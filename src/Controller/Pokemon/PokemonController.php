@@ -4,8 +4,8 @@
 namespace App\Controller\Pokemon;
 
 use App\Entity\Pokemon\Pokemon;
-use App\Entity\Versions\Generation;
 use App\Manager\Api\ApiManager;
+use App\Manager\Moves\PokemonMovesLearnVersionManager;
 use App\Manager\Pokemon\PokemonManager;
 use App\Form\SearchPokemonType;
 use App\Manager\Users\LanguageManager;
@@ -35,19 +35,27 @@ class PokemonController extends AbstractController
     private LanguageManager $languageManager;
 
     /**
+     * @var PokemonMovesLearnVersionManager $pkmnMoveManager
+     */
+    private PokemonMovesLearnVersionManager $pkmnMoveManager;
+
+    /**
      * PokemonController constructor.
      *
      * @param PokemonManager $pokemonManager
      * @param ApiManager $apiManager
+     * @param PokemonMovesLearnVersionManager $pkmnMoveManager
      * @param LanguageManager $languageManager
      */
     public function __construct
     (
         PokemonManager $pokemonManager,
         ApiManager $apiManager,
+        PokemonMovesLearnVersionManager $pkmnMoveManager,
         LanguageManager $languageManager
     )
     {
+        $this->pkmnMoveManager = $pkmnMoveManager;
         $this->pokemonManager = $pokemonManager;
         $this->apiManager = $apiManager;
         $this->languageManager = $languageManager;
@@ -62,12 +70,12 @@ class PokemonController extends AbstractController
      * @param Request $request
      * @param Pokemon $pokemon
      * @return Response
-     *
      */
     function displayProfile(Request $request, Pokemon $pokemon): Response
     {
         return $this->render('Pokemon/profile.html.twig', [
             'pokemon' => $pokemon,
+            'arrayMoves' => $this->pkmnMoveManager->generateArrayMovesForPokemon($pokemon, $pokemon->getLanguage()),
         ]);
     }
 
