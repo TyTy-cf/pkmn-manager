@@ -2,4 +2,24 @@
   width: 100%;
   min-width: 255px; }
 
+.panel {
+  display: block;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 4px; }
+
+.list-generation {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-left: 0;
+  text-align: center; }
+  .list-generation > li {
+    padding: 0.1rem; }
+  .list-generation > ul {
+    margin: 0 0 1rem 2rem; }
+  .list-generation.title {
+    font-weight: bold; }
+
 /*# sourceMappingURL=profile.css.map */

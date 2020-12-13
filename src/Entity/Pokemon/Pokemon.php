@@ -363,31 +363,31 @@ class Pokemon
      * @param int $iv
      * @param int $ev
      * @param int $level
-     * @param int $multNature
+     * @param float $multNature
      * @param int $stats
      * @return float|int
      */
-    public function getStatsFormula(int $iv, int $ev, int $level, int $multNature, int $stats) {
-        return (floor(0.01 * (2 * $stats + $iv + floor(0.25 * $ev)) * $level) + 5) * $multNature;
+    public function getStatsFormula(int $iv, int $ev, int $level, float $multNature, int $stats) {
+        return floor(((0.01 * (2 * $stats + $iv + floor(0.25 * $ev)) * $level) + 5) * $multNature);
     }
 
-    public function getAtkFormula(int $iv, int $ev, int $level, int $multNature) {
+    public function getAtkFormula(int $iv, int $ev, int $level, float $multNature) {
         return $this->getStatsFormula($iv, $ev, $level, $multNature, $this->atk);
     }
 
-    public function getDefFormula(int $iv, int $ev, int $level, int $multNature) {
+    public function getDefFormula(int $iv, int $ev, int $level, float $multNature) {
         return $this->getStatsFormula($iv, $ev, $level, $multNature, $this->def);
     }
 
-    public function getSpaFormula(int $iv, int $ev, int $level, int $multNature) {
+    public function getSpaFormula(int $iv, int $ev, int $level, float $multNature) {
         return $this->getStatsFormula($iv, $ev, $level, $multNature, $this->spa);
     }
 
-    public function getSpdFormula(int $iv, int $ev, int $level, int $multNature) {
+    public function getSpdFormula(int $iv, int $ev, int $level, float $multNature) {
         return $this->getStatsFormula($iv, $ev, $level, $multNature, $this->spd);
     }
 
-    public function getSpeFormula(int $iv, int $ev, int $level, int $multNature) {
+    public function getSpeFormula(int $iv, int $ev, int $level, float $multNature) {
         return $this->getStatsFormula($iv, $ev, $level, $multNature, $this->spe);
     }
 }

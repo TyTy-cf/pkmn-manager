@@ -42,24 +42,6 @@ class VersionGroupRepository extends AbstractRepository
     /**
      * @param Generation $generation
      * @param Language $language
-     * @return int|mixed|string|null
-     */
-    public function getVersionGroupOrderFromGeneration(Generation $generation, Language $language)
-    {
-        return $this->createQueryBuilder('version_group')
-            ->select('version_group.order')
-            ->where('version_group.generation = :generation')
-            ->andWhere('version_group.language = :lang')
-            ->setParameter('lang', $language)
-            ->setParameter('generation', $generation)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
-    /**
-     * @param Generation $generation
-     * @param Language $language
      * @return int|mixed|string
      */
     public function getVersionGroupByGenerationAndLanguage(Generation $generation, Language $language)
@@ -72,6 +54,24 @@ class VersionGroupRepository extends AbstractRepository
             ->andWhere('language = :language')
             ->setParameter('language', $language)
             ->setParameter('generation', $generation)
+            ->orderBy('generation.number', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @param Language $language
+     * @return int|mixed|string
+     */
+    public function getVersionGroupByLanguage(Language $language)
+    {
+        return $this->createQueryBuilder('version_group')
+            ->select('version_group')
+            ->join('version_group.language', 'language')
+            ->where('language = :language')
+            ->setParameter('language', $language)
+            ->orderBy('version_group.order', 'ASC')
             ->getQuery()
             ->getResult()
         ;

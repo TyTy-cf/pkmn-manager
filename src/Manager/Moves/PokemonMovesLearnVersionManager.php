@@ -105,17 +105,13 @@ class PokemonMovesLearnVersionManager extends AbstractManager
      * @return array
      */
     public function generateArrayMovesForPokemon(Pokemon $pokemon, Language $language) {
-        // Initialise the array of Generation / VersionGroup
+        // Initialise the array of VersionGroup
         $arrayMoves = [];
-        $generations = $this->generationManager->getAllGenerationsByLanguage($language);
+        $arrayMoves['version_groups'] = array();
         $allMoveLearnMethod = $this->moveLearnMethodManager->getAllMoveLearnMethodByLanguage($language);
-        foreach($generations as $generation) {
-            /** @var Generation $generation */
-            $versionsGroups = $this->versionGroupManager->getVersionGroupByGenerationAndLanguage($generation, $language);
+            $versionsGroups = $this->versionGroupManager->getVersionGroupByLanguage($language);
             if (sizeof($versionsGroups) > 0) {
-                $arrayVersionGroup = [];
                 foreach($versionsGroups as $versionGroup) {
-                    /** @var VersionGroup $versionGroup */
                     if (!in_array($versionGroup->getName(), VersionGroup::$avoidList)) {
                         $arrayMovesLearn = [];
                         foreach($allMoveLearnMethod as $moveLearnMethod) {
@@ -126,14 +122,16 @@ class PokemonMovesLearnVersionManager extends AbstractManager
                             }
                         }
                         if (count($arrayMovesLearn) > 0) {
-                            $arrayVersionGroup[$versionGroup->getName()] = $arrayMovesLearn;
+                            array_push($arrayMoves['version_groups'], [
+                                'id' => $versionGroup->getSlug(),
+                                'name' => $versionGroup->getName(),
+                            ]);
+                            $arrayMoves['moves_infos'][$versionGroup->getSlug()] = [
+                                'moves' => $arrayMovesLearn
+                            ];
                         }
                     }
                 }
-                if (count($arrayVersionGroup) > 0) {
-                    $arrayMoves[$generation->getNumber()] = $arrayVersionGroup;
-                }
-            }
         }
         return $arrayMoves;
     }

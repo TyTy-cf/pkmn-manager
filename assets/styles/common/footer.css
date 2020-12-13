@@ -1,3 +1,17 @@
-
+.site-footer {
+  background-color: #d9e7ff;
+  color: white;
+  font-weight: 400; }
+  .site-footer .main-footer {
+    padding: 4rem 0 4rem 0; }
+  .site-footer a {
+    color: white; }
+  .site-footer .footer-bottom {
+    background-color: #d9e7ff;
+    color: black;
+    padding: 0.75rem; }
+    .site-footer .footer-bottom a {
+      color: #bfbfbf;
+      font-weight: 600; }
 
 /*# sourceMappingURL=footer.css.map */

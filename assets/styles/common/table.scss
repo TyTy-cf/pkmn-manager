@@ -43,6 +43,35 @@
   }
 }
 
+.pokedex-pages-link {
+  font-weight: 500;
+  font-size: 1.1em;
+}
+
 .pokedex-title {
   background-color: #5eb5e0;
+}
+
+.table-stats {
+  border-collapse: collapse;
+}
+
+.small-col {
+  min-width: 2.7em;
+}
+
+.col-moves-name {
+  min-width: 9em;
+}
+
+.col-moves-type {
+  min-width: 3em;
+}
+
+.col-moves-infos {
+  min-width: 6em;
+}
+
+.moves-table {
+  overflow-x: auto;
 }

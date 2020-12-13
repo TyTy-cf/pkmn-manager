@@ -3,6 +3,7 @@
 @import '~@fortawesome/fontawesome-free/css/all.css';
 
 @import 'pokemon/profile.css';
+@import 'pokemon/tabpan.css';
 
 @import 'layout/images.css';
 @import 'layout/autocomplete/autocomplete.css';

@@ -1,15 +1,17 @@
 
 <h2>{{ 'pokemon.stats.title'|trans }}</h2>
 <hr>
-<table class="table table-striped profile-table text-center">
+<table class="table table-striped profile-table text-center table-stats">
     <tbody>
     <tr>
-        <th></th>
-        <td><strong>{{ 'pokemon.stats.ev'|trans }}</strong></td>
-        <td><strong>{{ 'pokemon.stats.base'|trans }}</strong></td>
         <td></td>
-        <td><strong>{{ 'pokemon.stats.min'|trans }}</strong></td>
-        <td><strong>{{ 'pokemon.stats.max'|trans }}</strong></td>
+        <td class="small-col"><strong>{{ 'pokemon.stats.ev'|trans }}</strong></td>
+        <td class="small-col"><strong>{{ 'pokemon.stats.base'|trans }}</strong></td>
+        <td></td>
+        <td class="small-col" title="EV=0, IV=0, Nature-"><strong>{{ 'pokemon.stats.min.max'|trans }}</strong></td>
+        <td class="small-col" title="EV=0, IV=0, Nature="><strong>{{ 'pokemon.stats.min.min'|trans }}</strong></td>
+        <td class="small-col" title="EV=255, IV=31, Nature="><strong>{{ 'pokemon.stats.max.min'|trans }}</strong></td>
+        <td class="small-col" title="EV=255, IV=31, Nature+"><strong>{{ 'pokemon.stats.max.max'|trans }}</strong></td>
     </tr>
     <tr>
         <th>{{ 'pokemon.stats.hp'|trans }}</th>
@@ -18,8 +20,10 @@
         <td class="cell-barchart">
             <div class="barchart-bar" style="width: {{ (pokemon.hp/255) * 100 }}%"></div>
         </td>
+        <td></td>
         <td>{{ pokemon.hpFormula(0, 0, 100) }}</td>
         <td>{{ pokemon.hpFormula(31, 255, 100) }}</td>
+        <td></td>
     </tr>
     <tr>
         <th>{{ 'pokemon.stats.atk'|trans }}</th>
@@ -28,8 +32,10 @@
         <td class="cell-barchart">
             <div class="barchart-bar" style="width: {{ (pokemon.atk/255) * 100 }}%"></div>
         </td>
+        <td>{{ pokemon.atkFormula(0, 0, 100, 0.9) }}</td>
         <td>{{ pokemon.atkFormula(0, 0, 100, 1) }}</td>
         <td>{{ pokemon.atkFormula(31, 255, 100, 1) }}</td>
+        <td>{{ pokemon.atkFormula(31, 255, 100, 1.1) }}</td>
     </tr>
     <tr>
         <th>{{ 'pokemon.stats.def'|trans }}</th>
@@ -38,8 +44,10 @@
         <td class="cell-barchart">
             <div class="barchart-bar" style="width: {{ (pokemon.def/255) * 100 }}%"></div>
         </td>
+        <td>{{ pokemon.defFormula(0, 0, 100, 0.9) }}</td>
         <td>{{ pokemon.defFormula(0, 0, 100, 1) }}</td>
         <td>{{ pokemon.defFormula(31, 255, 100, 1) }}</td>
+        <td>{{ pokemon.defFormula(31, 255, 100, 1.1) }}</td>
     </tr>
     <tr>
         <th>{{ 'pokemon.stats.spa'|trans }}</th>
@@ -48,8 +56,10 @@
         <td class="cell-barchart">
             <div class="barchart-bar" style="width: {{ (pokemon.spa/255) * 100 }}%"></div>
         </td>
+        <td>{{ pokemon.spaFormula(0, 0, 100, 0.9) }}</td>
         <td>{{ pokemon.spaFormula(0, 0, 100, 1) }}</td>
         <td>{{ pokemon.spaFormula(31, 255, 100, 1) }}</td>
+        <td>{{ pokemon.spaFormula(31, 255, 100, 1.1) }}</td>
     </tr>
     <tr>
         <th>{{ 'pokemon.stats.spd'|trans }}</th>
@@ -58,8 +68,10 @@
         <td class="cell-barchart">
             <div class="barchart-bar" style="width: {{ (pokemon.spd/255) * 100 }}%"></div>
         </td>
+        <td>{{ pokemon.spdFormula(0, 0, 100, 0.9) }}</td>
         <td>{{ pokemon.spdFormula(0, 0, 100, 1) }}</td>
         <td>{{ pokemon.spdFormula(31, 255, 100, 1) }}</td>
+        <td>{{ pokemon.spdFormula(31, 255, 100, 1.1) }}</td>
     </tr>
     <tr>
         <th>{{ 'pokemon.stats.spe'|trans }}</th>
@@ -68,8 +80,10 @@
         <td class="cell-barchart">
             <div class="barchart-bar" style="width: {{ (pokemon.spe/255) * 100 }}%"></div>
         </td>
-        <td>{{ pokemon.spdFormula(0, 0, 100, 1) }}</td>
-        <td>{{ pokemon.spdFormula(31, 255, 100, 1) }}</td>
+        <td>{{ pokemon.speFormula(0, 0, 100, 0.9) }}</td>
+        <td>{{ pokemon.speFormula(0, 0, 100, 1) }}</td>
+        <td>{{ pokemon.speFormula(31, 255, 100, 1) }}</td>
+        <td>{{ pokemon.speFormula(31, 255, 100, 1.1) }}</td>
     </tr>
     <tr>
         <th>{{ 'pokemon.stats.total'|trans }}</th>
