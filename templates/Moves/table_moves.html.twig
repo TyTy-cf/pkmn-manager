@@ -1,0 +1,42 @@
+
+<tr>
+    {% if title is same as ('pokemon.moves.method.levelup'|trans) %}
+        <td class="text-center">
+            {{ moveLearnMethod.level }}
+        </td>
+    {% endif %}
+    <td>
+        <a class="bold-link fs-100" href="{{ path('move_detail', {slug_move: moveLearnMethod.move.slug }) }}">
+            {{ moveLearnMethod.move.name }}
+        </a>
+    </td>
+    <td class="text-center">
+        {% if title is same as ('pokemon.moves.method.levelup'|trans) %}
+            <img class="size-75"
+                 title="{{ moveLearnMethod.move.type.name }}"
+                 src="{{ moveLearnMethod.move.type.img }}"
+                 alt="{{ moveLearnMethod.move.type.name }}"
+            >
+        {% else %}
+            <img class="size-50"
+                 title="{{ moveLearnMethod.move.type.name }}"
+                 src="{{ moveLearnMethod.move.type.img }}"
+                 alt="{{ moveLearnMethod.move.type.name }}"
+            >
+        {% endif %}
+
+    </td>
+    <td class="text-center">
+        <img class="size-30"
+             title="{{ moveLearnMethod.move.damageClass.name }}"
+             src="{{ moveLearnMethod.move.damageClass.image }}"
+             alt="{{ moveLearnMethod.move.damageClass.name }}"
+        >
+    </td>
+    <td class="text-center">
+        {{ moveLearnMethod.move.power }}
+    </td>
+    <td class="text-center">
+        {{ moveLearnMethod.move.accuracy }}
+    </td>
+</tr>

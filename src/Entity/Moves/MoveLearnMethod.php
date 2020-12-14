@@ -20,6 +20,8 @@ use Doctrine\ORM\Mapping\Entity;
 class MoveLearnMethod
 {
 
+    const SLUG_MACHINE = "/move-learn-method-machine";
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -32,11 +34,35 @@ class MoveLearnMethod
     use TraitDescription;
 
     /**
+     * @var string $codeMethod
+     * @ORM\Column(name="code_method", type="string", length=80)
+     */
+    private string $codeMethod;
+
+    /**
      * @return int
      */
     public function getId(): int
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCodeMethod(): string
+    {
+        return $this->codeMethod;
+    }
+
+    /**
+     * @param string $codeMethod
+     * @return MoveLearnMethod
+     */
+    public function setCodeMethod(string $codeMethod): self
+    {
+        $this->codeMethod = $codeMethod;
+        return $this;
     }
 
 }

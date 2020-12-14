@@ -55,9 +55,19 @@ class MoveDescriptionManager extends AbstractManager
      * @param string $slug
      * @return MoveDescription|null
      */
-    private function getMoveDescriptionBySlug(string $slug): ?MoveDescription
+    public function getMoveDescriptionBySlug(string $slug): ?MoveDescription
     {
         return $this->repo->findOneBySlug($slug);
+    }
+
+    /**
+     * @param Move $move
+     * @return MoveDescription[]|array
+     */
+    public function getMoveDescriptionByMove(Move $move) {
+        return $this->repo->findBy([
+            'move' => $move
+        ]);
     }
 
     /**

@@ -83,7 +83,7 @@ class MoveMachine
      * @param Move $move
      * @return MoveMachine
      */
-    public function setMove(Move $move): MoveMachine
+    public function setMove(Move $move): self
     {
         $this->move = $move;
         return $this;
@@ -101,7 +101,7 @@ class MoveMachine
      * @param string|null $imageUrl
      * @return MoveMachine
      */
-    public function setImageUrl(?string $imageUrl): MoveMachine
+    public function setImageUrl(?string $imageUrl): self
     {
         $this->imageUrl = $imageUrl;
         return $this;
@@ -119,7 +119,7 @@ class MoveMachine
      * @param int|null $cost
      * @return MoveMachine
      */
-    public function setCost(?int $cost): MoveMachine
+    public function setCost(?int $cost): self
     {
         $this->cost = $cost;
         return $this;
@@ -137,7 +137,7 @@ class MoveMachine
      * @param VersionGroup $versionGroup
      * @return MoveMachine
      */
-    public function setVersionGroup(VersionGroup $versionGroup): MoveMachine
+    public function setVersionGroup(VersionGroup $versionGroup): self
     {
         $this->versionGroup = $versionGroup;
         return $this;

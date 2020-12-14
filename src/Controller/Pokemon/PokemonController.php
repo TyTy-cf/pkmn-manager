@@ -75,7 +75,7 @@ class PokemonController extends AbstractController
     {
         return $this->render('Pokemon/profile.html.twig', [
             'pokemon' => $pokemon,
-            'arrayMoves' => $this->pkmnMoveManager->generateArrayMovesForPokemon($pokemon, $pokemon->getLanguage()),
+            'arrayMoves' => $this->pkmnMoveManager->generateArrayMovesForPokemon($pokemon),
         ]);
     }
 

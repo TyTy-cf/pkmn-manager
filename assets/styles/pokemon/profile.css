@@ -22,4 +22,8 @@
   .list-generation.title {
     font-weight: bold; }
 
+.tab-content {
+  overflow-x: auto;
+  margin-bottom: 1rem; }
+
 /*# sourceMappingURL=profile.css.map */

@@ -5,6 +5,7 @@ namespace App\Manager\Moves;
 
 
 use App\Entity\Moves\MoveLearnMethod;
+use App\Entity\Moves\MoveMachine;
 use App\Entity\Moves\PokemonMovesLearnVersion;
 use App\Entity\Pokemon\Pokemon;
 use App\Entity\Users\Language;
@@ -51,11 +52,17 @@ class PokemonMovesLearnVersionManager extends AbstractManager
     private GenerationManager $generationManager;
 
     /**
+     * @var MoveMachineManager $moveMachineManager
+     */
+    private MoveMachineManager $moveMachineManager;
+
+    /**
      * MoveManager constructor
      * @param EntityManagerInterface $em
      * @param ApiManager $apiManager
      * @param TextManager $textManager
      * @param MoveManager $moveManager
+     * @param MoveMachineManager $moveMachineManager
      * @param GenerationManager $generationManager
      * @param VersionGroupManager $versionGroupManager
      * @param MoveLearnMethodManager $moveLearnMethodManager
@@ -67,6 +74,7 @@ class PokemonMovesLearnVersionManager extends AbstractManager
         ApiManager $apiManager,
         TextManager $textManager,
         MoveManager $moveManager,
+        MoveMachineManager $moveMachineManager,
         GenerationManager $generationManager,
         VersionGroupManager $versionGroupManager,
         MoveLearnMethodManager $moveLearnMethodManager,
@@ -74,6 +82,7 @@ class PokemonMovesLearnVersionManager extends AbstractManager
     )
     {
         $this->moveManager = $moveManager;
+        $this->moveMachineManager = $moveMachineManager;
         $this->repoPokemonMoves = $repoPokemonMoves;
         $this->generationManager = $generationManager;
         $this->versionGroupManager = $versionGroupManager;
@@ -101,12 +110,12 @@ class PokemonMovesLearnVersionManager extends AbstractManager
 
     /**
      * @param Pokemon $pokemon
-     * @param Language $language
      * @return array
      */
-    public function generateArrayMovesForPokemon(Pokemon $pokemon, Language $language) {
+    public function generateArrayMovesForPokemon(Pokemon $pokemon) {
         // Initialise the array of VersionGroup
         $arrayMoves = [];
+        $language = $pokemon->getLanguage();
         $arrayMoves['version_groups'] = array();
         $allMoveLearnMethod = $this->moveLearnMethodManager->getAllMoveLearnMethodByLanguage($language);
             $versionsGroups = $this->versionGroupManager->getVersionGroupByLanguage($language);
@@ -116,7 +125,11 @@ class PokemonMovesLearnVersionManager extends AbstractManager
                         $arrayMovesLearn = [];
                         foreach($allMoveLearnMethod as $moveLearnMethod) {
                             /** @var MoveLearnMethod $moveLearnMethod */
-                            $moves = $this->repoPokemonMoves->getMovesLearnBy($pokemon, $moveLearnMethod, $versionGroup);
+                            if ($moveLearnMethod->getSlug() === $language->getCode().MoveLearnMethod::SLUG_MACHINE) {
+                                $moves = $this->repoPokemonMoves->getMovesLearnMachineBy($pokemon, $moveLearnMethod, $versionGroup);
+                            } else {
+                                $moves = $this->repoPokemonMoves->getMovesLearnBy($pokemon, $moveLearnMethod, $versionGroup);
+                            }
                             if (!empty($moves)) {
                                 $arrayMovesLearn[$moveLearnMethod->getName()] = $moves;
                             }
@@ -133,6 +146,39 @@ class PokemonMovesLearnVersionManager extends AbstractManager
                     }
                 }
         }
+        return $arrayMoves;
+    }
+
+    /**
+     * @param Pokemon $pokemon
+     * @return array
+     */
+    public function generateArrayMovesMachinesForPokemon(Pokemon $pokemon) {
+        // Initialise the array of VersionGroup
+        $arrayMoves = [];
+        $language = $pokemon->getLanguage();
+        $arrayMoves['version_groups'] = array();
+        $moveLearnMethodMachine = $this->moveLearnMethodManager->getMoveLearnMethodBySlug(
+            $this->textManager->generateSlugFromClassWithLanguage(
+                $language, MoveLearnMethod::class, 'machine'
+            )
+        );
+        $versionsGroups = $this->versionGroupManager->getVersionGroupByLanguage($language);
+        if (sizeof($versionsGroups) > 0) {
+            foreach($versionsGroups as $versionGroup) {
+                if (!in_array($versionGroup->getName(), VersionGroup::$avoidList)) {
+                    $arrayMovesLearn = [];
+                    $moves = $this->repoPokemonMoves->getMovesLearnMachineBy($pokemon, $moveLearnMethodMachine, $versionGroup);
+                    if (!empty($moves)) {
+                        $arrayMovesLearn[$moveLearnMethodMachine->getName()] = $moves;
+                    }
+                    if (count($arrayMovesLearn) > 0) {
+                        $arrayMoves['moves_infos'][$versionGroup->getSlug()] = $arrayMovesLearn;
+                    }
+                }
+            }
+        }
+        dump($arrayMoves);
         return $arrayMoves;
     }
 

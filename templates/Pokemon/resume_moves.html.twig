@@ -5,7 +5,7 @@
 <div>
     <div class="tab">
         {% for versionGroup in arrayMoves.version_groups %}
-            <button class="tablinks" id="{{ versionGroup.id }}">
+            <button class="tablinks font-weight-bold" id="{{ versionGroup.id }}">
                 {{ versionGroup.name }}
             </button>
         {% endfor %}
@@ -14,106 +14,37 @@
     {% for key, pokemonMoves in arrayMoves.moves_infos %}
         <div id="tab-{{ key }}" class="tabcontent">
             {% for title, moveLearnMethodArray in pokemonMoves.moves %}
-                <div class="d-flex">
-                    <div class="col-5 d-block">
-                        <h2>{{ title }}</h2>
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    {% if title is same as ('pokemon.moves.method'|trans) %}
-                                        <th>{{ 'pokemon.moves.table.level'|trans }}</th>
-                                    {% endif %}
-                                    <th class="col-moves-name">{{ 'pokemon.moves.table.name'|trans }}</th>
-                                    <th class="col-moves-type">{{ 'pokemon.moves.table.type'|trans }}</th>
-                                    <th>{{ 'pokemon.moves.table.category'|trans }}</th>
-                                    <th class="col-moves-infos">{{ 'pokemon.moves.table.power'|trans }}</th>
-                                    <th class="col-moves-infos">{{ 'pokemon.moves.table.accuracy'|trans }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for moveLearnMethod in moveLearnMethodArray %}
-                                    <tr>
-                                        {% if title is same as ('pokemon.moves.method'|trans) %}
-                                            <td>
-                                                {{ moveLearnMethod.level }}
-                                            </td>
-                                        {% endif %}
-                                        <td>
-                                            {{ moveLearnMethod.move.name }}
-                                        </td>
-                                        <td class="text-center">
-                                            {% if title is same as ('pokemon.moves.method'|trans) %}
-                                                <img class="size-75"
-                                                     title="{{ moveLearnMethod.move.type.name }}"
-                                                     src="{{ moveLearnMethod.move.type.img }}"
-                                                     alt="{{ moveLearnMethod.move.type.name }}"
-                                                >
-                                            {% else %}
-                                                <img class="size-50"
-                                                     title="{{ moveLearnMethod.move.type.name }}"
-                                                     src="{{ moveLearnMethod.move.type.img }}"
-                                                     alt="{{ moveLearnMethod.move.type.name }}"
-                                                >
-                                            {% endif %}
-
-                                        </td>
-                                        <td class="text-center">
-                                            <img class="size-30"
-                                                 title="{{ moveLearnMethod.move.damageClass.name }}"
-                                                 src="{{ moveLearnMethod.move.damageClass.image }}"
-                                                 alt="{{ moveLearnMethod.move.damageClass.name }}"
-                                            >
-                                        </td>
-                                        <td class="text-center">
-                                            {{ moveLearnMethod.move.power }}
-                                        </td>
-                                        <td class="text-center">
-                                            {{ moveLearnMethod.move.accuracy }}
-                                        </td>
-                                    </tr>
+                <div class="col-5 float-left mt-2">
+                    <h2>{{ title }}</h2>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                {% if title is same as ('pokemon.moves.method.levelup'|trans) %}
+                                    <th>{{ 'pokemon.moves.table.level'|trans }}</th>
+                                {% elseif title is same as ('pokemon.moves.method.machine'|trans) %}
+                                    <th>{{ 'pokemon.moves.table.machine'|trans }}</th>
+                                {% endif %}
+                                <th class="col-moves-name">{{ 'pokemon.moves.table.name'|trans }}</th>
+                                <th class="col-moves-type text-center">{{ 'pokemon.moves.table.type'|trans }}</th>
+                                <th>{{ 'pokemon.moves.table.category'|trans }}</th>
+                                <th class="col-moves-infos">{{ 'pokemon.moves.table.power'|trans }}</th>
+                                <th class="col-moves-infos">{{ 'pokemon.moves.table.accuracy'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if title is same as ('pokemon.moves.method.machine'|trans) %}
+                                {% for moveMachine in moveLearnMethodArray %}
+                                    {% include'Moves/table_moves_machines.html.twig' with {'moveMachine' : moveMachine} %}
                                 {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+                            {% else %}
+                                {% for moveLearnMethod in moveLearnMethodArray %}
+                                    {% include'Moves/table_moves.html.twig' with {'moveLearnMethod' : moveLearnMethod} %}
+                                {% endfor %}
+                             {% endif %}
+                        </tbody>
+                    </table>
                 </div>
             {% endfor %}
         </div>
     {% endfor %}
-
 </div>
-
-{% block javascripts %}
-    <script>
-
-        window.addEventListener('load', () => {
-            let tablinks = document.getElementsByClassName('tablinks');
-
-            for (let i = 0; i < tablinks.length; i++) {
-                tablinks[i].addEventListener('click', (evt) => {
-                    detailedMoves(evt, tablinks[i].id);
-                });
-            }
-        });
-
-        function detailedMoves(evt, version) {
-            // Declare all variables
-            let i, tabcontent, tablinks;
-
-            // Get all elements with class="tabcontent" and hide them
-            tabcontent = document.getElementsByClassName('tabcontent');
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = 'none';
-            }
-
-            // Get all elements with class="tablinks" and remove the class "active"
-            tablinks = document.getElementsByClassName('tablinks');
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(' active', '');
-            }
-
-            // Show the current tab, and add an "active" class to the button that opened the tab
-            document.getElementById('tab-'+version).style.display = 'block';
-            evt.currentTarget.className += ' active';
-        }
-    </script>
-{% endblock %}

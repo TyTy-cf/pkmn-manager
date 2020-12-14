@@ -4,13 +4,10 @@
 namespace App\Controller\Pokedex;
 
 
-use App\Entity\Pokedex\PokedexSpecies;
 use App\Entity\Versions\Generation;
 use App\Manager\Pokedex\PokedexManager;
 use App\Manager\Pokemon\PokemonManager;
 use App\Manager\Users\LanguageManager;
-use App\Manager\Versions\VersionGroupManager;
-use App\Repository\Pokedex\PokedexSpeciesRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -66,11 +63,9 @@ class PokedexController extends AbstractController
      */
     function listing(Request $request, Generation $generation): Response
     {
-        $language = $this->languageManager->getLanguageByCode('fr');
-
         $arrayPokedex = [];
         $pokedexes = $this->pokedexManager->getPokedexByGeneration(
-            $generation, $language
+            $generation, $this->languageManager->getLanguageByCode('fr')
         );
         foreach($pokedexes as $pokedex) {
             $arrayPokedex[] = [
@@ -80,6 +75,7 @@ class PokedexController extends AbstractController
         }
         return $this->render('Pokedex/listing.html.twig', [
             'arrayPokedex' => $arrayPokedex,
+            'generation' => $generation,
         ]);
     }
 

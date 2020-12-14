@@ -1,0 +1,31 @@
+
+<tr>
+    <td class="text-center">
+        {{ moveMachine.name }}
+    </td>
+    <td class="ml-1">
+        <a class="bold-link fs-100" href="{{ path('move_detail', {slug_move: moveMachine.move.slug }) }}">
+            {{ moveMachine.move.name }}
+        </a>
+    </td>
+    <td class="text-center">
+        <img class="size-75"
+             title="{{ moveMachine.move.type.name }}"
+             src="{{ moveMachine.move.type.img }}"
+             alt="{{ moveMachine.move.type.name }}"
+        >
+    </td>
+    <td class="text-center">
+        <img class="size-30"
+             title="{{ moveMachine.move.damageClass.name }}"
+             src="{{ moveMachine.move.damageClass.image }}"
+             alt="{{ moveMachine.move.damageClass.name }}"
+        >
+    </td>
+    <td class="text-center">
+        {{ moveMachine.move.power }}
+    </td>
+    <td class="text-center">
+        {{ moveMachine.move.accuracy }}
+    </td>
+</tr>

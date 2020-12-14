@@ -1,5 +1,6 @@
 
 pokemon:
+    profile: "Profil de %pokemon%"
     name: "Nom"
     type: "Type(s)"
     species: "Espèce"
@@ -14,9 +15,12 @@ pokemon:
     hidden_talent: "Talent caché"
     moves:
         title: "Attaques apprises par versions"
-        method: "Montée de niveau"
+        method:
+            levelup: "Montée de niveau"
+            machine : "Capsule technique"
         table:
             level: "Niveau"
+            machine: "CT/CS"
             name: "Nom"
             type: "Type"
             category: "Catégorie"
@@ -52,8 +56,13 @@ index:
             title: "Voir les pokémons de toutes les générations :"
 
 pokedex:
+    listing:
+        title: "Pokedex - %number%"
     all:
         title: "Tous les pokedex :"
     description:
         goto: "Aller au : "
         listing: "Pokemons du %pokedex%"
+
+move:
+    title: "Attaque %move%"

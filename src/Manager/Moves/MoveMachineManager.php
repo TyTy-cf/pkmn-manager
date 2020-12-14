@@ -72,6 +72,16 @@ class MoveMachineManager extends AbstractManager
     }
 
     /**
+     * @param Move $move
+     * @return MoveMachine[]|array
+     */
+    public function getMoveMachineByMove(Move $move) {
+        return $this->moveMachineRepository->findBy([
+            'move' => $move
+        ]);
+    }
+
+    /**
      * @param Language $language
      * @param $apiResponse
      * @throws TransportExceptionInterface
@@ -80,7 +90,7 @@ class MoveMachineManager extends AbstractManager
     {
         $urlDetailed = $this->apiManager->getDetailed($apiResponse['url'])->toArray();
         $slug = $this->textManager->generateSlugFromClassWithLanguage(
-            $language, MoveMachine::class, $urlDetailed['item']['name']
+            $language, MoveMachine::class, $urlDetailed['item']['name'].'-version-group-'.$urlDetailed['version_group']['name']
         );
         if ($this->getMoveMachineBySlug($slug) === null)
         {
@@ -100,7 +110,7 @@ class MoveMachineManager extends AbstractManager
 
                 $moveMachine = (new MoveMachine())
                     ->setLanguage($language)
-                    ->setSlug($slug.'-'.substr($groupVersion->getSlug(), 3))
+                    ->setSlug($slug)
                     ->setVersionGroup($groupVersion)
                     ->setName($this->apiManager->getNameBasedOnLanguageFromArray(
                         $language->getCode(),
@@ -109,6 +119,7 @@ class MoveMachineManager extends AbstractManager
                     ->setMove($move)
                     ->setCost($urlDetailedItem['cost'])
                 ;
+
                 if (isset($urlDetailedItem['sprites']['default']))
                 {
                     $moveMachine->setImageUrl($urlDetailedItem['sprites']['default']);

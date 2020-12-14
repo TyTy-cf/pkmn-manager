@@ -5,6 +5,7 @@ namespace App\Repository\Moves;
 
 
 use App\Entity\Moves\MoveLearnMethod;
+use App\Entity\Moves\MoveMachine;
 use App\Entity\Moves\PokemonMovesLearnVersion;
 use App\Entity\Pokemon\Pokemon;
 use App\Entity\Versions\VersionGroup;
@@ -51,6 +52,7 @@ class PokemonMovesLearnVersionRepository extends ServiceEntityRepository
      * @param Pokemon $pokemon
      * @param $moveLearnMethod
      * @param $versionGroup
+     * @return int|mixed|string
      */
     public function getMovesLearnBy(Pokemon $pokemon, MoveLearnMethod $moveLearnMethod, VersionGroup $versionGroup)
     {
@@ -70,5 +72,33 @@ class PokemonMovesLearnVersionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    /**
+     * @param Pokemon $pokemon
+     * @param $moveLearnMethod
+     * @param $versionGroup
+     * @return int|mixed|string
+     */
+    public function getMovesLearnMachineBy(Pokemon $pokemon, MoveLearnMethod $moveLearnMethod, VersionGroup $versionGroup)
+    {
+        return $this->createQueryBuilder('pmlv')
+            ->select('mm')
+            ->join('pmlv.moveLearnMethod', 'moveLearnMethod')
+            ->join('pmlv.move', 'move')
+            ->join('pmlv.pokemon', 'pokemon')
+            ->join('pmlv.versionGroup', 'versionGroup')
+            ->join(MoveMachine::class, 'mm', 'WITH', 'mm.move = move')
+            ->where('moveLearnMethod = :moveLearnMethod')
+            ->andWhere('pokemon = :pokemon')
+            ->andWhere('versionGroup = :versionGroup')
+            ->andWhere('mm.versionGroup = :versionGroup')
+            ->setParameter('moveLearnMethod', $moveLearnMethod)
+            ->setParameter('pokemon', $pokemon)
+            ->setParameter('versionGroup', $versionGroup)
+            ->orderBy('mm.name', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
     }
 }

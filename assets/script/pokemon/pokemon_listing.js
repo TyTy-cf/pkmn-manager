@@ -105,7 +105,7 @@ function autocomplete(inp) {
 }
 
 /** Setup the autocomplete method to the field : search_pokemon_name_pokemon */
-autocomplete(document.getElementById('search_pokemon_name_pokemon'));
+// autocomplete(document.getElementById('search_pokemon_name_pokemon'));
 
 /**
  * Ajax call to get the Json file of all pokemon names
@@ -131,6 +131,6 @@ function getJsonAllPokemonNames() {
  * Initialize the pokemon's name list to the local variable
  */
 window.addEventListener('load', () => {
-    getJsonAllPokemonNames();
+    // getJsonAllPokemonNames();
 });
 

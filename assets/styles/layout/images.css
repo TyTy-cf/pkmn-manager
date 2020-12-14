@@ -26,6 +26,10 @@
   max-width: 50% !important;
   max-height: 50% !important; }
 
+.size-60 {
+  max-width: 60% !important;
+  max-height: 60% !important; }
+
 .size-75 {
   max-width: 75% !important;
   max-height: 75% !important; }

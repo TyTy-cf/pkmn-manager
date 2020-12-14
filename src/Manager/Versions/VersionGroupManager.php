@@ -105,6 +105,17 @@ class VersionGroupManager extends AbstractManager
 
     /**
      * @param Language $language
+     * @return VersionGroup[]
+     */
+    private function getAllVersionGroupByLanguage(Language $language)
+    {
+        return $this->versionGroupRepository->findBy([
+            'language' => $language,
+        ]);
+    }
+
+    /**
+     * @param Language $language
      * @param $versionGroup
      * @throws NonUniqueResultException
      * @throws TransportExceptionInterface
