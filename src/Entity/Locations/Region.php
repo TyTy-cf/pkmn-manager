@@ -4,7 +4,7 @@
 namespace App\Entity\Locations;
 
 use App\Entity\Versions\Generation;
-use App\Repository\Location\RegionRepository;
+use App\Repository\Locations\RegionRepository;
 use App\Entity\Traits\TraitNomenclature;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;

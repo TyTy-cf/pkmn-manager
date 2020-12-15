@@ -175,14 +175,6 @@ class PokemonSpeciesManager extends AbstractManager
                 $pokemonSpecies,
                 $this->versionManager->getArrayVersions($language)
             );
-
-            if (!empty($urlDetailed['generation']))
-            {
-                $generation = $this->generationManager->getGenerationBySlug(
-                    'fr/generation-'.$urlDetailed['generation']['name']
-                );
-                $pokemonSpecies->setGeneration($generation);
-            }
         }
         $this->entityManager->flush();
     }

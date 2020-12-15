@@ -10,7 +10,7 @@ use App\Entity\Versions\Generation;
 use App\Manager\AbstractManager;
 use App\Manager\Api\ApiManager;
 use App\Manager\TextManager;
-use App\Repository\Location\RegionRepository;
+use App\Repository\Locations\RegionRepository;
 use App\Repository\Versions\GenerationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;

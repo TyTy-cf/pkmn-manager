@@ -55,7 +55,7 @@
 .moves-table {
   overflow-x: auto; }
 
-.table-condensed td {
-  max-width: 3em; }
+.table-condensed {
+  display: table; }
 
 /*# sourceMappingURL=table.css.map */

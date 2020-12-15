@@ -231,6 +231,15 @@ class ApiManager
     }
 
     /**
+     * @return mixed
+     * @throws TransportExceptionInterface
+     */
+    public function getRegionsJson()
+    {
+        return $this->apiConnect('https://pokeapi.co/api/v2/region/');
+    }
+
+    /**
      * @param $lang
      * @param $url
      * @return mixed
@@ -274,7 +283,7 @@ class ApiManager
     public function getFieldContentFromLanguage(string $lang, $apiResponse, string $mainField, string $field): ?string
     {
         $description = null;
-        if (sizeof($apiResponse) > 0) {
+        if ($apiResponse !== null) {
             foreach ($apiResponse[$mainField] as $flavor_text_entry) {
                 if ($flavor_text_entry['language']['name'] === $lang) {
                     $description = $flavor_text_entry[$field];

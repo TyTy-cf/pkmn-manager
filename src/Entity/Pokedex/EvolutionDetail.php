@@ -5,6 +5,7 @@ namespace App\Entity\Pokedex;
 use App\Entity\Infos\Gender;
 use App\Entity\Infos\Type\Type;
 use App\Entity\Items\Item;
+use App\Entity\Locations\Location;
 use App\Entity\Moves\Move;
 use App\Entity\Pokemon\PokemonSpecies;
 use App\Repository\Pokedex\EvolutionDetailRepository;
@@ -63,11 +64,12 @@ class EvolutionDetail
     private ?Type $knownMoveType;
 
     /**
-     * Required to be in a specific location to evolve
-     * @var string|null
-     * @ORM\Column(nullable=true)
+     * Required a location to evolve
+     * @var Location|null
+     * @ORM\ManyToOne(targetEntity="App\Entity\Locations\Location")
+     * @JoinColumn(name="location_id", nullable=true)
      */
-    private ?string $location;
+    private ?Location $location;
 
     /**
      * Required a minimum affection to evolve
@@ -157,10 +159,12 @@ class EvolutionDetail
 
     /**
      * @param Gender|null $gender
+     * @return EvolutionDetail
      */
-    public function setGender(?Gender $gender): void
+    public function setGender(?Gender $gender): EvolutionDetail
     {
         $this->gender = $gender;
+        return $this;
     }
 
     /**
@@ -173,10 +177,12 @@ class EvolutionDetail
 
     /**
      * @param Item|null $heldItem
+     * @return EvolutionDetail
      */
-    public function setHeldItem(?Item $heldItem): void
+    public function setHeldItem(?Item $heldItem): EvolutionDetail
     {
         $this->heldItem = $heldItem;
+        return $this;
     }
 
     /**
@@ -189,10 +195,12 @@ class EvolutionDetail
 
     /**
      * @param Item|null $usedItem
+     * @return EvolutionDetail
      */
-    public function setUsedItem(?Item $usedItem): void
+    public function setUsedItem(?Item $usedItem): EvolutionDetail
     {
         $this->usedItem = $usedItem;
+        return $this;
     }
 
     /**
@@ -205,10 +213,12 @@ class EvolutionDetail
 
     /**
      * @param Move|null $knownMove
+     * @return EvolutionDetail
      */
-    public function setKnownMove(?Move $knownMove): void
+    public function setKnownMove(?Move $knownMove): EvolutionDetail
     {
         $this->knownMove = $knownMove;
+        return $this;
     }
 
     /**
@@ -221,26 +231,30 @@ class EvolutionDetail
 
     /**
      * @param Type|null $knownMoveType
+     * @return EvolutionDetail
      */
-    public function setKnownMoveType(?Type $knownMoveType): void
+    public function setKnownMoveType(?Type $knownMoveType): EvolutionDetail
     {
         $this->knownMoveType = $knownMoveType;
+        return $this;
     }
 
     /**
-     * @return string|null
+     * @return Location|null
      */
-    public function getLocation(): ?string
+    public function getLocation(): ?Location
     {
         return $this->location;
     }
 
     /**
-     * @param string|null $location
+     * @param Location|null $location
+     * @return EvolutionDetail
      */
-    public function setLocation(?string $location): void
+    public function setLocation(?Location $location): EvolutionDetail
     {
         $this->location = $location;
+        return $this;
     }
 
     /**
@@ -253,10 +267,12 @@ class EvolutionDetail
 
     /**
      * @param int|null $minAffection
+     * @return EvolutionDetail
      */
-    public function setMinAffection(?int $minAffection): void
+    public function setMinAffection(?int $minAffection): EvolutionDetail
     {
         $this->minAffection = $minAffection;
+        return $this;
     }
 
     /**
@@ -269,10 +285,12 @@ class EvolutionDetail
 
     /**
      * @param int|null $minBeauty
+     * @return EvolutionDetail
      */
-    public function setMinBeauty(?int $minBeauty): void
+    public function setMinBeauty(?int $minBeauty): EvolutionDetail
     {
         $this->minBeauty = $minBeauty;
+        return $this;
     }
 
     /**
@@ -285,10 +303,12 @@ class EvolutionDetail
 
     /**
      * @param int|null $minHappiness
+     * @return EvolutionDetail
      */
-    public function setMinHappiness(?int $minHappiness): void
+    public function setMinHappiness(?int $minHappiness): EvolutionDetail
     {
         $this->minHappiness = $minHappiness;
+        return $this;
     }
 
     /**
@@ -301,10 +321,12 @@ class EvolutionDetail
 
     /**
      * @param int|null $minLevel
+     * @return EvolutionDetail
      */
-    public function setMinLevel(?int $minLevel): void
+    public function setMinLevel(?int $minLevel): EvolutionDetail
     {
         $this->minLevel = $minLevel;
+        return $this;
     }
 
     /**
@@ -317,10 +339,12 @@ class EvolutionDetail
 
     /**
      * @param bool|null $needsOverworldRain
+     * @return EvolutionDetail
      */
-    public function setNeedsOverworldRain(?bool $needsOverworldRain): void
+    public function setNeedsOverworldRain(?bool $needsOverworldRain): EvolutionDetail
     {
         $this->needsOverworldRain = $needsOverworldRain;
+        return $this;
     }
 
     /**
@@ -333,10 +357,12 @@ class EvolutionDetail
 
     /**
      * @param PokemonSpecies|null $pokemonSpecies
+     * @return EvolutionDetail
      */
-    public function setPokemonSpecies(?PokemonSpecies $pokemonSpecies): void
+    public function setPokemonSpecies(?PokemonSpecies $pokemonSpecies): EvolutionDetail
     {
         $this->pokemonSpecies = $pokemonSpecies;
+        return $this;
     }
 
     /**
@@ -349,10 +375,12 @@ class EvolutionDetail
 
     /**
      * @param Type|null $partyType
+     * @return EvolutionDetail
      */
-    public function setPartyType(?Type $partyType): void
+    public function setPartyType(?Type $partyType): EvolutionDetail
     {
         $this->partyType = $partyType;
+        return $this;
     }
 
     /**
@@ -365,10 +393,12 @@ class EvolutionDetail
 
     /**
      * @param string|null $timeOfDay
+     * @return EvolutionDetail
      */
-    public function setTimeOfDay(?string $timeOfDay): void
+    public function setTimeOfDay(?string $timeOfDay): EvolutionDetail
     {
         $this->timeOfDay = $timeOfDay;
+        return $this;
     }
 
     /**
@@ -381,10 +411,12 @@ class EvolutionDetail
 
     /**
      * @param int|null $relativePhysicalStats
+     * @return EvolutionDetail
      */
-    public function setRelativePhysicalStats(?int $relativePhysicalStats): void
+    public function setRelativePhysicalStats(?int $relativePhysicalStats): EvolutionDetail
     {
         $this->relativePhysicalStats = $relativePhysicalStats;
+        return $this;
     }
 
     /**
@@ -397,10 +429,12 @@ class EvolutionDetail
 
     /**
      * @param EvolutionTrigger|null $evolutionTrigger
+     * @return EvolutionDetail
      */
-    public function setEvolutionTrigger(?EvolutionTrigger $evolutionTrigger): void
+    public function setEvolutionTrigger(?EvolutionTrigger $evolutionTrigger): EvolutionDetail
     {
         $this->evolutionTrigger = $evolutionTrigger;
+        return $this;
     }
 
 }

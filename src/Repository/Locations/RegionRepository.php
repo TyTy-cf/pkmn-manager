@@ -1,11 +1,9 @@
 <?php
 
 
-namespace App\Repository\Location;
-
+namespace App\Repository\Locations;
 
 use App\Entity\Locations\Region;
-use App\Entity\Users\Language;
 use App\Repository\AbstractRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

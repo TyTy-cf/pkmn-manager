@@ -2,9 +2,7 @@
 
 namespace App\Repository\Pokedex;
 
-use App\Entity\Locations\Region;
 use App\Entity\Pokedex\PokedexSpecies;
-use App\Entity\Users\Language;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

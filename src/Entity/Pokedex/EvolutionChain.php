@@ -29,16 +29,9 @@ class EvolutionChain
     /**
      * @var PokemonSpecies
      * @ORM\ManyToOne(targetEntity="App\Entity\Pokedex\PokedexSpecies")
-     * @JoinColumn(name="current_pokemon_species_id")
+     * @JoinColumn(name="from_pokemon_species_id")
      */
-    private PokemonSpecies $currentPokemonSpecies;
-
-    /**
-     * @var EvolutionChain
-     * @ORM\ManyToMany(targetEntity="App\Entity\Pokedex\EvolutionChain")
-     * @JoinColumn(name="evolution_chain_id")
-     */
-    private EvolutionChain $evolutionChain;
+    private PokemonSpecies $fromPokemonSpecies;
 
     /**
      * @var EvolutionDetail
@@ -47,6 +40,10 @@ class EvolutionChain
      */
     private EvolutionDetail $evolutionDetail;
 
+    /**
+     * @ORM\Column(type="smallint", nullable=true)
+     */
+    private bool $isBaby;
 
 
     public function getId(): ?int
@@ -73,33 +70,17 @@ class EvolutionChain
     /**
      * @return PokemonSpecies
      */
-    public function getCurrentPokemonSpecies(): PokemonSpecies
+    public function getFromPokemonSpecies(): PokemonSpecies
     {
-        return $this->currentPokemonSpecies;
+        return $this->fromPokemonSpecies;
     }
 
     /**
      * @param PokemonSpecies $currentPokemonSpecies
      */
-    public function setCurrentPokemonSpecies(PokemonSpecies $currentPokemonSpecies): void
+    public function setFromPokemonSpecies(PokemonSpecies $currentPokemonSpecies): void
     {
-        $this->currentPokemonSpecies = $currentPokemonSpecies;
-    }
-
-    /**
-     * @return EvolutionChain
-     */
-    public function getEvolutionChain(): EvolutionChain
-    {
-        return $this->evolutionChain;
-    }
-
-    /**
-     * @param EvolutionChain $evolutionChain
-     */
-    public function setEvolutionChain(EvolutionChain $evolutionChain): void
-    {
-        $this->evolutionChain = $evolutionChain;
+        $this->fromPokemonSpecies = $currentPokemonSpecies;
     }
 
     /**
@@ -116,6 +97,24 @@ class EvolutionChain
     public function setEvolutionDetail(EvolutionDetail $evolutionDetail): void
     {
         $this->evolutionDetail = $evolutionDetail;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isBaby(): bool
+    {
+        return $this->isBaby;
+    }
+
+    /**
+     * @param bool $isBaby
+     * @return EvolutionChain
+     */
+    public function setIsBaby(bool $isBaby): self
+    {
+        $this->isBaby = $isBaby;
+        return $this;
     }
 
 }

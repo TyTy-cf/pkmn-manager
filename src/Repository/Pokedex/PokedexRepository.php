@@ -2,10 +2,7 @@
 
 namespace App\Repository\Pokedex;
 
-use App\Entity\Locations\Region;
 use App\Entity\Pokedex\Pokedex;
-use App\Entity\Pokemon\Pokemon;
-use App\Entity\Pokemon\PokemonForm;
 use App\Entity\Users\Language;
 use App\Entity\Versions\Generation;
 use App\Repository\AbstractRepository;

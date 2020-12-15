@@ -14,17 +14,17 @@
                     <thead>
                         <tr>
                             <th class="text-center">{{ 'index.type.type'|trans }}</th>
-                            <th class="text-center" colspan="17">{{ 'index.type.relation'|trans }}</th>
+                            <th class="text-center" colspan="{{ types|length }}">{{ 'index.type.relation'|trans }}</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><img class="size-" src="{{ type.img }}" alt="{{ type.name }}"></td>
+                            <td>
+                                <img class="size-75" src="{{ type.img }}" alt="{{ type.name }}">
+                            </td>
                             {% for typeElement in types %}
-                                <td><img class="size-75 vertical" src="{{ typeElement.img }}" alt="{{ typeElement.name }}"></td>
+                                <td class="vertical"><img class="size-80" src="{{ typeElement.img }}" alt="{{ typeElement.name }}"></td>
                             {% endfor %}
-                        </tr>
-                        <tr>
                         </tr>
                     </tbody>
                 </table>

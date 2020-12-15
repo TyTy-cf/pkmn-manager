@@ -3,6 +3,7 @@
 namespace App\Entity\Pokemon;
 
 use App\Entity\Pokedex\EggGroup;
+use App\Entity\Pokedex\EvolutionChain;
 use App\Entity\Traits\TraitNomenclature;
 use App\Entity\Versions\Generation;
 use App\Repository\Pokemon\PokemonSpeciesRepository;
@@ -105,11 +106,11 @@ class PokemonSpecies
     private Collection $pokedexSpecies;
 
     /**
-     * @var Generation|null
-     * @ORM\ManyToOne(targetEntity="App\Entity\Versions\Generation")
-     * @JoinColumn(name="generation_id", nullable=true)
+     * @var EvolutionChain|null
+     * @ORM\ManyToOne(targetEntity="App\Entity\Pokedex\EvolutionChain")
+     * @JoinColumn(name="evolution_chain_id", nullable=true)
      */
-    private ?Generation $generation;
+    private ?EvolutionChain $evolutionChain;
 
     /**
      * PokemonSpecies constructor.
@@ -380,20 +381,20 @@ class PokemonSpecies
     }
 
     /**
-     * @return Generation|null
+     * @return EvolutionChain|null
      */
-    public function getGeneration(): ?Generation
+    public function getEvolutionChain(): ?EvolutionChain
     {
-        return $this->generation;
+        return $this->evolutionChain;
     }
 
     /**
-     * @param Generation|null $generation
+     * @param EvolutionChain|null $evolutionChain
      * @return PokemonSpecies
      */
-    public function setGeneration(?Generation $generation): self
+    public function setEvolutionChain(?EvolutionChain $evolutionChain): self
     {
-        $this->generation = $generation;
+        $this->evolutionChain = $evolutionChain;
         return $this;
     }
 
