@@ -4,6 +4,7 @@
 namespace App\Manager\Moves;
 
 
+use App\Entity\Moves\Move;
 use App\Entity\Moves\MoveLearnMethod;
 use App\Entity\Moves\MoveMachine;
 use App\Entity\Moves\PokemonMovesLearnVersion;
@@ -97,7 +98,15 @@ class PokemonMovesLearnVersionManager extends AbstractManager
      */
     public function getPokemonMovesLearnVersionBySlug(string $slug): ?PokemonMovesLearnVersion
     {
-        return $this->repoPokemonMoves->getPokemonMovesLearnVersionByLanguageAndSlug($slug);
+        return $this->repoPokemonMoves->getPokemonMovesLearnVersionBySlug($slug);
+    }
+
+    /**
+     * @param Move|null $move
+     */
+    public function getMoveLearnByPokemon(?Move $move)
+    {
+        return $this->repoPokemonMoves->getMoveLearnByPokemon($move);
     }
 
     /**
@@ -224,7 +233,8 @@ class PokemonMovesLearnVersionManager extends AbstractManager
                         $pokemon->getNameApi().'-'.
                         $moveName.'-'.
                         $moveLearnMethodName.'-'.
-                        $versionGroupName;
+                        $versionGroupName
+                    ;
 
                     if (($pokemonMoveLearn = $this->getPokemonMovesLearnVersionBySlug($slug)) === null)
                     {

@@ -19,6 +19,11 @@ body {
   font-size: 1em;
   font-weight: bold; }
 
+.light-detailed {
+  color: #737373 !important;
+  font-size: 0.8em;
+  font-weight: bold; }
+
 .profile-table th {
   color: #737373;
   font-size: .875rem;

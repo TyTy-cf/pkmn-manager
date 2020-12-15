@@ -2,6 +2,7 @@
 /**************************** Color variables ****************************/
 
 $font-special-color: #737373;
+$light-font-special-color: #c4c4c4;
 $background : #d9e7ff;
 $background-lighter : #ebf1ff;
 
@@ -29,6 +30,12 @@ body {
 .detailed {
   color: $font-special-color !important;
   font-size: 1em;
+  font-weight: bold;
+}
+
+.light-detailed {
+  color: $font-special-color !important;
+  font-size: 0.8em;
   font-weight: bold;
 }
 

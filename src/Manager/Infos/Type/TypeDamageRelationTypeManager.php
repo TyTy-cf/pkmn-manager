@@ -50,6 +50,15 @@ class TypeDamageRelationTypeManager extends AbstractManager
 
     /**
      * @param Type $type
+     * @return int|mixed|string
+     */
+    public function getRelationTypeByType(Type $type)
+    {
+        return $this->typeDamageRelationTypeRepository->getRelationTypeByType($type);
+    }
+
+    /**
+     * @param Type $type
      * @param string $lang
      * @throws TransportExceptionInterface
      * @throws NonUniqueResultException

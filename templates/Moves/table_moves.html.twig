@@ -11,20 +11,21 @@
         </a>
     </td>
     <td class="text-center">
-        {% if title is same as ('pokemon.moves.method.levelup'|trans) %}
-            <img class="size-75"
-                 title="{{ moveLearnMethod.move.type.name }}"
-                 src="{{ moveLearnMethod.move.type.img }}"
-                 alt="{{ moveLearnMethod.move.type.name }}"
-            >
-        {% else %}
-            <img class="size-50"
-                 title="{{ moveLearnMethod.move.type.name }}"
-                 src="{{ moveLearnMethod.move.type.img }}"
-                 alt="{{ moveLearnMethod.move.type.name }}"
-            >
-        {% endif %}
-
+        <a href="{{ path('type_detail', {slug_type: moveLearnMethod.move.type.slug }) }}">
+            {% if title is same as ('pokemon.moves.method.levelup'|trans) %}
+                <img class="size-75"
+                     title="{{ moveLearnMethod.move.type.name }}"
+                     src="{{ moveLearnMethod.move.type.img }}"
+                     alt="{{ moveLearnMethod.move.type.name }}"
+                >
+            {% else %}
+                <img class="size-50"
+                     title="{{ moveLearnMethod.move.type.name }}"
+                     src="{{ moveLearnMethod.move.type.img }}"
+                     alt="{{ moveLearnMethod.move.type.name }}"
+                >
+            {% endif %}
+        </a>
     </td>
     <td class="text-center">
         <img class="size-30"

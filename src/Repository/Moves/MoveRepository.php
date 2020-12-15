@@ -5,9 +5,7 @@ namespace App\Repository\Moves;
 
 
 use App\Entity\Moves\Move;
-use App\Entity\Users\Language;
 use App\Repository\AbstractRepository;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -20,5 +18,21 @@ class MoveRepository extends AbstractRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Move::class);
+    }
+
+    /**
+     * @param string $slug
+     * @return int|mixed|string
+     * @throws NonUniqueResultException
+     */
+    public function getSimpleMoveBySlug(string $slug)
+    {
+        return $this->createQueryBuilder('move')
+            ->select('move')
+            ->where('move.slug = :slug')
+            ->setParameter('slug', $slug)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
     }
 }

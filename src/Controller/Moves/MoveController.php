@@ -4,10 +4,12 @@
 namespace App\Controller\Moves;
 
 
-use App\Entity\Moves\Move;
+use App\Entity\Versions\VersionGroup;
 use App\Manager\Moves\MoveDescriptionManager;
 use App\Manager\Moves\MoveMachineManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use App\Manager\Moves\MoveManager;
+use App\Manager\Moves\PokemonMovesLearnVersionManager;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,29 +29,49 @@ class MoveController extends AbstractController
     private MoveMachineManager $moveMachineManager;
 
     /**
+     * @var MoveManager $moveManager
+     */
+    private MoveManager $moveManager;
+
+    /**
+     * @var PokemonMovesLearnVersionManager $pmlvm
+     */
+    private PokemonMovesLearnVersionManager $pmlvm;
+
+    /**
      * MoveController constructor.
      * @param MoveDescriptionManager $moveDescriptionManager
      * @param MoveMachineManager $moveMachineManager
+     * @param MoveManager $moveManager
+     * @param PokemonMovesLearnVersionManager $pmlvm
      */
-    public function __construct(MoveDescriptionManager $moveDescriptionManager, MoveMachineManager $moveMachineManager)
+    public function __construct(
+        MoveDescriptionManager $moveDescriptionManager,
+        MoveMachineManager $moveMachineManager,
+        MoveManager $moveManager,
+        PokemonMovesLearnVersionManager $pmlvm
+    )
     {
         $this->moveDescriptionManager = $moveDescriptionManager;
         $this->moveMachineManager = $moveMachineManager;
+        $this->pmlvm = $pmlvm;
+        $this->moveManager = $moveManager;
     }
 
     /**
      * @Route(path="/move/{slug_move}", name="move_detail", requirements={"slug_move": ".+"})
-     * @ParamConverter(class="App\Entity\Moves\Move", name="move", options={"mapping": {"slug_move" : "slug"}})
      *
      * @param Request $request
-     * @param Move $move
      * @return Response
+     * @throws NonUniqueResultException
      */
-    public function indexMove(Request $request, Move $move) {
+    public function indexMove(Request $request) {
+        $move = $this->moveManager->getSimpleMoveBySlug($request->get('slug_move'));
         return $this->render('Moves/detail.html.twig', [
             'move' => $move,
-            'moveDescription' => $this->moveDescriptionManager->getMoveDescriptionByMove($move),
-            'moveMachine' => $this->moveMachineManager->getMoveMachineByMove($move),
+            'moveDescription' => $this->moveDescriptionManager->getMoveDescriptionByMove($move, VersionGroup::$avoidList),
+            'moveMachine' => $this->moveMachineManager->getMoveMachineByMove($move, VersionGroup::$avoidList),
+            'moveLearnPokemon' => $this->pmlvm->getMoveLearnByPokemon($move),
         ]);
     }
 

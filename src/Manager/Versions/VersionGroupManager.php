@@ -127,7 +127,8 @@ class VersionGroupManager extends AbstractManager
             $language,VersionGroup::class, $versionGroup['name']
         );
 
-        if ($this->getVersionGroupBySlug($slug) === null)
+        if ($this->getVersionGroupBySlug($slug) === null
+         & !in_array($versionGroup['name'], VersionGroup::$avoidList))
         {
             $urlDetailed = $this->apiManager->getDetailed($versionGroup['url'])->toArray();
 

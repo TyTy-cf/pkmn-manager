@@ -151,6 +151,14 @@ class Move
     /**
      * @return int|null
      */
+    public function getPpMax(): ?int
+    {
+        return $this->pp + (($this->pp) / 5) * 3;
+    }
+
+    /**
+     * @return int|null
+     */
     public function getAccuracy(): ?int
     {
         return $this->accuracy;

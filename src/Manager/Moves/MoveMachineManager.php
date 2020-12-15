@@ -73,12 +73,11 @@ class MoveMachineManager extends AbstractManager
 
     /**
      * @param Move $move
+     * @param $array
      * @return MoveMachine[]|array
      */
-    public function getMoveMachineByMove(Move $move) {
-        return $this->moveMachineRepository->findBy([
-            'move' => $move
-        ]);
+    public function getMoveMachineByMove(Move $move, $array) {
+        return $this->moveMachineRepository->getMachineByMove($move, $array);
     }
 
     /**

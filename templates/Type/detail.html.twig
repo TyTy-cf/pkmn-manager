@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="container col-10">
+        <h1 class="text-center mb-1 mt-3">{{ type.name }}</h1>
+        <hr>
+        <div class="grid-row">
+            <div class="grid-col ">
+                <h2>{{ 'index.type.damage_relation'|trans }}</h2>
+            </div>
+            <div class="grid-col ">
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th class="text-center">{{ 'index.type.type'|trans }}</th>
+                            <th class="text-center" colspan="17">{{ 'index.type.relation'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><img class="size-" src="{{ type.img }}" alt="{{ type.name }}"></td>
+                            {% for typeElement in types %}
+                                <td><img class="size-75 vertical" src="{{ typeElement.img }}" alt="{{ typeElement.name }}"></td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,45 +1,44 @@
 .size-10 {
   max-width: 10% !important;
   max-height: 10% !important; }
-
 .size-15 {
   max-width: 15% !important;
   max-height: 15% !important; }
-
 .size-20 {
   max-width: 20% !important;
   max-height: 20% !important; }
-
 .size-25 {
   max-width: 25% !important;
   max-height: 25% !important; }
-
 .size-30 {
   max-width: 30% !important;
   max-height: 30% !important; }
-
 .size-40 {
   max-width: 40% !important;
   max-height: 40% !important; }
-
 .size-50 {
   max-width: 50% !important;
   max-height: 50% !important; }
-
 .size-60 {
   max-width: 60% !important;
   max-height: 60% !important; }
-
 .size-75 {
   max-width: 75% !important;
   max-height: 75% !important; }
-
+.size-80 {
+  max-width: 80% !important;
+  max-height: 80% !important; }
+.size-85 {
+  max-width: 85% !important;
+  max-height: 85% !important; }
 .size-150 {
   max-width: 150% !important;
   max-height: 150% !important; }
-
 .size-200 {
   max-width: 200% !important;
   max-height: 200% !important; }
+
+.vertical {
+  transform: rotate(270deg); }
 
 /*# sourceMappingURL=images.css.map */

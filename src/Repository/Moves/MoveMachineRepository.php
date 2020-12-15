@@ -4,11 +4,9 @@
 namespace App\Repository\Moves;
 
 
+use App\Entity\Moves\Move;
 use App\Entity\Moves\MoveMachine;
-use App\Entity\Users\Language;
 use App\Repository\AbstractRepository;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 class MoveMachineRepository extends AbstractRepository
@@ -23,18 +21,23 @@ class MoveMachineRepository extends AbstractRepository
     }
 
     /**
-     * @param Language $language
-     * @param string $slug
-     * @return MoveMachine|null
-     * @throws NonUniqueResultException
+     * @param Move $move
+     * @param $array
+     * @return int|mixed|string
      */
-    public function getMoveMachineByLanguageAndSlug(Language $language, string $slug): ?MoveMachine
+    public function getMachineByMove(Move $move, $array)
     {
-        $qb = $this->createQueryBuilder('move_machine');
-        $qb->where('move_machine.language = :lang');
-        $qb->andWhere('move_machine.slug = :slug');
-        $qb->setParameter('lang', $language);
-        $qb->setParameter('slug', $slug);
-        return $qb->getQuery()->getOneOrNullResult();
+        return $this->createQueryBuilder('move_machine')
+            ->select('move_machine', 'versionGroup')
+            ->join('move_machine.move', 'move')
+            ->join('move_machine.versionGroup', 'versionGroup')
+            ->where('move = :move')
+            ->andWhere('versionGroup.name NOT IN (:array)')
+            ->setParameter('array', $array)
+            ->setParameter('move', $move)
+            ->orderBy('versionGroup.order', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

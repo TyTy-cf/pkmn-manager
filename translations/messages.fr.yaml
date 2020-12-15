@@ -49,6 +49,10 @@ index:
     ability:
         description: "Description"
         pokemons: "Pokémons avec cette capacité"
+    type:
+        damage_relation: "Relation du type avec les autres types :"
+        type: "Type"
+        relation: "Faiblesses"
     egg_group:
         pokemons: "Pokémons ayant ce groupe d'oeuf"
     generation:
@@ -65,4 +69,19 @@ pokedex:
         listing: "Pokemons du %pokedex%"
 
 move:
-    title: "Attaque %move%"
+    title:
+        main: "Attaque %move%"
+        datas: "Détail de l'attaque"
+        description: "Description"
+        machine: "Capsule technique par versions"
+        pokemons: "Pokemons pouvant apprendre l'attaque"
+    move:
+        type: "Type"
+        category: "Catégorie"
+        power: "Puissance"
+        accuracy: "Précision"
+        pp: "PP"
+        priority:
+            title: "Est prioritaire ?"
+            no: "Non"
+            yes: "Oui"

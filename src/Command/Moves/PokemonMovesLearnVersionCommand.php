@@ -106,7 +106,7 @@ class PokemonMovesLearnVersionCommand extends AbstractCommand
         if ($this->checkLanguageExists($output, $lang))
         {
             $language = $this->languageManager->getLanguageByCode($lang);
-            $versionGroupArray = $this->versionGroupManager->getAllVersionGroupByLanguage($language);
+            $versionGroupArray = $this->versionGroupManager->getArrayVersionGroup($language);
             $methodLearnMethodArray = $this->moveLearnMethodManager->getAllMoveLearnMethodByLanguage($language);
             $arrayIdMax = $this->manager->getLastPokemonIdInDataBase();
             $arrayPokemon = $this->pokemonManager->getPokemonOffsetLimitByLanguage(

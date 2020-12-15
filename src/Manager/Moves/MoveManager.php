@@ -75,10 +75,18 @@ class MoveManager extends AbstractManager
     }
 
     /**
+     * @param string $slug
+     * @return Move|null
+     * @throws NonUniqueResultException
+     */
+    public function getSimpleMoveBySlug(string $slug): ?Move {
+        return $this->movesRepository->getSimpleMoveBySlug($slug);
+    }
+
+    /**
      * If not exist, save the moves in database
      * @param Language $language
      * @param $apiResponse
-     * @throws NonUniqueResultException
      * @throws TransportExceptionInterface
      */
     public function createFromApiResponse(Language $language, $apiResponse)

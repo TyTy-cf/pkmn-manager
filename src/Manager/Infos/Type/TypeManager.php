@@ -62,6 +62,17 @@ class TypeManager extends AbstractManager
     }
 
     /**
+     * Return all Type based on a Language
+     *
+     * @param Type $type
+     * @return Type[]|object[]
+     */
+    public function getAllOtherTypeByType(Type $type)
+    {
+        return $this->typeRepository->getAllOtherTypeByType($type);
+    }
+
+    /**
      * @param string $slug
      * @return Type|null
      */

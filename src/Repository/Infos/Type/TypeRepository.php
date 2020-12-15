@@ -30,7 +30,9 @@ class TypeRepository extends AbstractRepository
             ->join('type.language', 'language')
             ->where('language.code = :lang')
             ->setParameter('lang', $lang)
-            ->getQuery()->getResult();
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
     /**
@@ -47,7 +49,27 @@ class TypeRepository extends AbstractRepository
             ->andWhere('type.codeApi = :codeApi')
             ->setParameter('lang', $lang)
             ->setParameter('codeApi', $codeApi)
-            ->getQuery()->getOneOrNullResult();
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    /**
+     * @param Type $type
+     * @return int|mixed|string
+     */
+    public function getAllOtherTypeByType(Type $type)
+    {
+        return $this->createQueryBuilder('type')
+            ->select('type')
+            ->join('type.language', 'language')
+            ->where('type.language = :lang')
+            ->andWhere('type != :type')
+            ->setParameter('type', $type)
+            ->setParameter('lang', $type->getLanguage())
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
 }

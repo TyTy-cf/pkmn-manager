@@ -4,6 +4,7 @@
 namespace App\Repository\Moves;
 
 
+use App\Entity\Moves\Move;
 use App\Entity\Moves\MoveLearnMethod;
 use App\Entity\Moves\MoveMachine;
 use App\Entity\Moves\PokemonMovesLearnVersion;
@@ -26,7 +27,7 @@ class PokemonMovesLearnVersionRepository extends ServiceEntityRepository
      * @return PokemonMovesLearnVersion|null
      * @throws NonUniqueResultException
      */
-    public function getPokemonMovesLearnVersionByLanguageAndSlug(string $slug): ?PokemonMovesLearnVersion
+    public function getPokemonMovesLearnVersionBySlug(string $slug): ?PokemonMovesLearnVersion
     {
         return $this->createQueryBuilder('pokemon_moves_learn_version')
             ->where('pokemon_moves_learn_version.slug = :slug')
@@ -99,6 +100,26 @@ class PokemonMovesLearnVersionRepository extends ServiceEntityRepository
             ->orderBy('mm.name', 'ASC')
             ->getQuery()
             ->getResult()
-            ;
+        ;
+    }
+
+    /**
+     * @param Move|null $move
+     * @return int|mixed|string
+     */
+    public function getMoveLearnByPokemon(?Move $move)
+    {
+        return $this->createQueryBuilder('pmlv')
+            ->select('pmlv', 'pokemon')
+            ->join('pmlv.move', 'move')
+            ->join('pmlv.pokemon', 'pokemon')
+            ->join('pmlv.versionGroup', 'versionGroup')
+            ->where('move = :move')
+            ->setParameter('move', $move)
+            ->groupBy('pokemon.id')
+            ->orderBy('versionGroup.order, pokemon.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

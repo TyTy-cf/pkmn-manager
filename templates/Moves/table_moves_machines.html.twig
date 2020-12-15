@@ -9,11 +9,13 @@
         </a>
     </td>
     <td class="text-center">
-        <img class="size-75"
-             title="{{ moveMachine.move.type.name }}"
-             src="{{ moveMachine.move.type.img }}"
-             alt="{{ moveMachine.move.type.name }}"
-        >
+        <a href="{{ path('type_detail', {slug_type: moveMachine.move.type.slug }) }}">
+            <img class="size-75"
+                 title="{{ moveMachine.move.type.name }}"
+                 src="{{ moveMachine.move.type.img }}"
+                 alt="{{ moveMachine.move.type.name }}"
+            >
+        </a>
     </td>
     <td class="text-center">
         <img class="size-30"

@@ -1,10 +1,36 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'move.title'|trans({'%move%': move.name}) }}{% endblock %}
+{% block title %}{{ 'move.title.main'|trans({'%move%': move.name}) }}{% endblock %}
 
 {% block body %}
-    <div class="container col-9">
+    <div class="container col-8">
         <h1 class="text-center mb-1 mt-3">{{ move.name }}</h1>
         <hr>
+        <div class="grid-row">
+            <div class="col-4 float-left">
+                <h2>{{ 'move.title.datas'|trans }}</h2>
+                {% include 'Moves/detail_infos.html.twig' with {'move' : move} %}
+            </div>
+            <div class="float-left">
+                <h2>{{ 'move.title.description'|trans }}</h2>
+                {% include 'Moves/detail_description.html.twig' with {'moveDescription' : moveDescription} %}
+            </div>
+            {% if moveMachine|length > 0 %}
+                <div class="float-left">
+                    <h2>{{ 'move.title.machine'|trans }}</h2>
+                    {% include 'Moves/detail_machines.html.twig' with {'moveMachine' : moveMachine} %}
+                </div>
+            {% endif %}
+        </div>
+        <div>
+            <h2>{{ 'move.title.pokemons'|trans }}</h2>
+            <div class="list-card-pkmn list-card-pkmn-lg">
+                {% for pmlv in moveLearnPokemon %}
+                    {% if pmlv.pokemon.pokemonSprites.spriteFrontDefault is not null %}
+                        {% include'Pokemon/pokemon_card.html.twig' with {'pokemon' : pmlv.pokemon} %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
     </div>
 {% endblock %}

@@ -41,10 +41,11 @@ class PokemonSheet
     private int $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Pokemon\Pokemon")
-     * @ORM\JoinColumn(name="name_pokemon", referencedColumnName="id")
+     * @var Pokemon
+     * @ORM\ManyToOne(targetEntity="App\Entity\Pokemon\Pokemon")
+     * @JoinColumn(name="pokemon_id", nullable=true)
      */
-    private $namePokemon;
+    private Pokemon $pokemon;
 
     /**
      * @var string|null $nickname le surnom du pokemon
@@ -327,6 +328,24 @@ class PokemonSheet
     {
         $this->user = $user;
 
+        return $this;
+    }
+
+    /**
+     * @return Pokemon
+     */
+    public function getPokemon(): Pokemon
+    {
+        return $this->pokemon;
+    }
+
+    /**
+     * @param Pokemon $pokemon
+     * @return PokemonSheet
+     */
+    public function setPokemon(Pokemon $pokemon): PokemonSheet
+    {
+        $this->pokemon = $pokemon;
         return $this;
     }
 

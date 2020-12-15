@@ -67,14 +67,6 @@ class MoveLearnMethodManager extends AbstractManager
     }
 
     /**
-     * @return array
-     */
-    public function getAllMoveLearnMethod()
-    {
-        return $this->repo->findAll();
-    }
-
-    /**
      * @param Language $language
      * @param $apiLearnMethod
      * @throws TransportExceptionInterface

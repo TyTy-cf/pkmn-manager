@@ -1,71 +1,73 @@
 
 <table class="table table-striped profile-table w-100">
     <tbody>
-    <tr>
-        <th>{{ 'pokemon.type'|trans }}</th>
-        <td>
-            {% for type in pokemon.types %}
-                <img class="size-20" src="{{ type.img }}" alt="Type {{ type.name|lower }}"></li>
-            {% endfor %}
-        </td>
-    </tr>
-    {% if pokemon.pokemonSpecies is defined %}
         <tr>
-            <th>{{ 'pokemon.species'|trans }}</th>
-            <td>{{ pokemon.pokemonSpecies.genera }}</td>
+            <th>{{ 'pokemon.type'|trans }}</th>
+            <td>
+                {% for type in pokemon.types %}
+                    <a href="{{ path('type_detail', {slug_type: type.slug }) }}">
+                        <img class="size-20" src="{{ type.img }}" alt="Type {{ type.name|lower }}"  title="{{ type.name|lower }}"/>
+                    </a>
+                {% endfor %}
+            </td>
         </tr>
-    {% endif %}
-    <tr>
-        <th>{{ 'pokemon.height'|trans }}</th>
-        <td>{{ (pokemon.height/10) }} m</td>
-    </tr>
-    <tr>
-        <th>{{ 'pokemon.weight'|trans }}</th>
-        <td>{{ (pokemon.weight/10) }} kg</td>
-    </tr>
-    <tr>
-        <th>{{ 'pokemon.abilities'|trans }}</th>
-        <td>
-            {% for pokemon_ability in pokemon.pokemonsAbility %}
-                <a href="{{ path('ability_detail', {slug: pokemon_ability.ability.slug}) }}"
-                   title="{{ pokemon_ability.ability.description|capitalize }}"
-                >
-                    {{ pokemon_ability.ability.name|capitalize }}
-                </a>
-                {% if pokemon_ability.hidden %}
-                    <span class="hidden-talent">{{ 'pokemon.hidden_talent'|trans }}</span>
-                {% endif %}
-                <br>
-            {% endfor %}
-        </td>
-    </tr>
-    <tr>
-        <th>{{ 'pokemon.capture_rate'|trans }}</th>
-        <td>{{ pokemon.pokemonSpecies.captureRate }}</td>
-    </tr>
-    <tr>
-        <th>{{ 'pokemon.base_happiness'|trans }}</th>
-        <td>{{ pokemon.pokemonSpecies.baseHappiness }}</td>
-    </tr>
-    <tr>
-        <th>{{ 'pokemon.base_experience'|trans }}</th>
-        <td>{{ pokemon.baseExperience }}</td>
-    </tr>
-    <tr>
-        <th>{{ 'pokemon.egg_group'|trans }}</th>
-        <td>
-            {% for eggGroup in pokemon.pokemonSpecies.eggGroup %}
-                <a href="{{ path('egg_group_detail', {slug: eggGroup.slug}) }}">
-                    {{ eggGroup.name }}
-                </a>
-            {% endfor %}
-        </td>
-    </tr>
-    <tr>
-        <th>{{ 'pokemon.hatch_counter'|trans }}</th>
-        <td>
-            ~{{ (pokemon.pokemonSpecies.hatchCounter * 257) }} pas
-        </td>
-    </tr>
+        {% if pokemon.pokemonSpecies is defined %}
+            <tr>
+                <th>{{ 'pokemon.species'|trans }}</th>
+                <td>{{ pokemon.pokemonSpecies.genera }}</td>
+            </tr>
+        {% endif %}
+        <tr>
+            <th>{{ 'pokemon.height'|trans }}</th>
+            <td>{{ (pokemon.height/10) }} m</td>
+        </tr>
+        <tr>
+            <th>{{ 'pokemon.weight'|trans }}</th>
+            <td>{{ (pokemon.weight/10) }} kg</td>
+        </tr>
+        <tr>
+            <th>{{ 'pokemon.abilities'|trans }}</th>
+            <td>
+                {% for pokemon_ability in pokemon.pokemonsAbility %}
+                    <a href="{{ path('ability_detail', {slug_ability: pokemon_ability.ability.slug}) }}"
+                       title="{{ pokemon_ability.ability.description|capitalize }}"
+                    >
+                        {{ pokemon_ability.ability.name|capitalize }}
+                    </a>
+                    {% if pokemon_ability.hidden %}
+                        <span class="hidden-talent">{{ 'pokemon.hidden_talent'|trans }}</span>
+                    {% endif %}
+                    <br>
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ 'pokemon.capture_rate'|trans }}</th>
+            <td>{{ pokemon.pokemonSpecies.captureRate }}</td>
+        </tr>
+        <tr>
+            <th>{{ 'pokemon.base_happiness'|trans }}</th>
+            <td>{{ pokemon.pokemonSpecies.baseHappiness }}</td>
+        </tr>
+        <tr>
+            <th>{{ 'pokemon.base_experience'|trans }}</th>
+            <td>{{ pokemon.baseExperience }}</td>
+        </tr>
+        <tr>
+            <th>{{ 'pokemon.egg_group'|trans }}</th>
+            <td>
+                {% for eggGroup in pokemon.pokemonSpecies.eggGroup %}
+                    <a href="{{ path('egg_group_detail', {slug: eggGroup.slug}) }}">
+                        {{ eggGroup.name }}
+                    </a>
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ 'pokemon.hatch_counter'|trans }}</th>
+            <td>
+                ~{{ (pokemon.pokemonSpecies.hatchCounter * 257) }} pas
+            </td>
+        </tr>
     </tbody>
 </table>

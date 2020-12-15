@@ -1,0 +1,52 @@
+
+<table class="table table-striped profile-table">
+    <tbody>
+        <tr>
+            <th>{{ 'move.move.type'|trans }}</th>
+            <td>
+                <img class="size-30" src="{{ move.type.img }}"
+                     alt="Type {{ move.type.name|lower }}"
+                     title="{{ move.type.name|lower }}"
+                >
+            </td>
+        </tr>
+        <tr>
+            <th>{{ 'move.move.category'|trans }}</th>
+            <td>
+                <img class="size-10" src="{{ move.damageClass.image }}"
+                     alt="Type {{ move.damageClass.name|lower }}"
+                     title="{{ move.damageClass.name|lower }}"
+                >
+            </td>
+        </tr>
+        <tr>
+            <th>{{ 'move.move.power'|trans }}</th>
+            <td>
+                {{ move.power }}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ 'move.move.accuracy'|trans }}</th>
+            <td>
+                {{ move.accuracy }}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ 'move.move.pp'|trans }}</th>
+            <td>
+                {{ move.pp }}<span class="light-detailed"> ({{ move.ppMax }} max.) </span>
+            </td>
+        </tr>
+        <tr>
+            <th>{{ 'move.move.priority.title'|trans }}</th>
+            <td>
+                {% if move.priority is same as (1) %}
+                    {{ 'move.move.priority.yes'|trans }}
+                {% else %}
+                    {{ 'move.move.priority.no'|trans }}
+                {% endif %}
+            </td>
+        </tr>
+    </tbody>
+</table>
+

@@ -1,0 +1,15 @@
+
+
+<table class="table table-striped profile-table">
+    <tbody>
+    {% for description in moveDescription %}
+        <tr>
+            <th>{{ description.versionGroup.name }}</th>
+            <td>
+                {{ description.description }}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+

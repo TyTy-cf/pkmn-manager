@@ -1,0 +1,21 @@
+
+
+<table class="table table-striped profile-table">
+    <tbody>
+    {% for machine in moveMachine %}
+        <tr class="text-center">
+            <th>{{ machine.versionGroup.name }}</th>
+            <td class="small-col">
+                {{ machine.name }}
+            </td>
+            <td class="small-col">
+                <img class="size-100" src="{{ machine.imageUrl }}" alt="Type {{ machine.name|lower }}">
+            </td>
+            <td>
+                {{ machine.description }}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
