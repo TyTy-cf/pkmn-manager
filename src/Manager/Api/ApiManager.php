@@ -222,6 +222,15 @@ class ApiManager
     }
 
     /**
+     * @return mixed
+     * @throws TransportExceptionInterface
+     */
+    public function getEvolutionTriggerJson()
+    {
+        return $this->apiConnect('https://pokeapi.co/api/v2/evolution-trigger/');
+    }
+
+    /**
      * @param $lang
      * @param $url
      * @return mixed

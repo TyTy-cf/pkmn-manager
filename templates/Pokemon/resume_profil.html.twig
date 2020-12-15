@@ -57,7 +57,7 @@
             <th>{{ 'pokemon.egg_group'|trans }}</th>
             <td>
                 {% for eggGroup in pokemon.pokemonSpecies.eggGroup %}
-                    <a href="{{ path('egg_group_detail', {slug: eggGroup.slug}) }}">
+                    <a href="{{ path('egg_group_detail', {slug_egg: eggGroup.slug}) }}">
                         {{ eggGroup.name }}
                     </a>
                 {% endfor %}
