@@ -25,11 +25,11 @@
         </span>
         <div class="row justify-content-center">
             {% for type in pokemon.types %}
-                {% if size <= 6 %}
-                    <img class="size-15" src="{{ type.img }}" alt="Type {{ type.name|lower }}">
-                {% else %}
-                    <img class="size-40" src="{{ type.img }}" alt="Type {{ type.name|lower }}">
-                {% endif %}
+                    {% if size <= 6 %}
+                        <img class="size-15" src="{{ type.img }}" alt="Type {{ type.name|lower }}">
+                    {% else %}
+                        <img class="size-40" src="{{ type.img }}" alt="Type {{ type.name|lower }}">
+                    {% endif %}
             {% endfor %}
         </div>
     </div>

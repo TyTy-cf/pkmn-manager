@@ -1,30 +1,40 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'pokemon.profile'|trans({'%pokemon%': pokemon.name}) }}{% endblock %}
+{% block title %}
+    {{ 'pokemon.profile'|trans({'%pokemon%': pokemon.name}) }}
+{% endblock %}
 
 {% block body %}
-    <h1 class="text-center mb-1 mt-3">{{ pokemon.name }}</h1>
+
+    <h1 class="text-center bordered-title">{{ pokemon.name }}</h1>
     <hr>
     <div class="grid-row">
         <div class="col-md-6 d-flex text-center">
             <img class="size-100" src="{{ pokemon.pokemonSprites.spriteOfficial }}" alt="Image de {{ pokemon.name|capitalize }}">
         </div>
         <div class="col-md-6">
-            {% include'Pokemon/resume_profil.html.twig' with {'pokemon' : pokemon} %}
+            {% include'Pokemon/Resume/resume_profil.html.twig' with {'pokemon' : pokemon} %}
         </div>
     </div>
     <hr>
     <div class="row">
         <div class="col-md-12">
-            {% include'Pokemon/resume_stats.html.twig' with {'pokemon' : pokemon} %}
+            {% include'Pokemon/Resume/resume_stats.html.twig' with {'pokemon' : pokemon} %}
         </div>
     </div>
     <hr>
     <div class="row">
         <div class="col-md-12">
-            {% include'Pokemon/resume_moves.html.twig' with {'pokemon' : pokemon} %}
+            {% include'Pokemon/Resume/resume_evolution.html.twig' with {'pokemon' : pokemon} %}
         </div>
     </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            {% include'Pokemon/Resume/resume_moves.html.twig' with {'pokemon' : pokemon} %}
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block javascripts %}

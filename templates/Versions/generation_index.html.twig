@@ -2,7 +2,8 @@
 {% block title %}Catch 'em all{% endblock %}
 
 {% block body %}
-    <h2>{{ 'index.generation.all.title'|trans }}</h2>
+
+    <h2 class="bordered-title">{{ 'index.generation.all.title'|trans }}</h2>
     <div>
         <table class="table-striped w-100">
             <tbody>
@@ -11,7 +12,7 @@
                     <td class="p-4 m-2">
                         <span>
                             <div class="d-inline-flex">
-                                <a class="bold-link fs-120" href="{{ path('pokemon_list_generation', {slug_generation: generation.slug }) }}">
+                                <a class="bold-link fs-120" href="{{ path('pokedex_list_generation', {slug_generation: generation.slug }) }}">
                                     {{ generation.name }}
                                 </a>
                                 <div class="ml-3 light-detailed-italic">
@@ -35,4 +36,5 @@
             </tbody>
         </table>
     </div>
+
 {% endblock %}

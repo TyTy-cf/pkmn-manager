@@ -73,6 +73,7 @@ class PokemonController extends AbstractController
      */
     function displayProfile(Request $request, Pokemon $pokemon): Response
     {
+        dump($pokemon);
         return $this->render('Pokemon/profile.html.twig', [
             'pokemon' => $pokemon,
             'arrayMoves' => $this->pkmnMoveManager->generateArrayMovesForPokemon($pokemon),

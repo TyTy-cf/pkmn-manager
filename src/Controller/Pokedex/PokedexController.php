@@ -54,7 +54,7 @@ class PokedexController extends AbstractController
     /**
      * Display pokemon list
      *
-     * @Route(path="/pokemons/{slug_generation}", name="pokemon_list_generation", requirements={"slug_generation": ".+"})
+     * @Route(path="/pokedex/{slug_generation}", name="pokedex_list_generation", requirements={"slug_generation": ".+"})
      * @ParamConverter(class="App\Entity\Versions\Generation", name="generation", options={"mapping": {"slug_generation" : "slug"}})
      *
      * @param Request $request

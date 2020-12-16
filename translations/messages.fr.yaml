@@ -13,6 +13,8 @@ pokemon:
     egg_group: "Groupe d'oeufs"
     hatch_counter: "Eclosion"
     hidden_talent: "Talent caché"
+    evolution:
+        title: "Evolutions et formes"
     moves:
         title: "Attaques apprises par versions"
         method:
