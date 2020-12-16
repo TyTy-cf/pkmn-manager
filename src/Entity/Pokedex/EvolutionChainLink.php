@@ -59,7 +59,7 @@ class EvolutionChainLink
     /**
      * @ORM\Column(type="integer")
      */
-    private int $order;
+    private int $evolutionOrder;
 
     /**
      * EvolutionChainLink constructor.
@@ -134,18 +134,18 @@ class EvolutionChainLink
     /**
      * @return int
      */
-    public function getOrder(): int
+    public function getEvolutionOrder(): int
     {
-        return $this->order;
+        return $this->evolutionOrder;
     }
 
     /**
-     * @param int $order
+     * @param int $evolutionOrder
      * @return EvolutionChainLink
      */
-    public function setOrder(int $order): self
+    public function setEvolutionOrder(int $evolutionOrder): self
     {
-        $this->order = $order;
+        $this->evolutionOrder = $evolutionOrder;
         return $this;
     }
 

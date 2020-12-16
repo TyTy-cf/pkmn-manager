@@ -63,7 +63,7 @@ class MoveLearnMethodManager extends AbstractManager
      */
     public function getAllMoveLearnMethodByLanguage(Language $language)
     {
-        return $this->repo->findBy(['language' => $language]);
+        return $this->repo->getAllMoveLearnMethodByLanguage($language);
     }
 
     /**

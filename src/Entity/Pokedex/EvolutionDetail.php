@@ -102,7 +102,7 @@ class EvolutionDetail
     /**
      * Required to world to rain
      * @var bool|null
-     * @ORM\Column(nullable=true)
+     * @ORM\Column(type="smallint", nullable=true)
      */
     private ?bool $needsOverworldRain;
 

@@ -5,10 +5,7 @@ namespace App\Entity\Moves;
 
 
 use App\Entity\Traits\TraitDescription;
-use App\Entity\Traits\TraitLanguage;
-use App\Entity\Traits\TraitNames;
 use App\Entity\Traits\TraitNomenclature;
-use App\Entity\Traits\TraitSlug;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
 
@@ -32,6 +29,12 @@ class MoveLearnMethod
     use TraitNomenclature;
 
     use TraitDescription;
+
+    /**
+     * @var int $displayOrder
+     * @ORM\Column(name="display_order", type="integer", nullable=true)
+     */
+    private int $displayOrder;
 
     /**
      * @var string $codeMethod
@@ -65,4 +68,21 @@ class MoveLearnMethod
         return $this;
     }
 
+    /**
+     * @return int
+     */
+    public function getDisplayOrder(): int
+    {
+        return $this->displayOrder;
+    }
+
+    /**
+     * @param int $displayOrder
+     * @return MoveLearnMethod
+     */
+    public function setDisplayOrder(int $displayOrder): self
+    {
+        $this->displayOrder = $displayOrder;
+        return $this;
+    }
 }

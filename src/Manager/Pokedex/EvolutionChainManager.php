@@ -136,10 +136,13 @@ class EvolutionChainManager extends AbstractManager
         //Fetch URL evolution type
         $urlPokemonSpecies = $this->apiManager->getDetailed($apiResponse['url'])->toArray();
         $idApi = $this->apiManager->getIdFromUrl($apiResponse['url']);
+        $slug = $this->textManager->generateSlugFromClassWithLanguage(
+            $language, EvolutionChain::class, $idApi
+        );
 
         // Check and create if necessary the evolution chain
         // Can be empty, unecessary to even create the evolution_chain starting
-        if (sizeof($urlPokemonSpecies['chain']['evolves_to']) > 0) {
+        if (sizeof($urlPokemonSpecies['chain']['evolves_to']) > 0 && $this->getEvolutionChainBySlug($slug) === null) {
             // if a baby item trigger is required
             $babyItemTrigger = null;
             if ($urlPokemonSpecies['baby_trigger_item'] !== null) {
@@ -152,10 +155,8 @@ class EvolutionChainManager extends AbstractManager
             $evolutionChain = (new EvolutionChain())
                 ->setIdApi($idApi)
                 ->setBabyItemTrigger($babyItemTrigger)
-                ->setSlug($this->textManager->generateSlugFromClassWithLanguage(
-                    $language, EvolutionChain::class, $idApi
-                )
-            );
+                ->setSlug($slug)
+            ;
             $this->entityManager->persist($evolutionChain);
 
             // Create the EvolutionChainLink - there at least one evolution exist
@@ -167,33 +168,41 @@ class EvolutionChainManager extends AbstractManager
                     $language, PokemonSpecies::class, $arrayChainEvolveTo['species']['name']
                 )
             );
+            // create the 1st evolution link : the starting pokemon species
             $evolutionChainLink = (new EvolutionChainLink())
                 ->setIsBaby($arrayChainEvolveTo['is_baby'])
                 ->setCurrentPokemonSpecies($startingSpecies)
-                ->setOrder($evolutionLevel)
+                ->setEvolutionOrder($evolutionLevel)
+                ->setEvolutionDetail(null)
             ;
             $this->entityManager->persist($evolutionChainLink);
+            // the 1st evolution chain link is set to the evolution chain
             $evolutionChain->setEvolutionChainLink($evolutionChainLink);
+            // all pokemon species in the evolution chain have the same evolution chain
             $startingSpecies->setEvolutionChain($evolutionChain);
             // Create the rest of the link
             $index = 0;
             $evolutionLevel++;
             $arrayChainEvolveTo = $arrayChainEvolveTo['evolves_to'];
             while (isset($arrayChainEvolveTo[$index])) {
-                $evolutionChainLink = $this->createEvolutionChainLinkFrom(
+                $tmpEvolutionChainLink = $this->createEvolutionChainLinkFrom(
                     $arrayChainEvolveTo[$index], $language, $evolutionChain, $evolutionChainLink, $evolutionLevel
                 );
                 $index++;
                 // We need to change stage
                 if (!isset($arrayChainEvolveTo[$index])) {
+                    // reset the index
                     $index = 0;
+                    // increase the evolution level
                     $evolutionLevel++;
+                    // reset the evolution chain link : we take an other lvl of evolution
+                    $evolutionChainLink = $tmpEvolutionChainLink;
+                    // set to the next array evolves_to
                     $arrayChainEvolveTo = $arrayChainEvolveTo[$index]['evolves_to'];
                 }
             }
+            $this->entityManager->flush();
         }
-        $this->entityManager->flush();
-        die();
     }
 
     /**
@@ -212,18 +221,28 @@ class EvolutionChainManager extends AbstractManager
         ?EvolutionChainLink $evolutionChainLink,
         int $evolutionLevel
     ) {
+        // Fetch the pokemon-species from the species api json
         $pokemonSpecies = $this->pokemonSpeciesManager->getSimplePokemonSpeciesBySlug(
             $this->textManager->generateSlugFromClassWithLanguage(
                 $language, PokemonSpecies::class, $urlEvolutionChain['species']['name']
             )
         );
+        // Set the pokemon species to the starting evolution chain
         $pokemonSpecies->setEvolutionChain($evolutionChain);
+        // evolution_details can be empty, we need to handle it
+        $evolutionDetail = null;
+        if (isset($urlEvolutionChain['evolution_details'][0])) {
+            $evolutionDetail = $this->getEvolutionDetailFromJson($urlEvolutionChain['evolution_details'][0], $language);
+        }
+        // create the evolution chain link
+        // order is the order of the evolution chain link in the evolution chain
         $newEvolutionChainLink = (new EvolutionChainLink())
             ->setIsBaby($urlEvolutionChain['is_baby'])
-            ->setEvolutionDetail($this->getEvolutionDetailFromJson($urlEvolutionChain['evolution_details'][0], $language))
+            ->setEvolutionDetail($evolutionDetail)
             ->setCurrentPokemonSpecies($pokemonSpecies)
-            ->setOrder($evolutionLevel)
+            ->setEvolutionOrder($evolutionLevel)
         ;
+        // set the new evolution chain link to the previous level of evolution chain link
         $evolutionChainLink->addEvolutionChainLink($newEvolutionChainLink);
         $this->entityManager->persist($newEvolutionChainLink);
         return $newEvolutionChainLink;
@@ -236,62 +255,70 @@ class EvolutionChainManager extends AbstractManager
      * @throws NonUniqueResultException
      */
     private function getEvolutionDetailFromJson($urlEvolutionChainDetailed, Language $language): EvolutionDetail {
-
-        // Fetch gender
+        // the pokemon require to be a specific gender
         $gender = null;
         if ($urlEvolutionChainDetailed['gender'] !== null) {
             $gender = $this->genderRepository->findOneBySlug(
                 $language->getCode().'/'.Gender::$relationMap[$urlEvolutionChainDetailed['gender']]
             );
         }
+        // the pokemon require an item held
         $heldItem = null;
         if ($urlEvolutionChainDetailed['held_item'] !== null) {
             $heldItem = $this->itemManager->getItemBySlug(
-                $language->getCode().'/item-'.$urlEvolutionChainDetailed['held_item']['name']
+                $language->getCode() . '/item-' . $urlEvolutionChainDetailed['held_item']['name']
             );
         }
+        //the pokemon require an item used - usually pair with an evolution trigger "used item"
         $item = null;
         if ($urlEvolutionChainDetailed['item'] !== null) {
             $item = $this->itemManager->getItemBySlug(
                 $language->getCode().'/item-'.$urlEvolutionChainDetailed['item']['name']
             );
         }
+        // the pokemon require a specific move
         $knownMove = null;
         if ($urlEvolutionChainDetailed['known_move'] !== null) {
             $knownMove = $this->moveManager->getSimpleMoveBySlug(
                 $language->getCode().'/move-'.$urlEvolutionChainDetailed['known_move']['name']
             );
         }
+        // the pokemon require a type from a specific move
         $knownMoveType = null;
         if ($urlEvolutionChainDetailed['known_move_type'] !== null) {
             $knownMoveType = $this->typeManager->getTypeBySlug(
                 $language->getCode().'/type-'.$urlEvolutionChainDetailed['known_move_type']['name']
             );
         }
+        // the pokemon require to be in a certain location
         $location = null;
         if ($urlEvolutionChainDetailed['location'] !== null) {
             $location = $this->locationManager->getLocationBySlug(
                 $language->getCode().'/location-'.$urlEvolutionChainDetailed['location']['name']
             );
         }
+        // the pokemon require a specific species in team
         $partySpecies = null;
         if ($urlEvolutionChainDetailed['party_species'] !== null) {
             $partySpecies = $this->pokemonSpeciesManager->getPokemonSpeciesBySlug(
                 $language->getCode() . '/pokemon-species-' . $urlEvolutionChainDetailed['party_species']['name']
             );
         }
+        // the pokemon require a pokemon of specific type in team
         $partyType = null;
         if ($urlEvolutionChainDetailed['party_type'] !== null) {
             $partyType = $this->typeManager->getTypeBySlug(
                 $language->getCode() . '/type-' . $urlEvolutionChainDetailed['party_type']['name']
             );
         }
+        // the evolution trigger that trigger the evolution
         $evolutionTrigger = null;
         if ($urlEvolutionChainDetailed['trigger'] !== null) {
             $evolutionTrigger = $this->evolutionTriggerManager->getEvolutionTriggerBySlug(
                 $language->getCode() . '/evolution-trigger-' . $urlEvolutionChainDetailed['trigger']['name']
             );
         }
+        // the pokemon require to be trade with a specific species
         $tradeSpecies = null;
         if ($urlEvolutionChainDetailed['trade_species'] !== null) {
             $tradeSpecies = $this->pokemonSpeciesManager->getPokemonSpeciesBySlug(

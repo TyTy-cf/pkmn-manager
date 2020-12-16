@@ -44,6 +44,12 @@ class Generation
     private Region $mainRegion;
 
     /**
+     * @var int $displayOrder
+     * @ORM\Column(name="display_order", type="integer", nullable=true)
+     */
+    private int $displayOrder;
+
+    /**
      * @var array|string[]
      */
     public static array $relationArray = [
@@ -116,6 +122,24 @@ class Generation
     public function setMainRegion(Region $mainRegion): self
     {
         $this->mainRegion = $mainRegion;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDisplayOrder(): int
+    {
+        return $this->displayOrder;
+    }
+
+    /**
+     * @param int $displayOrder
+     * @return Generation
+     */
+    public function setDisplayOrder(int $displayOrder): Generation
+    {
+        $this->displayOrder = $displayOrder;
         return $this;
     }
 
