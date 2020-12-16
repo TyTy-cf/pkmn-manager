@@ -6,6 +6,7 @@ namespace App\Repository\Versions;
 
 use App\Entity\Users\Language;
 use App\Entity\Versions\Generation;
+use App\Entity\Versions\VersionGroup;
 use App\Repository\AbstractRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -53,9 +54,10 @@ class GenerationRepository extends AbstractRepository
     public function getGenerationByLanguage(Language $language)
     {
         return $this->createQueryBuilder('generation')
-            ->select('generation', 'region')
+            ->select('generation', 'region', 'vg')
             ->join('generation.language', 'language')
             ->join('generation.mainRegion', 'region')
+            ->join('generation.versionsGroup', 'vg')
             ->where('language = :language')
             ->setParameter(':language', $language)
             ->orderBy('generation.displayOrder')

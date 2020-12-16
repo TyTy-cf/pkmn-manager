@@ -46,17 +46,16 @@ class TypeController extends AbstractController
      * @Route (path="/type/{slug_type}", name="type_detail", requirements={"slug_type": ".+"})
      * @ParamConverter(class="App\Entity\Infos\Type\Type", name="type", options={"mapping": {"slug_type" : "slug"}})
      *
-     * @param Request $request
      * @param Type $type
      * @return Response
      */
-    public function typeDetail(Request $request, Type $type): Response {
+    public function typeDetail(Type $type): Response {
         dump($this->typeRelationManager->getRelationTypeByType($type));
-        dump($this->typeManager->getAllOtherTypeByType($type));
+        dump($this->typeManager->getAllTypesByLanguage($type->getLanguage()));
         return $this->render('Type/detail.html.twig', [
             'type' => $type,
             'typeRelation' => $this->typeRelationManager->getRelationTypeByType($type),
-            'types' => $this->typeManager->getAllOtherTypeByType($type),
+            'types' => $this->typeManager->getAllTypesByLanguage($type->getLanguage()),
         ]);
     }
 }

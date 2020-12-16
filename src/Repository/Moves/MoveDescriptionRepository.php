@@ -18,18 +18,15 @@ class MoveDescriptionRepository extends AbstractRepository
 
     /**
      * @param Move $move
-     * @param $array
      * @return int|mixed|string
      */
-    public function getMoveDescriptionByMove(Move $move, $array)
+    public function getMoveDescriptionByMove(Move $move)
     {
         return $this->createQueryBuilder('move_description')
             ->select('move_description', 'versionGroup')
             ->join('move_description.move', 'move')
             ->join('move_description.versionGroup', 'versionGroup')
             ->where('move = :move')
-            ->andWhere('versionGroup.name NOT IN (:array)')
-            ->setParameter('array', $array)
             ->setParameter('move', $move)
             ->orderBy('versionGroup.order', 'DESC')
             ->getQuery()

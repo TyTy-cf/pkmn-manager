@@ -37,6 +37,12 @@ body {
   color: $font-special-color !important;
   font-size: 0.8em;
   font-weight: bold;
+
+  &-italic {
+    font-style: italic;
+    font-size: 1.2em !important;
+    font-weight: normal;
+  }
 }
 
 .profile-table th {

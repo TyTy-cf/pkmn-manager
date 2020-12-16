@@ -6,6 +6,7 @@ namespace App\Manager\Versions;
 
 use App\Entity\Users\Language;
 use App\Entity\Versions\Version;
+use App\Entity\Versions\VersionGroup;
 use App\Manager\AbstractManager;
 use App\Manager\Api\ApiManager;
 use App\Manager\TextManager;
@@ -108,7 +109,7 @@ class VersionManager extends AbstractManager
             $version['name']
         );
 
-        if ($this->getVersionBySlug($slug) === null)
+        if ($this->getVersionBySlug($slug) === null && !in_array($version['name'], VersionGroup::$avoidList))
         {
             // fetch the generation according to the group-version
             $urlDetailed = $this->apiManager->getDetailed($version['url'])->toArray();

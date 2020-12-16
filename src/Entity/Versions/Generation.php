@@ -6,6 +6,8 @@ namespace App\Entity\Versions;
 
 use App\Entity\Locations\Region;
 use App\Entity\Traits\TraitNomenclature;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\OneToOne;
@@ -50,6 +52,12 @@ class Generation
     private int $displayOrder;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Versions\VersionGroup", mappedBy="generation")
+     * @var Collection
+     */
+    private Collection $versionsGroup;
+
+    /**
      * @var array|string[]
      */
     public static array $relationArray = [
@@ -62,6 +70,14 @@ class Generation
         7 => 'SM',
         8 => 'SS'
     ];
+
+    /**
+     * Generation constructor.
+     */
+    public function __construct()
+    {
+        $this->versionsGroup = new ArrayCollection();
+    }
 
     /**
      * @return int
@@ -141,6 +157,31 @@ class Generation
     {
         $this->displayOrder = $displayOrder;
         return $this;
+    }
+
+    /**
+     * @return ArrayCollection|Collection
+     */
+    public function getVersionsGroup() {
+        return $this->versionsGroup;
+    }
+
+    /**
+     * @param VersionGroup $versionGroup
+     */
+    public function addVersionsGroup(VersionGroup $versionGroup) {
+        if (!$this->versionsGroup->contains($versionGroup)) {
+            $this->versionsGroup[] = $versionGroup;
+        }
+    }
+
+    /**
+     * @param VersionGroup $versionGroup
+     */
+    public function removeVersionsGroup(VersionGroup $versionGroup) {
+        if ($this->versionsGroup->contains($versionGroup)) {
+            $this->versionsGroup->removeElement($versionGroup);
+        }
     }
 
 }

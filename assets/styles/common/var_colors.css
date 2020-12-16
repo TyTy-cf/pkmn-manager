@@ -23,6 +23,10 @@ body {
   color: #737373 !important;
   font-size: 0.8em;
   font-weight: bold; }
+  .light-detailed-italic {
+    font-style: italic;
+    font-size: 1.2em !important;
+    font-weight: normal; }
 
 .profile-table th {
   color: #737373;

@@ -15,7 +15,7 @@
                 <div class="list-card-pkmn list-card-pkmn-lg">
                     {% for pokemonAbility in ability.pokemonsAbility %}
                         {% if pokemonAbility.pokemon.pokemonSprites.spriteFrontDefault is not null %}
-                            {% include'Pokemon/pokemon_card.html.twig' with {'pokemon' : pokemonAbility.pokemon} %}
+                            {% include'Pokemon/pokemon_card.html.twig' with {'pokemon' : pokemonAbility.pokemon, 'size': ability.pokemonsAbility|length} %}
                         {% endif %}
                     {% endfor %}
                 </div>

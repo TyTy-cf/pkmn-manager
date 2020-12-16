@@ -41,7 +41,7 @@ class VersionGroup
     /**
      * @var Generation $generation
      *
-     * @ManyToOne(targetEntity="App\Entity\Versions\Generation")
+     * @ManyToOne(targetEntity="App\Entity\Versions\Generation", inversedBy="versionsGroup")
      * @JoinColumn(name="generation_id", referencedColumnName="id")
      */
     private Generation $generation;

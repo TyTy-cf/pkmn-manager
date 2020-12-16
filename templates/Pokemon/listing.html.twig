@@ -1,20 +1,16 @@
 {% extends 'base.html.twig' %}
+
 {% block title %}Catch 'em all{% endblock %}
 
 {% block body %}
-    <div class="container col-10">
-        {% for pokedex in pokedex %}
-            <h2 class="p-2 border-light p-2">{{ 'pokedex.description.listing'|trans({'%pokedex%': pokedex.description}) }}</h2>
-            <hr>
-            <div class="list-card-pkmn list-card-pkmn-lg">
-                {% for pokemon in pokemons %}
-                    {% include'Pokemon/pokemon_card.html.twig' with {'pokemon' : pokemon} %}
-                {% endfor %}
-            </div>
-        {% endfor %}
-    </div>
+    {% for pokedex in pokedex %}
+        <h2 class="p-2 border-light p-2">{{ 'pokedex.description.listing'|trans({'%pokedex%': pokedex.description}) }}</h2>
+        <hr>
+        <div class="list-card-pkmn list-card-pkmn-lg">
+            {% for pokemon in pokemons %}
+                {% include'Pokemon/pokemon_card.html.twig' with {'pokemon' : pokemon} %}
+            {% endfor %}
+        </div>
+    {% endfor %}
 {% endblock %}
 
-{% block javascripts %}
-    {{ parent() }}
-{% endblock %}

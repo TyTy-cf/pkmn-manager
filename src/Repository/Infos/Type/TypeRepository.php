@@ -3,6 +3,7 @@
 namespace App\Repository\Infos\Type;
 
 use App\Entity\Infos\Type\Type;
+use App\Entity\Users\Language;
 use App\Repository\AbstractRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -18,6 +19,15 @@ class TypeRepository extends AbstractRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Type::class);
+    }
+
+    /**
+     * @param Language $language
+     * @return int|mixed|string
+     */
+    public function getAllTypesByLanguage(Language $language)
+    {
+        return $this->getAllTypeByLanguage($language->getCode());
     }
 
     /**
@@ -51,24 +61,6 @@ class TypeRepository extends AbstractRepository
             ->setParameter('codeApi', $codeApi)
             ->getQuery()
             ->getOneOrNullResult()
-        ;
-    }
-
-    /**
-     * @param Type $type
-     * @return int|mixed|string
-     */
-    public function getAllOtherTypeByType(Type $type)
-    {
-        return $this->createQueryBuilder('type')
-            ->select('type')
-            ->join('type.language', 'language')
-            ->where('type.language = :lang')
-            ->andWhere('type != :type')
-            ->setParameter('type', $type)
-            ->setParameter('lang', $type->getLanguage())
-            ->getQuery()
-            ->getResult()
         ;
     }
 

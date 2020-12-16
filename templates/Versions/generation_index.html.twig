@@ -2,31 +2,37 @@
 {% block title %}Catch 'em all{% endblock %}
 
 {% block body %}
-    <div class="container col-10 p-2">
-        <h2>{{ 'index.generation.all.title'|trans }}</h2>
-        <div>
-            <table class="table-striped w-100">
-                <tbody>
-                {% for generation in generationList %}
-                    <tr>
-                        <td class="p-4 m-2">
-                            <span>
+    <h2>{{ 'index.generation.all.title'|trans }}</h2>
+    <div>
+        <table class="table-striped w-100">
+            <tbody>
+            {% for generation in generationList %}
+                <tr>
+                    <td class="p-4 m-2">
+                        <span>
+                            <div class="d-inline-flex">
                                 <a class="bold-link fs-120" href="{{ path('pokemon_list_generation', {slug_generation: generation.slug }) }}">
                                     {{ generation.name }}
                                 </a>
-                                <div class="detailed">
-                                    ({{ generation.mainRegion.name }})
+                                <div class="ml-3 light-detailed-italic">
+                                    (
+                                    {% for versionGroup in generation.versionsGroup %}
+                                        {% if loop.index != 1  %}
+                                            -
+                                        {% endif %}
+                                        {{ versionGroup.name }}
+                                    {% endfor %}
+                                    )
                                 </div>
-                            </span>
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
+                            </div>
+                            <div class="detailed">
+                                ({{ generation.mainRegion.name }})
+                            </div>
+                        </span>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
 {% endblock %}

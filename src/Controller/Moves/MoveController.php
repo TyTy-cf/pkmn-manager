@@ -69,8 +69,8 @@ class MoveController extends AbstractController
         $move = $this->moveManager->getSimpleMoveBySlug($request->get('slug_move'));
         return $this->render('Moves/detail.html.twig', [
             'move' => $move,
-            'moveDescription' => $this->moveDescriptionManager->getMoveDescriptionByMove($move, VersionGroup::$avoidList),
-            'moveMachine' => $this->moveMachineManager->getMoveMachineByMove($move, VersionGroup::$avoidList),
+            'moveDescription' => $this->moveDescriptionManager->getMoveDescriptionByMove($move),
+            'moveMachine' => $this->moveMachineManager->getMoveMachineByMove($move),
             'moveLearnPokemon' => $this->pmlvm->getMoveLearnByPokemon($move),
         ]);
     }

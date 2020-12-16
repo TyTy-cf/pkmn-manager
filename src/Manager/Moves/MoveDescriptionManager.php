@@ -65,9 +65,9 @@ class MoveDescriptionManager extends AbstractManager
      * @param $array
      * @return MoveDescription[]|array
      */
-    public function getMoveDescriptionByMove(Move $move, $array)
+    public function getMoveDescriptionByMove(Move $move)
     {
-        return $this->repo->getMoveDescriptionByMove($move, $array);
+        return $this->repo->getMoveDescriptionByMove($move);
     }
 
     /**

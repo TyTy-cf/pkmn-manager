@@ -3,8 +3,9 @@
     <div>
         <span>
             {% if pokemon.pokemonSprites.spriteFrontDefault is not null %}
-                <a href="{{ path('profile_pokemon', {slug_pokemon: pokemon.slug }) }}"></a>
-                <img class="mb-2" src="{{ pokemon.pokemonSprites.spriteFrontDefault }}" alt="Pokemon {{ pokemon.name }}">
+                <a href="{{ path('profile_pokemon', {slug_pokemon: pokemon.slug }) }}">
+                    <img class="mb-2" src="{{ pokemon.pokemonSprites.spriteFrontDefault }}" alt="Pokemon {{ pokemon.name }}">
+                </a>
             {% else %}
                 <div class="h-100 mt-1">
                     <br>
@@ -24,7 +25,11 @@
         </span>
         <div class="row justify-content-center">
             {% for type in pokemon.types %}
-                <img class="size-40" src="{{ type.img }}" alt="Type {{ type.name|lower }}">
+                {% if size <= 6 %}
+                    <img class="size-15" src="{{ type.img }}" alt="Type {{ type.name|lower }}">
+                {% else %}
+                    <img class="size-40" src="{{ type.img }}" alt="Type {{ type.name|lower }}">
+                {% endif %}
             {% endfor %}
         </div>
     </div>
