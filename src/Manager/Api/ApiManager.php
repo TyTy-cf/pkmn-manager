@@ -4,6 +4,7 @@
 namespace App\Manager\Api;
 
 
+use App\Entity\Pokedex\EvolutionChain;
 use App\Entity\Pokemon\Pokemon;
 use http\Exception\RuntimeException;
 use Symfony\Component\HttpClient\HttpClient;
@@ -201,6 +202,15 @@ class ApiManager
     public function getEggGroupJson()
     {
         return $this->apiConnect('https://pokeapi.co/api/v2/egg-group/');
+    }
+
+    /**
+     * @return mixed
+     * @throws TransportExceptionInterface
+     */
+    public function getEvolutionChainJson()
+    {
+        return $this->apiConnect('https://pokeapi.co/api/v2/evolution-chain/?offset=0&limit=467');
     }
 
     /**

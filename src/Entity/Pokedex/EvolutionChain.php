@@ -2,7 +2,8 @@
 
 namespace App\Entity\Pokedex;
 
-use App\Entity\Pokemon\PokemonSpecies;
+use App\Entity\Items\Item;
+use App\Entity\Traits\TraitSlug;
 use App\Repository\Pokedex\EvolutionChainRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
@@ -19,32 +20,27 @@ class EvolutionChain
      */
     private int $id;
 
-    /**
-     * @var PokemonSpecies
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pokedex\PokedexSpecies")
-     * @JoinColumn(name="evolve_to_pokemon_species_id")
-     */
-    private PokemonSpecies $evolveToPokemonSpecies;
+    use TraitSlug;
 
     /**
-     * @var PokemonSpecies
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pokedex\PokedexSpecies")
-     * @JoinColumn(name="from_pokemon_species_id")
+     * @var EvolutionChainLink $evolutionChainLink
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Pokedex\EvolutionChainLink")
+     * @JoinColumn(name="evolution_chain_link_id", nullable=true)
      */
-    private PokemonSpecies $fromPokemonSpecies;
+    private EvolutionChainLink $evolutionChainLink;
 
     /**
-     * @var EvolutionDetail
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pokedex\EvolutionDetail")
-     * @JoinColumn(name="evolution_detail_id")
+     * @var Item|null
+     * @ORM\ManyToOne(targetEntity="App\Entity\Items\Item")
+     * @JoinColumn(name="baby_item_trigger_id", nullable=true)
      */
-    private EvolutionDetail $evolutionDetail;
+    private ?Item $babyItemTrigger;
 
     /**
-     * @ORM\Column(type="smallint", nullable=true)
+     * @ORM\Column(type="integer")
      */
-    private bool $isBaby;
-
+    private int $idApi;
 
     public function getId(): ?int
     {
@@ -52,69 +48,56 @@ class EvolutionChain
     }
 
     /**
-     * @return PokemonSpecies
+     * @return EvolutionChainLink
      */
-    public function getEvolveToPokemonSpecies(): PokemonSpecies
+    public function getEvolutionChainLink(): EvolutionChainLink
     {
-        return $this->evolveToPokemonSpecies;
+        return $this->evolutionChainLink;
     }
 
     /**
-     * @param PokemonSpecies $evolveToPokemonSpecies
-     */
-    public function setEvolveToPokemonSpecies(PokemonSpecies $evolveToPokemonSpecies): void
-    {
-        $this->evolveToPokemonSpecies = $evolveToPokemonSpecies;
-    }
-
-    /**
-     * @return PokemonSpecies
-     */
-    public function getFromPokemonSpecies(): PokemonSpecies
-    {
-        return $this->fromPokemonSpecies;
-    }
-
-    /**
-     * @param PokemonSpecies $currentPokemonSpecies
-     */
-    public function setFromPokemonSpecies(PokemonSpecies $currentPokemonSpecies): void
-    {
-        $this->fromPokemonSpecies = $currentPokemonSpecies;
-    }
-
-    /**
-     * @return EvolutionDetail
-     */
-    public function getEvolutionDetail(): EvolutionDetail
-    {
-        return $this->evolutionDetail;
-    }
-
-    /**
-     * @param EvolutionDetail $evolutionDetail
-     */
-    public function setEvolutionDetail(EvolutionDetail $evolutionDetail): void
-    {
-        $this->evolutionDetail = $evolutionDetail;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isBaby(): bool
-    {
-        return $this->isBaby;
-    }
-
-    /**
-     * @param bool $isBaby
+     * @param EvolutionChainLink $evolutionChainLink
      * @return EvolutionChain
      */
-    public function setIsBaby(bool $isBaby): self
+    public function setEvolutionChainLink(EvolutionChainLink $evolutionChainLink): EvolutionChain
     {
-        $this->isBaby = $isBaby;
+        $this->evolutionChainLink = $evolutionChainLink;
         return $this;
     }
 
+    /**
+     * @return Item
+     */
+    public function getBabyItemTrigger(): Item
+    {
+        return $this->babyItemTrigger;
+    }
+
+    /**
+     * @param Item|null $babyItemTrigger
+     * @return EvolutionChain
+     */
+    public function setBabyItemTrigger(?Item $babyItemTrigger): self
+    {
+        $this->babyItemTrigger = $babyItemTrigger;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getIdApi(): int
+    {
+        return $this->idApi;
+    }
+
+    /**
+     * @param int $idApi
+     * @return EvolutionChain
+     */
+    public function setIdApi(int $idApi): EvolutionChain
+    {
+        $this->idApi = $idApi;
+        return $this;
+    }
 }

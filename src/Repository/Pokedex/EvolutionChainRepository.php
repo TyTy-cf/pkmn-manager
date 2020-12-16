@@ -3,7 +3,7 @@
 namespace App\Repository\Pokedex;
 
 use App\Entity\Pokedex\EvolutionChain;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Repository\AbstractRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -12,7 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method EvolutionChain[]    findAll()
  * @method EvolutionChain[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class EvolutionChainRepository extends ServiceEntityRepository
+class EvolutionChainRepository extends AbstractRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

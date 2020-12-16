@@ -103,27 +103,29 @@ class RegionManager extends AbstractManager
                     ;
                     $this->entityManager->persist($location);
                 }
-                // Create the LocationArea
-                foreach ($urlLocation['areas'] as $locationAreaJson) {
-                    $slugLocationArea = $this->textManager->generateSlugFromClassWithLanguage(
-                        $language, LocationArea::class, $locationAreaJson['name']
-                    );
-                    if (($locationArea = $this->locationRepo->findOneBySlug($slugLocationArea)) === null) {
-                        $urlLocationArea = $this->apiManager->getDetailed($locationAreaJson['url'])->toArray();
-                        $locationArea = (new LocationArea())
-                            ->setSlug($slugLocationArea)
-                            ->setIdApi($urlLocationArea['id'])
-                            ->setNameApi($urlLocationArea['name'])
-                            ->setLocation($location)
-                            ->setLanguage($language)
-                            // Names doesn't exist in other languages than english right now... So let's set in English and adapt later
-                            ->setName($this->apiManager->getNameBasedOnLanguageFromArray(
-                                'en',
-                                $locationArea
-                            ))
-                        ;
+                if ($urlLocation['areas'] !== null) {
+                    // Create the LocationArea
+                    foreach ($urlLocation['areas'] as $locationAreaJson) {
+                        $slugLocationArea = $this->textManager->generateSlugFromClassWithLanguage(
+                            $language, LocationArea::class, $locationAreaJson['name']
+                        );
+                        if (($locationArea = $this->locationRepo->findOneBySlug($slugLocationArea)) === null) {
+                            $urlLocationArea = $this->apiManager->getDetailed($locationAreaJson['url'])->toArray();
+                            $locationArea = (new LocationArea())
+                                ->setSlug($slugLocationArea)
+                                ->setIdApi($urlLocationArea['id'])
+                                ->setNameApi($urlLocationArea['name'])
+                                ->setLocation($location)
+                                ->setLanguage($language)
+                                // Names doesn't exist in other languages than english right now... So let's set in English and adapt later
+                                ->setName($this->apiManager->getNameBasedOnLanguageFromArray(
+                                    'en',
+                                    $locationArea
+                                ))
+                            ;
+                        }
+                        $this->entityManager->persist($locationArea);
                     }
-                    $this->entityManager->persist($locationArea);
                 }
             }
         }

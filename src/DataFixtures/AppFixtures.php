@@ -28,30 +28,36 @@ class AppFixtures extends Fixture
         $genderMaleFr->setName("Mâle");
         $genderMaleFr->setLanguage($languageFr);
         $genderMaleFr->setImage('/public/images/infos/gender/male.png');
+        $genderMaleFr->setSlug('fr/gender-male');
         $manager->persist($genderMaleFr);
         $genderFemaleFr = new Gender();
         $genderFemaleFr->setName("Femelle");
         $genderFemaleFr->setLanguage($languageFr);
         $genderFemaleFr->setImage('/public/images/infos/gender/female.png');
+        $genderFemaleFr->setSlug('fr/gender-female');
         $manager->persist($genderFemaleFr);
         $genderlessFr = new Gender();
         $genderlessFr->setName("Non genré");
         $genderlessFr->setLanguage($languageFr);
+        $genderlessFr->setSlug('fr/gender-genderless');
         $manager->persist($genderlessFr);
         // EN
         $genderMaleEn = new Gender();
         $genderMaleEn->setName("Male");
         $genderMaleEn->setLanguage($languageEn);
         $genderMaleEn->setImage('/public/images/infos/gender/male.png');
+        $genderMaleEn->setSlug('en/gender-male');
         $manager->persist($genderMaleEn);
         $genderFemaleEn = new Gender();
         $genderFemaleEn->setName("Female");
         $genderFemaleEn->setLanguage($languageEn);
         $genderFemaleEn->setImage('/public/images/infos/gender/female.png');
+        $genderFemaleEn->setSlug('en/gender-female');
         $manager->persist($genderFemaleEn);
         $genderlessEn = new Gender();
         $genderlessEn->setName("Genderless");
         $genderlessEn->setLanguage($languageEn);
+        $genderlessEn->setSlug('en/gender-genderless');
         $manager->persist($genderlessEn);
         $manager->flush();
     }

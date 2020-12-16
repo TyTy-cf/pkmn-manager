@@ -3,8 +3,8 @@
 
 namespace App\Entity\Infos;
 
-use App\Entity\Traits\TraitLanguage;
-use App\Entity\Traits\TraitNames;
+use App\Entity\Traits\TraitNomenclature;
+use App\Repository\Infos\GenderRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
 
@@ -12,11 +12,21 @@ use Doctrine\ORM\Mapping\Entity;
  * Class Gender *
  * @package App\Entity\Infos
  *
- * @ORM\Table(name="genre")
- * @Entity
+ * @ORM\Table(name="gender")
+ * @Entity(repositoryClass=GenderRepository::class)
  */
 class Gender
 {
+
+    /**
+     * @var array|string[]
+     */
+    public static array $relationMap = [
+        1 => 'gender-female',
+        2 => 'gender-male',
+        3 => 'gender-genderless',
+    ];
+
     /**
      * @var int $id
      *
@@ -26,9 +36,7 @@ class Gender
      */
     private int $id;
 
-    use TraitNames;
-
-    use TraitLanguage;
+    use TraitNomenclature;
 
     /**
      * @var string $image

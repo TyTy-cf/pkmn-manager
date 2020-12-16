@@ -137,12 +137,26 @@ class EvolutionDetail
     private ?int $relativePhysicalStats;
 
     /**
+     * Required a specific pokemon species to trade with
+     * @var PokemonSpecies|null
+     * @ORM\ManyToOne(targetEntity="App\Entity\Pokemon\PokemonSpecies")
+     * @JoinColumn(name="trade_species_id", nullable=true)
+     */
+    private ?PokemonSpecies $tradeSpecies;
+
+    /**
      * Required a specific Type of pokemon in team to Evolve
      * @var EvolutionTrigger|null
      * @ORM\ManyToOne(targetEntity="App\Entity\Pokedex\EvolutionTrigger")
      * @JoinColumn(name="evolution_trigger_id", nullable=true)
      */
     private ?EvolutionTrigger $evolutionTrigger;
+
+    /**
+     * @var bool|null
+     * @ORM\Column(type="smallint", nullable=true)
+     */
+    private ?bool $turnUpsideDown;
 
     public function getId(): ?int
     {
@@ -434,6 +448,42 @@ class EvolutionDetail
     public function setEvolutionTrigger(?EvolutionTrigger $evolutionTrigger): EvolutionDetail
     {
         $this->evolutionTrigger = $evolutionTrigger;
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getTurnUpsideDown(): ?bool
+    {
+        return $this->turnUpsideDown;
+    }
+
+    /**
+     * @param bool|null $turnUpsideDown
+     * @return EvolutionDetail
+     */
+    public function setTurnUpsideDown(?bool $turnUpsideDown): EvolutionDetail
+    {
+        $this->turnUpsideDown = $turnUpsideDown;
+        return $this;
+    }
+
+    /**
+     * @return PokemonSpecies|null
+     */
+    public function getTradeSpecies(): ?PokemonSpecies
+    {
+        return $this->tradeSpecies;
+    }
+
+    /**
+     * @param PokemonSpecies|null $tradeSpecies
+     * @return EvolutionDetail
+     */
+    public function setTradeSpecies(?PokemonSpecies $tradeSpecies): EvolutionDetail
+    {
+        $this->tradeSpecies = $tradeSpecies;
         return $this;
     }
 

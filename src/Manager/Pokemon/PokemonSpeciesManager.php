@@ -15,6 +15,7 @@ use App\Manager\Versions\GenerationManager;
 use App\Manager\Versions\VersionManager;
 use App\Repository\Pokemon\PokemonSpeciesRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class PokemonSpeciesManager extends AbstractManager
@@ -90,6 +91,16 @@ class PokemonSpeciesManager extends AbstractManager
     public function getPokemonSpeciesBySlug(string $slug)
     {
         return $this->repository->findOneBySlug($slug);
+    }
+
+    /**
+     * @param string $slug
+     * @return PokemonSpecies|null
+     * @throws NonUniqueResultException
+     */
+    public function getSimplePokemonSpeciesBySlug(string $slug)
+    {
+        return $this->repository->getSimplePokemonSpeciesBySlug($slug);
     }
 
     /**
