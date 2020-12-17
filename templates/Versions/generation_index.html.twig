@@ -4,6 +4,7 @@
 {% block body %}
 
     <h2 class="bordered-title">{{ 'index.generation.all.title'|trans }}</h2>
+    <hr>
     <div>
         <table class="table-striped w-100">
             <tbody>
@@ -13,7 +14,7 @@
                         <span>
                             <div class="d-inline-flex">
                                 <a class="bold-link fs-120" href="{{ path('pokedex_list_generation', {slug_generation: generation.slug }) }}">
-                                    {{ generation.name }}
+                                    {{ generation }}
                                 </a>
                                 <div class="ml-3 light-detailed-italic">
                                     (

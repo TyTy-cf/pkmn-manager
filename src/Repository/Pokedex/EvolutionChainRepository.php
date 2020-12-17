@@ -29,8 +29,7 @@ class EvolutionChainRepository extends AbstractRepository
     public function getEvolutionChainByPokemon(Pokemon $pokemon): ?EvolutionChain
     {
         return $this->createQueryBuilder('evolution_chain')
-            ->select('evolution_chain', 'evolution_chain_link')
-            ->join('evolution_chain.evolutionChainLinks', 'evolution_chain_link')
+            ->select('evolution_chain')
             ->where('evolution_chain = :evolutionChain')
             ->setParameter('evolutionChain', $pokemon->getPokemonSpecies()->getEvolutionChain())
             ->getQuery()

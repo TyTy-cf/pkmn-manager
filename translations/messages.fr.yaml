@@ -17,9 +17,9 @@ pokemon:
         title: "Evolutions"
         empty: "%pokemon% n'évolue pas"
         stage: "Stade %number%"
-        trigger:
-            level: "Niveau %level%"
-            held: "équipé de %heldItem%"
+        stage_inital: "Stade initial"
+        stage_baby: "Stade bébé"
+        baby_label: "Faire tenir %item% au parent"
     moves:
         title: "Attaques apprises par versions"
         method:

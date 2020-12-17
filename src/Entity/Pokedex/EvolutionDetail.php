@@ -88,7 +88,7 @@ class EvolutionDetail
     /**
      * Required a minimum happiness to evolve
      * @var int|null
-     * @ORM\Column(nullable=true)
+     * @ORM\Column(name="min_happiness", nullable=true, length=6)
      */
     private ?int $minHappiness;
 
@@ -153,10 +153,22 @@ class EvolutionDetail
     private ?EvolutionTrigger $evolutionTrigger;
 
     /**
+     * @var string $otherDetailed
+     * @ORM\Column(name="other_detailed", nullable=true)
+     */
+    private string $otherDetailed;
+
+    /**
      * @var bool|null
      * @ORM\Column(type="smallint", nullable=true)
      */
     private ?bool $turnUpsideDown;
+
+    private static string $levelUp = 'evolution-trigger-level-up';
+    private static string $useItem = 'evolution-trigger-use-item';
+    private static string $trade = 'evolution-trigger-trade';
+    private static string $other = 'evolution-trigger-other';
+    private static string $shed = 'evolution-trigger-shed';
 
     public function getId(): ?int
     {
@@ -485,6 +497,138 @@ class EvolutionDetail
     {
         $this->tradeSpecies = $tradeSpecies;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOtherDetailed(): string
+    {
+        return $this->otherDetailed;
+    }
+
+    /**
+     * @param string $otherDetailed
+     * @return EvolutionDetail
+     */
+    public function setOtherDetailed(string $otherDetailed): EvolutionDetail
+    {
+        $this->otherDetailed = $otherDetailed;
+        return $this;
+    }
+
+    /**
+     * Display for EvolutionDetail
+     */
+    public function __toString()
+    {
+        // #1 : level up + level min
+        if (strpos($this->evolutionTrigger->getSlug(), EvolutionDetail::$levelUp)) {
+            $string = $this->evolutionTrigger->getTitle();
+            if ($this->getMinLevel() !== null) {
+                $string .=  ' ' . $this->getMinLevel();
+            } else {
+                $string = $this->evolutionTrigger->getName();
+            }
+            // #2 : level up + level min + gender
+            if (isset($this->gender)) {
+                $string = $this->gender->getName() . ', ' . strtolower($string);
+            }
+            if (isset($this->partyType)) {
+                // knownMove + evolution trigger level up
+                $string .= ' avec un Pokemon de type ' . $this->partyType->getName() . ' dans l\'équipe';
+            }
+            // #7 min beauty
+            if ($this->needsOverworldRain) {
+                // knownMove + evolution trigger level up
+                $string .= ' dans un lieu avec de la pluie naturelle';
+            }
+            // heure de la journée
+            if (!empty($this->timeOfDay)) {
+                $day = $this->timeOfDay == 'day' ? ' le jour' : ' la nuit';
+                $string = $string . $day;
+            }
+            // known move
+            if (isset($this->knownMove)) {
+                // knownMove + evolution trigger level up
+                $string .= ' en ayant appris ' . $this->knownMove->getName();
+            }
+            // #6 known move type
+            if (isset($this->knownMoveType)) {
+                // knownMove + evolution trigger level up
+                $string .= ' en ayant appris une attaque de type ' . $this->knownMoveType->getName() . ' et avec bonheur élevé';
+            }
+            // #6 known move type
+            if (isset($this->relativePhysicalStats)) {
+                if ($this->relativePhysicalStats === 1) {
+                    $string .= ', si ATK > DEF';
+                } else if ($this->relativePhysicalStats === -1) {
+                    $string .= ', si ATK < DEF';
+                } else {
+                    $string .= ', si ATK = DEF';
+                }
+            }
+            // #7 min beauty
+            if (isset($this->minHappiness)) {
+                $string .= ' avec bonheur élevé';
+            }
+            // #7 min beauty
+            if (isset($this->minBeauty)) {
+                $string .= ' avec un minimum ' . $this->minBeauty . ' de Beauté';
+            }
+            // #4 held item
+            if (isset($this->heldItem)) {
+                // held item + level up
+                $string = $this->evolutionTrigger->getName() . ' en tenant ' . $this->heldItem->getName();
+                if (!empty($this->timeOfDay)) {
+                    $day = $this->timeOfDay == 'day' ? ' le jour' : ' la nuit';
+                    $string .= $day;
+                }
+            }
+            // #6 known move type
+            if (isset($this->location)) {
+                // knownMove + evolution trigger level up
+                $string .= ' près de ' . $this->location->getName();
+            }
+            // #6 known move type
+            if ($this->turnUpsideDown) {
+                // knownMove + evolution trigger level up
+                $string .= ' en ayant la console retournée';
+            }
+            return $string;
+        }
+        // #2 : use item
+        if (strpos($this->evolutionTrigger->getSlug(), EvolutionDetail::$useItem)) {
+            $string = $this->getUsedItem()->getName();
+            if (isset($this->gender)) {
+                $string = $this->gender->getName() . ', ' . $string;
+            }
+            return $string;
+        }
+
+        // #3 : trade
+        if (strpos($this->evolutionTrigger->getSlug(), EvolutionDetail::$trade)) {
+            $string = $this->evolutionTrigger->getName();
+            if (isset($this->heldItem)) {
+                $string .= ' en tenant ' . $this->heldItem->getName();
+            }
+            if (isset($this->tradeSpecies)) {
+                $string .= ' contre ' . $this->tradeSpecies->getName();
+            }
+            return $string;
+        }
+
+        // #4 : shed
+        if (strpos($this->evolutionTrigger->getSlug(), EvolutionDetail::$shed)) {
+            return 'Niveau ' . $this->minLevel . ' et ' . $this->evolutionTrigger->getName();
+        }
+
+        // #4 : other
+        if (strpos($this->evolutionTrigger->getSlug(), EvolutionDetail::$other)) {
+            return $this->otherDetailed;
+        }
+
+        return '';
     }
 
 }

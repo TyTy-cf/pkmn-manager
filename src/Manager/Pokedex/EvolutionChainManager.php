@@ -145,9 +145,10 @@ class EvolutionChainManager extends AbstractManager
         $evolutionChain = $this->evolutionChainRepository->getEvolutionChainByPokemon($pokemon);
         $arrayEvolutionChain = [];
         if ($evolutionChain !== null) {
-            foreach ($evolutionChain->getEvolutionChainLinks() as $evolutionChainLink) {
+            $evolutionChainLinks = $this->evolutionChainLinkRepository->getEvolutionChainLinkByEvolutionChain($evolutionChain);
+            foreach ($evolutionChainLinks as $evolutionChainLink) {
                 /** @var EvolutionChainLink $evolutionChainLink */
-                $this->setEvolutionChainArray($arrayEvolutionChain, $evolutionChainLink);
+                $this->setEvolutionChainArray($arrayEvolutionChain, $evolutionChainLink, $evolutionChain);
             }
         }
         return $arrayEvolutionChain;
@@ -156,8 +157,13 @@ class EvolutionChainManager extends AbstractManager
     /**
      * @param array $arrayEvolutionChain
      * @param EvolutionChainLink $evolutionChainLink
+     * @param EvolutionChain $evolutionChain
      */
-    private function setEvolutionChainArray(array &$arrayEvolutionChain, EvolutionChainLink $evolutionChainLink) {
+    private function setEvolutionChainArray(
+        array &$arrayEvolutionChain,
+        EvolutionChainLink $evolutionChainLink,
+        EvolutionChain $evolutionChain
+    ) {
         if (!isset($arrayEvolutionChain[$evolutionChainLink->getEvolutionOrder()])) {
             $arrayEvolutionChain[$evolutionChainLink->getEvolutionOrder()] = [];
         }
@@ -167,6 +173,8 @@ class EvolutionChainManager extends AbstractManager
                     $evolutionChainLink->getCurrentPokemonSpecies()
                 ),
                 'evolution_detail' => $evolutionChainLink->getEvolutionDetail(),
+                'is_baby' => $evolutionChainLink->isBaby(),
+                'baby_trigger_item' => $evolutionChain->getBabyItemTrigger(),
             ]
         );
     }
@@ -375,6 +383,7 @@ class EvolutionChainManager extends AbstractManager
             ->setKnownMove($knownMove)
             ->setKnownMoveType($knownMoveType)
             ->setLocation($location)
+            ->setMinHappiness($urlEvolutionChainDetailed['min_happiness'])
             ->setMinAffection($urlEvolutionChainDetailed['min_affection'])
             ->setMinBeauty($urlEvolutionChainDetailed['min_beauty'])
             ->setMinLevel($urlEvolutionChainDetailed['min_level'])

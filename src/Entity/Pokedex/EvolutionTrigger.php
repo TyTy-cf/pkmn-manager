@@ -20,8 +20,32 @@ class EvolutionTrigger
 
     use TraitNomenclature;
 
+    /**
+     * @ORM\Column(type="string")
+     */
+    private string $title;
+
     public function getId(): ?int
     {
         return $this->id;
     }
+
+    /**
+     * @return string
+     */
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     * @return EvolutionTrigger
+     */
+    public function setTitle(string $title): EvolutionTrigger
+    {
+        $this->title = $title;
+        return $this;
+    }
+
 }

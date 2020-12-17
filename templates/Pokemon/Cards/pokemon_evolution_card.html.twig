@@ -25,12 +25,14 @@
         </span>
         <div class="row justify-content-center">
             {% for type in pokemon.types %}
-                {% if size == 1 %}
-                    <img class="size-15" src="{{ type.img }}" alt="Type {{ type.name|lower }}">
-                {% elseif size <=> 3 %}
-                    <img class="size-30" src="{{ type.img }}" alt="Type {{ type.name|lower }}">
+                {% if nbEvol == 2 %}
+                    {% if size == 1 %}
+                        <img class="size-15" src="{{ type.img }}" alt="Type {{ type.name|lower }}">
+                    {% else %}
+                        <img class="size-40" src="{{ type.img }}" alt="Type {{ type.name|lower }}">
+                    {% endif %}
                 {% else %}
-                    <img class="size-40" src="{{ type.img }}" alt="Type {{ type.name|lower }}">
+                    <img class="size-20" src="{{ type.img }}" alt="Type {{ type.name|lower }}">
                 {% endif %}
             {% endfor %}
         </div>
@@ -38,24 +40,16 @@
     <div>
         {% if evolutionDetail is not null %}
             <small>
-                {% if evolutionDetail.minLevel is not null %}
-                    {{ 'pokemon.evolution.trigger.level'|trans({'%level%' : evolutionDetail.minLevel}) }}
-                {% endif %}
-                {% if evolutionDetail.evolutionTrigger.slug|slice(3, evolutionDetail.evolutionTrigger.slug|length)
-                    is same as('evolution-trigger-level-up')
-                    and evolutionDetail.minLevel is null
-                %}
-                    {{ evolutionDetail.evolutionTrigger.name }}
-                {% endif %}
-                {% if evolutionDetail.gender is not null %}
-                    {{ evolutionDetail.gender.name }}
-                {% endif %}
-                {% if evolutionDetail.heldItem is not null %}
-                    {{ 'pokemon.evolution.trigger.held'|trans({'%heldItem%' : evolutionDetail.heldItem.name}) }}
-                {% endif %}
+                {{ evolutionDetail }}
             </small>
         {% else %}
-            <br>
+            {% if baby_trigger_item is not same as null %}
+                <small>
+                    {{ 'pokemon.evolution.baby_label'|trans({'%item%' : baby_trigger_item}) }}
+                </small>
+            {% else %}
+                <br>
+            {% endif %}
         {% endif %}
     </div>
 </div>

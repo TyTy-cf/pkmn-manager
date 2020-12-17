@@ -2,6 +2,7 @@
 
 namespace App\Repository\Pokedex;
 
+use App\Entity\Pokedex\EvolutionChain;
 use App\Entity\Pokedex\EvolutionChainLink;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -20,17 +21,18 @@ class EvolutionChainLinkRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param EvolutionChainLink $evolutionChainLink
+     * @param EvolutionChain $evolutionChain
      * @return int|mixed|string
      */
-    public function getEvolutionChainLinkChild(EvolutionChainLink $evolutionChainLink)
+    public function getEvolutionChainLinkByEvolutionChain(EvolutionChain $evolutionChain)
     {
         return $this->createQueryBuilder('ecl')
-            ->select('ecl', 'evolutions_chain_links', 'evolution_detail')
+            ->select('ecl', 'evolution_detail')
             ->leftJoin('ecl.evolutionDetail', 'evolution_detail')
-            ->join('ecl.evolutionsChainLinks', 'evolutions_chain_links')
-            ->where('ecl.id = :eclParamId')
-            ->setParameter('eclParamId', $evolutionChainLink->getId())
+            ->join('ecl.evolutionChain', 'evolution_chain')
+            ->where('evolution_chain = :evolutionChain')
+            ->setParameter('evolutionChain', $evolutionChain)
+            ->orderBy('ecl.evolutionOrder', 'ASC')
             ->getQuery()
             ->getResult()
         ;

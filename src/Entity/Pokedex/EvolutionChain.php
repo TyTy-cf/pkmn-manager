@@ -57,9 +57,9 @@ class EvolutionChain
     }
 
     /**
-     * @return Item
+     * @return Item|null
      */
-    public function getBabyItemTrigger(): Item
+    public function getBabyItemTrigger(): ?Item
     {
         return $this->babyItemTrigger;
     }
