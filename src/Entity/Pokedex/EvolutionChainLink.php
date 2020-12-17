@@ -5,8 +5,6 @@ namespace App\Entity\Pokedex;
 
 use App\Entity\Pokemon\PokemonSpecies;
 use App\Repository\Pokedex\EvolutionChainLinkRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 
@@ -41,15 +39,12 @@ class EvolutionChainLink
     private ?EvolutionDetail $evolutionDetail;
 
     /**
-     * @var Collection $evolutionsChainLinks
+     * @var EvolutionChain|null $evolutionChain
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Pokedex\EvolutionChainLink", cascade={"persist"})
-     * @ORM\JoinTable(name="evolution_chain_link_chain",
-     *      joinColumns={@JoinColumn(name="evolution_chain_link_from_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="evolution_chain_link_to_id", referencedColumnName="id")}
-     * )
+     * @ORM\ManyToOne(targetEntity="App\Entity\Pokedex\EvolutionChain", inversedBy="evolutionChainLinks")
+     * @JoinColumn(name="evolution_chain_id", nullable=true)
      */
-    private Collection $evolutionsChainLinks;
+    private ?EvolutionChain $evolutionChain;
 
     /**
      * @ORM\Column(type="smallint")
@@ -60,14 +55,6 @@ class EvolutionChainLink
      * @ORM\Column(type="integer")
      */
     private int $evolutionOrder;
-
-    /**
-     * EvolutionChainLink constructor.
-     */
-    public function __construct()
-    {
-        $this->evolutionsChainLinks = new ArrayCollection();
-    }
 
     /**
      * @return int
@@ -89,7 +76,7 @@ class EvolutionChainLink
      * @param bool $isBaby
      * @return EvolutionChainLink
      */
-    public function setIsBaby(bool $isBaby): self
+    public function setIsBaby(bool $isBaby): EvolutionChainLink
     {
         $this->isBaby = $isBaby;
         return $this;
@@ -107,7 +94,7 @@ class EvolutionChainLink
      * @param PokemonSpecies $currentPokemonSpecies
      * @return EvolutionChainLink
      */
-    public function setCurrentPokemonSpecies(PokemonSpecies $currentPokemonSpecies): self
+    public function setCurrentPokemonSpecies(PokemonSpecies $currentPokemonSpecies): EvolutionChainLink
     {
         $this->currentPokemonSpecies = $currentPokemonSpecies;
         return $this;
@@ -125,7 +112,7 @@ class EvolutionChainLink
      * @param EvolutionDetail|null $evolutionDetail
      * @return EvolutionChainLink
      */
-    public function setEvolutionDetail(?EvolutionDetail $evolutionDetail): self
+    public function setEvolutionDetail(?EvolutionDetail $evolutionDetail): EvolutionChainLink
     {
         $this->evolutionDetail = $evolutionDetail;
         return $this;
@@ -143,35 +130,28 @@ class EvolutionChainLink
      * @param int $evolutionOrder
      * @return EvolutionChainLink
      */
-    public function setEvolutionOrder(int $evolutionOrder): self
+    public function setEvolutionOrder(int $evolutionOrder): EvolutionChainLink
     {
         $this->evolutionOrder = $evolutionOrder;
         return $this;
     }
 
     /**
-     * @return ArrayCollection|Collection
+     * @return EvolutionChain|null
      */
-    public function getEvolutionsChainLinks() {
-        return $this->evolutionsChainLinks;
+    public function getEvolutionChain(): ?EvolutionChain
+    {
+        return $this->evolutionChain;
     }
 
     /**
-     * @param EvolutionChainLink $evolutionChainLink
+     * @param EvolutionChain|null $evolutionChain
+     * @return EvolutionChainLink
      */
-    public function addEvolutionChainLink(EvolutionChainLink $evolutionChainLink) {
-        if (!$this->evolutionsChainLinks->contains($evolutionChainLink)) {
-            $this->evolutionsChainLinks[] = $evolutionChainLink;
-        }
-    }
-
-    /**
-     * @param EvolutionChainLink $evolutionChainLink
-     */
-    public function removeEvolutionChainLink(EvolutionChainLink $evolutionChainLink) {
-        if ($this->evolutionsChainLinks->contains($evolutionChainLink)) {
-            $this->evolutionsChainLinks->removeElement($evolutionChainLink);
-        }
+    public function setEvolutionChain(?EvolutionChain $evolutionChain): EvolutionChainLink
+    {
+        $this->evolutionChain = $evolutionChain;
+        return $this;
     }
 
 }

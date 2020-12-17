@@ -228,10 +228,9 @@ class EvolutionChainManager extends AbstractManager
                 ->setCurrentPokemonSpecies($startingSpecies)
                 ->setEvolutionOrder($evolutionLevel)
                 ->setEvolutionDetail(null)
+                ->setEvolutionChain($evolutionChain)
             ;
             $this->entityManager->persist($evolutionChainLink);
-            // the 1st evolution chain link is set to the evolution chain
-            $evolutionChain->setEvolutionChainLink($evolutionChainLink);
             // all pokemon species in the evolution chain have the same evolution chain
             $startingSpecies->setEvolutionChain($evolutionChain);
             // Create the rest of the link
@@ -239,9 +238,10 @@ class EvolutionChainManager extends AbstractManager
             $evolutionLevel++;
             $arrayChainEvolveTo = $arrayChainEvolveTo['evolves_to'];
             while (isset($arrayChainEvolveTo[$index])) {
-                $tmpEvolutionChainLink = $this->createEvolutionChainLinkFrom(
-                    $arrayChainEvolveTo[$index], $language, $evolutionChain, $evolutionChainLink, $evolutionLevel
-                );
+                // set the new evolution chain link to the evolution chain
+                $evolutionChain->addEvolutionChainLinks($this->createEvolutionChainLinkFrom(
+                    $arrayChainEvolveTo[$index], $language, $evolutionChain, $evolutionLevel
+                ));
                 $index++;
                 // We need to change stage
                 if (!isset($arrayChainEvolveTo[$index])) {
@@ -249,21 +249,19 @@ class EvolutionChainManager extends AbstractManager
                     $index = 0;
                     // increase the evolution level
                     $evolutionLevel++;
-                    // reset the evolution chain link : we take an other lvl of evolution
-                    $evolutionChainLink = $tmpEvolutionChainLink;
                     // set to the next array evolves_to
                     $arrayChainEvolveTo = $arrayChainEvolveTo[$index]['evolves_to'];
                 }
             }
             $this->entityManager->flush();
         }
+
     }
 
     /**
      * @param $urlEvolutionChain
      * @param Language $language
      * @param EvolutionChain $evolutionChain
-     * @param EvolutionChainLink|null $evolutionChainLink
      * @param int $evolutionLevel
      * @return null
      * @throws NonUniqueResultException
@@ -272,7 +270,6 @@ class EvolutionChainManager extends AbstractManager
         $urlEvolutionChain,
         Language $language,
         EvolutionChain $evolutionChain,
-        ?EvolutionChainLink $evolutionChainLink,
         int $evolutionLevel
     ) {
         // Fetch the pokemon-species from the species api json
@@ -281,8 +278,6 @@ class EvolutionChainManager extends AbstractManager
                 $language, PokemonSpecies::class, $urlEvolutionChain['species']['name']
             )
         );
-        // Set the pokemon species to the starting evolution chain
-        $pokemonSpecies->setEvolutionChain($evolutionChain);
         // evolution_details can be empty, we need to handle it
         $evolutionDetail = null;
         if (isset($urlEvolutionChain['evolution_details'][0])) {
@@ -295,10 +290,11 @@ class EvolutionChainManager extends AbstractManager
             ->setEvolutionDetail($evolutionDetail)
             ->setCurrentPokemonSpecies($pokemonSpecies)
             ->setEvolutionOrder($evolutionLevel)
+            ->setEvolutionChain($evolutionChain);
         ;
-        // set the new evolution chain link to the previous level of evolution chain link
-        $evolutionChainLink->addEvolutionChainLink($newEvolutionChainLink);
         $this->entityManager->persist($newEvolutionChainLink);
+        // Set the pokemon species to the starting evolution chain
+        $pokemonSpecies->setEvolutionChain($evolutionChain);
         return $newEvolutionChainLink;
     }
 
