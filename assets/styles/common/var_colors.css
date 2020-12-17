@@ -50,6 +50,17 @@ body {
   text-align: center;
   color: #737373; }
 
+.bordered-title {
+  background-color: #5eb5e0;
+  color: #f7faff;
+  border-radius: 15px;
+  padding: 0.6rem 0.3rem 0.6rem 1.2rem;
+  margin: 0.25rem 0.25rem 0.25rem 0.25rem; }
+
+.btn-primary {
+  background-color: #5eb5e0;
+  color: #f7faff; }
+
 /**************************** Footer ****************************/
 .footer {
   position: absolute;

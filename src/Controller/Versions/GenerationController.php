@@ -46,9 +46,6 @@ class GenerationController extends AbstractController
      * @return Response
      */
     public function generationIndex(Request $request): Response {
-        dump($this->generationManager->getAllGenerationsByLanguage(
-            $this->languageManager->getLanguageByCode('fr')
-        ));
         return $this->render('Versions/generation_index.html.twig', [
             'generationList' => $this->generationManager->getAllGenerationsByLanguage(
                 $this->languageManager->getLanguageByCode('fr')

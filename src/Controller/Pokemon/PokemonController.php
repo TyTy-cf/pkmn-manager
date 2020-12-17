@@ -5,9 +5,9 @@ namespace App\Controller\Pokemon;
 
 use App\Entity\Pokemon\Pokemon;
 use App\Manager\Api\ApiManager;
-use App\Manager\Moves\PokemonMovesLearnVersionManager;
 use App\Manager\Pokedex\EvolutionChainManager;
 use App\Manager\Pokemon\PokemonManager;
+use App\Manager\Pokemon\PokemonSpeciesVersionManager;
 use App\Manager\Users\LanguageManager;
 use Doctrine\ORM\NonUniqueResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -36,14 +36,14 @@ class PokemonController extends AbstractController
     private LanguageManager $languageManager;
 
     /**
-     * @var PokemonMovesLearnVersionManager $pokemonMoveManager
-     */
-    private PokemonMovesLearnVersionManager $pokemonMoveManager;
-
-    /**
      * @var EvolutionChainManager $evolutionChainManager
      */
     private EvolutionChainManager $evolutionChainManager;
+
+    /**
+     * @var PokemonSpeciesVersionManager $pokemonSpeciesVersionManager
+     */
+    private PokemonSpeciesVersionManager $pokemonSpeciesVersionManager;
 
     /**
      * PokemonController constructor.
@@ -51,20 +51,20 @@ class PokemonController extends AbstractController
      * @param PokemonManager $pokemonManager
      * @param ApiManager $apiManager
      * @param EvolutionChainManager $evolutionChainManager
-     * @param PokemonMovesLearnVersionManager $pokemonMoveManager
      * @param LanguageManager $languageManager
+     * @param PokemonSpeciesVersionManager $pokemonSpeciesVersionManager
      */
     public function __construct
     (
         PokemonManager $pokemonManager,
         ApiManager $apiManager,
         EvolutionChainManager $evolutionChainManager,
-        PokemonMovesLearnVersionManager $pokemonMoveManager,
-        LanguageManager $languageManager
+        LanguageManager $languageManager,
+        PokemonSpeciesVersionManager $pokemonSpeciesVersionManager
     )
     {
-        $this->pokemonMoveManager = $pokemonMoveManager;
         $this->evolutionChainManager = $evolutionChainManager;
+        $this->pokemonSpeciesVersionManager = $pokemonSpeciesVersionManager;
         $this->pokemonManager = $pokemonManager;
         $this->apiManager = $apiManager;
         $this->languageManager = $languageManager;
@@ -85,8 +85,11 @@ class PokemonController extends AbstractController
     {
         return $this->render('Pokemon/profile.html.twig', [
             'pokemon' => $pokemon,
-            'arrayMoves' => $this->pokemonMoveManager->generateArrayMovesForPokemon($pokemon),
+            'arrayMoves' => $this->pokemonManager->generateArrayByVersionForPokemon($pokemon),
             'arrayEvolutionChain' => $this->evolutionChainManager->generateEvolutionChainFromPokemon($pokemon),
+            'arrayDescriptionVersion' => $this->pokemonSpeciesVersionManager->getDescriptionVersionByVersionsAndPokemon(
+                $pokemon->getPokemonSpecies()
+            ),
         ]);
     }
 

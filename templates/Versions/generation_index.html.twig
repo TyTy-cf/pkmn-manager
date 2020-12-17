@@ -16,16 +16,18 @@
                                 <a class="bold-link fs-120" href="{{ path('pokedex_list_generation', {slug_generation: generation.slug }) }}">
                                     {{ generation }}
                                 </a>
-                                <div class="ml-3 light-detailed-italic">
-                                    (
-                                    {% for versionGroup in generation.versionsGroup %}
-                                        {% if loop.index != 1  %}
-                                            -
-                                        {% endif %}
-                                        {{ versionGroup.name }}
-                                    {% endfor %}
-                                    )
-                                </div>
+                                {% if generation.versionsGroup|length != 0 %}
+                                    <div class="ml-3 light-detailed-italic">
+                                        (
+                                        {% for versionGroup in generation.versionsGroup %}
+                                            {% if loop.index != 1  %}
+                                                -
+                                            {% endif %}
+                                            {{ versionGroup.name }}
+                                        {% endfor %}
+                                        )
+                                    </div>
+                                {% endif %}
                             </div>
                             <div class="detailed">
                                 ({{ generation.mainRegion.name }})

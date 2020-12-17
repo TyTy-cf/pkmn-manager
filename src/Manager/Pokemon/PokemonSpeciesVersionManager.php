@@ -11,6 +11,7 @@ use App\Entity\Versions\Version;
 use App\Manager\TextManager;
 use App\Repository\Pokemon\PokemonSpeciesVersionRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
 
 class PokemonSpeciesVersionManager
 {
@@ -54,6 +55,15 @@ class PokemonSpeciesVersionManager
     private function getPokemonSpeciesVersionBySlug(string $slug)
     {
         return $this->repository->findOneBySlug($slug);
+    }
+
+    /**
+     * @param PokemonSpecies $pokemonSpecies
+     * @return QueryBuilder
+     */
+    public function getDescriptionVersionByVersionsAndPokemon(PokemonSpecies $pokemonSpecies)
+    {
+        return $this->repository->getDescriptionVersionByVersionsAndPokemon($pokemonSpecies);
     }
 
     /**

@@ -93,7 +93,7 @@ class ApiManager
      */
     public function getAllPokemonJson()
     {
-        return $this->apiConnect('https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1117');
+        return $this->apiConnect('https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1118');
     }
 
     /**
@@ -120,7 +120,7 @@ class ApiManager
      */
     public function getAllAbilitiesJson()
     {
-        return $this->apiConnect('http://pokeapi.co/api/v2/ability/?offset=0&limit=299');
+        return $this->apiConnect('http://pokeapi.co/api/v2/ability/?offset=0&limit=327');
     }
 
     /**

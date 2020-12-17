@@ -1,0 +1,17 @@
+
+
+    <h2 class="bordered-title text-center">{{ 'pokemon.versions.title'|trans }}</h2>
+    <hr>
+
+    <table class="table table-striped profile-table">
+        <tbody>
+        {% for description in arrayDescriptionVersion %}
+            <tr>
+                <th>{{ description.version.name }}</th>
+                <td>
+                    {{ description.description }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>

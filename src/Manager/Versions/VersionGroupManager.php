@@ -66,7 +66,7 @@ class VersionGroupManager extends AbstractManager
     {
         if (self::$arrayVersionGroup == null)
         {
-            $tmpArrayVersionGroup= $this->getAllVersionGroupByLanguage($language);
+            $tmpArrayVersionGroup= $this->getVersionGroupByLanguage($language);
             foreach($tmpArrayVersionGroup as $versionGroup)
             {
                 self::$arrayVersionGroup[$versionGroup->getSlug()] = $versionGroup;
@@ -101,17 +101,6 @@ class VersionGroupManager extends AbstractManager
     public function getVersionGroupByLanguage(Language $language)
     {
         return $this->versionGroupRepository->getVersionGroupByLanguage($language);
-    }
-
-    /**
-     * @param Language $language
-     * @return VersionGroup[]
-     */
-    private function getAllVersionGroupByLanguage(Language $language)
-    {
-        return $this->versionGroupRepository->findBy([
-            'language' => $language,
-        ]);
     }
 
     /**

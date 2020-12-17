@@ -2,9 +2,10 @@
 
 namespace App\Repository\Pokemon;
 
+use App\Entity\Pokemon\PokemonSpecies;
 use App\Entity\Pokemon\PokemonSpeciesVersion;
 use App\Repository\AbstractRepository;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -20,32 +21,19 @@ class PokemonSpeciesVersionRepository extends AbstractRepository
         parent::__construct($registry, PokemonSpeciesVersion::class);
     }
 
-    // /**
-    //  * @return PokemonSpeciesVersion[] Returns an array of PokemonSpeciesVersion objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param PokemonSpecies $pokemonSpecies
+     * @return QueryBuilder
+     */
+    public function getDescriptionVersionByVersionsAndPokemon(PokemonSpecies $pokemonSpecies)
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('psv')
+            ->select('psv')
+            ->join('psv.pokemonSpecies', 'pokemon_species')
+            ->where('pokemon_species = :pokemonSpecies')
+            ->setParameter('pokemonSpecies', $pokemonSpecies)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?PokemonSpeciesVersion
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
