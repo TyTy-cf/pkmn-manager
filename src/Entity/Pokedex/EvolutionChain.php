@@ -5,6 +5,8 @@ namespace App\Entity\Pokedex;
 use App\Entity\Items\Item;
 use App\Entity\Traits\TraitSlug;
 use App\Repository\Pokedex\EvolutionChainRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 
@@ -23,14 +25,6 @@ class EvolutionChain
     use TraitSlug;
 
     /**
-     * @var EvolutionChainLink $evolutionChainLink
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pokedex\EvolutionChainLink")
-     * @JoinColumn(name="evolution_chain_link_id", nullable=true)
-     */
-    private EvolutionChainLink $evolutionChainLink;
-
-    /**
      * @var Item|null
      * @ORM\ManyToOne(targetEntity="App\Entity\Items\Item")
      * @JoinColumn(name="baby_item_trigger_id", nullable=true)
@@ -38,31 +32,28 @@ class EvolutionChain
     private ?Item $babyItemTrigger;
 
     /**
+     * @var Collection $evolutionChainLinks
+     *
+     * @ORM\OneToMany (targetEntity="App\Entity\Pokedex\EvolutionChainLink", cascade={"persist"}, mappedBy="evolutionChain")
+     */
+    private Collection $evolutionChainLinks;
+
+    /**
      * @ORM\Column(type="integer")
      */
     private int $idApi;
 
+    /**
+     * EvolutionChain constructor.
+     */
+    public function __construct()
+    {
+        $this->evolutionChainLinks = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @return EvolutionChainLink
-     */
-    public function getEvolutionChainLink(): EvolutionChainLink
-    {
-        return $this->evolutionChainLink;
-    }
-
-    /**
-     * @param EvolutionChainLink $evolutionChainLink
-     * @return EvolutionChain
-     */
-    public function setEvolutionChainLink(EvolutionChainLink $evolutionChainLink): EvolutionChain
-    {
-        $this->evolutionChainLink = $evolutionChainLink;
-        return $this;
     }
 
     /**
@@ -99,5 +90,30 @@ class EvolutionChain
     {
         $this->idApi = $idApi;
         return $this;
+    }
+
+    /**
+     * @return ArrayCollection|Collection
+     */
+    public function getEvolutionChainLinks() {
+        return $this->evolutionChainLinks;
+    }
+
+    /**
+     * @param EvolutionChainLink $evolutionChainLink
+     */
+    public function addEvolutionChainLinks(EvolutionChainLink $evolutionChainLink) {
+        if (!$this->evolutionChainLinks->contains($evolutionChainLink)) {
+            $this->evolutionChainLinks[] = $evolutionChainLink;
+        }
+    }
+
+    /**
+     * @param EvolutionChainLink $evolutionChainLink
+     */
+    public function removeEvolutionChainLinks(EvolutionChainLink $evolutionChainLink) {
+        if ($this->evolutionChainLinks->contains($evolutionChainLink)) {
+            $this->evolutionChainLinks->removeElement($evolutionChainLink);
+        }
     }
 }
