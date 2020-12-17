@@ -11,7 +11,7 @@
                 {% for pokemonSpecies in eggGroup.pokemonSpecies %}
                     {% for pokemon in pokemonSpecies.pokemons %}
                         {% if pokemon.pokemonSprites.spriteFrontDefault is not null %}
-                            {% include'Pokemon/pokemon_card.html.twig' with {'pokemon' : pokemon, 'size': pokemonSpecies.pokemons|length} %}
+                            {% include'Pokemon/Cards/pokemon_card.html.twig' with {'pokemon' : pokemon, 'size': pokemonSpecies.pokemons|length} %}
                         {% endif %}
                     {% endfor %}
                 {% endfor %}

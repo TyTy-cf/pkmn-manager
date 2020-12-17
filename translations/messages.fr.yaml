@@ -14,8 +14,12 @@ pokemon:
     hatch_counter: "Eclosion"
     hidden_talent: "Talent caché"
     evolution:
-        title: "Evolutions et formes"
+        title: "Evolutions"
         empty: "%pokemon% n'évolue pas"
+        stage: "Stade %number%"
+        trigger:
+            level: "Niveau %level%"
+            held: "équipé de %heldItem%"
     moves:
         title: "Attaques apprises par versions"
         method:

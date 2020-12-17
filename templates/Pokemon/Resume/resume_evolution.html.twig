@@ -3,7 +3,24 @@
 <hr>
 
 <div>
-    {% if pokemon.pokemonSpecies.evolutionChain|length == 0 %}
+    {% if arrayEvolutionChain|length == 0 %}
         <p>{{ 'pokemon.evolution.empty'|trans({'%pokemon%' : pokemon.name }) }}</p>
+    {% else %}
+        {% for key, evolutionChain in arrayEvolutionChain %}
+            <div class="float-left col-{{ 12 / (arrayEvolutionChain|length)  }}">
+                <div class="text-center">
+                    <h4>{{ 'pokemon.evolution.stage'|trans({'%number%' : key}) }}</h4>
+                </div>
+                <div class="list-card-pkmn list-card-pkmn-lg  bordered-card p-3">
+                    {% for pokemonEvolution in evolutionChain %}
+                        {% include'Pokemon/Cards/pokemon_evolution_card.html.twig' with {
+                            'pokemon' : pokemonEvolution.pokemon[0],
+                            'evolutionDetail' : pokemonEvolution.evolution_detail,
+                            'size': evolutionChain|length
+                        } %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
     {% endif %}
 </div>

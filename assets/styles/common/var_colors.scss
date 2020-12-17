@@ -4,7 +4,8 @@
 $font-special-color: #737373;
 $light-font-special-color: #c4c4c4;
 $background : #d9e7ff;
-$background-lighter : #ebf1ff;
+$background-light : #ebf1ff;
+$background-lighter : #f7faff;
 
 /**************************** Classes ****************************/
 
@@ -43,6 +44,12 @@ body {
     font-size: 1.2em !important;
     font-weight: normal;
   }
+}
+
+.bordered-card {
+  border-radius: 0.5em;
+  //border: 0.1em solid $background-lighter;
+  background-color: $background-light;
 }
 
 .profile-table th {

@@ -83,11 +83,10 @@ class PokemonController extends AbstractController
      */
     function displayProfile(Request $request, Pokemon $pokemon): Response
     {
-        $this->evolutionChainManager->generateEvolutionChainFromPokemon($pokemon);
         return $this->render('Pokemon/profile.html.twig', [
             'pokemon' => $pokemon,
             'arrayMoves' => $this->pokemonMoveManager->generateArrayMovesForPokemon($pokemon),
-//            'evolutionChain' => $this->evolutionChainManager->generateEvolutionChainFromPokemon($pokemon),
+            'arrayEvolutionChain' => $this->evolutionChainManager->generateEvolutionChainFromPokemon($pokemon),
         ]);
     }
 

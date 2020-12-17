@@ -143,27 +143,14 @@ class EvolutionChainManager extends AbstractManager
     public function generateEvolutionChainFromPokemon(Pokemon $pokemon)
     {
         $evolutionChain = $this->evolutionChainRepository->getEvolutionChainByPokemon($pokemon);
-        // Initialize the start of the evolution chain
-        // Stock in an array of [evolutionOrder] = [pokemon/sprites , evolutionDetail]
-        // There it will be the startong of the evolution queue
-        $arrayEvolutionChainLink = [];
-        $this->setEvolutionChainArray($arrayEvolutionChainLink, $evolutionChain->getEvolutionChainLink());
-        if ($evolutionChain->getEvolutionChainLink() !== null) {
-            $evolutionsChainsLink = $this->evolutionChainLinkRepository->getEvolutionChainLinkChild(
-                $evolutionChain->getEvolutionChainLink()
-            );
-        }
-        foreach ($evolutionsChainsLink as $evolutionChainLink) {
-            foreach ($evolutionChainLink->getEvolutionsChainLinks() as $childEvolutionChainLink) {
-                /** @var EvolutionChainLink $childEvolutionChainLink */
-                $this->setEvolutionChainArray($arrayEvolutionChainLink, $childEvolutionChainLink);
-                if ($childEvolutionChainLink->getEvolutionsChainLinks() !== null) {
-                    $evolutionsChainsLink = $this->evolutionChainLinkRepository->getEvolutionChainLinkChild(
-                        $childEvolutionChainLink
-                    );
-                }
+        $arrayEvolutionChain = [];
+        if ($evolutionChain !== null) {
+            foreach ($evolutionChain->getEvolutionChainLinks() as $evolutionChainLink) {
+                /** @var EvolutionChainLink $evolutionChainLink */
+                $this->setEvolutionChainArray($arrayEvolutionChain, $evolutionChainLink);
             }
         }
+        return $arrayEvolutionChain;
     }
 
     /**
@@ -171,12 +158,17 @@ class EvolutionChainManager extends AbstractManager
      * @param EvolutionChainLink $evolutionChainLink
      */
     private function setEvolutionChainArray(array &$arrayEvolutionChain, EvolutionChainLink $evolutionChainLink) {
-        $arrayEvolutionChain[$evolutionChainLink->getEvolutionOrder()] = [
-            $this->pokemonManager->getPokemonSpriteByPokemonSpecies(
-                $evolutionChainLink->getCurrentPokemonSpecies()
-            ),
-            $evolutionChainLink->getEvolutionDetail(),
-        ];
+        if (!isset($arrayEvolutionChain[$evolutionChainLink->getEvolutionOrder()])) {
+            $arrayEvolutionChain[$evolutionChainLink->getEvolutionOrder()] = [];
+        }
+        array_push($arrayEvolutionChain[$evolutionChainLink->getEvolutionOrder()],
+            [
+                'pokemon' => $this->pokemonManager->getPokemonSpriteByPokemonSpecies(
+                    $evolutionChainLink->getCurrentPokemonSpecies()
+                ),
+                'evolution_detail' => $evolutionChainLink->getEvolutionDetail(),
+            ]
+        );
     }
 
     /**

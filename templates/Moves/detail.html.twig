@@ -29,7 +29,7 @@
         <div class="list-card-pkmn list-card-pkmn-lg">
             {% for pmlv in moveLearnPokemon %}
                 {% if pmlv.pokemon.pokemonSprites.spriteFrontDefault is not null %}
-                    {% include'Pokemon/pokemon_card.html.twig' with {'pokemon' : pmlv.pokemon, 'size': moveLearnPokemon|length} %}
+                    {% include'Pokemon/Cards/pokemon_card.html.twig' with {'pokemon' : pmlv.pokemon, 'size': moveLearnPokemon|length} %}
                 {% endif %}
             {% endfor %}
         </div>

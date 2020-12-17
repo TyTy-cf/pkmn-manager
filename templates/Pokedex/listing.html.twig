@@ -34,7 +34,7 @@
         <div class="list-card-pkmn list-card-pkmn-lg">
             {% for pokemon in pokedex.pokemons %}
                 {% if pokemon.isDefault is same as(true) %}
-                    {% include'Pokemon/pokemon_card.html.twig' with {'pokemon' : pokemon, 'size': pokedex.pokemons|length } %}
+                    {% include'Pokemon/Cards/pokemon_card.html.twig' with {'pokemon' : pokemon, 'size': pokedex.pokemons|length } %}
                 {% endif %}
             {% endfor %}
         </div>

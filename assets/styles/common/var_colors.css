@@ -2,7 +2,7 @@
 /**************************** Classes ****************************/
 /**************************** Body ****************************/
 body {
-  background-color: #ebf1ff !important; }
+  background-color: #f7faff !important; }
 
 .container {
   background-color: #d9e7ff !important; }
@@ -27,6 +27,10 @@ body {
     font-style: italic;
     font-size: 1.2em !important;
     font-weight: normal; }
+
+.bordered-card {
+  border-radius: 0.5em;
+  background-color: #ebf1ff; }
 
 .profile-table th {
   color: #737373;
