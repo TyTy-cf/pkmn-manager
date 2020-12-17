@@ -3,5 +3,7 @@
 <hr>
 
 <div>
-
+    {% if pokemon.pokemonSpecies.evolutionChain|length == 0 %}
+        <p>{{ 'pokemon.evolution.empty'|trans({'%pokemon%' : pokemon.name }) }}</p>
+    {% endif %}
 </div>

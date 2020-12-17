@@ -8,6 +8,7 @@ use App\Entity\Infos\Gender;
 use App\Entity\Pokedex\EvolutionChain;
 use App\Entity\Pokedex\EvolutionChainLink;
 use App\Entity\Pokedex\EvolutionDetail;
+use App\Entity\Pokemon\Pokemon;
 use App\Entity\Pokemon\PokemonSpecies;
 use App\Entity\Users\Language;
 use App\Manager\AbstractManager;
@@ -16,6 +17,7 @@ use App\Manager\Infos\Type\TypeManager;
 use App\Manager\Items\ItemManager;
 use App\Manager\Locations\LocationManager;
 use App\Manager\Moves\MoveManager;
+use App\Manager\Pokemon\PokemonManager;
 use App\Manager\Pokemon\PokemonSpeciesManager;
 use App\Manager\TextManager;
 use App\Repository\Infos\GenderRepository;
@@ -33,9 +35,9 @@ class EvolutionChainManager extends AbstractManager
     private EvolutionChainRepository $evolutionChainRepository;
 
     /**
-     * @var EvolutionChainLinkRepository $evolutionChainChainRepository
+     * @var EvolutionChainLinkRepository $evolutionChainLinkRepository
      */
-    private EvolutionChainLinkRepository $evolutionChainChainRepository;
+    private EvolutionChainLinkRepository $evolutionChainLinkRepository;
 
     /**
      * @var GenderRepository $genderRepository
@@ -73,29 +75,36 @@ class EvolutionChainManager extends AbstractManager
     private TypeManager $typeManager;
 
     /**
+     * @var PokemonManager $pokemonManager
+     */
+    private PokemonManager $pokemonManager;
+
+    /**
      * EvolutionChainManager constructor.
+     * @param EvolutionChainLinkRepository $evolutionChainLinkRepository
      * @param EvolutionChainRepository $evolutionChainRepository
-     * @param EvolutionChainLinkRepository $evolutionChainChainRepository
-     * @param GenderRepository $genderRepository
      * @param EvolutionTriggerManager $evolutionTriggerManager
      * @param PokemonSpeciesManager $pokemonSpeciesManager
+     * @param EntityManagerInterface $entityManager
+     * @param GenderRepository $genderRepository
      * @param LocationManager $locationManager
+     * @param PokemonManager $pokemonManager
      * @param ItemManager $itemManager
      * @param MoveManager $moveManager
      * @param TypeManager $typeManager
-     * @param EntityManagerInterface $entityManager
      * @param ApiManager $apiManager
      * @param TextManager $textManager
      */
     public function __construct
     (
-        EvolutionChainLinkRepository $evolutionChainChainRepository,
+        EvolutionChainLinkRepository $evolutionChainLinkRepository,
         EvolutionChainRepository $evolutionChainRepository,
         EvolutionTriggerManager $evolutionTriggerManager,
         PokemonSpeciesManager $pokemonSpeciesManager,
         EntityManagerInterface $entityManager,
         GenderRepository $genderRepository,
         LocationManager $locationManager,
+        PokemonManager $pokemonManager,
         ItemManager $itemManager,
         MoveManager $moveManager,
         TypeManager $typeManager,
@@ -104,10 +113,11 @@ class EvolutionChainManager extends AbstractManager
     )
     {
         $this->evolutionChainRepository = $evolutionChainRepository;
-        $this->evolutionChainChainRepository = $evolutionChainChainRepository;
+        $this->evolutionChainLinkRepository = $evolutionChainLinkRepository;
         $this->itemManager = $itemManager;
         $this->moveManager = $moveManager;
         $this->typeManager = $typeManager;
+        $this->pokemonManager = $pokemonManager;
         $this->locationManager = $locationManager;
         $this->genderRepository = $genderRepository;
         $this->pokemonSpeciesManager = $pokemonSpeciesManager;
@@ -123,6 +133,50 @@ class EvolutionChainManager extends AbstractManager
     public function getEvolutionChainBySlug(string $slug)
     {
         return $this->evolutionChainRepository->findOneBySlug($slug);
+    }
+
+    /**
+     * @param Pokemon $pokemon
+     * @return int|mixed|string|null
+     * @throws NonUniqueResultException
+     */
+    public function generateEvolutionChainFromPokemon(Pokemon $pokemon)
+    {
+        $evolutionChain = $this->evolutionChainRepository->getEvolutionChainByPokemon($pokemon);
+        // Initialize the start of the evolution chain
+        // Stock in an array of [evolutionOrder] = [pokemon/sprites , evolutionDetail]
+        // There it will be the startong of the evolution queue
+        $arrayEvolutionChainLink = [];
+        $this->setEvolutionChainArray($arrayEvolutionChainLink, $evolutionChain->getEvolutionChainLink());
+        if ($evolutionChain->getEvolutionChainLink() !== null) {
+            $evolutionsChainsLink = $this->evolutionChainLinkRepository->getEvolutionChainLinkChild(
+                $evolutionChain->getEvolutionChainLink()
+            );
+        }
+        foreach ($evolutionsChainsLink as $evolutionChainLink) {
+            foreach ($evolutionChainLink->getEvolutionsChainLinks() as $childEvolutionChainLink) {
+                /** @var EvolutionChainLink $childEvolutionChainLink */
+                $this->setEvolutionChainArray($arrayEvolutionChainLink, $childEvolutionChainLink);
+                if ($childEvolutionChainLink->getEvolutionsChainLinks() !== null) {
+                    $evolutionsChainsLink = $this->evolutionChainLinkRepository->getEvolutionChainLinkChild(
+                        $childEvolutionChainLink
+                    );
+                }
+            }
+        }
+    }
+
+    /**
+     * @param array $arrayEvolutionChain
+     * @param EvolutionChainLink $evolutionChainLink
+     */
+    private function setEvolutionChainArray(array &$arrayEvolutionChain, EvolutionChainLink $evolutionChainLink) {
+        $arrayEvolutionChain[$evolutionChainLink->getEvolutionOrder()] = [
+            $this->pokemonManager->getPokemonSpriteByPokemonSpecies(
+                $evolutionChainLink->getCurrentPokemonSpecies()
+            ),
+            $evolutionChainLink->getEvolutionDetail(),
+        ];
     }
 
     /**

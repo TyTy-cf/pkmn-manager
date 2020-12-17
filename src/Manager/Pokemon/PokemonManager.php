@@ -10,6 +10,7 @@ use App\Entity\Infos\Type\Type;
 use App\Entity\Locations\Region;
 use App\Entity\Pokedex\Pokedex;
 use App\Entity\Pokemon\Pokemon;
+use App\Entity\Pokemon\PokemonSpecies;
 use App\Entity\Stats\StatsEffort;
 use App\Entity\Users\Language;
 use App\Entity\Versions\Generation;
@@ -173,11 +174,12 @@ class PokemonManager extends AbstractManager
     }
 
     /**
-     * @param Generation $generation
-     * @return int|mixed|string
+     * @param PokemonSpecies $pokemonSpecies
+     * @return mixed
      */
-    public function getPokemonsByGeneration(Generation $generation) {
-        return $this->pokemonRepository->getPokemonsByGeneration($generation);
+    public function getPokemonSpriteByPokemonSpecies(PokemonSpecies $pokemonSpecies)
+    {
+        return $this->pokemonRepository->getPokemonSpriteByPokemonSpecies($pokemonSpecies);
     }
 
     /**

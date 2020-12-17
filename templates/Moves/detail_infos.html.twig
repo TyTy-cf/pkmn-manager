@@ -4,10 +4,12 @@
         <tr>
             <th>{{ 'move.move.type'|trans }}</th>
             <td>
-                <img class="size-40" src="{{ move.type.img }}"
-                     alt="Type {{ move.type.name|lower }}"
-                     title="{{ move.type.name|lower }}"
-                >
+                <a href="{{ path('type_detail', {slug_type: move.type.slug }) }}">
+                    <img class="size-40" src="{{ move.type.img }}"
+                         alt="Type {{ move.type.name|lower }}"
+                         title="{{ move.type.name|lower }}"
+                    >
+                </a>
             </td>
         </tr>
         <tr>

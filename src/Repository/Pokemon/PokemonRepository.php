@@ -6,6 +6,7 @@ use App\Entity\Locations\Region;
 use App\Entity\Pokedex\Pokedex;
 use App\Entity\Pokemon\Pokemon;
 use App\Entity\Pokemon\PokemonForm;
+use App\Entity\Pokemon\PokemonSpecies;
 use App\Entity\Users\Language;
 use App\Entity\Versions\Generation;
 use App\Entity\Versions\VersionGroup;
@@ -139,6 +140,24 @@ class PokemonRepository extends AbstractRepository
 
             ->orderBy('pokedexSpecies.number', 'ASC')
 
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @param PokemonSpecies $pokemonSpecies
+     * @return int|mixed|string
+     */
+    public function getPokemonSpriteByPokemonSpecies(PokemonSpecies $pokemonSpecies)
+    {
+        return $this->createQueryBuilder('pokemon')
+            ->select('pokemon', 'pokemon_sprites')
+            ->join('pokemon.pokemonSprites', 'pokemon_sprites')
+            ->join('pokemon.pokemonSpecies', 'pokemon_species')
+            ->where('pokemon_species = :pokemonSpecies')
+            ->andWhere('pokemon.isDefault = 1')
+            ->setParameter('pokemonSpecies', $pokemonSpecies)
             ->getQuery()
             ->getResult()
         ;

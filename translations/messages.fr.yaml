@@ -15,6 +15,7 @@ pokemon:
     hidden_talent: "Talent caché"
     evolution:
         title: "Evolutions et formes"
+        empty: "%pokemon% n'évolue pas"
     moves:
         title: "Attaques apprises par versions"
         method:
@@ -28,7 +29,6 @@ pokemon:
             category: "Catégorie"
             power: "Puissance"
             accuracy: "Précision"
-
     stats:
         title: "Stats"
         ev: "EV"

@@ -18,4 +18,21 @@ class EvolutionChainLinkRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, EvolutionChainLink::class);
     }
+
+    /**
+     * @param EvolutionChainLink $evolutionChainLink
+     * @return int|mixed|string
+     */
+    public function getEvolutionChainLinkChild(EvolutionChainLink $evolutionChainLink)
+    {
+        return $this->createQueryBuilder('ecl')
+            ->select('ecl', 'evolutions_chain_links', 'evolution_detail')
+            ->leftJoin('ecl.evolutionDetail', 'evolution_detail')
+            ->join('ecl.evolutionsChainLinks', 'evolutions_chain_links')
+            ->where('ecl.id = :eclParamId')
+            ->setParameter('eclParamId', $evolutionChainLink->getId())
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

@@ -6,9 +6,10 @@ namespace App\Controller\Pokemon;
 use App\Entity\Pokemon\Pokemon;
 use App\Manager\Api\ApiManager;
 use App\Manager\Moves\PokemonMovesLearnVersionManager;
+use App\Manager\Pokedex\EvolutionChainManager;
 use App\Manager\Pokemon\PokemonManager;
-use App\Form\SearchPokemonType;
 use App\Manager\Users\LanguageManager;
+use Doctrine\ORM\NonUniqueResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -35,27 +36,35 @@ class PokemonController extends AbstractController
     private LanguageManager $languageManager;
 
     /**
-     * @var PokemonMovesLearnVersionManager $pkmnMoveManager
+     * @var PokemonMovesLearnVersionManager $pokemonMoveManager
      */
-    private PokemonMovesLearnVersionManager $pkmnMoveManager;
+    private PokemonMovesLearnVersionManager $pokemonMoveManager;
+
+    /**
+     * @var EvolutionChainManager $evolutionChainManager
+     */
+    private EvolutionChainManager $evolutionChainManager;
 
     /**
      * PokemonController constructor.
      *
      * @param PokemonManager $pokemonManager
      * @param ApiManager $apiManager
-     * @param PokemonMovesLearnVersionManager $pkmnMoveManager
+     * @param EvolutionChainManager $evolutionChainManager
+     * @param PokemonMovesLearnVersionManager $pokemonMoveManager
      * @param LanguageManager $languageManager
      */
     public function __construct
     (
         PokemonManager $pokemonManager,
         ApiManager $apiManager,
-        PokemonMovesLearnVersionManager $pkmnMoveManager,
+        EvolutionChainManager $evolutionChainManager,
+        PokemonMovesLearnVersionManager $pokemonMoveManager,
         LanguageManager $languageManager
     )
     {
-        $this->pkmnMoveManager = $pkmnMoveManager;
+        $this->pokemonMoveManager = $pokemonMoveManager;
+        $this->evolutionChainManager = $evolutionChainManager;
         $this->pokemonManager = $pokemonManager;
         $this->apiManager = $apiManager;
         $this->languageManager = $languageManager;
@@ -70,38 +79,15 @@ class PokemonController extends AbstractController
      * @param Request $request
      * @param Pokemon $pokemon
      * @return Response
+     * @throws NonUniqueResultException
      */
     function displayProfile(Request $request, Pokemon $pokemon): Response
     {
-        dump($pokemon);
+        $this->evolutionChainManager->generateEvolutionChainFromPokemon($pokemon);
         return $this->render('Pokemon/profile.html.twig', [
             'pokemon' => $pokemon,
-            'arrayMoves' => $this->pkmnMoveManager->generateArrayMovesForPokemon($pokemon),
-        ]);
-    }
-
-    /**
-     * @Route(path="/pokemon/search", name="pokemon_search")
-     *
-     * @param Request $request
-     * @return Response
-     */
-    function searchPokemon(Request $request): Response {
-        $language = $this->languageManager->getLanguageByCode('fr');
-        // Création du formulaire de recherche
-        $searchPokemonForm = $this->createForm(SearchPokemonType::class);
-        $searchPokemonForm->handleRequest($request);
-
-        //Si formulaire est soumis ET valide
-        if ($searchPokemonForm->isSubmitted() && $searchPokemonForm->isValid()) {
-            $pokemon = $this->pokemonManager->getPokemonByNameAndLanguage(
-                $searchPokemonForm->getData()['name_pokemon'], $language
-            );
-            return $this->redirectToRoute('profile_pokemon', ['slug' => $pokemon->getSlug()]);
-        }
-
-        return $this->render('Pokemon/listing.html.twig', [
-            'pokemonsList' => $this->pokemonManager->getAllPokemonsListByLanguage($language),
+            'arrayMoves' => $this->pokemonMoveManager->generateArrayMovesForPokemon($pokemon),
+//            'evolutionChain' => $this->evolutionChainManager->generateEvolutionChainFromPokemon($pokemon),
         ]);
     }
 
