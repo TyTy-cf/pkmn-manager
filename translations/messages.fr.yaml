@@ -72,6 +72,7 @@ index:
         damage_relation: "Relation du type avec les autres types :"
         type: "Type"
         relation: "Faiblesses"
+        pokemons: "Pokemons ayant le type %type%"
     egg_group:
         pokemons: "Pokémons ayant ce groupe d'oeuf"
     generation:
