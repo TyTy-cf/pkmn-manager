@@ -7,26 +7,23 @@ namespace App\Manager\Pokemon;
 use App\Entity\Infos\Ability;
 use App\Entity\Infos\PokemonAbility;
 use App\Entity\Infos\Type\Type;
-use App\Entity\Locations\Region;
 use App\Entity\Moves\MoveLearnMethod;
 use App\Entity\Pokedex\Pokedex;
 use App\Entity\Pokemon\Pokemon;
 use App\Entity\Pokemon\PokemonSpecies;
-use App\Entity\Pokemon\PokemonSpeciesVersion;
 use App\Entity\Stats\StatsEffort;
 use App\Entity\Users\Language;
-use App\Entity\Versions\Generation;
 use App\Entity\Versions\VersionGroup;
 use App\Manager\AbstractManager;
 use App\Manager\Api\ApiManager;
-use App\Manager\Infos\AbilityManager;
-use App\Manager\Infos\Type\TypeManager;
-use App\Manager\Moves\MoveLearnMethodManager;
-use App\Manager\Moves\MoveManager;
 use App\Manager\TextManager;
 use App\Manager\Versions\VersionGroupManager;
+use App\Repository\Infos\AbilityRepository;
+use App\Repository\Infos\Type\TypeRepository;
+use App\Repository\Moves\MoveLearnMethodRepository;
 use App\Repository\Moves\PokemonMovesLearnVersionRepository;
 use App\Repository\Pokemon\PokemonRepository;
+use App\Repository\Pokemon\PokemonSpritesVersionRepository;
 use App\Repository\Stats\StatsEffortRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
@@ -36,27 +33,22 @@ class PokemonManager extends AbstractManager
 {
 
     /**
-     * @var AbilityManager
-     */
-    private AbilityManager $abilitiesManager;
-
-    /**
-     * @var TypeManager
-     */
-    private TypeManager $typeManager;
-
-    /**
-     * @var MoveManager
-     */
-    private MoveManager $movesManager;
-
-    /**
      * @var VersionGroupManager $versionGroupManager
      */
     private VersionGroupManager $versionGroupManager;
 
     /**
-     * @var PokemonRepository
+     * @var AbilityRepository $abilitiesRepo
+     */
+    private AbilityRepository $abilitiesRepo;
+
+    /**
+     * @var TypeRepository $typeRepo
+     */
+    private TypeRepository $typeRepo;
+
+    /**
+     * @var PokemonRepository $pokemonRepository
      */
     private PokemonRepository $pokemonRepository;
 
@@ -66,60 +58,59 @@ class PokemonManager extends AbstractManager
     private StatsEffortRepository $statsEffortRepo;
 
     /**
-     * @var PokemonMovesLearnVersionRepository $repoMovesLearnPokemon
+     * @var PokemonMovesLearnVersionRepository $movesLearnPokemonRepo
      */
-    private PokemonMovesLearnVersionRepository $repoMovesLearnPokemon;
+    private PokemonMovesLearnVersionRepository $movesLearnPokemonRepo;
 
     /**
-     * @var MoveLearnMethodManager $moveLearnMethodManager
+     * @var MoveLearnMethodRepository $moveLearnMethodRepo
      */
-    private MoveLearnMethodManager $moveLearnMethodManager;
+    private MoveLearnMethodRepository $moveLearnMethodRepo;
 
     /**
-     * @var PokemonSpeciesVersionManager $pokemonSpeciesVersionManager
+     * @var PokemonSpritesVersionRepository $spritesVersionRepository
      */
-    private PokemonSpeciesVersionManager $pokemonSpeciesVersionManager;
+    private PokemonSpritesVersionRepository $spritesVersionRepository;
 
     /**
      * PokemonManager constructor.
      *
      * @param EntityManagerInterface $entityManager
-     * @param AbilityManager $abilitiesManager
-     * @param TypeManager $typeManager
-     * @param MoveManager $movesManager
      * @param ApiManager $apiManager
      * @param TextManager $textManager
+     * @param TypeRepository $typeRepo
+     * @param AbilityRepository $abilitiesRepo
      * @param VersionGroupManager $versionGroupManager
+     * @param MoveLearnMethodRepository $moveLearnMethodRepo
+     * @param PokemonSpritesVersionRepository $spritesVersionRepository
      * @param StatsEffortRepository $statsEffortRepo
      * @param PokemonRepository $pokemonRepository
-     * @param MoveLearnMethodManager $moveLearnMethodManager
-     * @param PokemonSpeciesVersionManager $pokemonSpeciesVersionManager
      * @param PokemonMovesLearnVersionRepository $repoMovesLearnPokemon
      */
     public function __construct
     (
         EntityManagerInterface $entityManager,
-        AbilityManager $abilitiesManager,
-        TypeManager $typeManager,
-        MoveManager $movesManager,
         ApiManager $apiManager,
         TextManager $textManager,
         VersionGroupManager $versionGroupManager,
+        TypeRepository $typeRepo,
+        AbilityRepository $abilitiesRepo,
+        MoveLearnMethodRepository $moveLearnMethodRepo,
+        PokemonSpritesVersionRepository $spritesVersionRepository,
         StatsEffortRepository $statsEffortRepo,
         PokemonRepository $pokemonRepository,
-        MoveLearnMethodManager $moveLearnMethodManager,
-        PokemonSpeciesVersionManager $pokemonSpeciesVersionManager,
         PokemonMovesLearnVersionRepository $repoMovesLearnPokemon
     ) {
-        $this->typeManager = $typeManager;
-        $this->movesManager = $movesManager;
-        $this->pokemonSpeciesVersionManager = $pokemonSpeciesVersionManager;
-        $this->repoMovesLearnPokemon = $repoMovesLearnPokemon;
-        $this->moveLearnMethodManager = $moveLearnMethodManager;
-        $this->statsEffortRepo = $statsEffortRepo;
-        $this->abilitiesManager = $abilitiesManager;
         $this->versionGroupManager = $versionGroupManager;
+
+        $this->typeRepo = $typeRepo;
+        $this->abilitiesRepo = $abilitiesRepo;
+        $this->statsEffortRepo = $statsEffortRepo;
         $this->pokemonRepository = $pokemonRepository;
+        $this->moveLearnMethodRepo = $moveLearnMethodRepo;
+        $this->movesLearnPokemonRepo = $repoMovesLearnPokemon;
+        $this->spritesVersionRepository = $spritesVersionRepository;
+
         parent::__construct($entityManager, $apiManager, $textManager);
     }
 
@@ -146,31 +137,9 @@ class PokemonManager extends AbstractManager
      * @return Pokemon|null
      * @throws NonUniqueResultException
      */
-    public function getPokemonPofileBySlug(string $slug): ?Pokemon
+    public function getPokemonProfileBySlug(string $slug): ?Pokemon
     {
-        return $this->pokemonRepository->getPokemonPofileBySlug($slug);
-    }
-
-    /**
-     * @param $name
-     * @return Pokemon|object|null
-     */
-    public function findByName($name)
-    {
-        return $this->pokemonRepository->findOneBy(['name' => $name]);
-    }
-
-    /**
-     * @param string $name
-     * @param Language $language
-     * @return Pokemon|null
-     */
-    public function getPokemonByNameAndLanguage(string $name, Language $language)
-    {
-        return $this->pokemonRepository->findOneBy([
-           'name' => $name,
-            'language' => $language
-        ]);
+        return $this->pokemonRepository->getPokemonProfileBySlug($slug);
     }
 
     /**
@@ -217,10 +186,9 @@ class PokemonManager extends AbstractManager
      */
     public function generateArrayByVersionForPokemon(Pokemon $pokemon) {
         // Initialise the array of VersionGroup
-        $arrayMoves = [];
         $language = $pokemon->getLanguage();
         $arrayMoves['version_groups'] = array();
-        $allMoveLearnMethod = $this->moveLearnMethodManager->getAllMoveLearnMethodByLanguage($language);
+        $allMoveLearnMethod = $this->moveLearnMethodRepo->getAllMoveLearnMethodByLanguage($language);
         $versionsGroups = $this->versionGroupManager->getArrayVersionGroup($language);
         if (sizeof($versionsGroups) > 0) {
             foreach($versionsGroups as $versionGroup) {
@@ -230,9 +198,9 @@ class PokemonManager extends AbstractManager
                 foreach($allMoveLearnMethod as $moveLearnMethod) {
                     /** @var MoveLearnMethod $moveLearnMethod */
                     if ($moveLearnMethod->getSlug() === $language->getCode().MoveLearnMethod::SLUG_MACHINE) {
-                        $moves = $this->repoMovesLearnPokemon->getMovesLearnMachineBy($pokemon, $moveLearnMethod, $versionGroup);
+                        $moves = $this->movesLearnPokemonRepo->getMovesLearnMachineBy($pokemon, $moveLearnMethod, $versionGroup);
                     } else {
-                        $moves = $this->repoMovesLearnPokemon->getMovesLearnBy($pokemon, $moveLearnMethod, $versionGroup);
+                        $moves = $this->movesLearnPokemonRepo->getMovesLearnBy($pokemon, $moveLearnMethod, $versionGroup);
                     }
                     if (!empty($moves)) {
                         $arrayMovesLearn[$moveLearnMethod->getName()] = $moves;
@@ -244,7 +212,7 @@ class PokemonManager extends AbstractManager
                         'name' => $versionGroup->getName(),
                     ]);
                     $arrayMoves['moves_infos'][$versionGroup->getSlug()] = [
-                        'moves' => $arrayMovesLearn
+                        'moves' => $arrayMovesLearn,
                     ];
                 }
             }
@@ -254,32 +222,20 @@ class PokemonManager extends AbstractManager
 
     /**
      * @param Pokemon $pokemon
-     * @return array
+     * @return mixed
      */
-    public function generateArrayMovesMachinesForPokemon(Pokemon $pokemon) {
-        // Initialise the array of VersionGroup
-        $arrayMoves = [];
-        $language = $pokemon->getLanguage();
-        $arrayMoves['version_groups'] = array();
-        $moveLearnMethodMachine = $this->moveLearnMethodManager->getMoveLearnMethodBySlug(
-            $this->textManager->generateSlugFromClassWithLanguage(
-                $language, MoveLearnMethod::class, 'machine'
-            )
-        );
-        $versionsGroups = $this->versionGroupManager->getVersionGroupByLanguage($language);
+    public function getSpritesArrayByPokemon(Pokemon $pokemon) {
+        $versionsGroups = $this->versionGroupManager->getArrayVersionGroup($pokemon->getLanguage());
+        $arraySprites = [];
         if (sizeof($versionsGroups) > 0) {
             foreach($versionsGroups as $versionGroup) {
-                $arrayMovesLearn = [];
-                $moves = $this->repoMovesLearnPokemon->getMovesLearnMachineBy($pokemon, $moveLearnMethodMachine, $versionGroup);
-                if (!empty($moves)) {
-                    $arrayMovesLearn[$moveLearnMethodMachine->getName()] = $moves;
-                }
-                if (count($arrayMovesLearn) > 0) {
-                    $arrayMoves['moves_infos'][$versionGroup->getSlug()] = $arrayMovesLearn;
-                }
+               $sprites = $this->spritesVersionRepository->getSpritesByVersionGroupIdAndPokemon($versionGroup, $pokemon);
+               if (count($sprites) > 0) {
+                   $arraySprites[$versionGroup->getName()] = $sprites;
+               }
             }
         }
-        return $arrayMoves;
+        return $arraySprites;
     }
 
     /**
@@ -352,7 +308,7 @@ class PokemonManager extends AbstractManager
             // Set the Type
             foreach($urlDetailed['types'] as $typesDetailed)
             {
-                $type = $this->typeManager->getTypeBySlug(
+                $type = $this->typeRepo->findOneBySlug(
                     $this->textManager->generateSlugFromClassWithLanguage(
                         $language,
                         Type::class,
@@ -365,7 +321,7 @@ class PokemonManager extends AbstractManager
             // Set the Ability
             foreach($urlDetailed['abilities'] as $abilityDetailed)
             {
-                $ability = $this->abilitiesManager->getAbilitiesBySlug(
+                $ability = $this->abilitiesRepo->findOneBySlug(
                     $this->textManager->generateSlugFromClassWithLanguage(
                         $language,
                         Ability::class,

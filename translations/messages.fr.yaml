@@ -21,7 +21,6 @@ pokemon:
         stage_baby: "Stade bébé"
         baby_label: "Faire tenir %item% au parent"
     moves:
-        title: "Attaques apprises par versions"
         method:
             levelup: "Montée de niveau"
             machine : "Capsule technique"
@@ -34,6 +33,7 @@ pokemon:
             power: "Puissance"
             accuracy: "Précision"
         section: "Attaques"
+        title: "Attaques par versions"
     stats:
         title: "Stats"
         ev: "EV"
@@ -58,6 +58,11 @@ pokemon:
         section: "Evolutions"
     descriptions:
         section: "Descriptions"
+    sprites:
+        section: "Images"
+        title: "Images par versions"
+        default: "Normal"
+        shiny: "Shiny"
 
 index:
     ability:

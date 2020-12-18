@@ -74,15 +74,14 @@ class PokemonController extends AbstractController
      * Display the characteristic for one pokemon
      *
      * @Route(path="/pokemon/{slug_pokemon}", name="profile_pokemon", requirements={"slug_pokemon": ".+"})
-     * @ParamConverter(class="App\Entity\Pokemon\Pokemon", name="pokemon", options={"mapping": {"slug_pokemon" : "slug"}})
      *
      * @param Request $request
-     * @param Pokemon $pokemon
      * @return Response
      * @throws NonUniqueResultException
      */
-    function displayProfile(Request $request, Pokemon $pokemon): Response
+    function displayProfile(Request $request): Response
     {
+        $pokemon = $this->pokemonManager->getPokemonProfileBySlug($request->get('slug_pokemon'));
         return $this->render('Pokemon/profile.html.twig', [
             'pokemon' => $pokemon,
             'arrayMoves' => $this->pokemonManager->generateArrayByVersionForPokemon($pokemon),
@@ -90,6 +89,7 @@ class PokemonController extends AbstractController
             'arrayDescriptionVersion' => $this->pokemonSpeciesVersionManager->getDescriptionVersionByVersionsAndPokemon(
                 $pokemon->getPokemonSpecies()
             ),
+            'arraySprites' => $this->pokemonManager->getSpritesArrayByPokemon($pokemon)
         ]);
     }
 

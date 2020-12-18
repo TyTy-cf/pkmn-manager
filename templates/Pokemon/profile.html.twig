@@ -44,6 +44,12 @@
             {% include 'Pokemon/Resume/resume_moves.html.twig' with {'pokemon' : pokemon} %}
         </div>
     </div>
+    <hr>
+    <div class="row" id="section-sprites">
+        <div class="col-md-12">
+            {% include 'Pokemon/Resume/resume_sprites.html.twig' with {'arraySprites' : arraySprites} %}
+        </div>
+    </div>
 
 {% endblock %}
 
