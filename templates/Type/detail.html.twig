@@ -8,25 +8,15 @@
         <div class="grid-col ">
             <h2>{{ 'index.type.damage_relation'|trans }}</h2>
         </div>
-        <div class="grid-col ">
-            <table class="table table-condensed">
-                <thead>
-                    <tr>
-                        <th class="text-center">{{ 'index.type.type'|trans }}</th>
-                        <th class="text-center" colspan="{{ types|length }}">{{ 'index.type.relation'|trans }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <img class="size-75" src="{{ type.img }}" alt="{{ type.name }}">
-                        </td>
-                        {% for typeElement in types %}
-                            <td class="vertical"><img class="size-80" src="{{ typeElement.img }}" alt="{{ typeElement.name }}"></td>
-                        {% endfor %}
-                    </tr>
-                </tbody>
-            </table>
+        <div class="grid-col">
+            <div class="d-flex">
+                {% for typeElement in types %}
+                    <div class="d-flex size-80">
+                        <img class="size-80" src="{{ typeElement.img|imagine_filter('rotate270') }}" alt="{{ typeElement.name }}">
+                    </div>
+                {% endfor %}
+            </div>
+            
         </div>
     </div>
     <div class="grid-col mt-5">
