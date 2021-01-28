@@ -20,13 +20,28 @@ body {
   font-weight: bold; }
 
 .light-detailed {
-  color: #737373 !important;
   font-size: 0.8em;
-  font-weight: bold; }
+  font-weight: bold;
+  color: #04aff3; }
+  .light-detailedrouge {
+    color: #d95803; }
+  .light-detailedargent {
+    color: #bfa005; }
+  .light-detailedrubis {
+    color: #27db15; }
+  .light-detaileddiamant {
+    color: #ffffff; }
+  .light-detailednoir {
+    color: #000000; }
+  .light-detailedx {
+    color: #6d1acb; }
+  .light-detailedsoleil {
+    color: #ffdd02; }
   .light-detailed-italic {
     font-style: italic;
-    font-size: 1.2em !important;
-    font-weight: normal; }
+    font-size: 1.1em !important;
+    font-weight: normal;
+    color: #d95803; }
 
 .bordered-card {
   border-radius: 0.5em;

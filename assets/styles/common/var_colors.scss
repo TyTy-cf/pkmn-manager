@@ -1,4 +1,5 @@
 
+
 /**************************** Color variables ****************************/
 
 $font-special-color: #737373;
@@ -36,14 +37,38 @@ body {
 }
 
 .light-detailed {
-  color: $font-special-color !important;
+
   font-size: 0.8em;
   font-weight: bold;
+  color: #04aff3;
+    &rouge{
+      color: #d95803;
+      }
+    &argent{
+      color: #bfa005;
+    }
+    &rubis{
+      color: #27db15;
+    }
+    &diamant{
+      color: #ffffff;
+    }
+    &noir{
+     color: #000000;
+   }
+    &x{
+      color: #6d1acb;
+    }
+    &soleil{
+      color: #ffdd02;
+    }
 
   &-italic {
     font-style: italic;
-    font-size: 1.2em !important;
+    font-size: 1.1em !important;
     font-weight: normal;
+    color: #d95803;
+
   }
 }
 

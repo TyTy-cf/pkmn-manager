@@ -77,7 +77,7 @@ index:
         pokemons: "Pokémons ayant ce groupe d'oeuf"
     generation:
         all:
-            title: "Voir les pokémons de toutes les générations :"
+            title: "Pokédex par générations "
 
 pokedex:
     listing:
