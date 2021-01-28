@@ -22,38 +22,34 @@
     </div>
     <hr>
     <div class="row" id="section-stats">
-        <div class="col-md-12">
+        <div class="col-md">
             {% include 'Pokemon/Resume/resume_stats.html.twig' with {'pokemon' : pokemon} %}
         </div>
     </div>
     <hr>
     <div class="row" id="section-evolutions">
-        <div class="col-md-12">
+        <div class="col-md">
             {% include 'Pokemon/Resume/resume_evolution.html.twig' with {'pokemon' : pokemon} %}
         </div>
     </div>
     <hr>
     <div class="row" id="section-descriptions">
-        <div class="col-md-12">
+        <div class="col-md">
             {% include 'Pokemon/Resume/resume_pokedex_flavor.html.twig' with {'arrayDescriptionVersion' : arrayDescriptionVersion} %}
         </div>
     </div>
     <hr>
     <div class="row" id="section-moves">
-        <div class="col-md-12">
+        <div class="col-md">
             {% include 'Pokemon/Resume/resume_moves.html.twig' with {'pokemon' : pokemon} %}
         </div>
     </div>
     <hr>
     <div class="row" id="section-sprites">
-        <div class="col-md-12">
+        <div class="col-md">
             {% include 'Pokemon/Resume/resume_sprites.html.twig' with {'arraySprites' : arraySprites} %}
         </div>
     </div>
 
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
 {% endblock %}
 

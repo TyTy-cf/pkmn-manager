@@ -54,15 +54,13 @@ class PokemonController extends AbstractController
      * @param LanguageManager $languageManager
      * @param PokemonSpeciesVersionManager $pokemonSpeciesVersionManager
      */
-    public function __construct
-    (
+    public function __construct (
         PokemonManager $pokemonManager,
         ApiManager $apiManager,
         EvolutionChainManager $evolutionChainManager,
         LanguageManager $languageManager,
         PokemonSpeciesVersionManager $pokemonSpeciesVersionManager
-    )
-    {
+    ) {
         $this->evolutionChainManager = $evolutionChainManager;
         $this->pokemonSpeciesVersionManager = $pokemonSpeciesVersionManager;
         $this->pokemonManager = $pokemonManager;

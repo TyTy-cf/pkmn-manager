@@ -15,9 +15,9 @@
         {% for key, pokemonMoves in arrayMoves.moves_infos %}
             <div id="tab-{{ key }}" class="tabcontent">
                 {% for title, moveLearnMethodArray in pokemonMoves.moves %}
-                    <div class="col-6 float-left mt-2">
+                    <div class="col-md-6 float-left mt-2">
                         <h2>{{ title }}</h2>
-                        <table class="table table-striped">
+                        <table class="table table-striped table-moves">
                             <thead>
                                 <tr>
                                     {% if title is same as ('pokemon.moves.method.levelup'|trans) %}

@@ -224,8 +224,9 @@ class PokemonManager extends AbstractManager
      * @param Pokemon $pokemon
      * @return mixed
      */
-    public function getSpritesArrayByPokemon(Pokemon $pokemon) {
-        $versionsGroups = $this->versionGroupManager->getArrayVersionGroup($pokemon->getLanguage());
+    public function getSpritesArrayByPokemon(Pokemon $pokemon): array
+    {
+        $versionsGroups = $this->versionGroupManager->getVersionGroupByLanguage($pokemon->getLanguage(), 'DESC');
         $arraySprites = [];
         if (sizeof($versionsGroups) > 0) {
             foreach($versionsGroups as $versionGroup) {

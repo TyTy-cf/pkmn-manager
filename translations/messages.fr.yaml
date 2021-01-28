@@ -29,9 +29,9 @@ pokemon:
             machine: "CT/CS"
             name: "Nom"
             type: "Type"
-            category: "Catégorie"
-            power: "Puissance"
-            accuracy: "Précision"
+            category: "Catég."
+            power: "Puiss."
+            accuracy: "Précis."
         section: "Attaques"
         title: "Attaques par versions"
     stats:

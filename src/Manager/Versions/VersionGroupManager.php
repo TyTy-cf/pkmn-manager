@@ -62,11 +62,11 @@ class VersionGroupManager extends AbstractManager
      * @param Language $language
      * @return VersionGroup[]|array
      */
-    public function getArrayVersionGroup(Language $language)
+    public function getArrayVersionGroup(Language $language, string $order = 'ASC')
     {
         if (self::$arrayVersionGroup == null)
         {
-            $tmpArrayVersionGroup= $this->getVersionGroupByLanguage($language);
+            $tmpArrayVersionGroup= $this->getVersionGroupByLanguage($language, $order);
             foreach($tmpArrayVersionGroup as $versionGroup)
             {
                 self::$arrayVersionGroup[$versionGroup->getSlug()] = $versionGroup;
@@ -96,11 +96,12 @@ class VersionGroupManager extends AbstractManager
 
     /**
      * @param Language $language
+     * @param string $order
      * @return int|mixed|string
      */
-    public function getVersionGroupByLanguage(Language $language)
+    public function getVersionGroupByLanguage(Language $language, string $order)
     {
-        return $this->versionGroupRepository->getVersionGroupByLanguage($language);
+        return $this->versionGroupRepository->getVersionGroupByLanguage($language, $order);
     }
 
     /**

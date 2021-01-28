@@ -62,16 +62,17 @@ class VersionGroupRepository extends AbstractRepository
 
     /**
      * @param Language $language
+     * @param string $order
      * @return int|mixed|string
      */
-    public function getVersionGroupByLanguage(Language $language)
+    public function getVersionGroupByLanguage(Language $language, string $order)
     {
         return $this->createQueryBuilder('version_group')
             ->select('version_group')
             ->join('version_group.language', 'language')
             ->where('language = :language')
             ->setParameter('language', $language)
-            ->orderBy('version_group.order', 'ASC')
+            ->orderBy('version_group.order', $order)
             ->getQuery()
             ->getResult()
         ;
