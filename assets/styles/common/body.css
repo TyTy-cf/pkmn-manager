@@ -1,6 +1,7 @@
 .bold-link {
-  font-weight: 700 !important;
-  font-size: 80%; }
+  font-weight: 500 !important;
+  font-size: 80%;
+  line-height: 30px; }
   .bold-link.fs-120 {
     font-size: 120%; }
   .bold-link.fs-100 {
@@ -24,5 +25,3 @@
   position: fixed;
   top: 0;
   width: 100%; }
-
-/*# sourceMappingURL=body.css.map */
