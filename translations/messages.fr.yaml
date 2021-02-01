@@ -69,7 +69,7 @@ index:
         description: "Description"
         pokemons: "Pokémons avec cette capacité"
     type:
-        damage_relation: "Relation du type avec les autres types :"
+        damage_relation: "Relation du type avec les autres types"
         type: "Type"
         relation: "Faiblesses"
         pokemons: "Pokemons ayant le type %type%"
@@ -77,13 +77,13 @@ index:
         pokemons: "Pokémons ayant ce groupe d'oeuf"
     generation:
         all:
-            title: "Voir les pokémons de toutes les générations :"
+            title: "Pokédex par générations"
 
 pokedex:
     listing:
         title: "Pokedex - %number%"
     all:
-        title: "Tous les pokedex :"
+        title: "Tous les pokedex"
     description:
         goto: "Aller au : "
         listing: "Pokemons du %pokedex%"
