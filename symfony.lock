@@ -554,7 +554,7 @@
             "ref": "69e1d805ad95964088bd510c05995e87dc391564"
         },
         "files": [
-            "./assets/app.js",
+            "./assets/scripts.js",
             "./assets/styles/app.css",
             "./config/packages/assets.yaml",
             "./config/packages/prod/webpack_encore.yaml",
