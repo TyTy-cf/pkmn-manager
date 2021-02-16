@@ -3,9 +3,9 @@
 namespace App\Command\Pokemon;
 
 use App\Command\AbstractCommand;
-use App\Manager\Api\ApiManager;
-use App\Manager\Pokemon\PokemonManager;
-use App\Manager\Users\LanguageManager;
+use App\Service\Api\ApiService;
+use App\Service\Pokemon\PokemonService;
+use App\Service\Users\LanguageManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Console\Command\Command;
@@ -23,16 +23,16 @@ class PokemonCommand extends AbstractCommand
 
     /**
      * ExcecCommand constructor
-     * @param PokemonManager $pokemonManager
+     * @param PokemonService $pokemonManager
      * @param LanguageManager $languageManager
-     * @param ApiManager $apiManager
+     * @param ApiService $apiManager
      * @param EntityManagerInterface $em
      */
     public function __construct
     (
-        PokemonManager $pokemonManager,
+        PokemonService $pokemonManager,
         LanguageManager $languageManager,
-        ApiManager $apiManager,
+        ApiService $apiManager,
         EntityManagerInterface $em
     )
     {

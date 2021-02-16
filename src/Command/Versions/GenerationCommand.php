@@ -5,9 +5,9 @@ namespace App\Command\Versions;
 
 
 use App\Command\AbstractCommand;
-use App\Manager\Api\ApiManager;
-use App\Manager\Users\LanguageManager;
-use App\Manager\Versions\GenerationManager;
+use App\Service\Api\ApiService;
+use App\Service\Users\LanguageManager;
+use App\Service\Versions\GenerationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,16 +19,16 @@ class GenerationCommand extends AbstractCommand
 
     /**
      * ExcecCommand constructor
-     * @param GenerationManager $generationManager
+     * @param GenerationService $generationManager
      * @param LanguageManager $languageManager
-     * @param ApiManager $apiManager
+     * @param ApiService $apiManager
      * @param EntityManagerInterface $em
      */
     public function __construct
     (
-        GenerationManager $generationManager,
+        GenerationService $generationManager,
         LanguageManager $languageManager,
-        ApiManager $apiManager,
+        ApiService $apiManager,
         EntityManagerInterface $em
     )
     {

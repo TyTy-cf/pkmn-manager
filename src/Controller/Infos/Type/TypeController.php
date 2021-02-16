@@ -5,8 +5,8 @@ namespace App\Controller\Infos\Type;
 
 
 use App\Entity\Infos\Type\Type;
-use App\Manager\Infos\Type\TypeDamageRelationTypeManager;
-use App\Manager\Infos\Type\TypeManager;
+use App\Service\Infos\Type\TypeDamageRelationTypeService;
+use App\Service\Infos\Type\TypeService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,23 +17,23 @@ class TypeController extends AbstractController
 {
 
     /**
-     * @var TypeDamageRelationTypeManager $typeRelationManager
+     * @var TypeDamageRelationTypeService $typeRelationManager
      */
-    public TypeDamageRelationTypeManager $typeRelationManager;
+    public TypeDamageRelationTypeService $typeRelationManager;
 
     /**
-     * @var TypeManager $typeManager
+     * @var TypeService $typeManager
      */
-    private TypeManager $typeManager;
+    private TypeService $typeManager;
 
     /**
      * TypeController constructor.
-     * @param TypeDamageRelationTypeManager $typeRelationManager
-     * @param TypeManager $typeManager
+     * @param TypeDamageRelationTypeService $typeRelationManager
+     * @param TypeService $typeManager
      */
     public function __construct(
-        TypeDamageRelationTypeManager $typeRelationManager,
-        TypeManager $typeManager
+        TypeDamageRelationTypeService $typeRelationManager,
+        TypeService $typeManager
     )
     {
         $this->typeRelationManager = $typeRelationManager;

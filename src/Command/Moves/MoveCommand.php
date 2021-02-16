@@ -5,9 +5,9 @@ namespace App\Command\Moves;
 
 
 use App\Command\AbstractCommand;
-use App\Manager\Api\ApiManager;
-use App\Manager\Moves\MoveManager;
-use App\Manager\Users\LanguageManager;
+use App\Service\Api\ApiService;
+use App\Service\Moves\MoveService;
+use App\Service\Users\LanguageManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,15 +19,15 @@ class MoveCommand extends AbstractCommand
 
     /**
      * ExcecCommand constructor
-     * @param MoveManager $moveManager
-     * @param ApiManager $apiManager
+     * @param MoveService $moveManager
+     * @param ApiService $apiManager
      * @param LanguageManager $languageManager
      * @param EntityManagerInterface $em
      */
     public function __construct
     (
-        MoveManager $moveManager,
-        ApiManager $apiManager,
+        MoveService $moveManager,
+        ApiService $apiManager,
         LanguageManager $languageManager,
         EntityManagerInterface $em
     )

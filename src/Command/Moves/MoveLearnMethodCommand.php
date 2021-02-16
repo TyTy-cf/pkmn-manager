@@ -5,9 +5,9 @@ namespace App\Command\Moves;
 
 
 use App\Command\AbstractCommand;
-use App\Manager\Api\ApiManager;
-use App\Manager\Moves\MoveLearnMethodManager;
-use App\Manager\Users\LanguageManager;
+use App\Service\Api\ApiService;
+use App\Service\Moves\MoveLearnMethodService;
+use App\Service\Users\LanguageManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,15 +18,15 @@ class MoveLearnMethodCommand extends AbstractCommand
 {
     /**
      * ExcecCommand constructor
-     * @param ApiManager $apiManager
+     * @param ApiService $apiManager
      * @param LanguageManager $languageManager
-     * @param MoveLearnMethodManager $moveLearnMethodManager
+     * @param MoveLearnMethodService $moveLearnMethodManager
      * @param EntityManagerInterface $em
      */
     public function __construct(
-        ApiManager $apiManager,
+        ApiService $apiManager,
         LanguageManager $languageManager,
-        MoveLearnMethodManager $moveLearnMethodManager,
+        MoveLearnMethodService $moveLearnMethodManager,
         EntityManagerInterface $em
     )
     {

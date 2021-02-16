@@ -4,9 +4,9 @@
 namespace App\Command\Pokemon;
 
 use App\Command\AbstractCommand;
-use App\Manager\Api\ApiManager;
-use App\Manager\Pokemon\PokemonSpeciesManager;
-use App\Manager\Users\LanguageManager;
+use App\Service\Api\ApiService;
+use App\Service\Pokemon\PokemonSpeciesService;
+use App\Service\Users\LanguageManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,16 +18,16 @@ class PokemonSpeciesCommand extends AbstractCommand
 
     /**
      * ExcecCommand constructor
-     * @param PokemonSpeciesManager $pokemonSpeciesManager
+     * @param PokemonSpeciesService $pokemonSpeciesManager
      * @param LanguageManager $languageManager
-     * @param ApiManager $apiManager
+     * @param ApiService $apiManager
      * @param EntityManagerInterface $em
      */
     public function __construct
     (
-        PokemonSpeciesManager $pokemonSpeciesManager,
+        PokemonSpeciesService $pokemonSpeciesManager,
         LanguageManager $languageManager,
-        ApiManager $apiManager,
+        ApiService $apiManager,
         EntityManagerInterface $em
     )
     {

@@ -5,9 +5,9 @@ namespace App\Controller\Pokedex;
 
 
 use App\Entity\Versions\Generation;
-use App\Manager\Pokedex\PokedexManager;
-use App\Manager\Pokemon\PokemonManager;
-use App\Manager\Users\LanguageManager;
+use App\Service\Pokedex\PokedexService;
+use App\Service\Pokemon\PokemonService;
+use App\Service\Users\LanguageManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,9 +18,9 @@ class PokedexController extends AbstractController
 {
 
     /**
-     * @var PokemonManager $pokemonManager
+     * @var PokemonService $pokemonManager
      */
-    private PokemonManager $pokemonManager;
+    private PokemonService $pokemonManager;
 
     /**
      * @var LanguageManager $languageManager
@@ -28,21 +28,21 @@ class PokedexController extends AbstractController
     private LanguageManager $languageManager;
 
     /**
-     * @var PokedexManager $pokedexManager
+     * @var PokedexService $pokedexManager
      */
-    private PokedexManager $pokedexManager;
+    private PokedexService $pokedexManager;
 
     /**
      * PokemonController constructor.
      *
-     * @param PokemonManager $pokemonManager
-     * @param PokedexManager $pokedexManager
+     * @param PokemonService $pokemonManager
+     * @param PokedexService $pokedexManager
      * @param LanguageManager $languageManager
      */
     public function __construct
     (
-        PokemonManager $pokemonManager,
-        PokedexManager $pokedexManager,
+        PokemonService $pokemonManager,
+        PokedexService $pokedexManager,
         LanguageManager $languageManager
     )
     {

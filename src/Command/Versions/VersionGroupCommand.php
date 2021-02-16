@@ -5,9 +5,9 @@ namespace App\Command\Versions;
 
 
 use App\Command\AbstractCommand;
-use App\Manager\Api\ApiManager;
-use App\Manager\Users\LanguageManager;
-use App\Manager\Versions\VersionGroupManager;
+use App\Service\Api\ApiService;
+use App\Service\Users\LanguageManager;
+use App\Service\Versions\VersionGroupService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Console\Input\InputArgument;
@@ -20,15 +20,15 @@ class VersionGroupCommand extends AbstractCommand
 
     /**
      * ExcecCommand constructor
-     * @param VersionGroupManager $versionGroupManager
+     * @param VersionGroupService $versionGroupManager
      * @param LanguageManager $languageManager
-     * @param ApiManager $apiManager
+     * @param ApiService $apiManager
      * @param EntityManagerInterface $em
      */
     public function __construct(
-        VersionGroupManager $versionGroupManager,
+        VersionGroupService $versionGroupManager,
         LanguageManager $languageManager,
-        ApiManager $apiManager,
+        ApiService $apiManager,
         EntityManagerInterface $em
     )
     {

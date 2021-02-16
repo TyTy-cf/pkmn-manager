@@ -5,9 +5,9 @@ namespace App\Command\Pokedex;
 
 
 use App\Command\AbstractCommand;
-use App\Manager\Api\ApiManager;
-use App\Manager\Pokedex\EvolutionTriggerManager;
-use App\Manager\Users\LanguageManager;
+use App\Service\Api\ApiService;
+use App\Service\Pokedex\EvolutionTriggerService;
+use App\Service\Users\LanguageManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,15 +19,15 @@ class EvolutionTriggerCommand extends AbstractCommand
 
     /**
      * ExcecCommand constructor
-     * @param EvolutionTriggerManager $evolutionTriggerManager
+     * @param EvolutionTriggerService $evolutionTriggerManager
      * @param LanguageManager $languageManager
-     * @param ApiManager $apiManager
+     * @param ApiService $apiManager
      * @param EntityManagerInterface $em
      */
     public function __construct(
-        EvolutionTriggerManager $evolutionTriggerManager,
+        EvolutionTriggerService $evolutionTriggerManager,
         LanguageManager $languageManager,
-        ApiManager $apiManager,
+        ApiService $apiManager,
         EntityManagerInterface $em
     )
     {

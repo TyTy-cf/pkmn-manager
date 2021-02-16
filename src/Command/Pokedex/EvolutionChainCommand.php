@@ -5,10 +5,10 @@ namespace App\Command\Pokedex;
 
 
 use App\Command\AbstractCommand;
-use App\Manager\Api\ApiManager;
-use App\Manager\Pokedex\EggGroupManager;
-use App\Manager\Pokedex\EvolutionChainManager;
-use App\Manager\Users\LanguageManager;
+use App\Service\Api\ApiService;
+use App\Service\Pokedex\EggGroupService;
+use App\Service\Pokedex\EvolutionChainService;
+use App\Service\Users\LanguageManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,15 +20,15 @@ class EvolutionChainCommand extends AbstractCommand
 
     /**
      * ExcecCommand constructor
-     * @param EvolutionChainManager $evolutionChainManager
+     * @param EvolutionChainService $evolutionChainManager
      * @param LanguageManager $languageManager
-     * @param ApiManager $apiManager
+     * @param ApiService $apiManager
      * @param EntityManagerInterface $em
      */
     public function __construct(
-        EvolutionChainManager $evolutionChainManager,
+        EvolutionChainService $evolutionChainManager,
         LanguageManager $languageManager,
-        ApiManager $apiManager,
+        ApiService $apiManager,
         EntityManagerInterface $em
     )
     {

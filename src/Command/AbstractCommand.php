@@ -4,9 +4,9 @@
 namespace App\Command;
 
 
-use App\Manager\AbstractManager;
-use App\Manager\Api\ApiManager;
-use App\Manager\Users\LanguageManager;
+use App\Service\AbstractService;
+use App\Service\Api\ApiService;
+use App\Service\Users\LanguageManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Console\Command\Command;
@@ -21,9 +21,9 @@ abstract class AbstractCommand extends Command
     protected array $supportedLanguages = ['fr', 'en'];
 
     /**
-     * @var AbstractManager $manager
+     * @var AbstractService $manager
      */
-    protected AbstractManager $manager;
+    protected AbstractService $manager;
 
     /**
      * @var LanguageManager $languageManager
@@ -31,9 +31,9 @@ abstract class AbstractCommand extends Command
     protected LanguageManager $languageManager;
 
     /**
-     * @var ApiManager $apiManager ;
+     * @var ApiService $apiManager ;
      */
-    protected ApiManager $apiManager;
+    protected ApiService $apiManager;
 
     /**
      * @var EntityManagerInterface
@@ -42,16 +42,16 @@ abstract class AbstractCommand extends Command
 
     /**
      * AbstractCommand constructor.
-     * @param AbstractManager $manager
+     * @param AbstractService $manager
      * @param LanguageManager $languageManager
-     * @param ApiManager $apiManager
+     * @param ApiService $apiManager
      * @param EntityManagerInterface $em
      */
     public function __construct
     (
-        AbstractManager $manager,
+        AbstractService $manager,
         LanguageManager $languageManager,
-        ApiManager $apiManager,
+        ApiService $apiManager,
         EntityManagerInterface $em
     )
     {

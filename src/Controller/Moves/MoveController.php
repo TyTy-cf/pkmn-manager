@@ -5,10 +5,10 @@ namespace App\Controller\Moves;
 
 
 use App\Entity\Versions\VersionGroup;
-use App\Manager\Moves\MoveDescriptionManager;
-use App\Manager\Moves\MoveMachineManager;
-use App\Manager\Moves\MoveManager;
-use App\Manager\Moves\PokemonMovesLearnVersionManager;
+use App\Service\Moves\MoveDescriptionService;
+use App\Service\Moves\MoveMachineService;
+use App\Service\Moves\MoveService;
+use App\Service\Moves\PokemonMovesLearnVersionService;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,37 +19,37 @@ class MoveController extends AbstractController
 {
 
     /**
-     * @var MoveDescriptionManager $moveDescriptionManager
+     * @var MoveDescriptionService $moveDescriptionManager
      */
-    private MoveDescriptionManager $moveDescriptionManager;
+    private MoveDescriptionService $moveDescriptionManager;
 
     /**
-     * @var MoveMachineManager $moveMachineManager
+     * @var MoveMachineService $moveMachineManager
      */
-    private MoveMachineManager $moveMachineManager;
+    private MoveMachineService $moveMachineManager;
 
     /**
-     * @var MoveManager $moveManager
+     * @var MoveService $moveManager
      */
-    private MoveManager $moveManager;
+    private MoveService $moveManager;
 
     /**
-     * @var PokemonMovesLearnVersionManager $pmlvm
+     * @var PokemonMovesLearnVersionService $pmlvm
      */
-    private PokemonMovesLearnVersionManager $pmlvm;
+    private PokemonMovesLearnVersionService $pmlvm;
 
     /**
      * MoveController constructor.
-     * @param MoveDescriptionManager $moveDescriptionManager
-     * @param MoveMachineManager $moveMachineManager
-     * @param MoveManager $moveManager
-     * @param PokemonMovesLearnVersionManager $pmlvm
+     * @param MoveDescriptionService $moveDescriptionManager
+     * @param MoveMachineService $moveMachineManager
+     * @param MoveService $moveManager
+     * @param PokemonMovesLearnVersionService $pmlvm
      */
     public function __construct(
-        MoveDescriptionManager $moveDescriptionManager,
-        MoveMachineManager $moveMachineManager,
-        MoveManager $moveManager,
-        PokemonMovesLearnVersionManager $pmlvm
+        MoveDescriptionService $moveDescriptionManager,
+        MoveMachineService $moveMachineManager,
+        MoveService $moveManager,
+        PokemonMovesLearnVersionService $pmlvm
     )
     {
         $this->moveDescriptionManager = $moveDescriptionManager;

@@ -6,10 +6,10 @@ namespace App\Command\Infos\Type;
 
 use App\Command\AbstractCommand;
 use App\Entity\Infos\Type\TypeDamageRelationType;
-use App\Manager\Api\ApiManager;
-use App\Manager\Infos\Type\TypeDamageRelationTypeManager;
-use App\Manager\Infos\Type\TypeManager;
-use App\Manager\Users\LanguageManager;
+use App\Service\Api\ApiService;
+use App\Service\Infos\Type\TypeDamageRelationTypeService;
+use App\Service\Infos\Type\TypeService;
+use App\Service\Users\LanguageManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Console\Command\Command;
@@ -22,24 +22,24 @@ class TypeDamageRelationCommand extends AbstractCommand
 {
 
     /**
-     * @var TypeManager $typeManager
+     * @var TypeService $typeManager
      */
-    private TypeManager $typeManager;
+    private TypeService $typeManager;
 
     /**
      * TypeDamageRelationCommand constructor
      *
-     * @param TypeManager $typeManager
-     * @param ApiManager $apiManager
+     * @param TypeService $typeManager
+     * @param ApiService $apiManager
      * @param LanguageManager $languageManager
-     * @param TypeDamageRelationTypeManager $typeDamageFromTypeManager
+     * @param TypeDamageRelationTypeService $typeDamageFromTypeManager
      * @param EntityManagerInterface $em
      */
     public function __construct(
-        TypeManager $typeManager,
-        ApiManager $apiManager,
+        TypeService $typeManager,
+        ApiService $apiManager,
         LanguageManager $languageManager,
-        TypeDamageRelationTypeManager $typeDamageFromTypeManager,
+        TypeDamageRelationTypeService $typeDamageFromTypeManager,
         EntityManagerInterface $em
     )
     {

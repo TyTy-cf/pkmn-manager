@@ -6,13 +6,13 @@ namespace App\Command\Moves;
 
 use App\Command\AbstractCommand;
 use App\Entity\Moves\MoveLearnMethod;
-use App\Manager\Api\ApiManager;
-use App\Manager\Moves\MoveLearnMethodManager;
-use App\Manager\Moves\PokemonMovesLearnVersionManager;
-use App\Manager\Pokemon\PokemonManager;
-use App\Manager\TextManager;
-use App\Manager\Users\LanguageManager;
-use App\Manager\Versions\VersionGroupManager;
+use App\Service\Api\ApiService;
+use App\Service\Moves\MoveLearnMethodService;
+use App\Service\Moves\PokemonMovesLearnVersionService;
+use App\Service\Pokemon\PokemonService;
+use App\Service\TextManager;
+use App\Service\Users\LanguageManager;
+use App\Service\Versions\VersionGroupService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\Console\Command\Command;
@@ -25,9 +25,9 @@ class PokemonMovesLearnVersionCommand extends AbstractCommand
 {
 
     /**
-     * @var VersionGroupManager $versionGroupManager
+     * @var VersionGroupService $versionGroupManager
      */
-    private VersionGroupManager $versionGroupManager;
+    private VersionGroupService $versionGroupManager;
 
     /**
      * @var TextManager $textManager
@@ -35,35 +35,35 @@ class PokemonMovesLearnVersionCommand extends AbstractCommand
     private TextManager $textManager;
 
     /**
-     * @var MoveLearnMethodManager $moveLearnMethodManager
+     * @var MoveLearnMethodService $moveLearnMethodManager
      */
-    private MoveLearnMethodManager $moveLearnMethodManager;
+    private MoveLearnMethodService $moveLearnMethodManager;
 
     /**
-     * @var PokemonManager $pokemonManager
+     * @var PokemonService $pokemonManager
      */
-    private PokemonManager $pokemonManager;
+    private PokemonService $pokemonManager;
 
     /**
      * ExcecCommand constructor
-     * @param PokemonMovesLearnVersionManager $pokemonMovesLearnVersionManager
-     * @param VersionGroupManager $versionGroupManager
-     * @param ApiManager $apiManager
+     * @param PokemonMovesLearnVersionService $pokemonMovesLearnVersionManager
+     * @param VersionGroupService $versionGroupManager
+     * @param ApiService $apiManager
      * @param TextManager $textManager
      * @param LanguageManager $languageManager
-     * @param PokemonManager $pokemonManager
-     * @param MoveLearnMethodManager $moveLearnMethodManager
+     * @param PokemonService $pokemonManager
+     * @param MoveLearnMethodService $moveLearnMethodManager
      * @param EntityManagerInterface $em
      */
     public function __construct
     (
-        PokemonMovesLearnVersionManager $pokemonMovesLearnVersionManager,
-        VersionGroupManager $versionGroupManager,
-        ApiManager $apiManager,
+        PokemonMovesLearnVersionService $pokemonMovesLearnVersionManager,
+        VersionGroupService $versionGroupManager,
+        ApiService $apiManager,
         TextManager $textManager,
         LanguageManager $languageManager,
-        PokemonManager $pokemonManager,
-        MoveLearnMethodManager $moveLearnMethodManager,
+        PokemonService $pokemonManager,
+        MoveLearnMethodService $moveLearnMethodManager,
         EntityManagerInterface $em
     )
     {

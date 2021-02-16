@@ -5,10 +5,10 @@ namespace App\Command\Locations;
 
 
 use App\Command\AbstractCommand;
-use App\Manager\Api\ApiManager;
-use App\Manager\Locations\RegionManager;
-use App\Manager\Pokedex\EvolutionTriggerManager;
-use App\Manager\Users\LanguageManager;
+use App\Service\Api\ApiService;
+use App\Service\Locations\RegionService;
+use App\Service\Pokedex\EvolutionTriggerService;
+use App\Service\Users\LanguageManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,15 +20,15 @@ class RegionCommand extends AbstractCommand
 
     /**
      * ExcecCommand constructor
-     * @param RegionManager $regionManagerManager
+     * @param RegionService $regionManagerManager
      * @param LanguageManager $languageManager
-     * @param ApiManager $apiManager
+     * @param ApiService $apiManager
      * @param EntityManagerInterface $em
      */
     public function __construct(
-        RegionManager $regionManagerManager,
+        RegionService $regionManagerManager,
         LanguageManager $languageManager,
-        ApiManager $apiManager,
+        ApiService $apiManager,
         EntityManagerInterface $em
     )
     {

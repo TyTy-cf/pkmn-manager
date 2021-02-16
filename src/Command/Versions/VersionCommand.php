@@ -5,9 +5,9 @@ namespace App\Command\Versions;
 
 
 use App\Command\AbstractCommand;
-use App\Manager\Api\ApiManager;
-use App\Manager\Users\LanguageManager;
-use App\Manager\Versions\VersionManager;
+use App\Service\Api\ApiService;
+use App\Service\Users\LanguageManager;
+use App\Service\Versions\VersionService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\Console\Command\Command;
@@ -22,16 +22,16 @@ class VersionCommand extends AbstractCommand
 
     /**
      * ExcecCommand constructor
-     * @param VersionManager $versionManager
+     * @param VersionService $versionManager
      * @param LanguageManager $languageManager
-     * @param ApiManager $apiManager
+     * @param ApiService $apiManager
      * @param EntityManagerInterface $em
      */
     public function __construct
     (
-        VersionManager $versionManager,
+        VersionService $versionManager,
         LanguageManager $languageManager,
-        ApiManager $apiManager,
+        ApiService $apiManager,
         EntityManagerInterface $em
     )
     {

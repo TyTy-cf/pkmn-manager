@@ -3,8 +3,8 @@
 
 namespace App\Controller\Versions;
 
-use App\Manager\Users\LanguageManager;
-use App\Manager\Versions\GenerationManager;
+use App\Service\Users\LanguageManager;
+use App\Service\Versions\GenerationService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,9 +14,9 @@ class GenerationController extends AbstractController
 {
 
     /**
-     * @var GenerationManager $generationManager
+     * @var GenerationService $generationManager
      */
-    private GenerationManager $generationManager;
+    private GenerationService $generationManager;
 
     /**
      * @var LanguageManager $languageManager
@@ -26,12 +26,12 @@ class GenerationController extends AbstractController
     /**
      * PokemonController constructor.
      *
-     * @param GenerationManager $generationManager
+     * @param GenerationService $generationManager
      * @param LanguageManager $languageManager
      */
     public function __construct
     (
-        GenerationManager $generationManager,
+        GenerationService $generationManager,
         LanguageManager $languageManager
     )
     {

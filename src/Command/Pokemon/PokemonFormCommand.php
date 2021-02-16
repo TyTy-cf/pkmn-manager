@@ -5,10 +5,10 @@ namespace App\Command\Pokemon;
 
 
 use App\Command\AbstractCommand;
-use App\Manager\Api\ApiManager;
-use App\Manager\Pokemon\PokemonFormManager;
-use App\Manager\Pokemon\PokemonManager;
-use App\Manager\Users\LanguageManager;
+use App\Service\Api\ApiService;
+use App\Service\Pokemon\PokemonFormService;
+use App\Service\Pokemon\PokemonService;
+use App\Service\Users\LanguageManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -19,25 +19,25 @@ use Symfony\Component\Console\Output\OutputInterface;
 class PokemonFormCommand extends AbstractCommand
 {
     /**
-     * @var PokemonManager $pokemonManager
+     * @var PokemonService $pokemonManager
      */
-    private PokemonManager $pokemonManager;
+    private PokemonService $pokemonManager;
 
     /**
      * ExcecCommand constructor
      *
-     * @param PokemonFormManager $pokemonFormManager
-     * @param PokemonManager $pokemonManager
+     * @param PokemonFormService $pokemonFormManager
+     * @param PokemonService $pokemonManager
      * @param LanguageManager $languageManager
-     * @param ApiManager $apiManager
+     * @param ApiService $apiManager
      * @param EntityManagerInterface $em
      */
     public function __construct
     (
-        PokemonFormManager $pokemonFormManager,
-        PokemonManager $pokemonManager,
+        PokemonFormService $pokemonFormManager,
+        PokemonService $pokemonManager,
         LanguageManager $languageManager,
-        ApiManager $apiManager,
+        ApiService $apiManager,
         EntityManagerInterface $em
     )
     {

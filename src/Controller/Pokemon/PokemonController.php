@@ -4,11 +4,11 @@
 namespace App\Controller\Pokemon;
 
 use App\Entity\Pokemon\Pokemon;
-use App\Manager\Api\ApiManager;
-use App\Manager\Pokedex\EvolutionChainManager;
-use App\Manager\Pokemon\PokemonManager;
-use App\Manager\Pokemon\PokemonSpeciesVersionManager;
-use App\Manager\Users\LanguageManager;
+use App\Service\Api\ApiService;
+use App\Service\Pokedex\EvolutionChainService;
+use App\Service\Pokemon\PokemonService;
+use App\Service\Pokemon\PokemonSpeciesVersionManager;
+use App\Service\Users\LanguageManager;
 use Doctrine\ORM\NonUniqueResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,14 +21,14 @@ class PokemonController extends AbstractController
 {
 
     /**
-     * @var PokemonManager
+     * @var PokemonService
      */
-    private PokemonManager $pokemonManager;
+    private PokemonService $pokemonManager;
 
     /**
-     * @var ApiManager
+     * @var ApiService
      */
-    private ApiManager $apiManager;
+    private ApiService $apiManager;
 
     /**
      * @var LanguageManager $languageManager
@@ -36,9 +36,9 @@ class PokemonController extends AbstractController
     private LanguageManager $languageManager;
 
     /**
-     * @var EvolutionChainManager $evolutionChainManager
+     * @var EvolutionChainService $evolutionChainManager
      */
-    private EvolutionChainManager $evolutionChainManager;
+    private EvolutionChainService $evolutionChainManager;
 
     /**
      * @var PokemonSpeciesVersionManager $pokemonSpeciesVersionManager
@@ -48,16 +48,16 @@ class PokemonController extends AbstractController
     /**
      * PokemonController constructor.
      *
-     * @param PokemonManager $pokemonManager
-     * @param ApiManager $apiManager
-     * @param EvolutionChainManager $evolutionChainManager
+     * @param PokemonService $pokemonManager
+     * @param ApiService $apiManager
+     * @param EvolutionChainService $evolutionChainManager
      * @param LanguageManager $languageManager
      * @param PokemonSpeciesVersionManager $pokemonSpeciesVersionManager
      */
     public function __construct (
-        PokemonManager $pokemonManager,
-        ApiManager $apiManager,
-        EvolutionChainManager $evolutionChainManager,
+        PokemonService $pokemonManager,
+        ApiService $apiManager,
+        EvolutionChainService $evolutionChainManager,
         LanguageManager $languageManager,
         PokemonSpeciesVersionManager $pokemonSpeciesVersionManager
     ) {
