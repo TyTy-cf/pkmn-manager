@@ -51,8 +51,8 @@ class PokemonMovesLearnVersionService extends AbstractService
      * MoveService constructor
      * @param EntityManagerInterface $em
      * @param ApiService $apiManager
-     * @param TextService $textManager
-     * @param MoveService $moveManager
+     * @param TextService $textService
+     * @param MoveService $moveService
      * @param GenerationService $generationManager
      * @param VersionGroupService $versionGroupManager
      * @param PokemonMovesLearnVersionRepository $repoPokemonMoves
@@ -61,18 +61,18 @@ class PokemonMovesLearnVersionService extends AbstractService
     (
         EntityManagerInterface $em,
         ApiService $apiManager,
-        TextService $textManager,
-        MoveService $moveManager,
+        TextService $textService,
+        MoveService $moveService,
         GenerationService $generationManager,
         VersionGroupService $versionGroupManager,
         PokemonMovesLearnVersionRepository $repoPokemonMoves
     )
     {
-        $this->moveManager = $moveManager;
+        $this->moveManager = $moveService;
         $this->repoPokemonMoves = $repoPokemonMoves;
         $this->generationManager = $generationManager;
         $this->versionGroupManager = $versionGroupManager;
-        parent::__construct($em, $apiManager, $textManager);
+        parent::__construct($em, $apiManager, $textService);
     }
 
     /**

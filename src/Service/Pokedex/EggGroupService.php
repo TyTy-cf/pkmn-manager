@@ -25,19 +25,19 @@ class EggGroupService extends AbstractService
      *
      * @param EntityManagerInterface $entityManager
      * @param EggGroupRepository $eggGroupRepository
-     * @param ApiService $apiManager
-     * @param TextService $textManager
+     * @param ApiService $apiService
+     * @param TextService $textService
      */
     public function __construct
     (
         EntityManagerInterface $entityManager,
         EggGroupRepository $eggGroupRepository,
-        ApiService $apiManager,
-        TextService $textManager
+        ApiService $apiService,
+        TextService $textService
     )
     {
         $this->eggGroupRepository = $eggGroupRepository;
-        parent::__construct($entityManager, $apiManager, $textManager);
+        parent::__construct($entityManager, $apiService, $textService);
     }
 
     /**

@@ -33,19 +33,19 @@ class MoveLearnMethodService extends AbstractService
      * MoveLearnMethodService constructor.
      * @param ApiService $apiManager
      * @param TextService $textManager
-     * @param EntityManagerInterface $entityManager
+     * @param EntityManagerInterface $entityService
      * @param MoveLearnMethodRepository $repo
      */
     public function __construct
     (
         ApiService $apiManager,
         TextService $textManager,
-        EntityManagerInterface $entityManager,
+        EntityManagerInterface $entityService,
         MoveLearnMethodRepository $repo
     )
     {
         $this->repo = $repo;
-        parent::__construct($entityManager, $apiManager, $textManager);
+        parent::__construct($entityService, $apiManager, $textManager);
     }
 
     /**

@@ -39,7 +39,7 @@ class VersionGroupService extends AbstractService
      *
      * @param EntityManagerInterface $entityManager
      * @param ApiService $apiManager
-     * @param TextService $textManager
+     * @param TextService $textService
      * @param VersionGroupRepository $versionGroupRepository
      * @param GenerationRepository $generationRepository
      */
@@ -47,7 +47,7 @@ class VersionGroupService extends AbstractService
     (
         EntityManagerInterface $entityManager,
         ApiService $apiManager,
-        TextService $textManager,
+        TextService $textService,
         VersionGroupRepository $versionGroupRepository,
         GenerationRepository $generationRepository
     )
@@ -55,7 +55,7 @@ class VersionGroupService extends AbstractService
         $this->generationRepository = $generationRepository;
         $this->versionGroupRepository = $versionGroupRepository;
         self::$arrayVersionGroup = array();
-        parent::__construct($entityManager, $apiManager, $textManager);
+        parent::__construct($entityManager, $apiManager, $textService);
     }
 
     /**

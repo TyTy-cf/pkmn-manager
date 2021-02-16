@@ -41,8 +41,8 @@ class MoveMachineService extends AbstractService
      * MoveService constructor
      * @param EntityManagerInterface $em
      * @param ApiService $apiManager
-     * @param TextService $textManager
-     * @param MoveService $movesManager
+     * @param TextService $textService
+     * @param MoveService $movesService
      * @param VersionGroupService $versionGroupManager
      * @param MoveMachineRepository $moveMachineRepository
      */
@@ -50,16 +50,16 @@ class MoveMachineService extends AbstractService
     (
         EntityManagerInterface $em,
         ApiService $apiManager,
-        TextService $textManager,
-        MoveService $movesManager,
+        TextService $textService,
+        MoveService $movesService,
         VersionGroupService $versionGroupManager,
         MoveMachineRepository $moveMachineRepository
     )
     {
         $this->moveMachineRepository = $moveMachineRepository;
-        $this->movesManager = $movesManager;
+        $this->movesManager = $movesService;
         $this->versionGroupManager = $versionGroupManager;
-        parent::__construct($em, $apiManager, $textManager);
+        parent::__construct($em, $apiManager, $textService);
     }
 
     /**

@@ -90,7 +90,7 @@ class EvolutionChainService extends AbstractService
      * @param EvolutionChainLinkRepository $evolutionChainLinkRepository
      * @param EvolutionChainRepository $evolutionChainRepository
      * @param TypeRepository $typeRepository
-     * @param EvolutionTriggerService $evolutionTriggerManager
+     * @param EvolutionTriggerService $evolutionTriggerService
      * @param PokemonSpeciesService $pokemonSpeciesManager
      * @param EntityManagerInterface $entityManager
      * @param GenderRepository $genderRepository
@@ -107,7 +107,7 @@ class EvolutionChainService extends AbstractService
         EvolutionChainLinkRepository $evolutionChainLinkRepository,
         EvolutionChainRepository $evolutionChainRepository,
         TypeRepository $typeRepository,
-        EvolutionTriggerService $evolutionTriggerManager,
+        EvolutionTriggerService $evolutionTriggerService,
         PokemonSpeciesService $pokemonSpeciesManager,
         EntityManagerInterface $entityManager,
         GenderRepository $genderRepository,
@@ -130,7 +130,7 @@ class EvolutionChainService extends AbstractService
         $this->locationManager = $locationManager;
         $this->genderRepository = $genderRepository;
         $this->pokemonSpeciesManager = $pokemonSpeciesManager;
-        $this->evolutionTriggerManager = $evolutionTriggerManager;
+        $this->evolutionTriggerManager = $evolutionTriggerService;
         parent::__construct($entityManager, $apiManager, $textManager);
     }
 

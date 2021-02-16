@@ -77,10 +77,10 @@ class PokemonService extends AbstractService
      *
      * @param EntityManagerInterface $entityManager
      * @param ApiService $apiManager
-     * @param TextService $textManager
+     * @param TextService $textService
      * @param TypeRepository $typeRepo
      * @param AbilityRepository $abilitiesRepo
-     * @param VersionGroupService $versionGroupManager
+     * @param VersionGroupService $versionGroupService
      * @param MoveLearnMethodRepository $moveLearnMethodRepo
      * @param PokemonSpritesVersionRepository $spritesVersionRepository
      * @param StatsEffortRepository $statsEffortRepo
@@ -91,8 +91,8 @@ class PokemonService extends AbstractService
     (
         EntityManagerInterface $entityManager,
         ApiService $apiManager,
-        TextService $textManager,
-        VersionGroupService $versionGroupManager,
+        TextService $textService,
+        VersionGroupService $versionGroupService,
         TypeRepository $typeRepo,
         AbilityRepository $abilitiesRepo,
         MoveLearnMethodRepository $moveLearnMethodRepo,
@@ -101,7 +101,7 @@ class PokemonService extends AbstractService
         PokemonRepository $pokemonRepository,
         PokemonMovesLearnVersionRepository $repoMovesLearnPokemon
     ) {
-        $this->versionGroupManager = $versionGroupManager;
+        $this->versionGroupManager = $versionGroupService;
 
         $this->typeRepo = $typeRepo;
         $this->abilitiesRepo = $abilitiesRepo;
@@ -111,7 +111,7 @@ class PokemonService extends AbstractService
         $this->movesLearnPokemonRepo = $repoMovesLearnPokemon;
         $this->spritesVersionRepository = $spritesVersionRepository;
 
-        parent::__construct($entityManager, $apiManager, $textManager);
+        parent::__construct($entityManager, $apiManager, $textService);
     }
 
     /**

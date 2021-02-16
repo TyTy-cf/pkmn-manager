@@ -26,19 +26,19 @@ class DamageClassService extends AbstractService
      *
      * @param EntityManagerInterface $entityManager
      * @param DamageClassRepository $damageClassRepository
-     * @param ApiService $apiManager
-     * @param TextService $textManager
+     * @param ApiService $apiService
+     * @param TextService $textService
      */
     public function __construct
     (
         EntityManagerInterface $entityManager,
         DamageClassRepository $damageClassRepository,
-        ApiService $apiManager,
-        TextService $textManager
+        ApiService $apiService,
+        TextService $textService
     )
     {
         $this->damageClassRepository = $damageClassRepository;
-        parent::__construct($entityManager, $apiManager, $textManager);
+        parent::__construct($entityManager, $apiService, $textService);
     }
 
     /**

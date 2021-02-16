@@ -55,8 +55,8 @@ class PokemonSpeciesService extends AbstractService
      *
      * @param EntityManagerInterface $entityManager
      * @param ApiService $apiManager
-     * @param TextService $textManager
-     * @param PokemonService $pokemonManager
+     * @param TextService $textService
+     * @param PokemonService $pokemonService
      * @param EggGroupService $eggGroupManager
      * @param VersionService $versionManager
      * @param GenerationService $generationManager
@@ -67,8 +67,8 @@ class PokemonSpeciesService extends AbstractService
     (
         EntityManagerInterface $entityManager,
         ApiService $apiManager,
-        TextService $textManager,
-        PokemonService $pokemonManager,
+        TextService $textService,
+        PokemonService $pokemonService,
         EggGroupService $eggGroupManager,
         VersionService $versionManager,
         GenerationService $generationManager,
@@ -78,10 +78,10 @@ class PokemonSpeciesService extends AbstractService
         $this->repository = $repository;
         $this->eggGroupManager = $eggGroupManager;
         $this->generationManager = $generationManager;
-        $this->pokemonManager = $pokemonManager;
+        $this->pokemonManager = $pokemonService;
         $this->versionManager = $versionManager;
         $this->pokemonSpeciesVersionManager = $pokemonSpeciesVersionManager;
-        parent::__construct($entityManager, $apiManager, $textManager);
+        parent::__construct($entityManager, $apiManager, $textService);
     }
 
     /**

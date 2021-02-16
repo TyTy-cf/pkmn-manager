@@ -39,8 +39,8 @@ class PokemonFormService extends AbstractService
      *
      * @param EntityManagerInterface $entityManager
      * @param ApiService $apiManager
-     * @param TextService $textManager
-     * @param VersionGroupService $versionGroupManager
+     * @param TextService $textService
+     * @param VersionGroupService $versionGroupService
      * @param PokemonRepository $pokemonRepository
      * @param PokemonFormRepository $pokemonFormRepository
      */
@@ -48,15 +48,15 @@ class PokemonFormService extends AbstractService
     (
         EntityManagerInterface $entityManager,
         ApiService $apiManager,
-        TextService $textManager,
-        VersionGroupService $versionGroupManager,
+        TextService $textService,
+        VersionGroupService $versionGroupService,
         PokemonRepository $pokemonRepository,
         PokemonFormRepository $pokemonFormRepository
     ) {
         $this->pokemonRepository = $pokemonRepository;
-        $this->versionGroupManager = $versionGroupManager;
+        $this->versionGroupManager = $versionGroupService;
         $this->pokemonFormRepository = $pokemonFormRepository;
-        parent::__construct($entityManager, $apiManager, $textManager);
+        parent::__construct($entityManager, $apiManager, $textService);
     }
 
     /**

@@ -31,7 +31,7 @@ class TypeDamageRelationTypeService extends AbstractService
      * @param TypeRepository $typeRepository
      * @param ApiService $apiManager
      * @param EntityManagerInterface $em
-     * @param TextService $textManager
+     * @param TextService $textService
      * @param TypeDamageRelationTypeRepository $typeDamageRelationTypeRepository
      */
     public function __construct
@@ -39,12 +39,12 @@ class TypeDamageRelationTypeService extends AbstractService
         TypeRepository $typeRepository,
         ApiService $apiManager,
         EntityManagerInterface $em,
-        TextService $textManager,
+        TextService $textService,
         TypeDamageRelationTypeRepository $typeDamageRelationTypeRepository
     ) {
         $this->typeRepository = $typeRepository;
         $this->typeDamageRelationTypeRepository = $typeDamageRelationTypeRepository;
-        parent::__construct($em, $apiManager, $textManager);
+        parent::__construct($em, $apiManager, $textService);
     }
 
     /**

@@ -55,7 +55,7 @@ class PokedexService extends AbstractService
      * @param PokedexRepository $pokedexRepository
      * @param RegionRepository $regionRepo
      * @param VersionGroupService $versionGroup
-     * @param PokemonSpeciesService $pokemonSpeciesManager
+     * @param PokemonSpeciesService $pokemonSpeciesService
      * @param GenerationRepository $generationRepo
      * @param ApiService $apiManager
      * @param TextService $textManager
@@ -65,7 +65,7 @@ class PokedexService extends AbstractService
         PokedexRepository $pokedexRepository,
         RegionRepository $regionRepo,
         VersionGroupService $versionGroup,
-        PokemonSpeciesService $pokemonSpeciesManager,
+        PokemonSpeciesService $pokemonSpeciesService,
         GenerationRepository $generationRepo,
         EntityManagerInterface $entityManager,
         ApiService $apiManager,
@@ -76,7 +76,7 @@ class PokedexService extends AbstractService
         $this->regionRepo = $regionRepo;
         $this->generationRepo = $generationRepo;
         $this->pokedexRepository = $pokedexRepository;
-        $this->pokemonSpeciesManager = $pokemonSpeciesManager;
+        $this->pokemonSpeciesManager = $pokemonSpeciesService;
         parent::__construct($entityManager, $apiManager, $textManager);
     }
 

@@ -31,21 +31,21 @@ class TypeService extends AbstractService
      *
      * @param EntityManagerInterface $entityManager
      * @param ApiService $apiManager
-     * @param TypeDamageRelationTypeService $typeDamageFromTypeManager
-     * @param TextService $textManager
+     * @param TypeDamageRelationTypeService $typeDamageFromTypeService
+     * @param TextService $textService
      * @param TypeRepository $typeRepository
      */
     public function __construct
     (
         EntityManagerInterface $entityManager,
         ApiService $apiManager,
-        TypeDamageRelationTypeService $typeDamageFromTypeManager,
-        TextService $textManager,
+        TypeDamageRelationTypeService $typeDamageFromTypeService,
+        TextService $textService,
         TypeRepository $typeRepository
     ) {
-        $this->typeDamageFromTypeManager = $typeDamageFromTypeManager;
+        $this->typeDamageFromTypeManager = $typeDamageFromTypeService;
         $this->typeRepository = $typeRepository;
-        parent::__construct($entityManager, $apiManager, $textManager);
+        parent::__construct($entityManager, $apiManager, $textService);
 
     }
 
@@ -69,15 +69,6 @@ class TypeService extends AbstractService
     public function getAllTypesByLanguage(Language $language)
     {
         return $this->typeRepository->getAllTypesByLanguage($language);
-    }
-
-    /**
-     * @param string $slug
-     * @return Type|null
-     */
-    public function getTypeBySlug(string $slug): ?Type
-    {
-        return $this->typeRepository->findOneBySlug($slug);
     }
 
     /**

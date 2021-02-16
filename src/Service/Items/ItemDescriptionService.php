@@ -26,19 +26,19 @@ class ItemDescriptionService extends AbstractService
      *
      * @param EntityManagerInterface $entityManager
      * @param ApiService $apiManager
-     * @param TextService $textManager
-     * @param VersionGroupService $versionGroupManager
+     * @param TextService $textService
+     * @param VersionGroupService $versionGroupService
      */
     public function __construct
     (
         EntityManagerInterface $entityManager,
         ApiService $apiManager,
-        TextService $textManager,
-        VersionGroupService $versionGroupManager
+        TextService $textService,
+        VersionGroupService $versionGroupService
     )
     {
-        $this->versionGroupManager = $versionGroupManager;
-        parent::__construct($entityManager, $apiManager, $textManager);
+        $this->versionGroupManager = $versionGroupService;
+        parent::__construct($entityManager, $apiManager, $textService);
     }
 
     /**

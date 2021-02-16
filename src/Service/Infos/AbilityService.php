@@ -25,19 +25,19 @@ class AbilityService extends AbstractService
      *
      * @param EntityManagerInterface $entityManager
      * @param ApiService $apiManager
-     * @param TextService $textManager
+     * @param TextService $textService
      * @param AbilityRepository $abilitiesRepository
      */
     public function __construct
     (
         EntityManagerInterface $entityManager,
         ApiService $apiManager,
-        TextService $textManager,
+        TextService $textService,
         AbilityRepository $abilitiesRepository
     )
     {
         $this->abilitiesRepository = $abilitiesRepository;
-        parent::__construct($entityManager, $apiManager, $textManager);
+        parent::__construct($entityManager, $apiManager, $textService);
     }
 
     /**
@@ -62,16 +62,18 @@ class AbilityService extends AbstractService
         if (!empty($urlDetailed['pokemon']))
         {
             //Check if the data exist in databases
-            $slug = $this->textManager->generateSlugFromClassWithLanguage($language, Ability::class, $apiResponse['name']);
+            $slug = $this->textManager->generateSlugFromClassWithLanguage(
+                $language, Ability::class, $apiResponse['name']
+            );
 
-            if ($this->getAbilitiesBySlug($slug) === null)
+            if (null === $this->getAbilitiesBySlug($slug))
             {
                 // Fetch name & description according the language
                 $abilityNameLang = $this->apiManager->getNameBasedOnLanguageFromArray(
                     $language->getCode(), $urlDetailed
                 );
 
-                if ($abilityNameLang !== null)
+                if (null !== $abilityNameLang)
                 {
                     $abilityDescription = $this->textManager->removeReturnLineFromText(
                         $this->apiManager->getFlavorTextBasedOnLanguageFromArray($language->getCode(), $urlDetailed)

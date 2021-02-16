@@ -45,8 +45,8 @@ class ItemService extends AbstractService
      *
      * @param EntityManagerInterface $entityManager
      * @param PokemonService $pokemonManager
-     * @param ItemHeldPokemonService $itemHeldPokemonManager
-     * @param ItemDescriptionService $itemDescriptionManager
+     * @param ItemHeldPokemonService $itemHeldPokemonService
+     * @param ItemDescriptionService $itemDescriptionService
      * @param ApiService $apiManager
      * @param TextService $textManager
      * @param ItemRepository $itemRepo
@@ -55,8 +55,8 @@ class ItemService extends AbstractService
     (
         EntityManagerInterface $entityManager,
         PokemonService $pokemonManager,
-        ItemHeldPokemonService $itemHeldPokemonManager,
-        ItemDescriptionService $itemDescriptionManager,
+        ItemHeldPokemonService $itemHeldPokemonService,
+        ItemDescriptionService $itemDescriptionService,
         ApiService $apiManager,
         TextService $textManager,
         ItemRepository $itemRepo
@@ -64,8 +64,8 @@ class ItemService extends AbstractService
     {
         $this->itemRepo = $itemRepo;
         $this->pokemonManager =$pokemonManager;
-        $this->itemDescriptionManager = $itemDescriptionManager;
-        $this->itemHeldPokemonManager = $itemHeldPokemonManager;
+        $this->itemDescriptionManager = $itemDescriptionService;
+        $this->itemHeldPokemonManager = $itemHeldPokemonService;
         parent::__construct($entityManager, $apiManager, $textManager);
     }
 

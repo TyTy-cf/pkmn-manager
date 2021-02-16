@@ -39,8 +39,8 @@ class PokemonSpritesVersionService extends AbstractService
      *
      * @param EntityManagerInterface $entityManager
      * @param ApiService $apiManager
-     * @param VersionGroupService $versionGroupManager
-     * @param PokemonSpritesManager $pokemonSpritesManager
+     * @param VersionGroupService $versionGroupService
+     * @param PokemonSpritesManager $pokemonSpritesService
      * @param TextService $textManager
      * @param PokemonService $pokemonManager
      */
@@ -48,15 +48,15 @@ class PokemonSpritesVersionService extends AbstractService
     (
         EntityManagerInterface $entityManager,
         ApiService $apiManager,
-        VersionGroupService $versionGroupManager,
-        PokemonSpritesManager $pokemonSpritesManager,
+        VersionGroupService $versionGroupService,
+        PokemonSpritesManager $pokemonSpritesService,
         TextService $textManager,
         PokemonService $pokemonManager
     )
     {
         $this->pokemonManager = $pokemonManager;
-        $this->pokemonSpritesManager = $pokemonSpritesManager;
-        $this->versionGroupManager = $versionGroupManager;
+        $this->pokemonSpritesManager = $pokemonSpritesService;
+        $this->versionGroupManager = $versionGroupService;
         parent::__construct($entityManager, $apiManager, $textManager);
     }
 

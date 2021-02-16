@@ -11,7 +11,6 @@ use App\Service\Api\ApiService;
 use App\Service\TextService;
 use App\Repository\Infos\NatureRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class NatureService extends AbstractService
@@ -26,28 +25,19 @@ class NatureService extends AbstractService
      *
      * @param EntityManagerInterface $entityManager
      * @param NatureRepository $natureRepository
-     * @param ApiService $apiManager
-     * @param TextService $textManager
+     * @param ApiService $apiService
+     * @param TextService $textService
      */
     public function __construct
     (
         EntityManagerInterface $entityManager,
         NatureRepository $natureRepository,
-        ApiService $apiManager,
-        TextService $textManager
+        ApiService $apiService,
+        TextService $textService
     )
     {
         $this->natureRepository = $natureRepository;
-        parent::__construct($entityManager, $apiManager, $textManager);
-    }
-
-    /**
-     * @param string $slug
-     * @return object|null
-     */
-    private function getNatureBySlug(string $slug)
-    {
-        return $this->natureRepository->findOneBySlug($slug);
+        parent::__construct($entityManager, $apiService, $textService);
     }
 
     /**
@@ -66,7 +56,7 @@ class NatureService extends AbstractService
         );
         $codeLang = $language->getCode();
 
-        if ($this->getNatureBySlug($slug) === null)
+        if (null === $this->natureRepository->findOneBySlug($slug))
         {
             $urlContent = $this->apiManager->apiConnect($urlContent['url'])->toArray();
             $decreasedStat = $this->getModifiedStat($codeLang, $urlContent['decreased_stat']);

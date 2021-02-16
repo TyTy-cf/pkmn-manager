@@ -47,8 +47,8 @@ class MoveService extends AbstractService
      * MoveService constructor
      * @param EntityManagerInterface $em
      * @param ApiService $apiManager
-     * @param TextService $textManager
-     * @param DamageClassService $damageClassManager
+     * @param TextService $textService
+     * @param DamageClassService $damageClassService
      * @param MoveDescriptionService $moveDescriptionManager
      * @param MoveRepository $moveRepository
      * @param TypeRepository $typeRepository
@@ -57,8 +57,8 @@ class MoveService extends AbstractService
     (
         EntityManagerInterface $em,
         ApiService $apiManager,
-        TextService $textManager,
-        DamageClassService $damageClassManager,
+        TextService $textService,
+        DamageClassService $damageClassService,
         MoveDescriptionService $moveDescriptionManager,
         MoveRepository $moveRepository,
         TypeRepository $typeRepository
@@ -66,9 +66,9 @@ class MoveService extends AbstractService
     {
         $this->movesRepository = $moveRepository;
         $this->typeRepository = $typeRepository;
-        $this->damageClassManager = $damageClassManager;
+        $this->damageClassManager = $damageClassService;
         $this->moveDescriptionManager = $moveDescriptionManager;
-        parent::__construct($em, $apiManager, $textManager);
+        parent::__construct($em, $apiManager, $textService);
     }
 
     /**

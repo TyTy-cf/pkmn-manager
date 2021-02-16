@@ -33,22 +33,22 @@ class MoveDescriptionService extends AbstractService
      * MoveDescriptionService constructor.
      * @param MoveDescriptionRepository $repo
      * @param ApiService $apiManager
-     * @param VersionGroupService $versionGroupManager
-     * @param TextService $textManager
+     * @param VersionGroupService $versionGroupService
+     * @param TextService $textService
      * @param EntityManagerInterface $em
      */
     public function __construct
     (
         MoveDescriptionRepository $repo,
         ApiService $apiManager,
-        VersionGroupService $versionGroupManager,
-        TextService $textManager,
+        VersionGroupService $versionGroupService,
+        TextService $textService,
         EntityManagerInterface $em
     )
     {
         $this->repo = $repo;
-        $this->versionGroupManager = $versionGroupManager;
-        parent::__construct($em, $apiManager, $textManager);
+        $this->versionGroupManager = $versionGroupService;
+        parent::__construct($em, $apiManager, $textService);
     }
 
     /**

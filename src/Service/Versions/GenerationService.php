@@ -32,7 +32,7 @@ class GenerationService extends AbstractService
      *
      * @param EntityManagerInterface $entityManager
      * @param ApiService $apiManager
-     * @param TextService $textManager
+     * @param TextService $textService
      * @param RegionRepository $regionRepo
      * @param GenerationRepository $generationRepository
      */
@@ -40,13 +40,13 @@ class GenerationService extends AbstractService
     (
         EntityManagerInterface $entityManager,
         ApiService $apiManager,
-        TextService $textManager,
+        TextService $textService,
         RegionRepository $regionRepo,
         GenerationRepository $generationRepository
     ) {
         $this->regionRepo = $regionRepo;
         $this->generationRepository = $generationRepository;
-        parent::__construct($entityManager, $apiManager, $textManager);
+        parent::__construct($entityManager, $apiManager, $textService);
     }
 
     /**

@@ -22,19 +22,19 @@ class LocationService extends AbstractService
      * LocationService constructor.
      * @param LocationRepository $locationRepo
      * @param EntityManagerInterface $entityManager
-     * @param ApiService $apiManager
-     * @param TextService $textManager
+     * @param ApiService $apiService
+     * @param TextService $textService
      */
     public function __construct
     (
         LocationRepository $locationRepo,
         EntityManagerInterface $entityManager,
-        ApiService $apiManager,
-        TextService $textManager
+        ApiService $apiService,
+        TextService $textService
     )
     {
         $this->locationRepo = $locationRepo;
-        parent::__construct($entityManager, $apiManager, $textManager);
+        parent::__construct($entityManager, $apiService, $textService);
     }
 
     /**

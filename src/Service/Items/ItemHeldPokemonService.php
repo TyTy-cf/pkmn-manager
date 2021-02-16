@@ -34,22 +34,22 @@ class ItemHeldPokemonService extends AbstractService
      *
      * @param EntityManagerInterface $entityManager
      * @param ApiService $apiManager
-     * @param TextService $textManager
-     * @param PokemonService $pokemonManager
+     * @param TextService $textService
+     * @param PokemonService $pokemonService
      * @param VersionService $versionManager
      */
     public function __construct
     (
         EntityManagerInterface $entityManager,
         ApiService $apiManager,
-        TextService $textManager,
-        PokemonService $pokemonManager,
+        TextService $textService,
+        PokemonService $pokemonService,
         VersionService $versionManager
     )
     {
-        $this->pokemonManager = $pokemonManager;
+        $this->pokemonManager = $pokemonService;
         $this->versionManager = $versionManager;
-        parent::__construct($entityManager, $apiManager, $textManager);
+        parent::__construct($entityManager, $apiManager, $textService);
     }
 
     /**

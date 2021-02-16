@@ -21,16 +21,16 @@ class LocationAreaService extends AbstractService
      * LocationAreaService constructor.
      * @param LocationAreaRepository $areaRepository
      * @param EntityManagerInterface $entityManager
-     * @param ApiService $apiManager
-     * @param TextService $textManager
+     * @param ApiService $apiService
+     * @param TextService $textService
      */
     public function __construct(
         LocationAreaRepository $areaRepository,
         EntityManagerInterface $entityManager,
-        ApiService $apiManager,
-        TextService $textManager
+        ApiService $apiService,
+        TextService $textService
     ) {
         $this->areaRepository = $areaRepository;
-        parent::__construct($entityManager, $apiManager, $textManager);
+        parent::__construct($entityManager, $apiService, $textService);
     }
 }

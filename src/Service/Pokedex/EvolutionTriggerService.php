@@ -24,18 +24,18 @@ class EvolutionTriggerService extends AbstractService
      * EvolutionTriggerService constructor.
      * @param EntityManagerInterface $entityManager
      * @param ApiService $apiManager
-     * @param TextService $textManager
+     * @param TextService $textService
      * @param EvolutionTriggerRepository $evolutionTriggerRepo
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         ApiService $apiManager,
-        TextService $textManager,
+        TextService $textService,
         EvolutionTriggerRepository $evolutionTriggerRepo
     )
     {
         $this->evolutionTriggerRepo = $evolutionTriggerRepo;
-        parent::__construct($entityManager, $apiManager, $textManager);
+        parent::__construct($entityManager, $apiManager, $textService);
     }
 
     /**

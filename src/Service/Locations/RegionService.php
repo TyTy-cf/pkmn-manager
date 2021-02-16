@@ -32,21 +32,21 @@ class RegionService extends AbstractService
      * RegionService constructor.
      * @param RegionRepository $regionRepo
      * @param LocationRepository $locationRepo
-     * @param EntityManagerInterface $entityManager
-     * @param ApiService $apiManager
+     * @param EntityManagerInterface $entityService
+     * @param ApiService $apiService
      * @param TextService $textManager
      */
     public function __construct(
         RegionRepository $regionRepo,
         LocationRepository $locationRepo,
-        EntityManagerInterface $entityManager,
-        ApiService $apiManager,
+        EntityManagerInterface $entityService,
+        ApiService $apiService,
         TextService $textManager
     )
     {
         $this->regionRepo = $regionRepo;
         $this->locationRepo = $locationRepo;
-        parent::__construct($entityManager, $apiManager, $textManager);
+        parent::__construct($entityService, $apiService, $textManager);
     }
 
     /**
