@@ -41,22 +41,6 @@ class Version
     private VersionGroup $versionGroup;
 
     /**
-     * @return Language
-     */
-    public function getLanguage(): Language
-    {
-        return $this->language;
-    }
-
-    /**
-     * @param Language $language
-     */
-    public function setLanguage(Language $language): void
-    {
-        $this->language = $language;
-    }
-
-    /**
      * @return int
      */
     public function getId(): int

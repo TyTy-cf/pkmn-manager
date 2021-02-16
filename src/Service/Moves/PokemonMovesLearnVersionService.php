@@ -5,17 +5,12 @@ namespace App\Service\Moves;
 
 
 use App\Entity\Moves\Move;
-use App\Entity\Moves\MoveLearnMethod;
-use App\Entity\Moves\MoveMachine;
 use App\Entity\Moves\PokemonMovesLearnVersion;
 use App\Entity\Pokemon\Pokemon;
 use App\Entity\Users\Language;
-use App\Entity\Versions\Generation;
-use App\Entity\Versions\Version;
-use App\Entity\Versions\VersionGroup;
+use App\Repository\Moves\MoveRepository;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
-use App\Service\Pokemon\PokemonService;
 use App\Service\TextService;
 use App\Service\Versions\GenerationService;
 use App\Service\Versions\VersionGroupService;
@@ -28,51 +23,51 @@ class PokemonMovesLearnVersionService extends AbstractService
 {
 
     /**
-     * @var MoveService $moveManager
-     */
-    private MoveService $moveManager;
-
-    /**
      * @var PokemonMovesLearnVersionRepository $repoPokemonMoves
      */
     private PokemonMovesLearnVersionRepository $repoPokemonMoves;
 
     /**
-     * @var VersionGroupService $versionGroupManager
+     * @var VersionGroupService $versionGroupService
      */
-    private VersionGroupService $versionGroupManager;
+    private VersionGroupService $versionGroupService;
 
     /**
-     * @var GenerationService $generationManager
+     * @var GenerationService $generationService
      */
-    private GenerationService $generationManager;
+    private GenerationService $generationService;
+
+    /**
+     * @var MoveRepository $movesRepository
+     */
+    private MoveRepository $movesRepository;
 
     /**
      * MoveService constructor
      * @param EntityManagerInterface $em
-     * @param ApiService $apiManager
+     * @param ApiService $apiService
      * @param TextService $textService
-     * @param MoveService $moveService
-     * @param GenerationService $generationManager
-     * @param VersionGroupService $versionGroupManager
+     * @param MoveRepository $movesRepository
+     * @param GenerationService $generationService
+     * @param VersionGroupService $versionGroupService
      * @param PokemonMovesLearnVersionRepository $repoPokemonMoves
      */
     public function __construct
     (
         EntityManagerInterface $em,
-        ApiService $apiManager,
+        ApiService $apiService,
         TextService $textService,
-        MoveService $moveService,
-        GenerationService $generationManager,
-        VersionGroupService $versionGroupManager,
+        MoveRepository $movesRepository,
+        GenerationService $generationService,
+        VersionGroupService $versionGroupService,
         PokemonMovesLearnVersionRepository $repoPokemonMoves
     )
     {
-        $this->moveManager = $moveService;
+        $this->movesRepository = $movesRepository;
         $this->repoPokemonMoves = $repoPokemonMoves;
-        $this->generationManager = $generationManager;
-        $this->versionGroupManager = $versionGroupManager;
-        parent::__construct($em, $apiManager, $textService);
+        $this->generationService = $generationService;
+        $this->versionGroupService = $versionGroupService;
+        parent::__construct($em, $apiService, $textService);
     }
 
     /**
@@ -119,7 +114,7 @@ class PokemonMovesLearnVersionService extends AbstractService
     )
     {
         $urlDetailed = json_decode(
-            $this->apiManager->getPokemonFromName($pokemon->getNameApi())->getContent(),
+            $this->apiService->getPokemonFromName($pokemon->getNameApi())->getContent(),
             true
         );
 
@@ -128,7 +123,7 @@ class PokemonMovesLearnVersionService extends AbstractService
         {
             // Fetch the move from data
             $moveName = $detailedMove['move']['name'];
-            $move = $this->moveManager->getMoveBySlug(
+            $move = $this->movesRepository->findOneBySlug(
                 $language->getCode() . '/move-'.$moveName
             );
             foreach ($detailedMove['version_group_details'] as $detailGroup)
@@ -147,7 +142,7 @@ class PokemonMovesLearnVersionService extends AbstractService
                         $versionGroupName
                     ;
 
-                    if (($pokemonMoveLearn = $this->getPokemonMovesLearnVersionBySlug($slug)) === null)
+                    if (null === $pokemonMoveLearn = $this->getPokemonMovesLearnVersionBySlug($slug))
                     {
                         $pokemonMoveLearn = (new PokemonMovesLearnVersion())
                             ->setMove($move)

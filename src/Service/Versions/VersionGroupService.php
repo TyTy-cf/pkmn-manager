@@ -38,7 +38,7 @@ class VersionGroupService extends AbstractService
      * PokemonService constructor.
      *
      * @param EntityManagerInterface $entityManager
-     * @param ApiService $apiManager
+     * @param ApiService $apiService
      * @param TextService $textService
      * @param VersionGroupRepository $versionGroupRepository
      * @param GenerationRepository $generationRepository
@@ -46,23 +46,23 @@ class VersionGroupService extends AbstractService
     public function __construct
     (
         EntityManagerInterface $entityManager,
-        ApiService $apiManager,
+        ApiService $apiService,
         TextService $textService,
         VersionGroupRepository $versionGroupRepository,
         GenerationRepository $generationRepository
-    )
-    {
+    ) {
         $this->generationRepository = $generationRepository;
         $this->versionGroupRepository = $versionGroupRepository;
         self::$arrayVersionGroup = array();
-        parent::__construct($entityManager, $apiManager, $textService);
+        parent::__construct($entityManager, $apiService, $textService);
     }
 
     /**
      * @param Language $language
+     * @param string $order
      * @return VersionGroup[]|array
      */
-    public function getArrayVersionGroup(Language $language, string $order = 'ASC')
+    public function getArrayVersionGroup(Language $language, string $order = 'ASC'): array
     {
         if (self::$arrayVersionGroup == null)
         {
@@ -113,17 +113,17 @@ class VersionGroupService extends AbstractService
     public function createFromApiResponse(Language $language, $versionGroup)
     {
         //Check if the data exist in databases
-        $slug = $this->textManager->generateSlugFromClassWithLanguage(
+        $slug = $this->textService->generateSlugFromClassWithLanguage(
             $language,VersionGroup::class, $versionGroup['name']
         );
 
-        if ($this->getVersionGroupBySlug($slug) === null
+        if (null === $this->getVersionGroupBySlug($slug)
          && !in_array($versionGroup['name'], VersionGroup::$avoidList))
         {
-            $urlDetailed = $this->apiManager->apiConnect($versionGroup['url'])->toArray();
+            $urlDetailed = $this->apiService->apiConnect($versionGroup['url'])->toArray();
 
             // fetch the generation according to the group-version
-            $generationNumber = $this->apiManager->getIdFromUrl($urlDetailed['generation']['url']);
+            $generationNumber = $this->apiService->getIdFromUrl($urlDetailed['generation']['url']);
             $generation = $this->generationRepository->getGenerationByLanguageAndGenerationNumber(
                 $language, $generationNumber
             );

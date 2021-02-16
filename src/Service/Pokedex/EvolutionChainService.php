@@ -12,6 +12,9 @@ use App\Entity\Pokemon\Pokemon;
 use App\Entity\Pokemon\PokemonSpecies;
 use App\Entity\Users\Language;
 use App\Repository\Infos\Type\TypeRepository;
+use App\Repository\Items\ItemRepository;
+use App\Repository\Locations\LocationRepository;
+use App\Repository\Pokedex\EvolutionTriggerRepository;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
 use App\Service\Infos\Type\TypeService;
@@ -46,24 +49,24 @@ class EvolutionChainService extends AbstractService
     private GenderRepository $genderRepository;
 
     /**
-     * @var EvolutionTriggerService $evolutionTriggerManager
+     * @var EvolutionTriggerRepository $evolutionTriggerRepository
      */
-    private EvolutionTriggerService $evolutionTriggerManager;
+    private EvolutionTriggerRepository $evolutionTriggerRepository;
 
     /**
-     * @var PokemonSpeciesService $pokemonSpeciesManager
+     * @var PokemonSpeciesService $pokemonSpeciesService
      */
-    private PokemonSpeciesService $pokemonSpeciesManager;
+    private PokemonSpeciesService $pokemonSpeciesService;
 
     /**
-     * @var LocationService $locationManager
+     * @var LocationRepository $locationRepository
      */
-    private LocationService $locationManager;
+    private LocationRepository $locationRepository;
 
     /**
-     * @var ItemService $itemManager
+     * @var ItemService $itemService
      */
-    private ItemService $itemManager;
+    private ItemService $itemService;
 
     /**
      * @var MoveService $moveManager
@@ -71,14 +74,14 @@ class EvolutionChainService extends AbstractService
     private MoveService $moveManager;
 
     /**
-     * @var TypeService $typeManager
+     * @var TypeService $typeService
      */
-    private TypeService $typeManager;
+    private TypeService $typeService;
 
     /**
-     * @var PokemonService $pokemonManager
+     * @var PokemonService $pokemonService
      */
-    private PokemonService $pokemonManager;
+    private PokemonService $pokemonService;
 
     /**
      * @var TypeRepository $typeRepository
@@ -86,62 +89,56 @@ class EvolutionChainService extends AbstractService
     private TypeRepository $typeRepository;
 
     /**
+     * @var ItemRepository $itemRepo
+     */
+    private ItemRepository $itemRepo;
+
+    /**
      * EvolutionChainService constructor.
      * @param EvolutionChainLinkRepository $evolutionChainLinkRepository
      * @param EvolutionChainRepository $evolutionChainRepository
      * @param TypeRepository $typeRepository
-     * @param EvolutionTriggerService $evolutionTriggerService
-     * @param PokemonSpeciesService $pokemonSpeciesManager
-     * @param EntityManagerInterface $entityManager
+     * @param EvolutionTriggerRepository $evolutionTriggerRepository
+     * @param PokemonSpeciesService $pokemonSpeciesService
+     * @param EntityManagerInterface $entityService
      * @param GenderRepository $genderRepository
-     * @param LocationService $locationManager
-     * @param PokemonService $pokemonManager
-     * @param ItemService $itemManager
-     * @param MoveService $moveManager
-     * @param TypeService $typeManager
-     * @param ApiService $apiManager
-     * @param TextService $textManager
+     * @param LocationRepository $locationRepository
+     * @param PokemonService $pokemonService
+     * @param ItemService $itemService
+     * @param MoveService $moveService
+     * @param TypeService $typeService
+     * @param ApiService $apiService
+     * @param TextService $textService
      */
     public function __construct
     (
         EvolutionChainLinkRepository $evolutionChainLinkRepository,
         EvolutionChainRepository $evolutionChainRepository,
         TypeRepository $typeRepository,
-        EvolutionTriggerService $evolutionTriggerService,
-        PokemonSpeciesService $pokemonSpeciesManager,
-        EntityManagerInterface $entityManager,
+        EvolutionTriggerRepository $evolutionTriggerRepository,
+        PokemonSpeciesService $pokemonSpeciesService,
+        EntityManagerInterface $entityService,
         GenderRepository $genderRepository,
-        LocationService $locationManager,
-        PokemonService $pokemonManager,
-        ItemService $itemManager,
-        MoveService $moveManager,
-        TypeService $typeManager,
-        ApiService $apiManager,
-        TextService $textManager
-    )
-    {
+        LocationRepository $locationRepository,
+        PokemonService $pokemonService,
+        ItemService $itemService,
+        MoveService $moveService,
+        TypeService $typeService,
+        ApiService $apiService,
+        TextService $textService
+    ) {
         $this->evolutionChainRepository = $evolutionChainRepository;
         $this->evolutionChainLinkRepository = $evolutionChainLinkRepository;
         $this->typeRepository = $typeRepository;
-        $this->itemManager = $itemManager;
-        $this->moveManager = $moveManager;
-        $this->typeManager = $typeManager;
-        $this->pokemonManager = $pokemonManager;
-        $this->locationManager = $locationManager;
+        $this->itemService = $itemService;
+        $this->moveManager = $moveService;
+        $this->typeService = $typeService;
+        $this->pokemonService = $pokemonService;
+        $this->locationRepository = $locationRepository;
         $this->genderRepository = $genderRepository;
-        $this->pokemonSpeciesManager = $pokemonSpeciesManager;
-        $this->evolutionTriggerManager = $evolutionTriggerService;
-        parent::__construct($entityManager, $apiManager, $textManager);
-    }
-
-
-    /**
-     * @param string $slug
-     * @return EvolutionChain|null
-     */
-    public function getEvolutionChainBySlug(string $slug)
-    {
-        return $this->evolutionChainRepository->findOneBySlug($slug);
+        $this->pokemonSpeciesService = $pokemonSpeciesService;
+        $this->evolutionTriggerRepository = $evolutionTriggerRepository;
+        parent::__construct($entityService, $apiService, $textService);
     }
 
     /**
@@ -178,7 +175,7 @@ class EvolutionChainService extends AbstractService
         }
         array_push($arrayEvolutionChain[$evolutionChainLink->getEvolutionOrder()],
             [
-                'pokemon' => $this->pokemonManager->getPokemonSpriteByPokemonSpecies(
+                'pokemon' => $this->pokemonService->getPokemonSpriteByPokemonSpecies(
                     $evolutionChainLink->getCurrentPokemonSpecies()
                 ),
                 'evolution_detail' => $evolutionChainLink->getEvolutionDetail(),
@@ -197,19 +194,19 @@ class EvolutionChainService extends AbstractService
     public function createFromApiResponse(Language $language, $apiResponse)
     {
         //Fetch URL evolution type
-        $urlPokemonSpecies = $this->apiManager->apiConnect($apiResponse['url'])->toArray();
-        $idApi = $this->apiManager->getIdFromUrl($apiResponse['url']);
-        $slug = $this->textManager->generateSlugFromClassWithLanguage(
+        $urlPokemonSpecies = $this->apiService->apiConnect($apiResponse['url'])->toArray();
+        $idApi = $this->apiService->getIdFromUrl($apiResponse['url']);
+        $slug = $this->textService->generateSlugFromClassWithLanguage(
             $language, EvolutionChain::class, $idApi
         );
 
         // Check and create if necessary the evolution chain
         // Can be empty, unecessary to even create the evolution_chain starting
-        if (sizeof($urlPokemonSpecies['chain']['evolves_to']) > 0 && $this->getEvolutionChainBySlug($slug) === null) {
+        if (sizeof($urlPokemonSpecies['chain']['evolves_to']) > 0 && $this->evolutionChainRepository->findOneBySlug($slug) === null) {
             // if a baby item trigger is required
             $babyItemTrigger = null;
             if ($urlPokemonSpecies['baby_trigger_item'] !== null) {
-                $babyItemTrigger = $this->itemManager->getItemBySlug(
+                $babyItemTrigger = $this->itemRepo->findOneBySlug(
                     $language->getCode() . '/item-' . $urlPokemonSpecies['baby_trigger_item']['name']
                 );
             }
@@ -226,8 +223,8 @@ class EvolutionChainService extends AbstractService
             $evolutionLevel = 1;
             $arrayChainEvolveTo = $urlPokemonSpecies['chain'];
             // Create the starting element of the chain, the one that will be set to the evolution chain
-            $startingSpecies = $this->pokemonSpeciesManager->getSimplePokemonSpeciesBySlug(
-                $this->textManager->generateSlugFromClassWithLanguage(
+            $startingSpecies = $this->pokemonSpeciesService->getSimplePokemonSpeciesBySlug(
+                $this->textService->generateSlugFromClassWithLanguage(
                     $language, PokemonSpecies::class, $arrayChainEvolveTo['species']['name']
                 )
             );
@@ -282,8 +279,8 @@ class EvolutionChainService extends AbstractService
         int $evolutionLevel
     ) {
         // Fetch the pokemon-species from the species api json
-        $pokemonSpecies = $this->pokemonSpeciesManager->getSimplePokemonSpeciesBySlug(
-            $this->textManager->generateSlugFromClassWithLanguage(
+        $pokemonSpecies = $this->pokemonSpeciesService->getSimplePokemonSpeciesBySlug(
+            $this->textService->generateSlugFromClassWithLanguage(
                 $language, PokemonSpecies::class, $urlEvolutionChain['species']['name']
             )
         );
@@ -324,14 +321,14 @@ class EvolutionChainService extends AbstractService
         // the pokemon require an item held
         $heldItem = null;
         if ($urlEvolutionChainDetailed['held_item'] !== null) {
-            $heldItem = $this->itemManager->getItemBySlug(
+            $heldItem = $this->itemRepo->findOneBySlug(
                 $language->getCode() . '/item-' . $urlEvolutionChainDetailed['held_item']['name']
             );
         }
         //the pokemon require an item used - usually pair with an evolution trigger "used item"
         $item = null;
         if ($urlEvolutionChainDetailed['item'] !== null) {
-            $item = $this->itemManager->getItemBySlug(
+            $item = $this->itemRepo->findOneBySlug(
                 $language->getCode().'/item-'.$urlEvolutionChainDetailed['item']['name']
             );
         }
@@ -352,14 +349,14 @@ class EvolutionChainService extends AbstractService
         // the pokemon require to be in a certain location
         $location = null;
         if ($urlEvolutionChainDetailed['location'] !== null) {
-            $location = $this->locationManager->getLocationBySlug(
+            $location = $this->locationRepository->findOneBySlug(
                 $language->getCode().'/location-'.$urlEvolutionChainDetailed['location']['name']
             );
         }
         // the pokemon require a specific species in team
         $partySpecies = null;
         if ($urlEvolutionChainDetailed['party_species'] !== null) {
-            $partySpecies = $this->pokemonSpeciesManager->getPokemonSpeciesBySlug(
+            $partySpecies = $this->pokemonSpeciesService->getPokemonSpeciesBySlug(
                 $language->getCode() . '/pokemon-species-' . $urlEvolutionChainDetailed['party_species']['name']
             );
         }
@@ -373,14 +370,14 @@ class EvolutionChainService extends AbstractService
         // the evolution trigger that trigger the evolution
         $evolutionTrigger = null;
         if ($urlEvolutionChainDetailed['trigger'] !== null) {
-            $evolutionTrigger = $this->evolutionTriggerManager->getEvolutionTriggerBySlug(
+            $evolutionTrigger = $this->evolutionTriggerRepository->findOneBySlug(
                 $language->getCode() . '/evolution-trigger-' . $urlEvolutionChainDetailed['trigger']['name']
             );
         }
         // the pokemon require to be trade with a specific species
         $tradeSpecies = null;
         if ($urlEvolutionChainDetailed['trade_species'] !== null) {
-            $tradeSpecies = $this->pokemonSpeciesManager->getPokemonSpeciesBySlug(
+            $tradeSpecies = $this->pokemonSpeciesService->getPokemonSpeciesBySlug(
                 $language->getCode() . '/pokemon-species-' . $urlEvolutionChainDetailed['trade_species']['name']
             );
         }

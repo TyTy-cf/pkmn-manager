@@ -20,36 +20,35 @@ class ItemHeldPokemonService extends AbstractService
 {
 
     /**
-     * @var PokemonService $pokemonManager
+     * @var PokemonService $pokemonService
      */
-    private PokemonService $pokemonManager;
+    private PokemonService $pokemonService;
 
     /**
-     * @var VersionService $versionManager
+     * @var VersionService $versionService
      */
-    private VersionService $versionManager;
+    private VersionService $versionService;
 
     /**
      * AbilitiyManager constructor.
      *
      * @param EntityManagerInterface $entityManager
-     * @param ApiService $apiManager
+     * @param ApiService $apiService
      * @param TextService $textService
      * @param PokemonService $pokemonService
-     * @param VersionService $versionManager
+     * @param VersionService $versionService
      */
     public function __construct
     (
         EntityManagerInterface $entityManager,
-        ApiService $apiManager,
+        ApiService $apiService,
         TextService $textService,
         PokemonService $pokemonService,
-        VersionService $versionManager
-    )
-    {
-        $this->pokemonManager = $pokemonService;
-        $this->versionManager = $versionManager;
-        parent::__construct($entityManager, $apiManager, $textService);
+        VersionService $versionService
+    ) {
+        $this->pokemonService = $pokemonService;
+        $this->versionService = $versionService;
+        parent::__construct($entityManager, $apiService, $textService);
     }
 
     /**
@@ -59,8 +58,8 @@ class ItemHeldPokemonService extends AbstractService
      */
     public function createItemHeldPokemon(Language $language, Item $item, $urlDetailed) {
         foreach($urlDetailed['held_by_pokemon'] as $pokemonInfos) {
-            $pokemon = $this->pokemonManager->getPokemonBySlug(
-                $this->textManager->generateSlugFromClassWithLanguage(
+            $pokemon = $this->pokemonService->getPokemonBySlug(
+                $this->textService->generateSlugFromClassWithLanguage(
                     $language, Pokemon::class, $pokemonInfos['pokemon']['name']
                 )
             );
@@ -72,7 +71,7 @@ class ItemHeldPokemonService extends AbstractService
 
             // Récupère les versions
             foreach($pokemonInfos['version_details'] as $versionDetail) {
-                $versions = $this->versionManager->getArrayVersions($language);
+                $versions = $this->versionService->getArrayVersions($language);
                 $itemHeldPokemonVersion = (new ItemHeldPokemonVersion())
                     ->setRarity($versionDetail['rarity'])
                     ->setItemHeldByPokemon($itemHeldPokemon)

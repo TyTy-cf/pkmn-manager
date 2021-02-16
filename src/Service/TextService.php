@@ -12,7 +12,7 @@ class TextService
      * @param string $text
      * @return string
      */
-    public function slugify(string $text)
+    public function slugify(string $text): string
     {
         // transliterate
         $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);

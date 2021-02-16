@@ -38,7 +38,7 @@ class PokemonFormService extends AbstractService
      * PokemonService constructor.
      *
      * @param EntityManagerInterface $entityManager
-     * @param ApiService $apiManager
+     * @param ApiService $apiService
      * @param TextService $textService
      * @param VersionGroupService $versionGroupService
      * @param PokemonRepository $pokemonRepository
@@ -47,7 +47,7 @@ class PokemonFormService extends AbstractService
     public function __construct
     (
         EntityManagerInterface $entityManager,
-        ApiService $apiManager,
+        ApiService $apiService,
         TextService $textService,
         VersionGroupService $versionGroupService,
         PokemonRepository $pokemonRepository,
@@ -56,7 +56,7 @@ class PokemonFormService extends AbstractService
         $this->pokemonRepository = $pokemonRepository;
         $this->versionGroupManager = $versionGroupService;
         $this->pokemonFormRepository = $pokemonFormRepository;
-        parent::__construct($entityManager, $apiManager, $textService);
+        parent::__construct($entityManager, $apiService, $textService);
     }
 
     /**
@@ -77,17 +77,17 @@ class PokemonFormService extends AbstractService
         Pokemon $pokemon,
         Language $language
     ) {
-        $pokemonFormDetailed = $this->apiManager->getPokemonDetailedFromPokemon($pokemon)->toArray();
+        $pokemonFormDetailed = $this->apiService->getPokemonDetailedFromPokemon($pokemon)->toArray();
 
         foreach($pokemonFormDetailed['forms'] as $pokemonForm) {
-            $urlDetailed = $this->apiManager->apiConnect($pokemonForm['url'])->toArray();
-            $slug = $this->textManager->generateSlugFromClassWithLanguage(
+            $urlDetailed = $this->apiService->apiConnect($pokemonForm['url'])->toArray();
+            $slug = $this->textService->generateSlugFromClassWithLanguage(
                 $language, PokemonForm::class, $urlDetailed['name']
             );
-            $name = $this->apiManager->getFieldContentFromLanguage(
+            $name = $this->apiService->getFieldContentFromLanguage(
                 $language, $urlDetailed, 'names', 'name'
             );
-            $formName = $this->apiManager->getFieldContentFromLanguage(
+            $formName = $this->apiService->getFieldContentFromLanguage(
                 $language, $urlDetailed, 'form_names', 'name'
             );
 

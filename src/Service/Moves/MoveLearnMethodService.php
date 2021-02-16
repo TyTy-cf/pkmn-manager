@@ -32,20 +32,20 @@ class MoveLearnMethodService extends AbstractService
     /**
      * MoveLearnMethodService constructor.
      * @param ApiService $apiManager
-     * @param TextService $textManager
+     * @param TextService $textService
      * @param EntityManagerInterface $entityService
      * @param MoveLearnMethodRepository $repo
      */
     public function __construct
     (
         ApiService $apiManager,
-        TextService $textManager,
+        TextService $textService,
         EntityManagerInterface $entityService,
         MoveLearnMethodRepository $repo
     )
     {
         $this->repo = $repo;
-        parent::__construct($entityService, $apiManager, $textManager);
+        parent::__construct($entityService, $apiManager, $textService);
     }
 
     /**
@@ -74,8 +74,8 @@ class MoveLearnMethodService extends AbstractService
     public function createFromApiResponse(Language $language, $apiLearnMethod)
     {
         //Fetch URL details type
-        $urlLearnMethodDetailed = $this->apiManager->apiConnect($apiLearnMethod['url'])->toArray();
-        $slug = $this->textManager->generateSlugFromClassWithLanguage(
+        $urlLearnMethodDetailed = $this->apiService->apiConnect($apiLearnMethod['url'])->toArray();
+        $slug = $this->textService->generateSlugFromClassWithLanguage(
             $language, MoveLearnMethod::class, $urlLearnMethodDetailed['name']
         );
 
@@ -84,7 +84,7 @@ class MoveLearnMethodService extends AbstractService
             // For french there is currently no traduction avalaible, we'll actually make traduction there
             if (array_key_exists($urlLearnMethodDetailed['name'], $this->arrayTraduction))
             {
-                $description = $this->apiManager->getFieldContentFromLanguage(
+                $description = $this->apiService->getFieldContentFromLanguage(
                     'en', $urlLearnMethodDetailed, 'descriptions', 'description'
                 );
 

@@ -11,7 +11,6 @@ use App\Service\Api\ApiService;
 use App\Service\TextService;
 use App\Repository\Moves\DamageClassRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class DamageClassService extends AbstractService
@@ -35,19 +34,9 @@ class DamageClassService extends AbstractService
         DamageClassRepository $damageClassRepository,
         ApiService $apiService,
         TextService $textService
-    )
-    {
+    ) {
         $this->damageClassRepository = $damageClassRepository;
         parent::__construct($entityManager, $apiService, $textService);
-    }
-
-    /**
-     * @param string $slug
-     * @return DamageClass|null
-     */
-    public function getDamageClassBySlug(string $slug): ?object
-    {
-        return $this->damageClassRepository->findOneBySlug($slug);
     }
 
     /**
@@ -58,16 +47,16 @@ class DamageClassService extends AbstractService
     public function createFromApiResponse(Language $language, $apiDamageClass)
     {
         //Check if the data exist in databases
-        $slug = $this->textManager->generateSlugFromClassWithLanguage(
+        $slug = $this->textService->generateSlugFromClassWithLanguage(
             $language, DamageClass::class, $apiDamageClass['name']
         );
 
-        if ($this->getDamageClassBySlug($slug) === null)
+        if (null === $this->damageClassRepository->findOneBySlug($slug))
         {
             //Fetch URL details type
-            $urlDamageClassDetailed = $this->apiManager->apiConnect($apiDamageClass['url'])->toArray();
+            $urlDamageClassDetailed = $this->apiService->apiConnect($apiDamageClass['url'])->toArray();
             // Fetch name & description according the language
-            $damageClassNameLang = $this->apiManager->getNameBasedOnLanguageFromArray(
+            $damageClassNameLang = $this->apiService->getNameBasedOnLanguageFromArray(
                 $language->getCode(), $urlDamageClassDetailed
             );
             $damageClass = (new DamageClass())

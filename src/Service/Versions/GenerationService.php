@@ -31,7 +31,7 @@ class GenerationService extends AbstractService
      * PokemonService constructor.
      *
      * @param EntityManagerInterface $entityManager
-     * @param ApiService $apiManager
+     * @param ApiService $apiService
      * @param TextService $textService
      * @param RegionRepository $regionRepo
      * @param GenerationRepository $generationRepository
@@ -39,14 +39,14 @@ class GenerationService extends AbstractService
     public function __construct
     (
         EntityManagerInterface $entityManager,
-        ApiService $apiManager,
+        ApiService $apiService,
         TextService $textService,
         RegionRepository $regionRepo,
         GenerationRepository $generationRepository
     ) {
         $this->regionRepo = $regionRepo;
         $this->generationRepository = $generationRepository;
-        parent::__construct($entityManager, $apiManager, $textService);
+        parent::__construct($entityManager, $apiService, $textService);
     }
 
     /**
@@ -57,23 +57,23 @@ class GenerationService extends AbstractService
     public function createFromApiResponse(Language $language, $generation)
     {
         //Check if the data exist in databases
-        $slug = $this->textManager->generateSlugFromClassWithLanguage(
+        $slug = $this->textService->generateSlugFromClassWithLanguage(
             $language, Generation::class, $generation['name']
         );
 
         //Fetch URL details type
-        $urlDetailed = $this->apiManager->apiConnect($generation['url'])->toArray();
+        $urlDetailed = $this->apiService->apiConnect($generation['url'])->toArray();
         if (null === $newGeneration = $this->$this->generationRepository->findOneBySlug($slug))
         {
             // Fetch name & description according the language
-            $generationLang = $this->apiManager->getNameBasedOnLanguageFromArray(
+            $generationLang = $this->apiService->getNameBasedOnLanguageFromArray(
                 $language->getCode(), $urlDetailed
             );
             $splittedGeneration = explode(' ', $generationLang);
 
             $region = null;
             if (null !== $urlDetailed['main_region']) {
-                $slug = $this->textManager->generateSlugFromClassWithLanguage(
+                $slug = $this->textService->generateSlugFromClassWithLanguage(
                     $language, Region::class, $urlDetailed['main_region']['name']
                 );
                 $region = $this->regionRepo->findOneBySlug($slug);

@@ -32,7 +32,7 @@ class MoveDescriptionService extends AbstractService
     /**
      * MoveDescriptionService constructor.
      * @param MoveDescriptionRepository $repo
-     * @param ApiService $apiManager
+     * @param ApiService $apiService
      * @param VersionGroupService $versionGroupService
      * @param TextService $textService
      * @param EntityManagerInterface $em
@@ -40,7 +40,7 @@ class MoveDescriptionService extends AbstractService
     public function __construct
     (
         MoveDescriptionRepository $repo,
-        ApiService $apiManager,
+        ApiService $apiService,
         VersionGroupService $versionGroupService,
         TextService $textService,
         EntityManagerInterface $em
@@ -48,7 +48,7 @@ class MoveDescriptionService extends AbstractService
     {
         $this->repo = $repo;
         $this->versionGroupManager = $versionGroupService;
-        parent::__construct($em, $apiManager, $textService);
+        parent::__construct($em, $apiService, $textService);
     }
 
     /**
@@ -81,12 +81,12 @@ class MoveDescriptionService extends AbstractService
         {
             if ($descriptionDetailed['language']['name'] === $lang->getCode())
             {
-                $slugVersion = $this->textManager->generateSlugFromClassWithLanguage(
+                $slugVersion = $this->textService->generateSlugFromClassWithLanguage(
                     $lang,
                     VersionGroup::class,
                     $descriptionDetailed['version_group']['name']
                 );
-                $slug = $this->textManager->generateSlugFromClassWithLanguage(
+                $slug = $this->textService->generateSlugFromClassWithLanguage(
                     $lang,
                     MoveDescription::class,
                     $move->getSlug().'-'.$slugVersion
@@ -100,7 +100,7 @@ class MoveDescriptionService extends AbstractService
                         ->setSlug($slug)
                         ->setLanguage($lang)
                         ->setVersionGroup($versionGroup)
-                        ->setDescription($this->textManager->removeReturnLineFromText(
+                        ->setDescription($this->textService->removeReturnLineFromText(
                             $description
                         ))
                     ;

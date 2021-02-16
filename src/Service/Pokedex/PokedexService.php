@@ -4,7 +4,6 @@
 namespace App\Service\Pokedex;
 
 
-use App\Entity\Locations\Region;
 use App\Entity\Pokedex\Pokedex;
 use App\Entity\Pokedex\PokedexSpecies;
 use App\Entity\Pokemon\PokemonSpecies;
@@ -29,14 +28,14 @@ class PokedexService extends AbstractService
     private PokedexRepository $pokedexRepository;
 
     /**
-     * @var VersionGroupService $versionGroupManager
+     * @var VersionGroupService $versionGroupService
      */
-    private VersionGroupService $versionGroupManager;
+    private VersionGroupService $versionGroupService;
 
     /**
-     * @var PokemonSpeciesService $pokemonSpeciesManager
+     * @var PokemonSpeciesService $pokemonSpeciesService
      */
-    private PokemonSpeciesService $pokemonSpeciesManager;
+    private PokemonSpeciesService $pokemonSpeciesService;
 
     /**
      * @var RegionRepository $regionRepo
@@ -51,14 +50,14 @@ class PokedexService extends AbstractService
     /**
      * PokemonService constructor.
      *
-     * @param EntityManagerInterface $entityManager
+     * @param EntityManagerInterface $entityService
      * @param PokedexRepository $pokedexRepository
      * @param RegionRepository $regionRepo
      * @param VersionGroupService $versionGroup
      * @param PokemonSpeciesService $pokemonSpeciesService
      * @param GenerationRepository $generationRepo
-     * @param ApiService $apiManager
-     * @param TextService $textManager
+     * @param ApiService $apiService
+     * @param TextService $textService
      */
     public function __construct
     (
@@ -67,17 +66,17 @@ class PokedexService extends AbstractService
         VersionGroupService $versionGroup,
         PokemonSpeciesService $pokemonSpeciesService,
         GenerationRepository $generationRepo,
-        EntityManagerInterface $entityManager,
-        ApiService $apiManager,
-        TextService $textManager
+        EntityManagerInterface $entityService,
+        ApiService $apiService,
+        TextService $textService
     )
     {
-        $this->versionGroupManager = $versionGroup;
+        $this->versionGroupService = $versionGroup;
         $this->regionRepo = $regionRepo;
         $this->generationRepo = $generationRepo;
         $this->pokedexRepository = $pokedexRepository;
-        $this->pokemonSpeciesManager = $pokemonSpeciesService;
-        parent::__construct($entityManager, $apiManager, $textManager);
+        $this->pokemonSpeciesService = $pokemonSpeciesService;
+        parent::__construct($entityService, $apiService, $textService);
     }
 
     /**
@@ -107,19 +106,19 @@ class PokedexService extends AbstractService
     public function createFromApiResponse(Language $language, $apiResponse)
     {
         //Fetch URL details type
-        $urlPokedexDetailed = $this->apiManager->apiConnect($apiResponse['url'])->toArray();
+        $urlPokedexDetailed = $this->apiService->apiConnect($apiResponse['url'])->toArray();
         //Check if the pokedex exist in databases
-        $slug = $this->textManager->generateSlugFromClassWithLanguage(
+        $slug = $this->textService->generateSlugFromClassWithLanguage(
             $language,
             Pokedex::class,
             $urlPokedexDetailed['name']
         );
 
-        if (($pokedex = $this->getPokedexBySlug($slug)) === null)
+        if (null === $pokedex = $this->getPokedexBySlug($slug))
         {
             $codeLang = $language->getCode();
             // Fetch name & description according the language
-            $pokedexName = $this->apiManager->getNameBasedOnLanguageFromArray(
+            $pokedexName = $this->apiService->getNameBasedOnLanguageFromArray(
                 $codeLang,
                 $urlPokedexDetailed
             );
@@ -127,7 +126,7 @@ class PokedexService extends AbstractService
                 ->setName(ucfirst($pokedexName))
                 ->setSlug($slug)
                 ->setLanguage($language)
-                ->setDescription($this->apiManager->getFieldContentFromLanguage(
+                ->setDescription($this->apiService->getFieldContentFromLanguage(
                         $codeLang, $urlPokedexDetailed, 'descriptions',  'description'
                     )
                 );
@@ -137,7 +136,7 @@ class PokedexService extends AbstractService
             {
                 foreach($urlPokedexDetailed['version_groups'] as $versionGroupName)
                 {
-                    $versionGroup = $this->versionGroupManager->getArrayVersionGroup(
+                    $versionGroup = $this->versionGroupService->getArrayVersionGroup(
                         $language
                     )[$codeLang.'/version-group-'.$versionGroupName['name']];
                     $pokedex->addVersionGroup($versionGroup);
@@ -149,8 +148,8 @@ class PokedexService extends AbstractService
             if (!empty($urlPokedexDetailed['pokemon_entries'])) {
                 foreach($urlPokedexDetailed['pokemon_entries'] as $pokemonSpeciesName)
                 {
-                    $pokemonSpecies = $this->pokemonSpeciesManager->getPokemonSpeciesBySlug(
-                        $this->textManager->generateSlugFromClassWithLanguage(
+                    $pokemonSpecies = $this->pokemonSpeciesService->getPokemonSpeciesBySlug(
+                        $this->textService->generateSlugFromClassWithLanguage(
                             $language,
                             PokemonSpecies::class,
                             $pokemonSpeciesName['pokemon_species']['name']
@@ -164,8 +163,8 @@ class PokedexService extends AbstractService
                     $this->entityManager->persist($pokedexSpecies);
                 }
             }
-            if ($urlPokedexDetailed['region'] !== null) {
-                $urlDetailedRegion = $this->apiManager->apiConnect($urlPokedexDetailed['region']['url'])->toArray();
+            if (null !== $urlPokedexDetailed['region']) {
+                $urlDetailedRegion = $this->apiService->apiConnect($urlPokedexDetailed['region']['url'])->toArray();
                 $region = $this->regionRepo->findOneBySlug($language->getCode().'/region-'.$urlDetailedRegion['name']);
                 $generation = $this->generationRepo->findOneBy([
                     'mainRegion' => $region

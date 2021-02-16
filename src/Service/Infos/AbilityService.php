@@ -24,20 +24,20 @@ class AbilityService extends AbstractService
      * AbilitiyManager constructor.
      *
      * @param EntityManagerInterface $entityManager
-     * @param ApiService $apiManager
+     * @param ApiService $apiService
      * @param TextService $textService
      * @param AbilityRepository $abilitiesRepository
      */
     public function __construct
     (
         EntityManagerInterface $entityManager,
-        ApiService $apiManager,
+        ApiService $apiService,
         TextService $textService,
         AbilityRepository $abilitiesRepository
     )
     {
         $this->abilitiesRepository = $abilitiesRepository;
-        parent::__construct($entityManager, $apiManager, $textService);
+        parent::__construct($entityManager, $apiService, $textService);
     }
 
     /**
@@ -57,26 +57,26 @@ class AbilityService extends AbstractService
     public function createFromApiResponse(Language $language, $apiResponse)
     {
         //Fetch URL details type
-        $urlDetailed = $this->apiManager->apiConnect($apiResponse['url'])->toArray();
+        $urlDetailed = $this->apiService->apiConnect($apiResponse['url'])->toArray();
 
         if (!empty($urlDetailed['pokemon']))
         {
             //Check if the data exist in databases
-            $slug = $this->textManager->generateSlugFromClassWithLanguage(
+            $slug = $this->textService->generateSlugFromClassWithLanguage(
                 $language, Ability::class, $apiResponse['name']
             );
 
             if (null === $this->getAbilitiesBySlug($slug))
             {
                 // Fetch name & description according the language
-                $abilityNameLang = $this->apiManager->getNameBasedOnLanguageFromArray(
+                $abilityNameLang = $this->apiService->getNameBasedOnLanguageFromArray(
                     $language->getCode(), $urlDetailed
                 );
 
                 if (null !== $abilityNameLang)
                 {
-                    $abilityDescription = $this->textManager->removeReturnLineFromText(
-                        $this->apiManager->getFlavorTextBasedOnLanguageFromArray($language->getCode(), $urlDetailed)
+                    $abilityDescription = $this->textService->removeReturnLineFromText(
+                        $this->apiService->getFlavorTextBasedOnLanguageFromArray($language->getCode(), $urlDetailed)
                     );
 
                     $newAbility = (new Ability())

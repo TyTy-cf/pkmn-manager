@@ -7,9 +7,9 @@ use App\Entity\Moves\DamageClass;
 use App\Entity\Moves\Move;
 use App\Entity\Users\Language;
 use App\Repository\Infos\Type\TypeRepository;
+use App\Repository\Moves\DamageClassRepository;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
-use App\Service\Infos\Type\TypeService;
 use App\Service\TextService;
 use App\Repository\Moves\MoveRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -24,16 +24,6 @@ class MoveService extends AbstractService
     private MoveRepository $movesRepository;
 
     /**
-     * @var TypeService
-     */
-    private TypeService $typeManager;
-
-    /**
-     * @var DamageClassService $damageClassManager
-     */
-    private DamageClassService $damageClassManager;
-
-    /**
      * @var MoveDescriptionService
      */
     private MoveDescriptionService $moveDescriptionManager;
@@ -44,40 +34,35 @@ class MoveService extends AbstractService
     private TypeRepository $typeRepository;
 
     /**
+     * @var DamageClassRepository $damageClassRepository
+     */
+    private DamageClassRepository $damageClassRepository;
+
+    /**
      * MoveService constructor
      * @param EntityManagerInterface $em
-     * @param ApiService $apiManager
+     * @param ApiService $apiService
      * @param TextService $textService
-     * @param DamageClassService $damageClassService
-     * @param MoveDescriptionService $moveDescriptionManager
+     * @param DamageClassRepository $damageClassRepository
+     * @param MoveDescriptionService $moveDescriptionService
      * @param MoveRepository $moveRepository
      * @param TypeRepository $typeRepository
      */
     public function __construct
     (
         EntityManagerInterface $em,
-        ApiService $apiManager,
+        ApiService $apiService,
         TextService $textService,
-        DamageClassService $damageClassService,
-        MoveDescriptionService $moveDescriptionManager,
+        DamageClassRepository $damageClassRepository,
+        MoveDescriptionService $moveDescriptionService,
         MoveRepository $moveRepository,
         TypeRepository $typeRepository
-    )
-    {
+    ) {
         $this->movesRepository = $moveRepository;
         $this->typeRepository = $typeRepository;
-        $this->damageClassManager = $damageClassService;
-        $this->moveDescriptionManager = $moveDescriptionManager;
-        parent::__construct($em, $apiManager, $textService);
-    }
-
-    /**
-     * @param string $slug
-     * @return Move|null
-     */
-    public function getMoveBySlug(string $slug): ?Move
-    {
-        return $this->movesRepository->findOneBySlug($slug);
+        $this->damageClassRepository = $damageClassRepository;
+        $this->moveDescriptionManager = $moveDescriptionService;
+        parent::__construct($em, $apiService, $textService);
     }
 
     /**
@@ -97,20 +82,20 @@ class MoveService extends AbstractService
      */
     public function createFromApiResponse(Language $language, $apiResponse)
     {
-        $slug = $this->textManager->generateSlugFromClassWithLanguage(
+        $slug = $this->textService->generateSlugFromClassWithLanguage(
             $language, Move::class, $apiResponse['name']
         );
-        $urlDetailedMove = $this->apiManager->apiConnect($apiResponse['url'])->toArray();
+        $urlDetailedMove = $this->apiService->apiConnect($apiResponse['url'])->toArray();
 
-        if ($this->getMoveBySlug($slug) === null && isset($urlDetailedMove['damage_class']))
-        {;
-            $moveName = $this->apiManager->getNameBasedOnLanguageFromArray(
+        if (null === $this->movesRepository->findOneBySlug($slug) && isset($urlDetailedMove['damage_class']))
+        {
+            $moveName = $this->apiService->getNameBasedOnLanguageFromArray(
                 $language->getCode(),
                 $urlDetailedMove
             );
             // Get the DamageClass
-            $damageClass = $this->damageClassManager->getDamageClassBySlug(
-                $this->textManager->generateSlugFromClassWithLanguage(
+            $damageClass = $this->damageClassRepository->findOneBySlug(
+                $this->textService->generateSlugFromClassWithLanguage(
                     $language,
                     DamageClass::class,
                     $urlDetailedMove['damage_class']['name']
@@ -118,7 +103,7 @@ class MoveService extends AbstractService
             );
             // Get the Type
             $type = $this->typeRepository->findOneBySlug(
-                $this->textManager->generateSlugFromClassWithLanguage(
+                $this->textService->generateSlugFromClassWithLanguage(
                     $language,
                     Type::class,
                     $urlDetailedMove['type']['name']

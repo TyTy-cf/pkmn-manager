@@ -34,28 +34,18 @@ class RegionService extends AbstractService
      * @param LocationRepository $locationRepo
      * @param EntityManagerInterface $entityService
      * @param ApiService $apiService
-     * @param TextService $textManager
+     * @param TextService $textService
      */
     public function __construct(
         RegionRepository $regionRepo,
         LocationRepository $locationRepo,
         EntityManagerInterface $entityService,
         ApiService $apiService,
-        TextService $textManager
-    )
-    {
+        TextService $textService
+    ) {
         $this->regionRepo = $regionRepo;
         $this->locationRepo = $locationRepo;
-        parent::__construct($entityService, $apiService, $textManager);
-    }
-
-    /**
-     * @param string $slug
-     * @return Region|null
-     */
-    public function getRegionBySlug(string $slug)
-    {
-        return $this->regionRepo->findOneBySlug($slug);
+        parent::__construct($entityService, $apiService, $textService);
     }
 
     /**
@@ -66,16 +56,16 @@ class RegionService extends AbstractService
     public function createFromApiResponse(Language $language, $apiResponse)
     {
         //Check if the data exist in databases
-        $slug = $this->textManager->generateSlugFromClassWithLanguage(
+        $slug = $this->textService->generateSlugFromClassWithLanguage(
             $language, Region::class, $apiResponse['name']
         );
         //Fetch URL details type
-        $urlRegion = $this->apiManager->apiConnect($apiResponse['url'])->toArray();
-        if (($region = $this->getRegionBySlug($slug)) === null)
+        $urlRegion = $this->apiService->apiConnect($apiResponse['url'])->toArray();
+        if (null === $region = $this->regionRepo->findOneBySlug($slug))
         {
             // Create the region first
             $region = (new Region())
-                ->setName($this->apiManager->getNameBasedOnLanguageFromArray(
+                ->setName($this->apiService->getNameBasedOnLanguageFromArray(
                     $language->getCode(),
                     $urlRegion
                 ))
@@ -84,33 +74,33 @@ class RegionService extends AbstractService
             ;
             $this->entityManager->persist($region);
         }
-        if ($urlRegion['locations'] !== null) {
+        if (null !== $urlRegion['locations']) {
             foreach ($urlRegion['locations'] as $locationJson) {
                 // Create the Location
-                $slugLocation = $this->textManager->generateSlugFromClassWithLanguage(
+                $slugLocation = $this->textService->generateSlugFromClassWithLanguage(
                     $language, Location::class, $locationJson['name']
                 );
-                $urlLocation = $this->apiManager->apiConnect($locationJson['url'])->toArray();
+                $urlLocation = $this->apiService->apiConnect($locationJson['url'])->toArray();
                 if (($location = $this->locationRepo->findOneBySlug($slugLocation)) === null) {
                     $location = (new Location())
                         ->setRegion($region)
                         ->setSlug($slugLocation)
                         ->setLanguage($language)
-                        ->setName($this->apiManager->getNameBasedOnLanguageFromArray(
+                        ->setName($this->apiService->getNameBasedOnLanguageFromArray(
                             $language->getCode(),
                             $urlLocation
                         ))
                     ;
                     $this->entityManager->persist($location);
                 }
-                if ($urlLocation['areas'] !== null) {
+                if (null !== $urlLocation['areas']) {
                     // Create the LocationArea
                     foreach ($urlLocation['areas'] as $locationAreaJson) {
-                        $slugLocationArea = $this->textManager->generateSlugFromClassWithLanguage(
+                        $slugLocationArea = $this->textService->generateSlugFromClassWithLanguage(
                             $language, LocationArea::class, $locationAreaJson['name']
                         );
                         if (($locationArea = $this->locationRepo->findOneBySlug($slugLocationArea)) === null) {
-                            $urlLocationArea = $this->apiManager->apiConnect($locationAreaJson['url'])->toArray();
+                            $urlLocationArea = $this->apiService->apiConnect($locationAreaJson['url'])->toArray();
                             $locationArea = (new LocationArea())
                                 ->setSlug($slugLocationArea)
                                 ->setIdApi($urlLocationArea['id'])
@@ -118,7 +108,7 @@ class RegionService extends AbstractService
                                 ->setLocation($location)
                                 ->setLanguage($language)
                                 // Names doesn't exist in other languages than english right now... So let's set in English and adapt later
-                                ->setName($this->apiManager->getNameBasedOnLanguageFromArray(
+                                ->setName($this->apiService->getNameBasedOnLanguageFromArray(
                                     'en',
                                     $locationArea
                                 ))

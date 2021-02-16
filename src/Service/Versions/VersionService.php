@@ -38,7 +38,7 @@ class VersionService extends AbstractService
      * PokemonService constructor.
      *
      * @param EntityManagerInterface $entityManager
-     * @param ApiService $apiManager
+     * @param ApiService $apiService
      * @param TextService $textService
      * @param VersionRepository $versionRepository
      * @param VersionGroupRepository $versionGroupRepository
@@ -46,7 +46,7 @@ class VersionService extends AbstractService
     public function __construct
     (
         EntityManagerInterface $entityManager,
-        ApiService $apiManager,
+        ApiService $apiService,
         TextService $textService,
         VersionRepository $versionRepository,
         VersionGroupRepository $versionGroupRepository
@@ -55,14 +55,14 @@ class VersionService extends AbstractService
         $this->versionGroupRepository = $versionGroupRepository;
         $this->versionRepository = $versionRepository;
         self::$arrayVersions = array();
-        parent::__construct($entityManager, $apiManager, $textService);
+        parent::__construct($entityManager, $apiService, $textService);
     }
 
     /**
      * @param Language $language
      * @return Version[]|array
      */
-    public function getArrayVersions(Language $language)
+    public function getArrayVersions(Language $language): array
     {
         if (self::$arrayVersions == null)
         {
@@ -86,8 +86,9 @@ class VersionService extends AbstractService
 
     /**
      * @param Language $language
+     * @return array
      */
-    public function getAllVersions(Language $language)
+    public function getAllVersions(Language $language): array
     {
         return $this->versionRepository->findBy([
            'language' => $language,
@@ -103,20 +104,20 @@ class VersionService extends AbstractService
     public function createFromApiResponse(Language $language, $version)
     {
         //Check if the data exist in databases
-        $slug = $this->textManager->generateSlugFromClassWithLanguage(
+        $slug = $this->textService->generateSlugFromClassWithLanguage(
             $language,
             Version::class,
             $version['name']
         );
 
-        if ($this->getVersionBySlug($slug) === null && !in_array($version['name'], VersionGroup::$avoidList))
+        if (null === $this->getVersionBySlug($slug) && !in_array($version['name'], VersionGroup::$avoidList))
         {
             // fetch the generation according to the group-version
-            $urlDetailed = $this->apiManager->apiConnect($version['url'])->toArray();
+            $urlDetailed = $this->apiService->apiConnect($version['url'])->toArray();
             $versionGroup = $this->versionGroupRepository->getVersionGroupByLanguageAndName(
                 $language, $urlDetailed['version_group']['name']
             );
-            $versionLang = $this->apiManager->getNameBasedOnLanguageFromArray(
+            $versionLang = $this->apiService->getNameBasedOnLanguageFromArray(
                 $language->getCode(), $urlDetailed
             );
 

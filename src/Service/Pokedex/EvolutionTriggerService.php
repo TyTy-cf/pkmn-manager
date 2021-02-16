@@ -23,28 +23,18 @@ class EvolutionTriggerService extends AbstractService
     /**
      * EvolutionTriggerService constructor.
      * @param EntityManagerInterface $entityManager
-     * @param ApiService $apiManager
+     * @param ApiService $apiService
      * @param TextService $textService
      * @param EvolutionTriggerRepository $evolutionTriggerRepo
      */
     public function __construct(
         EntityManagerInterface $entityManager,
-        ApiService $apiManager,
+        ApiService $apiService,
         TextService $textService,
         EvolutionTriggerRepository $evolutionTriggerRepo
-    )
-    {
+    ) {
         $this->evolutionTriggerRepo = $evolutionTriggerRepo;
-        parent::__construct($entityManager, $apiManager, $textService);
-    }
-
-    /**
-     * @param string $slug
-     * @return EvolutionTrigger|null
-     */
-    public function getEvolutionTriggerBySlug(string $slug)
-    {
-        return $this->evolutionTriggerRepo->findOneBySlug($slug);
+        parent::__construct($entityManager, $apiService, $textService);
     }
 
     /**
@@ -55,15 +45,15 @@ class EvolutionTriggerService extends AbstractService
     public function createFromApiResponse(Language $language, $apiResponse)
     {
         //Check if the data exist in databases
-        $slug = $this->textManager->generateSlugFromClassWithLanguage(
+        $slug = $this->textService->generateSlugFromClassWithLanguage(
             $language, EvolutionTrigger::class, $apiResponse['name']
         );
-        if ($this->getEvolutionTriggerBySlug($slug) === null)
+        if (null === $this->evolutionTriggerRepo->findOneBySlug($slug))
         {
             //Fetch URL details type
-            $urlEvolutionTrigger = $this->apiManager->apiConnect($apiResponse['url'])->toArray();
+            $urlEvolutionTrigger = $this->apiService->apiConnect($apiResponse['url'])->toArray();
             $eggGroup = (new EvolutionTrigger())
-                ->setName($this->apiManager->getNameBasedOnLanguageFromArray(
+                ->setName($this->apiService->getNameBasedOnLanguageFromArray(
                     $language->getCode(),
                     $urlEvolutionTrigger
                 ))

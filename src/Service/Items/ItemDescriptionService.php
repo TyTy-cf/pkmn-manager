@@ -25,20 +25,19 @@ class ItemDescriptionService extends AbstractService
      * AbilitiyManager constructor.
      *
      * @param EntityManagerInterface $entityManager
-     * @param ApiService $apiManager
+     * @param ApiService $apiService
      * @param TextService $textService
      * @param VersionGroupService $versionGroupService
      */
     public function __construct
     (
         EntityManagerInterface $entityManager,
-        ApiService $apiManager,
+        ApiService $apiService,
         TextService $textService,
         VersionGroupService $versionGroupService
-    )
-    {
+    ) {
         $this->versionGroupManager = $versionGroupService;
-        parent::__construct($entityManager, $apiManager, $textService);
+        parent::__construct($entityManager, $apiService, $textService);
     }
 
     /**
@@ -55,7 +54,7 @@ class ItemDescriptionService extends AbstractService
             if ($text['language']['name'] === $language->getCode()) {
                 $itemDescription = (new ItemDescription())
                     ->setItem($newItem)
-                    ->setDescription($this->textManager->removeReturnLineFromText(
+                    ->setDescription($this->textService->removeReturnLineFromText(
                         $text['text']
                     ));
                 $arrayVersionGroup = $this->versionGroupManager->getArrayVersionGroup($language);

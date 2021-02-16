@@ -49,7 +49,7 @@ class NatureService extends AbstractService
      */
     public function createFromApiResponse(Language $language, $urlContent)
     {
-        $slug = $this->textManager->generateSlugFromClassWithLanguage(
+        $slug = $this->textService->generateSlugFromClassWithLanguage(
             $language,
             Nature::class,
             $urlContent['name']
@@ -58,12 +58,12 @@ class NatureService extends AbstractService
 
         if (null === $this->natureRepository->findOneBySlug($slug))
         {
-            $urlContent = $this->apiManager->apiConnect($urlContent['url'])->toArray();
+            $urlContent = $this->apiService->apiConnect($urlContent['url'])->toArray();
             $decreasedStat = $this->getModifiedStat($codeLang, $urlContent['decreased_stat']);
             $increasedStat = $this->getModifiedStat($codeLang, $urlContent['increased_stat']);
             $nature = (new Nature())
                 ->setSlug($slug)
-                ->setName($this->apiManager->getNameBasedOnLanguageFromArray($codeLang, $urlContent))
+                ->setName($this->apiService->getNameBasedOnLanguageFromArray($codeLang, $urlContent))
                 ->setLanguage($language)
                 ->setStatDecreased($decreasedStat)
                 ->setStatIncreased($increasedStat)
@@ -83,7 +83,7 @@ class NatureService extends AbstractService
     {
         if (!empty($urlContent))
         {
-            return $this->apiManager->getNameBasedOnLanguage($codeLang, $urlContent['url']);
+            return $this->apiService->getNameBasedOnLanguage($codeLang, $urlContent['url']);
         }
         return null;
     }

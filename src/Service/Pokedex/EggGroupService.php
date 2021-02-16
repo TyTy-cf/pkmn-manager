@@ -34,19 +34,9 @@ class EggGroupService extends AbstractService
         EggGroupRepository $eggGroupRepository,
         ApiService $apiService,
         TextService $textService
-    )
-    {
+    ) {
         $this->eggGroupRepository = $eggGroupRepository;
         parent::__construct($entityManager, $apiService, $textService);
-    }
-
-    /**
-     * @param string $slug
-     * @return EggGroup|null
-     */
-    public function getEggGroupBySlug(string $slug)
-    {
-        return $this->eggGroupRepository->findOneBySlug($slug);
     }
 
     /**
@@ -57,15 +47,15 @@ class EggGroupService extends AbstractService
     public function createFromApiResponse(Language $language, $apiEggGroup)
     {
         //Check if the data exist in databases
-        $slug = $this->textManager->generateSlugFromClassWithLanguage(
+        $slug = $this->textService->generateSlugFromClassWithLanguage(
             $language, EggGroup::class, $apiEggGroup['name']
         );
-        if ($this->getEggGroupBySlug($slug) === null)
+        if (null === $this->eggGroupRepository->findOneBySlug($slug))
         {
             //Fetch URL details type
-            $urlDamageClassDetailed = $this->apiManager->apiConnect($apiEggGroup['url'])->toArray();
+            $urlDamageClassDetailed = $this->apiService->apiConnect($apiEggGroup['url'])->toArray();
             // Fetch name & description according the language
-            $eggGroupName = $this->apiManager->getNameBasedOnLanguageFromArray(
+            $eggGroupName = $this->apiService->getNameBasedOnLanguageFromArray(
                 $language->getCode(),
                 $urlDamageClassDetailed
             );

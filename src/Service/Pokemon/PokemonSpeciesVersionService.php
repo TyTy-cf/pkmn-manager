@@ -13,7 +13,7 @@ use App\Repository\Pokemon\PokemonSpeciesVersionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 
-class PokemonSpeciesVersionManager
+class PokemonSpeciesVersionService
 {
     /**
      * @var EntityManagerInterface

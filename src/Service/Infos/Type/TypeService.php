@@ -30,7 +30,7 @@ class TypeService extends AbstractService
      * PokemonService constructor.
      *
      * @param EntityManagerInterface $entityManager
-     * @param ApiService $apiManager
+     * @param ApiService $apiService
      * @param TypeDamageRelationTypeService $typeDamageFromTypeService
      * @param TextService $textService
      * @param TypeRepository $typeRepository
@@ -38,14 +38,14 @@ class TypeService extends AbstractService
     public function __construct
     (
         EntityManagerInterface $entityManager,
-        ApiService $apiManager,
+        ApiService $apiService,
         TypeDamageRelationTypeService $typeDamageFromTypeService,
         TextService $textService,
         TypeRepository $typeRepository
     ) {
         $this->typeDamageFromTypeManager = $typeDamageFromTypeService;
         $this->typeRepository = $typeRepository;
-        parent::__construct($entityManager, $apiManager, $textService);
+        parent::__construct($entityManager, $apiService, $textService);
 
     }
 
@@ -79,7 +79,7 @@ class TypeService extends AbstractService
      */
     public function createFromApiResponse(Language $language, $type)
     {
-        $slug = $this->textManager->generateSlugFromClassWithLanguage(
+        $slug = $this->textService->generateSlugFromClassWithLanguage(
             $language, Type::class, $type['name']
         );
 
@@ -89,8 +89,8 @@ class TypeService extends AbstractService
             $urlType = $type['url'];
 
             //Fetch name according the language
-            $typeNameLang = $this->apiManager->getNameBasedOnLanguage($language->getCode(), $urlType);
-            $codeApi = $this->apiManager->getIdFromUrl($urlType);
+            $typeNameLang = $this->apiService->getNameBasedOnLanguage($language->getCode(), $urlType);
+            $codeApi = $this->apiService->getIdFromUrl($urlType);
 
             //Check if the data exist in databases
             $newType = $this->typeRepository->findOneBy(['name' => $typeNameLang]);

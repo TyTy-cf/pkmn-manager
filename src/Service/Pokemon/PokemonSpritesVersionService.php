@@ -38,26 +38,26 @@ class PokemonSpritesVersionService extends AbstractService
      * PokemonService constructor.
      *
      * @param EntityManagerInterface $entityManager
-     * @param ApiService $apiManager
+     * @param ApiService $apiService
      * @param VersionGroupService $versionGroupService
      * @param PokemonSpritesManager $pokemonSpritesService
-     * @param TextService $textManager
-     * @param PokemonService $pokemonManager
+     * @param TextService $textService
+     * @param PokemonService $pokemonService
      */
     public function __construct
     (
         EntityManagerInterface $entityManager,
-        ApiService $apiManager,
+        ApiService $apiService,
         VersionGroupService $versionGroupService,
         PokemonSpritesManager $pokemonSpritesService,
-        TextService $textManager,
-        PokemonService $pokemonManager
+        TextService $textService,
+        PokemonService $pokemonService
     )
     {
-        $this->pokemonManager = $pokemonManager;
+        $this->pokemonManager = $pokemonService;
         $this->pokemonSpritesManager = $pokemonSpritesService;
         $this->versionGroupManager = $versionGroupService;
-        parent::__construct($entityManager, $apiManager, $textManager);
+        parent::__construct($entityManager, $apiService, $textService);
     }
 
     /**
@@ -68,13 +68,13 @@ class PokemonSpritesVersionService extends AbstractService
     public function createFromApiResponse(Language $language, $apiResponse)
     {
          // Create the sprite Entity
-        $urlDetailed = $this->apiManager->apiConnect($apiResponse['url'])->toArray();
+        $urlDetailed = $this->apiService->apiConnect($apiResponse['url'])->toArray();
         foreach($urlDetailed['sprites']['versions'] as $keyGeneration => $version)
         {
             // Iterate over each content of generation-i
             foreach($version as $key => $spriteVersion)
             {
-                $slugKey = $this->textManager->generateSlugFromClassWithLanguage(
+                $slugKey = $this->textService->generateSlugFromClassWithLanguage(
                     $language,VersionGroup::class, $key
                 );
                 $versionGroup = $this->versionGroupManager->getVersionGroupBySlug($slugKey);
@@ -87,7 +87,7 @@ class PokemonSpritesVersionService extends AbstractService
                     // if at least one of the default sprites key are set we can create the object
                     if ($frontDefault != null || $frontShiny != null || $frontFemale != null || $frontFemaleShiny != null)
                     {
-                        $slug = $this->textManager->generateSlugFromClassWithLanguage(
+                        $slug = $this->textService->generateSlugFromClassWithLanguage(
                             $language, Pokemon::class, $urlDetailed['name']
                         );
                         $pokemon = $this->pokemonManager->getPokemonBySlug($slug);
@@ -105,7 +105,7 @@ class PokemonSpritesVersionService extends AbstractService
                         $this->pokemonSpritesManager->createPokemonSprites(
                             $this->entityManager,
                             $pokemon,
-                            $this->textManager,
+                            $this->textService,
                             $urlDetailed['sprites']
                         );
                     }

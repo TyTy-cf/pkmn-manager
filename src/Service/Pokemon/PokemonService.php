@@ -33,9 +33,9 @@ class PokemonService extends AbstractService
 {
 
     /**
-     * @var VersionGroupService $versionGroupManager
+     * @var VersionGroupService $versionGroupService
      */
-    private VersionGroupService $versionGroupManager;
+    private VersionGroupService $versionGroupService;
 
     /**
      * @var AbilityRepository $abilitiesRepo
@@ -76,7 +76,7 @@ class PokemonService extends AbstractService
      * PokemonService constructor.
      *
      * @param EntityManagerInterface $entityManager
-     * @param ApiService $apiManager
+     * @param ApiService $apiService
      * @param TextService $textService
      * @param TypeRepository $typeRepo
      * @param AbilityRepository $abilitiesRepo
@@ -90,7 +90,7 @@ class PokemonService extends AbstractService
     public function __construct
     (
         EntityManagerInterface $entityManager,
-        ApiService $apiManager,
+        ApiService $apiService,
         TextService $textService,
         VersionGroupService $versionGroupService,
         TypeRepository $typeRepo,
@@ -101,8 +101,7 @@ class PokemonService extends AbstractService
         PokemonRepository $pokemonRepository,
         PokemonMovesLearnVersionRepository $repoMovesLearnPokemon
     ) {
-        $this->versionGroupManager = $versionGroupService;
-
+        $this->versionGroupService = $versionGroupService;
         $this->typeRepo = $typeRepo;
         $this->abilitiesRepo = $abilitiesRepo;
         $this->statsEffortRepo = $statsEffortRepo;
@@ -110,8 +109,7 @@ class PokemonService extends AbstractService
         $this->moveLearnMethodRepo = $moveLearnMethodRepo;
         $this->movesLearnPokemonRepo = $repoMovesLearnPokemon;
         $this->spritesVersionRepository = $spritesVersionRepository;
-
-        parent::__construct($entityManager, $apiManager, $textService);
+        parent::__construct($entityManager, $apiService, $textService);
     }
 
     /**
@@ -189,7 +187,7 @@ class PokemonService extends AbstractService
         $language = $pokemon->getLanguage();
         $arrayMoves['version_groups'] = array();
         $allMoveLearnMethod = $this->moveLearnMethodRepo->getAllMoveLearnMethodByLanguage($language);
-        $versionsGroups = $this->versionGroupManager->getArrayVersionGroup($language);
+        $versionsGroups = $this->versionGroupService->getArrayVersionGroup($language);
         if (sizeof($versionsGroups) > 0) {
             foreach($versionsGroups as $versionGroup) {
                 /** @var VersionGroup $versionGroup */
@@ -226,7 +224,9 @@ class PokemonService extends AbstractService
      */
     public function getSpritesArrayByPokemon(Pokemon $pokemon): array
     {
-        $versionsGroups = $this->versionGroupManager->getVersionGroupByLanguage($pokemon->getLanguage(), 'DESC');
+        $versionsGroups = $this->versionGroupService->getVersionGroupByLanguage(
+            $pokemon->getLanguage(), 'DESC'
+        );
         $arraySprites = [];
         if (sizeof($versionsGroups) > 0) {
             foreach($versionsGroups as $versionGroup) {
@@ -251,14 +251,14 @@ class PokemonService extends AbstractService
      */
     public function createFromApiResponse(Language $language, $apiResponse)
     {
-        $slug = $this->textManager->generateSlugFromClassWithLanguage(
+        $slug = $this->textService->generateSlugFromClassWithLanguage(
             $language, Pokemon::class, $apiResponse['name']
         );
-        $urlDetailed = $this->apiManager->apiConnect($apiResponse['url'])->toArray();
+        $urlDetailed = $this->apiService->apiConnect($apiResponse['url'])->toArray();
 
-        if (($pokemon = $this->getPokemonBySlug($slug)) === null && sizeof($urlDetailed['stats']) > 0)
+        if (null === $pokemon = $this->getPokemonBySlug($slug) && sizeof($urlDetailed['stats']) > 0)
         {
-            $pokemonName = $this->apiManager->getNameBasedOnLanguage(
+            $pokemonName = $this->apiService->getNameBasedOnLanguage(
                 $language->getCode(),
                 $urlDetailed['species']['url']
             );
@@ -278,27 +278,27 @@ class PokemonService extends AbstractService
             // Add the stats
             $arrayStatsEffort = array();
             foreach ($urlDetailed['stats'] as $stat) {
-                if ($stat['stat']['name'] == 'hp') {
+                if ($stat['stat']['name'] === 'hp') {
                     $pokemon->setHp($stat['base_stat']);
                     $arrayStatsEffort['hp'] = $stat['effort'];
                 }
-                if ($stat['stat']['name'] == 'attack') {
+                if ($stat['stat']['name'] === 'attack') {
                     $pokemon->setAtk($stat['base_stat']);
                     $arrayStatsEffort['atk'] = $stat['effort'];
                 }
-                if ($stat['stat']['name'] == 'defense') {
+                if ($stat['stat']['name'] === 'defense') {
                     $pokemon->setDef($stat['base_stat']);
                     $arrayStatsEffort['def'] = $stat['effort'];
                 }
-                if ($stat['stat']['name'] == 'special-attack') {
+                if ($stat['stat']['name'] === 'special-attack') {
                     $pokemon->setSpa($stat['base_stat']);
                     $arrayStatsEffort['spa'] = $stat['effort'];
                 }
-                if ($stat['stat']['name'] == 'special-defense') {
+                if ($stat['stat']['name'] === 'special-defense') {
                     $pokemon->setSpd($stat['base_stat']);
                     $arrayStatsEffort['spd'] = $stat['effort'];
                 }
-                if ($stat['stat']['name'] == 'speed') {
+                if ($stat['stat']['name'] === 'speed') {
                     $pokemon->setSpe($stat['base_stat']);
                     $arrayStatsEffort['spe'] = $stat['effort'];
                 }
@@ -310,7 +310,7 @@ class PokemonService extends AbstractService
             foreach($urlDetailed['types'] as $typesDetailed)
             {
                 $type = $this->typeRepo->findOneBySlug(
-                    $this->textManager->generateSlugFromClassWithLanguage(
+                    $this->textService->generateSlugFromClassWithLanguage(
                         $language,
                         Type::class,
                         $typesDetailed['type']['name']
@@ -323,13 +323,13 @@ class PokemonService extends AbstractService
             foreach($urlDetailed['abilities'] as $abilityDetailed)
             {
                 $ability = $this->abilitiesRepo->findOneBySlug(
-                    $this->textManager->generateSlugFromClassWithLanguage(
+                    $this->textService->generateSlugFromClassWithLanguage(
                         $language,
                         Ability::class,
                         $abilityDetailed['ability']['name']
                     )
                 );
-                if ($ability !== null) {
+                if (null !== $ability) {
                     $pokemonAbility = (new PokemonAbility())
                         ->setPokemon($pokemon)
                         ->setAbility($ability)
@@ -349,10 +349,10 @@ class PokemonService extends AbstractService
      * @return StatsEffort
      * @throws NonUniqueResultException
      */
-    public function getStatsEffortFromArray(array $arrayStatsEffort)
+    public function getStatsEffortFromArray(array $arrayStatsEffort): StatsEffort
     {
         // Add the stats
-        if (($statsEffort = $this->statsEffortRepo->getStatsEffortByStats($arrayStatsEffort)) === null)
+        if (null === $statsEffort = $this->statsEffortRepo->getStatsEffortByStats($arrayStatsEffort))
         {
             $statsEffort = (new StatsEffort())
                 ->setHp($arrayStatsEffort['hp'])

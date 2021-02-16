@@ -22,7 +22,7 @@ class LanguageService
     /**
      * @var ApiService
      */
-    private ApiService $apiManager;
+    private ApiService $apiService;
 
     /**
      * @var Language|null $languageUsed
@@ -32,18 +32,18 @@ class LanguageService
     /**
      * LanguageManager constructor.
      * @param EntityManagerInterface $em
-     * @param ApiService $apiManager
+     * @param ApiService $apiService
      * @param LanguageRepository $languageRepository
      */
     public function __construct
     (
         EntityManagerInterface $em,
-        ApiService $apiManager,
+        ApiService $apiService,
         LanguageRepository $languageRepository
     ) {
         $this->em = $em;
         self::$languageUsed = null;
-        $this->apiManager = $apiManager;
+        $this->apiService = $apiService;
         $this->languageRepository = $languageRepository;
     }
 
@@ -51,7 +51,8 @@ class LanguageService
      * @param string $code
      * @return Language|null
      */
-    public function getLanguageByCode(string $code) {
+    public function getLanguageByCode(string $code): ?Language
+    {
         if (self::$languageUsed === null) {
             self::$languageUsed =  $this->languageRepository->findOneBy(['code' => $code]);
         }

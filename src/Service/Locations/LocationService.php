@@ -4,7 +4,6 @@
 namespace App\Service\Locations;
 
 
-use App\Entity\Locations\Location;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
 use App\Service\TextService;
@@ -21,27 +20,18 @@ class LocationService extends AbstractService
     /**
      * LocationService constructor.
      * @param LocationRepository $locationRepo
-     * @param EntityManagerInterface $entityManager
+     * @param EntityManagerInterface $entityService
      * @param ApiService $apiService
      * @param TextService $textService
      */
     public function __construct
     (
         LocationRepository $locationRepo,
-        EntityManagerInterface $entityManager,
+        EntityManagerInterface $entityService,
         ApiService $apiService,
         TextService $textService
-    )
-    {
+    ) {
         $this->locationRepo = $locationRepo;
-        parent::__construct($entityManager, $apiService, $textService);
-    }
-
-    /**
-     * @param string $slug
-     * @return Location|object|null
-     */
-    public function getLocationBySlug(string $slug) {
-        return $this->locationRepo->findOneBySlug($slug);
+        parent::__construct($entityService, $apiService, $textService);
     }
 }

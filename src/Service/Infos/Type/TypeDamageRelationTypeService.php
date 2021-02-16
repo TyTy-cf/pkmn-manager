@@ -29,7 +29,7 @@ class TypeDamageRelationTypeService extends AbstractService
     /**
      * TypeDamageFromTypeRepository constructor
      * @param TypeRepository $typeRepository
-     * @param ApiService $apiManager
+     * @param ApiService $apiService
      * @param EntityManagerInterface $em
      * @param TextService $textService
      * @param TypeDamageRelationTypeRepository $typeDamageRelationTypeRepository
@@ -37,14 +37,14 @@ class TypeDamageRelationTypeService extends AbstractService
     public function __construct
     (
         TypeRepository $typeRepository,
-        ApiService $apiManager,
+        ApiService $apiService,
         EntityManagerInterface $em,
         TextService $textService,
         TypeDamageRelationTypeRepository $typeDamageRelationTypeRepository
     ) {
         $this->typeRepository = $typeRepository;
         $this->typeDamageRelationTypeRepository = $typeDamageRelationTypeRepository;
-        parent::__construct($em, $apiManager, $textService);
+        parent::__construct($em, $apiService, $textService);
     }
 
     /**
@@ -64,7 +64,7 @@ class TypeDamageRelationTypeService extends AbstractService
      */
     public function createDamageFromType(Type $type, string $lang)
     {
-        $urlDetailedType = $this->apiManager->apiConnect('https://pokeapi.co/api/v2/type/' . $type->getCodeApi() . '/')->toArray();
+        $urlDetailedType = $this->apiService->apiConnect('https://pokeapi.co/api/v2/type/' . $type->getCodeApi() . '/')->toArray();
         // Set all damage relation from
         $this->iterateOverJson($type, $lang, $urlDetailedType,'double_damage_from', 'from', 2);
         $this->iterateOverJson($type, $lang, $urlDetailedType,'half_damage_from', 'from',0.5);
@@ -103,7 +103,7 @@ class TypeDamageRelationTypeService extends AbstractService
                 // Find the type impact in _from or _to
                 $typeFrom = $this->typeRepository->getTypeByLanguageAndCodeApi(
                     $lang,
-                    $this->apiManager->getIdFromUrl($jsonType['url'])
+                    $this->apiService->getIdFromUrl($jsonType['url'])
                 );
                 if (null !== $typeFrom)
                 {
