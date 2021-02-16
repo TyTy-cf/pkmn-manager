@@ -8,7 +8,7 @@ use App\Entity\Moves\MoveLearnMethod;
 use App\Entity\Users\Language;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
-use App\Service\TextManager;
+use App\Service\TextService;
 use App\Repository\Moves\MoveLearnMethodRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
@@ -32,14 +32,14 @@ class MoveLearnMethodService extends AbstractService
     /**
      * MoveLearnMethodService constructor.
      * @param ApiService $apiManager
-     * @param TextManager $textManager
+     * @param TextService $textManager
      * @param EntityManagerInterface $entityManager
      * @param MoveLearnMethodRepository $repo
      */
     public function __construct
     (
         ApiService $apiManager,
-        TextManager $textManager,
+        TextService $textManager,
         EntityManagerInterface $entityManager,
         MoveLearnMethodRepository $repo
     )

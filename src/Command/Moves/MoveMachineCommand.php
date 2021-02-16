@@ -7,7 +7,7 @@ namespace App\Command\Moves;
 use App\Command\AbstractCommand;
 use App\Service\Api\ApiService;
 use App\Service\Moves\MoveMachineService;
-use App\Service\Users\LanguageManager;
+use App\Service\Users\LanguageService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,14 +21,14 @@ class MoveMachineCommand extends AbstractCommand
      * ExcecCommand constructor
      * @param MoveMachineService $moveMachineManager
      * @param ApiService $apiManager
-     * @param LanguageManager $languageManager
+     * @param LanguageService $languageManager
      * @param EntityManagerInterface $em
      */
     public function __construct
     (
         MoveMachineService $moveMachineManager,
         ApiService $apiManager,
-        LanguageManager $languageManager,
+        LanguageService $languageManager,
         EntityManagerInterface $em
     )
     {

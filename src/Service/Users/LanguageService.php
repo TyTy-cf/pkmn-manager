@@ -7,7 +7,7 @@ use App\Service\Api\ApiService;
 use App\Repository\Users\LanguageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
-class LanguageManager
+class LanguageService
 {
     /**
      * @var LanguageRepository

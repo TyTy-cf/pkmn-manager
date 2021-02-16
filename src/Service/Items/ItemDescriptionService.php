@@ -9,7 +9,7 @@ use App\Entity\Items\ItemDescription;
 use App\Entity\Users\Language;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
-use App\Service\TextManager;
+use App\Service\TextService;
 use App\Service\Versions\VersionGroupService;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -26,14 +26,14 @@ class ItemDescriptionService extends AbstractService
      *
      * @param EntityManagerInterface $entityManager
      * @param ApiService $apiManager
-     * @param TextManager $textManager
+     * @param TextService $textManager
      * @param VersionGroupService $versionGroupManager
      */
     public function __construct
     (
         EntityManagerInterface $entityManager,
         ApiService $apiManager,
-        TextManager $textManager,
+        TextService $textManager,
         VersionGroupService $versionGroupManager
     )
     {

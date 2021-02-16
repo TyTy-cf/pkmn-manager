@@ -7,7 +7,7 @@ namespace App\Service\Locations;
 use App\Entity\Locations\Location;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
-use App\Service\TextManager;
+use App\Service\TextService;
 use App\Repository\Locations\LocationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -23,14 +23,14 @@ class LocationService extends AbstractService
      * @param LocationRepository $locationRepo
      * @param EntityManagerInterface $entityManager
      * @param ApiService $apiManager
-     * @param TextManager $textManager
+     * @param TextService $textManager
      */
     public function __construct
     (
         LocationRepository $locationRepo,
         EntityManagerInterface $entityManager,
         ApiService $apiManager,
-        TextManager $textManager
+        TextService $textManager
     )
     {
         $this->locationRepo = $locationRepo;

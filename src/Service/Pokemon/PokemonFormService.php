@@ -9,7 +9,7 @@ use App\Entity\Pokemon\PokemonForm;
 use App\Entity\Users\Language;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
-use App\Service\TextManager;
+use App\Service\TextService;
 use App\Service\Versions\VersionGroupService;
 use App\Repository\Pokemon\PokemonFormRepository;
 use App\Repository\Pokemon\PokemonRepository;
@@ -39,7 +39,7 @@ class PokemonFormService extends AbstractService
      *
      * @param EntityManagerInterface $entityManager
      * @param ApiService $apiManager
-     * @param TextManager $textManager
+     * @param TextService $textManager
      * @param VersionGroupService $versionGroupManager
      * @param PokemonRepository $pokemonRepository
      * @param PokemonFormRepository $pokemonFormRepository
@@ -48,7 +48,7 @@ class PokemonFormService extends AbstractService
     (
         EntityManagerInterface $entityManager,
         ApiService $apiManager,
-        TextManager $textManager,
+        TextService $textManager,
         VersionGroupService $versionGroupManager,
         PokemonRepository $pokemonRepository,
         PokemonFormRepository $pokemonFormRepository

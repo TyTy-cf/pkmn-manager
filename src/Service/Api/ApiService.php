@@ -4,9 +4,8 @@
 namespace App\Service\Api;
 
 
-use App\Entity\Pokedex\EvolutionChain;
 use App\Entity\Pokemon\Pokemon;
-use http\Exception\RuntimeException;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
@@ -32,21 +31,10 @@ class ApiService
         $response = $client->request('GET', $url);
 
         if (200 !== $response->getStatusCode()) {
-            throw new RuntimeException(sprintf('The API return an error.'));
+            throw new Exception(sprintf('The API return an error.'));
         }
 
         return $response;
-    }
-
-    /**
-     * @param $offset
-     * @return mixed
-     * @throws TransportExceptionInterface
-     */
-    public function getPokemonsListing($offset)
-    {
-        return $this->apiConnect("https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=42");
-
     }
 
     /**

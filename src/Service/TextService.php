@@ -6,7 +6,7 @@ namespace App\Service;
 
 use App\Entity\Users\Language;
 
-class TextManager
+class TextService
 {
     /**
      * @param string $text

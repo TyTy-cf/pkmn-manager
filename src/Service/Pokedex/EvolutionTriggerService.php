@@ -8,7 +8,7 @@ use App\Entity\Pokedex\EvolutionTrigger;
 use App\Entity\Users\Language;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
-use App\Service\TextManager;
+use App\Service\TextService;
 use App\Repository\Pokedex\EvolutionTriggerRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
@@ -24,13 +24,13 @@ class EvolutionTriggerService extends AbstractService
      * EvolutionTriggerService constructor.
      * @param EntityManagerInterface $entityManager
      * @param ApiService $apiManager
-     * @param TextManager $textManager
+     * @param TextService $textManager
      * @param EvolutionTriggerRepository $evolutionTriggerRepo
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         ApiService $apiManager,
-        TextManager $textManager,
+        TextService $textManager,
         EvolutionTriggerRepository $evolutionTriggerRepo
     )
     {

@@ -8,7 +8,7 @@ use App\Entity\Infos\Ability;
 use App\Entity\Users\Language;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
-use App\Service\TextManager;
+use App\Service\TextService;
 use App\Repository\Infos\AbilityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
@@ -25,14 +25,14 @@ class AbilityService extends AbstractService
      *
      * @param EntityManagerInterface $entityManager
      * @param ApiService $apiManager
-     * @param TextManager $textManager
+     * @param TextService $textManager
      * @param AbilityRepository $abilitiesRepository
      */
     public function __construct
     (
         EntityManagerInterface $entityManager,
         ApiService $apiManager,
-        TextManager $textManager,
+        TextService $textManager,
         AbilityRepository $abilitiesRepository
     )
     {

@@ -12,7 +12,7 @@ use App\Entity\Users\Language;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
 use App\Service\Pokemon\PokemonService;
-use App\Service\TextManager;
+use App\Service\TextService;
 use App\Service\Versions\VersionService;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -34,7 +34,7 @@ class ItemHeldPokemonService extends AbstractService
      *
      * @param EntityManagerInterface $entityManager
      * @param ApiService $apiManager
-     * @param TextManager $textManager
+     * @param TextService $textManager
      * @param PokemonService $pokemonManager
      * @param VersionService $versionManager
      */
@@ -42,7 +42,7 @@ class ItemHeldPokemonService extends AbstractService
     (
         EntityManagerInterface $entityManager,
         ApiService $apiManager,
-        TextManager $textManager,
+        TextService $textManager,
         PokemonService $pokemonManager,
         VersionService $versionManager
     )

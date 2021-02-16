@@ -16,7 +16,7 @@ use App\Entity\Users\Language;
 use App\Entity\Versions\VersionGroup;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
-use App\Service\TextManager;
+use App\Service\TextService;
 use App\Service\Versions\VersionGroupService;
 use App\Repository\Infos\AbilityRepository;
 use App\Repository\Infos\Type\TypeRepository;
@@ -77,7 +77,7 @@ class PokemonService extends AbstractService
      *
      * @param EntityManagerInterface $entityManager
      * @param ApiService $apiManager
-     * @param TextManager $textManager
+     * @param TextService $textManager
      * @param TypeRepository $typeRepo
      * @param AbilityRepository $abilitiesRepo
      * @param VersionGroupService $versionGroupManager
@@ -91,7 +91,7 @@ class PokemonService extends AbstractService
     (
         EntityManagerInterface $entityManager,
         ApiService $apiManager,
-        TextManager $textManager,
+        TextService $textManager,
         VersionGroupService $versionGroupManager,
         TypeRepository $typeRepo,
         AbilityRepository $abilitiesRepo,

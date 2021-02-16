@@ -9,7 +9,7 @@ use App\Entity\Users\Language;
 use App\Entity\Versions\Generation;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
-use App\Service\TextManager;
+use App\Service\TextService;
 use App\Repository\Locations\RegionRepository;
 use App\Repository\Versions\GenerationRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -32,7 +32,7 @@ class GenerationService extends AbstractService
      *
      * @param EntityManagerInterface $entityManager
      * @param ApiService $apiManager
-     * @param TextManager $textManager
+     * @param TextService $textManager
      * @param RegionRepository $regionRepo
      * @param GenerationRepository $generationRepository
      */
@@ -40,32 +40,13 @@ class GenerationService extends AbstractService
     (
         EntityManagerInterface $entityManager,
         ApiService $apiManager,
-        TextManager $textManager,
+        TextService $textManager,
         RegionRepository $regionRepo,
         GenerationRepository $generationRepository
-    )
-    {
+    ) {
         $this->regionRepo = $regionRepo;
         $this->generationRepository = $generationRepository;
         parent::__construct($entityManager, $apiManager, $textManager);
-    }
-
-    /**
-     * @param string $slug
-     * @return Generation|null
-     */
-    public function getGenerationBySlug(string $slug): object
-    {
-        return $this->generationRepository->findOneBySlug($slug);
-    }
-
-    /**
-     * @param Language $language
-     * @return int|mixed|string
-     */
-    public function getAllGenerationsByLanguage(Language $language)
-    {
-        return $this->generationRepository->getGenerationByLanguage($language);
     }
 
     /**
@@ -82,7 +63,7 @@ class GenerationService extends AbstractService
 
         //Fetch URL details type
         $urlDetailed = $this->apiManager->apiConnect($generation['url'])->toArray();
-        if (($newGeneration = $this->getGenerationBySlug($slug)) === null)
+        if (null === $newGeneration = $this->$this->generationRepository->findOneBySlug($slug))
         {
             // Fetch name & description according the language
             $generationLang = $this->apiManager->getNameBasedOnLanguageFromArray(
@@ -91,7 +72,7 @@ class GenerationService extends AbstractService
             $splittedGeneration = explode(' ', $generationLang);
 
             $region = null;
-            if ($urlDetailed['main_region'] !== null) {
+            if (null !== $urlDetailed['main_region']) {
                 $slug = $this->textManager->generateSlugFromClassWithLanguage(
                     $language, Region::class, $urlDetailed['main_region']['name']
                 );

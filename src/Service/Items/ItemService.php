@@ -11,7 +11,7 @@ use App\Entity\Users\Language;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
 use App\Service\Pokemon\PokemonService;
-use App\Service\TextManager;
+use App\Service\TextService;
 use App\Service\Versions\VersionGroupService;
 use App\Repository\Items\ItemRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -48,7 +48,7 @@ class ItemService extends AbstractService
      * @param ItemHeldPokemonService $itemHeldPokemonManager
      * @param ItemDescriptionService $itemDescriptionManager
      * @param ApiService $apiManager
-     * @param TextManager $textManager
+     * @param TextService $textManager
      * @param ItemRepository $itemRepo
      */
     public function __construct
@@ -58,7 +58,7 @@ class ItemService extends AbstractService
         ItemHeldPokemonService $itemHeldPokemonManager,
         ItemDescriptionService $itemDescriptionManager,
         ApiService $apiManager,
-        TextManager $textManager,
+        TextService $textManager,
         ItemRepository $itemRepo
     )
     {

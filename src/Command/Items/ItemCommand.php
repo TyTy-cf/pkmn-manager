@@ -7,7 +7,7 @@ namespace App\Command\Items;
 use App\Command\AbstractCommand;
 use App\Service\Api\ApiService;
 use App\Service\Items\ItemService;
-use App\Service\Users\LanguageManager;
+use App\Service\Users\LanguageService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,13 +20,13 @@ class ItemCommand extends AbstractCommand
     /**
      * ExcecCommand constructor
      * @param ItemService $itemManager
-     * @param LanguageManager $languageManager
+     * @param LanguageService $languageManager
      * @param ApiService $apiManager
      * @param EntityManagerInterface $em
      */
     public function __construct(
         ItemService $itemManager,
-        LanguageManager $languageManager,
+        LanguageService $languageManager,
         ApiService $apiManager,
         EntityManagerInterface $em
     )

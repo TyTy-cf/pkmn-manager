@@ -7,7 +7,7 @@ namespace App\Command\Infos\Type;
 use App\Command\AbstractCommand;
 use App\Service\Api\ApiService;
 use App\Service\Infos\Type\TypeService;
-use App\Service\Users\LanguageManager;
+use App\Service\Users\LanguageService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,13 +21,13 @@ class TypeCommand extends AbstractCommand
      * ExcecCommand constructor
      * @param TypeService $typeManager
      * @param ApiService $apiManager
-     * @param LanguageManager $languageManager
+     * @param LanguageService $languageManager
      * @param EntityManagerInterface $em
      */
     public function __construct(
         TypeService $typeManager,
         ApiService $apiManager,
-        LanguageManager $languageManager,
+        LanguageService $languageManager,
         EntityManagerInterface $em
     )
     {

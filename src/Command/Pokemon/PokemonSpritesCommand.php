@@ -7,7 +7,7 @@ namespace App\Command\Pokemon;
 use App\Command\AbstractCommand;
 use App\Service\Api\ApiService;
 use App\Service\Pokemon\PokemonSpritesVersionService;
-use App\Service\Users\LanguageManager;
+use App\Service\Users\LanguageService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Console\Input\InputArgument;
@@ -21,14 +21,14 @@ class PokemonSpritesCommand extends AbstractCommand
     /**
      * ExcecCommand constructor
      * @param PokemonSpritesVersionService $pokemonManagerVersionManager
-     * @param LanguageManager $languageManager
+     * @param LanguageService $languageManager
      * @param ApiService $apiManager
      * @param EntityManagerInterface $em
      */
     public function __construct
     (
         PokemonSpritesVersionService $pokemonManagerVersionManager,
-        LanguageManager $languageManager,
+        LanguageService $languageManager,
         ApiService $apiManager,
         EntityManagerInterface $em
     )

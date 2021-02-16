@@ -22,20 +22,20 @@ class AbstractService
     protected ApiService $apiManager;
 
     /**
-     * @var TextManager
+     * @var TextService
      */
-    protected TextManager $textManager;
+    protected TextService $textManager;
 
     /**
      * AbstractService constructor.
      * @param EntityManagerInterface $entityManager
      * @param ApiService $apiManager
-     * @param TextManager $textManager
+     * @param TextService $textManager
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         ApiService $apiManager,
-        TextManager $textManager
+        TextService $textManager
     )
     {
         $this->entityManager = $entityManager;

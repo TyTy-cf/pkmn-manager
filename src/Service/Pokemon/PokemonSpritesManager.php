@@ -6,7 +6,7 @@ namespace App\Service\Pokemon;
 
 use App\Entity\Pokemon\Pokemon;
 use App\Entity\Pokemon\PokemonSprites;
-use App\Service\TextManager;
+use App\Service\TextService;
 use App\Repository\Pokemon\PokemonSpritesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -38,13 +38,13 @@ class PokemonSpritesManager
     /**
      * @param EntityManagerInterface $entityManager
      * @param Pokemon $pokemon
-     * @param TextManager $textManager
+     * @param TextService $textManager
      * @param $urlDetail
      */
     public function createPokemonSprites(
         EntityManagerInterface $entityManager,
         Pokemon $pokemon,
-        TextManager $textManager,
+        TextService $textManager,
         $urlDetail
     ) {
         $slug = $textManager->generateSlugFromClass(

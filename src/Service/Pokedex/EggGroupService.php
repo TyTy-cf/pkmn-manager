@@ -8,7 +8,7 @@ use App\Entity\Pokedex\EggGroup;
 use App\Entity\Users\Language;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
-use App\Service\TextManager;
+use App\Service\TextService;
 use App\Repository\Pokedex\EggGroupRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
@@ -26,14 +26,14 @@ class EggGroupService extends AbstractService
      * @param EntityManagerInterface $entityManager
      * @param EggGroupRepository $eggGroupRepository
      * @param ApiService $apiManager
-     * @param TextManager $textManager
+     * @param TextService $textManager
      */
     public function __construct
     (
         EntityManagerInterface $entityManager,
         EggGroupRepository $eggGroupRepository,
         ApiService $apiManager,
-        TextManager $textManager
+        TextService $textManager
     )
     {
         $this->eggGroupRepository = $eggGroupRepository;

@@ -10,7 +10,7 @@ use App\Entity\Users\Language;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
 use App\Service\Pokedex\EggGroupService;
-use App\Service\TextManager;
+use App\Service\TextService;
 use App\Service\Versions\GenerationService;
 use App\Service\Versions\VersionService;
 use App\Repository\Pokemon\PokemonSpeciesRepository;
@@ -55,7 +55,7 @@ class PokemonSpeciesService extends AbstractService
      *
      * @param EntityManagerInterface $entityManager
      * @param ApiService $apiManager
-     * @param TextManager $textManager
+     * @param TextService $textManager
      * @param PokemonService $pokemonManager
      * @param EggGroupService $eggGroupManager
      * @param VersionService $versionManager
@@ -67,7 +67,7 @@ class PokemonSpeciesService extends AbstractService
     (
         EntityManagerInterface $entityManager,
         ApiService $apiManager,
-        TextManager $textManager,
+        TextService $textManager,
         PokemonService $pokemonManager,
         EggGroupService $eggGroupManager,
         VersionService $versionManager,

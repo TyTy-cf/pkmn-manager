@@ -8,7 +8,7 @@ use App\Entity\Pokemon\PokemonSpecies;
 use App\Entity\Pokemon\PokemonSpeciesVersion;
 use App\Entity\Users\Language;
 use App\Entity\Versions\Version;
-use App\Service\TextManager;
+use App\Service\TextService;
 use App\Repository\Pokemon\PokemonSpeciesVersionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -26,22 +26,22 @@ class PokemonSpeciesVersionManager
     private PokemonSpeciesVersionRepository $repository;
 
     /**
-     * @var TextManager $textManager
+     * @var TextService $textManager
      */
-    private TextManager $textManager;
+    private TextService $textManager;
 
     /**
      * PokemonSpeciesVersionManager constructor.
      *
      * @param EntityManagerInterface $entityManager
      * @param PokemonSpeciesVersionRepository $repository
-     * @param TextManager $textManager
+     * @param TextService $textManager
      */
     public function __construct
     (
         EntityManagerInterface $entityManager,
         PokemonSpeciesVersionRepository $repository,
-        TextManager $textManager
+        TextService $textManager
     ) {
         $this->entityManager = $entityManager;
         $this->repository = $repository;

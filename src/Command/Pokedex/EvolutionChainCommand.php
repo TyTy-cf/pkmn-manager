@@ -8,7 +8,7 @@ use App\Command\AbstractCommand;
 use App\Service\Api\ApiService;
 use App\Service\Pokedex\EggGroupService;
 use App\Service\Pokedex\EvolutionChainService;
-use App\Service\Users\LanguageManager;
+use App\Service\Users\LanguageService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,13 +21,13 @@ class EvolutionChainCommand extends AbstractCommand
     /**
      * ExcecCommand constructor
      * @param EvolutionChainService $evolutionChainManager
-     * @param LanguageManager $languageManager
+     * @param LanguageService $languageManager
      * @param ApiService $apiManager
      * @param EntityManagerInterface $em
      */
     public function __construct(
         EvolutionChainService $evolutionChainManager,
-        LanguageManager $languageManager,
+        LanguageService $languageManager,
         ApiService $apiManager,
         EntityManagerInterface $em
     )

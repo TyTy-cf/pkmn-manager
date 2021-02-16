@@ -16,7 +16,7 @@ use App\Entity\Versions\VersionGroup;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
 use App\Service\Pokemon\PokemonService;
-use App\Service\TextManager;
+use App\Service\TextService;
 use App\Service\Versions\GenerationService;
 use App\Service\Versions\VersionGroupService;
 use App\Repository\Moves\PokemonMovesLearnVersionRepository;
@@ -51,7 +51,7 @@ class PokemonMovesLearnVersionService extends AbstractService
      * MoveService constructor
      * @param EntityManagerInterface $em
      * @param ApiService $apiManager
-     * @param TextManager $textManager
+     * @param TextService $textManager
      * @param MoveService $moveManager
      * @param GenerationService $generationManager
      * @param VersionGroupService $versionGroupManager
@@ -61,7 +61,7 @@ class PokemonMovesLearnVersionService extends AbstractService
     (
         EntityManagerInterface $em,
         ApiService $apiManager,
-        TextManager $textManager,
+        TextService $textManager,
         MoveService $moveManager,
         GenerationService $generationManager,
         VersionGroupService $versionGroupManager,

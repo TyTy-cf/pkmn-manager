@@ -6,7 +6,7 @@ namespace App\Command;
 
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
-use App\Service\Users\LanguageManager;
+use App\Service\Users\LanguageService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Console\Command\Command;
@@ -26,9 +26,9 @@ abstract class AbstractCommand extends Command
     protected AbstractService $manager;
 
     /**
-     * @var LanguageManager $languageManager
+     * @var LanguageService $languageManager
      */
-    protected LanguageManager $languageManager;
+    protected LanguageService $languageManager;
 
     /**
      * @var ApiService $apiManager ;
@@ -43,14 +43,14 @@ abstract class AbstractCommand extends Command
     /**
      * AbstractCommand constructor.
      * @param AbstractService $manager
-     * @param LanguageManager $languageManager
+     * @param LanguageService $languageManager
      * @param ApiService $apiManager
      * @param EntityManagerInterface $em
      */
     public function __construct
     (
         AbstractService $manager,
-        LanguageManager $languageManager,
+        LanguageService $languageManager,
         ApiService $apiManager,
         EntityManagerInterface $em
     )

@@ -6,10 +6,11 @@ use App\Entity\Infos\Type\Type;
 use App\Entity\Moves\DamageClass;
 use App\Entity\Moves\Move;
 use App\Entity\Users\Language;
+use App\Repository\Infos\Type\TypeRepository;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
 use App\Service\Infos\Type\TypeService;
-use App\Service\TextManager;
+use App\Service\TextService;
 use App\Repository\Moves\MoveRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
@@ -38,28 +39,33 @@ class MoveService extends AbstractService
     private MoveDescriptionService $moveDescriptionManager;
 
     /**
+     * @var TypeRepository $typeRepository
+     */
+    private TypeRepository $typeRepository;
+
+    /**
      * MoveService constructor
      * @param EntityManagerInterface $em
      * @param ApiService $apiManager
-     * @param TypeService $typeManager
-     * @param TextManager $textManager
+     * @param TextService $textManager
      * @param DamageClassService $damageClassManager
      * @param MoveDescriptionService $moveDescriptionManager
      * @param MoveRepository $moveRepository
+     * @param TypeRepository $typeRepository
      */
     public function __construct
     (
         EntityManagerInterface $em,
         ApiService $apiManager,
-        TypeService $typeManager,
-        TextManager $textManager,
+        TextService $textManager,
         DamageClassService $damageClassManager,
         MoveDescriptionService $moveDescriptionManager,
-        MoveRepository $moveRepository
+        MoveRepository $moveRepository,
+        TypeRepository $typeRepository
     )
     {
         $this->movesRepository = $moveRepository;
-        $this->typeManager = $typeManager;
+        $this->typeRepository = $typeRepository;
         $this->damageClassManager = $damageClassManager;
         $this->moveDescriptionManager = $moveDescriptionManager;
         parent::__construct($em, $apiManager, $textManager);
@@ -111,7 +117,7 @@ class MoveService extends AbstractService
                 )
             );
             // Get the Type
-            $type = $this->typeManager->getTypeBySlug(
+            $type = $this->typeRepository->findOneBySlug(
                 $this->textManager->generateSlugFromClassWithLanguage(
                     $language,
                     Type::class,

@@ -13,7 +13,7 @@ use App\Entity\Versions\Generation;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
 use App\Service\Pokemon\PokemonSpeciesService;
-use App\Service\TextManager;
+use App\Service\TextService;
 use App\Service\Versions\VersionGroupService;
 use App\Repository\Locations\RegionRepository;
 use App\Repository\Pokedex\PokedexRepository;
@@ -58,7 +58,7 @@ class PokedexService extends AbstractService
      * @param PokemonSpeciesService $pokemonSpeciesManager
      * @param GenerationRepository $generationRepo
      * @param ApiService $apiManager
-     * @param TextManager $textManager
+     * @param TextService $textManager
      */
     public function __construct
     (
@@ -69,7 +69,7 @@ class PokedexService extends AbstractService
         GenerationRepository $generationRepo,
         EntityManagerInterface $entityManager,
         ApiService $apiManager,
-        TextManager $textManager
+        TextService $textManager
     )
     {
         $this->versionGroupManager = $versionGroup;

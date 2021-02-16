@@ -8,10 +8,9 @@ use App\Entity\Infos\Type\Type;
 use App\Entity\Users\Language;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
-use App\Service\TextManager;
+use App\Service\TextService;
 use App\Repository\Infos\Type\TypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class TypeService extends AbstractService
@@ -33,7 +32,7 @@ class TypeService extends AbstractService
      * @param EntityManagerInterface $entityManager
      * @param ApiService $apiManager
      * @param TypeDamageRelationTypeService $typeDamageFromTypeManager
-     * @param TextManager $textManager
+     * @param TextService $textManager
      * @param TypeRepository $typeRepository
      */
     public function __construct
@@ -41,7 +40,7 @@ class TypeService extends AbstractService
         EntityManagerInterface $entityManager,
         ApiService $apiManager,
         TypeDamageRelationTypeService $typeDamageFromTypeManager,
-        TextManager $textManager,
+        TextService $textManager,
         TypeRepository $typeRepository
     ) {
         $this->typeDamageFromTypeManager = $typeDamageFromTypeManager;
@@ -93,7 +92,7 @@ class TypeService extends AbstractService
             $language, Type::class, $type['name']
         );
 
-        if ($this->getTypeBySlug($slug) === null)
+        if (null === $this->typeRepository->findOneBySlug($slug))
         {
             //Fetch URL details type
             $urlType = $type['url'];

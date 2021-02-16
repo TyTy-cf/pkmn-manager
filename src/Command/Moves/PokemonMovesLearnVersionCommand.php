@@ -10,8 +10,8 @@ use App\Service\Api\ApiService;
 use App\Service\Moves\MoveLearnMethodService;
 use App\Service\Moves\PokemonMovesLearnVersionService;
 use App\Service\Pokemon\PokemonService;
-use App\Service\TextManager;
-use App\Service\Users\LanguageManager;
+use App\Service\TextService;
+use App\Service\Users\LanguageService;
 use App\Service\Versions\VersionGroupService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
@@ -30,9 +30,9 @@ class PokemonMovesLearnVersionCommand extends AbstractCommand
     private VersionGroupService $versionGroupManager;
 
     /**
-     * @var TextManager $textManager
+     * @var TextService $textManager
      */
-    private TextManager $textManager;
+    private TextService $textManager;
 
     /**
      * @var MoveLearnMethodService $moveLearnMethodManager
@@ -49,8 +49,8 @@ class PokemonMovesLearnVersionCommand extends AbstractCommand
      * @param PokemonMovesLearnVersionService $pokemonMovesLearnVersionManager
      * @param VersionGroupService $versionGroupManager
      * @param ApiService $apiManager
-     * @param TextManager $textManager
-     * @param LanguageManager $languageManager
+     * @param TextService $textManager
+     * @param LanguageService $languageManager
      * @param PokemonService $pokemonManager
      * @param MoveLearnMethodService $moveLearnMethodManager
      * @param EntityManagerInterface $em
@@ -60,8 +60,8 @@ class PokemonMovesLearnVersionCommand extends AbstractCommand
         PokemonMovesLearnVersionService $pokemonMovesLearnVersionManager,
         VersionGroupService $versionGroupManager,
         ApiService $apiManager,
-        TextManager $textManager,
-        LanguageManager $languageManager,
+        TextService $textManager,
+        LanguageService $languageManager,
         PokemonService $pokemonManager,
         MoveLearnMethodService $moveLearnMethodManager,
         EntityManagerInterface $em

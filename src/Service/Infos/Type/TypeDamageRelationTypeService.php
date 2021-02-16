@@ -6,12 +6,11 @@ use App\Entity\Infos\Type\Type;
 use App\Entity\Infos\Type\TypeDamageRelationType;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
-use App\Service\TextManager;
+use App\Service\TextService;
 use App\Repository\Infos\Type\TypeDamageRelationTypeRepository;
 use App\Repository\Infos\Type\TypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
-use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class TypeDamageRelationTypeService extends AbstractService
@@ -32,7 +31,7 @@ class TypeDamageRelationTypeService extends AbstractService
      * @param TypeRepository $typeRepository
      * @param ApiService $apiManager
      * @param EntityManagerInterface $em
-     * @param TextManager $textManager
+     * @param TextService $textManager
      * @param TypeDamageRelationTypeRepository $typeDamageRelationTypeRepository
      */
     public function __construct
@@ -40,7 +39,7 @@ class TypeDamageRelationTypeService extends AbstractService
         TypeRepository $typeRepository,
         ApiService $apiManager,
         EntityManagerInterface $em,
-        TextManager $textManager,
+        TextService $textManager,
         TypeDamageRelationTypeRepository $typeDamageRelationTypeRepository
     ) {
         $this->typeRepository = $typeRepository;
@@ -95,8 +94,7 @@ class TypeDamageRelationTypeService extends AbstractService
         string $field,
         string $damageRelation,
         float $coef
-    )
-    {
+    ) {
         if (!empty($urlDetailedType['damage_relations'][$field]))
         {
             // Create the double_damage_from
@@ -107,7 +105,7 @@ class TypeDamageRelationTypeService extends AbstractService
                     $lang,
                     $this->apiManager->getIdFromUrl($jsonType['url'])
                 );
-                if ($typeFrom != null)
+                if (null !== $typeFrom)
                 {
                     $this->createTypeDamageRelationType($type, $typeFrom, $damageRelation, $coef);
                 }

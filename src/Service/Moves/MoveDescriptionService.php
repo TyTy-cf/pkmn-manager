@@ -10,7 +10,7 @@ use App\Entity\Users\Language;
 use App\Entity\Versions\VersionGroup;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
-use App\Service\TextManager;
+use App\Service\TextService;
 use App\Service\Versions\VersionGroupService;
 use App\Repository\Moves\MoveDescriptionRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -34,7 +34,7 @@ class MoveDescriptionService extends AbstractService
      * @param MoveDescriptionRepository $repo
      * @param ApiService $apiManager
      * @param VersionGroupService $versionGroupManager
-     * @param TextManager $textManager
+     * @param TextService $textManager
      * @param EntityManagerInterface $em
      */
     public function __construct
@@ -42,7 +42,7 @@ class MoveDescriptionService extends AbstractService
         MoveDescriptionRepository $repo,
         ApiService $apiManager,
         VersionGroupService $versionGroupManager,
-        TextManager $textManager,
+        TextService $textManager,
         EntityManagerInterface $em
     )
     {

@@ -8,7 +8,7 @@ use App\Entity\Moves\DamageClass;
 use App\Entity\Users\Language;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
-use App\Service\TextManager;
+use App\Service\TextService;
 use App\Repository\Moves\DamageClassRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
@@ -27,14 +27,14 @@ class DamageClassService extends AbstractService
      * @param EntityManagerInterface $entityManager
      * @param DamageClassRepository $damageClassRepository
      * @param ApiService $apiManager
-     * @param TextManager $textManager
+     * @param TextService $textManager
      */
     public function __construct
     (
         EntityManagerInterface $entityManager,
         DamageClassRepository $damageClassRepository,
         ApiService $apiManager,
-        TextManager $textManager
+        TextService $textManager
     )
     {
         $this->damageClassRepository = $damageClassRepository;

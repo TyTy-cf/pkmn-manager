@@ -8,7 +8,7 @@ use App\Entity\Infos\Nature;
 use App\Entity\Users\Language;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
-use App\Service\TextManager;
+use App\Service\TextService;
 use App\Repository\Infos\NatureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
@@ -27,14 +27,14 @@ class NatureService extends AbstractService
      * @param EntityManagerInterface $entityManager
      * @param NatureRepository $natureRepository
      * @param ApiService $apiManager
-     * @param TextManager $textManager
+     * @param TextService $textManager
      */
     public function __construct
     (
         EntityManagerInterface $entityManager,
         NatureRepository $natureRepository,
         ApiService $apiManager,
-        TextManager $textManager
+        TextService $textManager
     )
     {
         $this->natureRepository = $natureRepository;

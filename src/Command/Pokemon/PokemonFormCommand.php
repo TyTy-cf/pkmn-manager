@@ -8,7 +8,7 @@ use App\Command\AbstractCommand;
 use App\Service\Api\ApiService;
 use App\Service\Pokemon\PokemonFormService;
 use App\Service\Pokemon\PokemonService;
-use App\Service\Users\LanguageManager;
+use App\Service\Users\LanguageService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -28,7 +28,7 @@ class PokemonFormCommand extends AbstractCommand
      *
      * @param PokemonFormService $pokemonFormManager
      * @param PokemonService $pokemonManager
-     * @param LanguageManager $languageManager
+     * @param LanguageService $languageManager
      * @param ApiService $apiManager
      * @param EntityManagerInterface $em
      */
@@ -36,7 +36,7 @@ class PokemonFormCommand extends AbstractCommand
     (
         PokemonFormService $pokemonFormManager,
         PokemonService $pokemonManager,
-        LanguageManager $languageManager,
+        LanguageService $languageManager,
         ApiService $apiManager,
         EntityManagerInterface $em
     )

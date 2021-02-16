@@ -7,7 +7,7 @@ namespace App\Command\Infos;
 use App\Command\AbstractCommand;
 use App\Service\Api\ApiService;
 use App\Service\Infos\NatureService;
-use App\Service\Users\LanguageManager;
+use App\Service\Users\LanguageService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,13 +20,13 @@ class NatureCommand extends AbstractCommand
     /**
      * ExcecCommand constructor
      * @param NatureService $natureManager
-     * @param LanguageManager $languageManager
+     * @param LanguageService $languageManager
      * @param ApiService $apiManager
      * @param EntityManagerInterface $em
      */
     public function __construct(
         NatureService $natureManager,
-        LanguageManager $languageManager,
+        LanguageService $languageManager,
         ApiService $apiManager,
         EntityManagerInterface $em
     )

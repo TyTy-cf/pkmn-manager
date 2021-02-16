@@ -11,6 +11,7 @@ use App\Entity\Pokedex\EvolutionDetail;
 use App\Entity\Pokemon\Pokemon;
 use App\Entity\Pokemon\PokemonSpecies;
 use App\Entity\Users\Language;
+use App\Repository\Infos\Type\TypeRepository;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
 use App\Service\Infos\Type\TypeService;
@@ -19,7 +20,7 @@ use App\Service\Locations\LocationService;
 use App\Service\Moves\MoveService;
 use App\Service\Pokemon\PokemonService;
 use App\Service\Pokemon\PokemonSpeciesService;
-use App\Service\TextManager;
+use App\Service\TextService;
 use App\Repository\Infos\GenderRepository;
 use App\Repository\Pokedex\EvolutionChainLinkRepository;
 use App\Repository\Pokedex\EvolutionChainRepository;
@@ -80,9 +81,15 @@ class EvolutionChainService extends AbstractService
     private PokemonService $pokemonManager;
 
     /**
+     * @var TypeRepository $typeRepository
+     */
+    private TypeRepository $typeRepository;
+
+    /**
      * EvolutionChainService constructor.
      * @param EvolutionChainLinkRepository $evolutionChainLinkRepository
      * @param EvolutionChainRepository $evolutionChainRepository
+     * @param TypeRepository $typeRepository
      * @param EvolutionTriggerService $evolutionTriggerManager
      * @param PokemonSpeciesService $pokemonSpeciesManager
      * @param EntityManagerInterface $entityManager
@@ -93,12 +100,13 @@ class EvolutionChainService extends AbstractService
      * @param MoveService $moveManager
      * @param TypeService $typeManager
      * @param ApiService $apiManager
-     * @param TextManager $textManager
+     * @param TextService $textManager
      */
     public function __construct
     (
         EvolutionChainLinkRepository $evolutionChainLinkRepository,
         EvolutionChainRepository $evolutionChainRepository,
+        TypeRepository $typeRepository,
         EvolutionTriggerService $evolutionTriggerManager,
         PokemonSpeciesService $pokemonSpeciesManager,
         EntityManagerInterface $entityManager,
@@ -109,11 +117,12 @@ class EvolutionChainService extends AbstractService
         MoveService $moveManager,
         TypeService $typeManager,
         ApiService $apiManager,
-        TextManager $textManager
+        TextService $textManager
     )
     {
         $this->evolutionChainRepository = $evolutionChainRepository;
         $this->evolutionChainLinkRepository = $evolutionChainLinkRepository;
+        $this->typeRepository = $typeRepository;
         $this->itemManager = $itemManager;
         $this->moveManager = $moveManager;
         $this->typeManager = $typeManager;
@@ -336,7 +345,7 @@ class EvolutionChainService extends AbstractService
         // the pokemon require a type from a specific move
         $knownMoveType = null;
         if ($urlEvolutionChainDetailed['known_move_type'] !== null) {
-            $knownMoveType = $this->typeManager->getTypeBySlug(
+            $knownMoveType = $this->typeRepository->findOneBySlug(
                 $language->getCode().'/type-'.$urlEvolutionChainDetailed['known_move_type']['name']
             );
         }
@@ -357,7 +366,7 @@ class EvolutionChainService extends AbstractService
         // the pokemon require a pokemon of specific type in team
         $partyType = null;
         if ($urlEvolutionChainDetailed['party_type'] !== null) {
-            $partyType = $this->typeManager->getTypeBySlug(
+            $partyType = $this->typeRepository->findOneBySlug(
                 $language->getCode() . '/type-' . $urlEvolutionChainDetailed['party_type']['name']
             );
         }

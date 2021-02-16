@@ -10,8 +10,8 @@ use App\Entity\Users\Language;
 use App\Entity\Versions\VersionGroup;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
-use App\Service\TextManager;
-use App\Service\Users\LanguageManager;
+use App\Service\TextService;
+use App\Service\Users\LanguageService;
 use App\Service\Versions\VersionGroupService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
@@ -41,7 +41,7 @@ class PokemonSpritesVersionService extends AbstractService
      * @param ApiService $apiManager
      * @param VersionGroupService $versionGroupManager
      * @param PokemonSpritesManager $pokemonSpritesManager
-     * @param TextManager $textManager
+     * @param TextService $textManager
      * @param PokemonService $pokemonManager
      */
     public function __construct
@@ -50,7 +50,7 @@ class PokemonSpritesVersionService extends AbstractService
         ApiService $apiManager,
         VersionGroupService $versionGroupManager,
         PokemonSpritesManager $pokemonSpritesManager,
-        TextManager $textManager,
+        TextService $textManager,
         PokemonService $pokemonManager
     )
     {

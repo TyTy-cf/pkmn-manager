@@ -9,7 +9,7 @@ use App\Entity\Infos\Type\TypeDamageRelationType;
 use App\Service\Api\ApiService;
 use App\Service\Infos\Type\TypeDamageRelationTypeService;
 use App\Service\Infos\Type\TypeService;
-use App\Service\Users\LanguageManager;
+use App\Service\Users\LanguageService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Console\Command\Command;
@@ -31,14 +31,14 @@ class TypeDamageRelationCommand extends AbstractCommand
      *
      * @param TypeService $typeManager
      * @param ApiService $apiManager
-     * @param LanguageManager $languageManager
+     * @param LanguageService $languageManager
      * @param TypeDamageRelationTypeService $typeDamageFromTypeManager
      * @param EntityManagerInterface $em
      */
     public function __construct(
         TypeService $typeManager,
         ApiService $apiManager,
-        LanguageManager $languageManager,
+        LanguageService $languageManager,
         TypeDamageRelationTypeService $typeDamageFromTypeManager,
         EntityManagerInterface $em
     )

@@ -11,7 +11,7 @@ use App\Entity\Versions\Version;
 use App\Entity\Versions\VersionGroup;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
-use App\Service\TextManager;
+use App\Service\TextService;
 use App\Service\Versions\VersionGroupService;
 use App\Repository\Moves\MoveMachineRepository;
 use App\Repository\Moves\MoveRepository;
@@ -41,7 +41,7 @@ class MoveMachineService extends AbstractService
      * MoveService constructor
      * @param EntityManagerInterface $em
      * @param ApiService $apiManager
-     * @param TextManager $textManager
+     * @param TextService $textManager
      * @param MoveService $movesManager
      * @param VersionGroupService $versionGroupManager
      * @param MoveMachineRepository $moveMachineRepository
@@ -50,7 +50,7 @@ class MoveMachineService extends AbstractService
     (
         EntityManagerInterface $em,
         ApiService $apiManager,
-        TextManager $textManager,
+        TextService $textManager,
         MoveService $movesManager,
         VersionGroupService $versionGroupManager,
         MoveMachineRepository $moveMachineRepository

@@ -9,7 +9,7 @@ use App\Entity\Versions\Version;
 use App\Entity\Versions\VersionGroup;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
-use App\Service\TextManager;
+use App\Service\TextService;
 use App\Repository\Versions\VersionGroupRepository;
 use App\Repository\Versions\VersionRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -39,7 +39,7 @@ class VersionService extends AbstractService
      *
      * @param EntityManagerInterface $entityManager
      * @param ApiService $apiManager
-     * @param TextManager $textManager
+     * @param TextService $textManager
      * @param VersionRepository $versionRepository
      * @param VersionGroupRepository $versionGroupRepository
      */
@@ -47,7 +47,7 @@ class VersionService extends AbstractService
     (
         EntityManagerInterface $entityManager,
         ApiService $apiManager,
-        TextManager $textManager,
+        TextService $textManager,
         VersionRepository $versionRepository,
         VersionGroupRepository $versionGroupRepository
     )

@@ -8,7 +8,7 @@ use App\Service\Api\ApiService;
 use App\Service\Pokedex\EvolutionChainService;
 use App\Service\Pokemon\PokemonService;
 use App\Service\Pokemon\PokemonSpeciesVersionManager;
-use App\Service\Users\LanguageManager;
+use App\Service\Users\LanguageService;
 use Doctrine\ORM\NonUniqueResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,9 +31,9 @@ class PokemonController extends AbstractController
     private ApiService $apiManager;
 
     /**
-     * @var LanguageManager $languageManager
+     * @var LanguageService $languageManager
      */
-    private LanguageManager $languageManager;
+    private LanguageService $languageManager;
 
     /**
      * @var EvolutionChainService $evolutionChainManager
@@ -51,14 +51,14 @@ class PokemonController extends AbstractController
      * @param PokemonService $pokemonManager
      * @param ApiService $apiManager
      * @param EvolutionChainService $evolutionChainManager
-     * @param LanguageManager $languageManager
+     * @param LanguageService $languageManager
      * @param PokemonSpeciesVersionManager $pokemonSpeciesVersionManager
      */
     public function __construct (
         PokemonService $pokemonManager,
         ApiService $apiManager,
         EvolutionChainService $evolutionChainManager,
-        LanguageManager $languageManager,
+        LanguageService $languageManager,
         PokemonSpeciesVersionManager $pokemonSpeciesVersionManager
     ) {
         $this->evolutionChainManager = $evolutionChainManager;
