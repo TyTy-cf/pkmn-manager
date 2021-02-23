@@ -1,55 +1,43 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ 'pokemon.profile'|trans({'%pokemon%': pokemon.name}) }}
+	{{ 'pokemon.profile'|trans({'%pokemon%': pokemon.name}) }}
 {% endblock %}
 
 {% block body %}
 
-    <h1 class="text-center bordered-title">{{ pokemon.name }}</h1>
-    <hr>
-    <div class="text-center">
-        {% include 'Pokemon/Resume/link_section.html.twig' %}
-    </div>
-    <hr>
-    <div class="grid-row">
-        <div class="col-md-6 d-flex text-center">
-            <img class="size-100" src="{{ pokemon.pokemonSprites.spriteOfficial }}" alt="Image de {{ pokemon.name|capitalize }}">
-        </div>
-        <div class="col-md-6">
-            {% include 'Pokemon/Resume/resume_profil.html.twig' with {'pokemon' : pokemon} %}
-        </div>
-    </div>
-    <hr>
-    <div class="row" id="section-stats">
-        <div class="col-md">
-            {% include 'Pokemon/Resume/resume_stats.html.twig' with {'pokemon' : pokemon} %}
-        </div>
-    </div>
-    <hr>
-    <div class="row" id="section-evolutions">
-        <div class="col-md">
-            {% include 'Pokemon/Resume/resume_evolution.html.twig' with {'pokemon' : pokemon} %}
-        </div>
-    </div>
-    <hr>
-    <div class="row" id="section-descriptions">
-        <div class="col-md">
-            {% include 'Pokemon/Resume/resume_pokedex_flavor.html.twig' with {'arrayDescriptionVersion' : arrayDescriptionVersion} %}
-        </div>
-    </div>
-    <hr>
-    <div class="row" id="section-moves">
-        <div class="col-md">
-            {% include 'Pokemon/Resume/resume_moves.html.twig' with {'pokemon' : pokemon} %}
-        </div>
-    </div>
-    <hr>
-    <div class="row" id="section-sprites">
-        <div class="col-md">
-            {% include 'Pokemon/Resume/resume_sprites.html.twig' with {'arraySprites' : arraySprites} %}
-        </div>
-    </div>
+	<h1 class="text-center bordered-title">{{ pokemon.name }}</h1>
+	<hr>
+	<div class="text-center">
+		{% include 'Pokemon/Resume/link_section.html.twig' %}
+	</div>
+	<hr>
+	<div class="grid-row">
+		<div class="col-md-6 d-flex text-center">
+			<img class="size-100" src="{{ pokemon.pokemonSprites.spriteOfficial }}" alt="Image de {{ pokemon.name|capitalize }}">
+		</div>
+		<div class="col-md-6">
+			<div class="tab-content" id="pills-tabContent">
+				<div class="tab-pane fade show active" id="section-presentation" role="tabpanel" aria-labelledby="section-presentation-tab">
+					{% include 'Pokemon/Resume/resume_profil.html.twig' with {'pokemon' : pokemon} %}
+				</div>
+				<div class="tab-pane fade" id="section-stats" role="tabpanel" aria-labelledby="section-stats-tab">
+					{% include 'Pokemon/Resume/resume_stats.html.twig' with {'pokemon' : pokemon} %}
+				</div>
+				<div class="tab-pane fade" id="section-evolutions" role="tabpanel" aria-labelledby="section-evolutions-tab">
+					{% include 'Pokemon/Resume/resume_evolution.html.twig' with {'pokemon' : pokemon} %}
+				</div>
+				<div class="tab-pane fade" id="section-descriptions" role="tabpanel" aria-labelledby="section-descriptions-tab">
+					{% include 'Pokemon/Resume/resume_pokedex_flavor.html.twig' with {'arrayDescriptionVersion' : arrayDescriptionVersion} %}
+				</div>
+				<div class="tab-pane fade" id="section-moves" role="tabpanel" aria-labelledby="section-moves-tab">
+					{% include 'Pokemon/Resume/resume_moves.html.twig' with {'pokemon' : pokemon} %}
+				</div>
+				<div class="tab-pane fade" id="section-sprites" role="tabpanel" aria-labelledby="section-sprites-tab">
+					{% include 'Pokemon/Resume/resume_sprites.html.twig' with {'arraySprites' : arraySprites} %}
+				</div>
+			</div>
+		</div>
+	</div>
 
 {% endblock %}
-

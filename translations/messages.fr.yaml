@@ -34,6 +34,9 @@ pokemon:
             accuracy: "Précis."
         section: "Attaques"
         title: "Attaques par versions"
+    presentation:
+        title: "Présentation"
+        section: "Présentation"
     stats:
         title: "Stats"
         ev: "EV"
