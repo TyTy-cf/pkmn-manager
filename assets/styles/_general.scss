@@ -1,0 +1,24 @@
+//
+// General
+// --------------------------------------------------
+
+// Need revision
+body {
+    background-color: $background-lighter;
+}
+
+.container {
+    background-color: $background;
+}
+
+// App global layout style
+
+.app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.app-mainContent {
+    flex-grow: 1;
+}

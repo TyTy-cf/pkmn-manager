@@ -1,0 +1,36 @@
+//
+// Main style
+// --------------------------------------------------
+
+// Import variables
+@import './variables/index';
+
+// Import necessary bootstrap root files
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
+@import '~bootstrap/scss/utilities';
+
+// Import base style
+@import './general';
+
+
+
+// Import components style
+
+
+
+// Imports to be checked
+@import './pokemon/profile.scss';
+@import './pokemon/tabpan.scss';
+
+@import './layout/images.scss';
+@import './layout/autocomplete/autocomplete.scss';
+
+@import './common/body.scss';
+@import './common/header.scss';
+@import './common/footer.scss';
+@import './common/grid.scss';
+@import './common/table.scss';
+@import './common/var_colors.scss';
+

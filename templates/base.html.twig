@@ -1,23 +1,25 @@
 <!DOCTYPE html>
 <html>
+
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}{% endblock %}</title>
+        <title>
+            {% block title %}{% endblock %}
+        </title>
         {% block stylesheets %}
-            {{ encore_entry_link_tags('styles') }}
+            {{ encore_entry_link_tags('libs') }}
+            {{ encore_entry_link_tags('style') }}
         {% endblock %}
     </head>
-    <body >
-        <header>
+
+    <body class='app'>
+        <header class='app-header'>
             {% include 'Common/nav.html.twig' %}
         </header>
 
-        <div class="container p-2">
-            {% block body %}
-
-            {% endblock %}
+        <div class="container-fluid p-2 app-mainContent">
+            {% block body %}{% endblock %}
         </div>
-
 
         {% block footer %}
             {{ include('Common/footer.html.twig') }}
@@ -27,4 +29,5 @@
             {{ encore_entry_script_tags('scripts') }}
         {% endblock %}
     </body>
+
 </html>
