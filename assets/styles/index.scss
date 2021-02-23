@@ -14,23 +14,16 @@
 // Import base style
 @import './general';
 
-
-
 // Import components style
 
-
-
 // Imports to be checked
-@import './pokemon/profile.scss';
-@import './pokemon/tabpan.scss';
-
-@import './layout/images.scss';
-@import './layout/autocomplete/autocomplete.scss';
-
-@import './common/body.scss';
-@import './common/header.scss';
-@import './common/footer.scss';
-@import './common/grid.scss';
-@import './common/table.scss';
-@import './common/var_colors.scss';
-
+@import './pokemon/profile';
+@import './pokemon/tabpan';
+@import './layout/images';
+@import './layout/autocomplete/autocomplete';
+@import './common/body';
+@import './common/header';
+@import './common/footer';
+@import './common/grid';
+@import './common/table';
+@import './common/var_colors';

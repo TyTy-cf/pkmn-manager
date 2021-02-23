@@ -1,76 +1,76 @@
 /**************************** Global ****************************/
 
 .barchart-bar {
-  height: .75rem;
-  border-radius: 4px;
-  background-color: #ff5145;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+	height: .75rem;
+	border: 1px solid rgba( 0, 0, 0, .15 );
+	border-radius: 4px;
+	background-color: #ff5145;
 }
 
 .detailed {
-  color: $font-special-color !important;
-  font-size: 1em;
-  font-weight: bold;
+	color: $font-special-color !important;
+	font-size: 1em;
+	font-weight: bold;
 }
 
 .light-detailed {
-  color: $font-special-color !important;
-  font-size: 0.8em;
-  font-weight: bold;
+	color: $font-special-color !important;
+	font-size: .8em;
+	font-weight: bold;
 
-  &-italic {
-    font-style: italic;
-    font-size: 1.1em;
-    font-weight: normal;
-    color: #d95803;
-  }
+	&-italic {
+		color: #d95803;
+		font-size: 1.1em;
+		font-style: italic;
+		font-weight: normal;
+	}
 }
 
 .bordered-card {
-  border-radius: 0.5em;
-  //border: 0.1em solid $background-lighter;
-  background-color: $background-light;
+	border-radius: .5em;
+	//border: 0.1em solid $background-lighter;
+	background-color: $background-light;
 }
 
 .profile-table th {
-  color: $font-special-color;
-  font-size: .875rem;
-  font-weight: normal;
-  text-align: right;
-  min-width: 144px;
+	min-width: 144px;
+	color: $font-special-color;
+	font-size: .875rem;
+	font-weight: normal;
+	text-align: right;
 }
 
 .hidden-talent {
-  font-style: italic;
-  display: inline;
-  font-size: 75%;
-  font-weight: 750;
-  line-height: 1;
-  padding: 0.2em;
-  white-space: nowrap;
-  text-align: center;
-  color: $font-special-color;
+	display: inline;
+	padding: .2em;
+	color: $font-special-color;
+	font-size: 75%;
+	font-style: italic;
+	font-weight: 750;
+	line-height: 1;
+	text-align: center;
+	white-space: nowrap;
 }
 
 .bordered-title {
-  background-color: $background-title;
-  color: $background-lighter;
-  border-radius: 15px;
-  padding: 0.6rem 0.3rem 0.6rem 1.2rem;
-  margin: 0.25rem 0.25rem 0.25rem 0.25rem
+	margin: .25rem;
+	padding: .6rem .3rem .6rem 1.2rem;
+	border-radius: 15px;
+	background-color: $background-title;
+	color: $background-lighter;
 }
 
 .btn-primary {
-  background-color: $background-title;
-  color: $background-lighter;
+	background-color: $background-title;
+	color: $background-lighter;
 }
 
 /**************************** Footer ****************************/
 
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  background-color: $background;
-  margin-top: 0.1em;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	margin-top: .1em;
+	background-color: $background;
 }

@@ -2,26 +2,26 @@
 $main-color: #d9e7ff;
 
 .site-footer {
-  background-color: $main-color;
-  color: white;
-  font-weight: 400;
+	background-color: $main-color;
+	color: white;
+	font-weight: 400;
 
-  .main-footer {
-    padding: 4rem 0 4rem 0;
-  }
+	.main-footer {
+		padding: 4rem 0;
+	}
 
-  a {
-    color: white;
-  }
+	a {
+		color: white;
+	}
 
-  .footer-bottom {
-    background-color: $main-color;
-    color: black;
-    padding: 0.75rem;
+	.footer-bottom {
+		padding: .75rem;
+		background-color: $main-color;
+		color: black;
 
-    a {
-      color: #bfbfbf;
-      font-weight: 600;
-    }
-  }
+		a {
+			color: #bfbfbf;
+			font-weight: 600;
+		}
+	}
 }

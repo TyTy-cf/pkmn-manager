@@ -1,79 +1,79 @@
 
 .table {
-  & td {
-    padding: 0 !important;
-    vertical-align: middle !important;
-  }
+	td {
+		padding: 0 !important;
+		vertical-align: middle !important;
+	}
 }
 
 .list-card-pkmn {
-  margin-bottom: 1rem;
-  display: grid;
-  grid-gap: 2rem .75rem;
+	display: grid;
+	grid-gap: 2rem .75rem;
+	margin-bottom: 1rem;
 
-  .pkmn-card {
-    display: inline-block;
-    line-height: 1.25;
-    text-align: center;
-    width: auto;
-    padding: 0;
-  }
+	.pkmn-card {
+		display: inline-block;
+		width: auto;
+		padding: 0;
+		line-height: 1.25;
+		text-align: center;
+	}
 }
 
 .list-card-pkmn-lg {
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+	grid-template-columns: repeat( auto-fit, minmax( 150px, 1fr ) );
 }
 
 .link-pokedex {
-  background-color: lightcyan;
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-left: 0;
-  text-align: center;
-  border-radius: 15px;
-  padding: 0.6rem 0.3rem 0.6rem 1.2rem;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	margin-left: 0;
+	padding: .6rem .3rem .6rem 1.2rem;
+	border-radius: 15px;
+	background-color: lightcyan;
+	list-style: none;
+	text-align: center;
 
-  > li {
-    padding: 0.1rem;
-  }
+	> li {
+		padding: .1rem;
+	}
 
-  .title {
-    padding: 0.2rem;
-    font-weight: bold;
-  }
+	.title {
+		padding: .2rem;
+		font-weight: bold;
+	}
 }
 
 .pokedex-pages-link {
-  font-weight: 500;
-  font-size: 1.1em;
+	font-size: 1.1em;
+	font-weight: 500;
 }
 
 .table-stats {
-  border-collapse: collapse;
+	border-collapse: collapse;
 }
 
 .small-col {
-  min-width: 2.7em;
+	min-width: 2.7em;
 }
 
 .col-moves-name {
-  min-width: 9em;
+	min-width: 9em;
 }
 
 .col-moves-type {
-  min-width: 3em;
+	min-width: 3em;
 }
 
 .col-moves-infos {
-  min-width: 6em;
+	min-width: 6em;
 }
 
 .moves-table {
-  overflow-x: auto;
+	overflow-x: auto;
 }
 
 .table-condensed {
-  display: table;
+	display: table;
 }
