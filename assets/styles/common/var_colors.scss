@@ -1,12 +1,5 @@
 /**************************** Global ****************************/
 
-.barchart-bar {
-	height: .75rem;
-	border: 1px solid rgba( 0, 0, 0, .15 );
-	border-radius: 4px;
-	background-color: #ff5145;
-}
-
 .detailed {
 	color: $font-special-color !important;
 	font-size: 1em;
@@ -26,18 +19,19 @@
 	}
 }
 
-.bordered-card {
-	border-radius: .5em;
-	//border: 0.1em solid $background-lighter;
-	background-color: $background-light;
-}
+.profile-table {
+	th {
+		min-width: 144px;
+		color: $font-special-color;
+		font-size: .875rem;
+		font-weight: normal;
+		text-align: right;
+	}
 
-.profile-table th {
-	min-width: 144px;
-	color: $font-special-color;
-	font-size: .875rem;
-	font-weight: normal;
-	text-align: right;
+	td {
+		color: $secondary;
+		font-size: .875rem;
+	}
 }
 
 .hidden-talent {
@@ -58,19 +52,4 @@
 	border-radius: 15px;
 	background-color: $background-title;
 	color: $background-lighter;
-}
-
-.btn-primary {
-	background-color: $background-title;
-	color: $background-lighter;
-}
-
-/**************************** Footer ****************************/
-
-.footer {
-	position: absolute;
-	bottom: 0;
-	width: 100%;
-	margin-top: .1em;
-	background-color: $background;
 }

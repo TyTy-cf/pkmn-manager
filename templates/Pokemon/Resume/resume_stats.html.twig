@@ -1,23 +1,20 @@
-
-<h2 class="bordered-title text-center">{{ 'pokemon.stats.title'|trans }}</h2>
-<hr>
 <table class="table table-striped profile-table text-center table-stats">
     <tbody>
     <tr>
         <td></td>
-        <td class="small-col"><strong>{{ 'pokemon.stats.ev'|trans }}</strong></td>
-        <td class="small-col"><strong>{{ 'pokemon.stats.base'|trans }}</strong></td>
+        <td class="th small-col">{{ 'pokemon.stats.ev'|trans }}</td>
+        <td class="th small-col">{{ 'pokemon.stats.base'|trans }}</td>
         <td></td>
-        <td class="small-col" title="EV=0, IV=0, Nature-"><strong>{{ 'pokemon.stats.min.max'|trans }}</strong></td>
-        <td class="small-col" title="EV=0, IV=0, Nature="><strong>{{ 'pokemon.stats.min.min'|trans }}</strong></td>
-        <td class="small-col" title="EV=255, IV=31, Nature="><strong>{{ 'pokemon.stats.max.min'|trans }}</strong></td>
-        <td class="small-col" title="EV=255, IV=31, Nature+"><strong>{{ 'pokemon.stats.max.max'|trans }}</strong></td>
+        <td class="th small-col" title="EV=0, IV=0, Nature-">{{ 'pokemon.stats.min.max'|trans }}</td>
+        <td class="th small-col" title="EV=0, IV=0, Nature=">{{ 'pokemon.stats.min.min'|trans }}</td>
+        <td class="th small-col" title="EV=255, IV=31, Nature=">{{ 'pokemon.stats.max.min'|trans }}</td>
+        <td class="th small-col" title="EV=255, IV=31, Nature+">{{ 'pokemon.stats.max.max'|trans }}</td>
     </tr>
     <tr>
         <th>{{ 'pokemon.stats.hp'|trans }}</th>
         <td>{{ pokemon.statsEffort.hp }}</td>
         <td>{{ pokemon.hp }}</td>
-        <td class="cell-barchart">
+        <td class="barchart-cell">
             <div class="barchart-bar" style="width: {{ (pokemon.hp/255) * 100 }}%"></div>
         </td>
         <td></td>
@@ -29,7 +26,7 @@
         <th>{{ 'pokemon.stats.atk'|trans }}</th>
         <td>{{ pokemon.statsEffort.atk }}</td>
         <td>{{ pokemon.atk }}</td>
-        <td class="cell-barchart">
+        <td class="barchart-cell">
             <div class="barchart-bar" style="width: {{ (pokemon.atk/255) * 100 }}%"></div>
         </td>
         <td>{{ pokemon.atkFormula(0, 0, 100, 0.9) }}</td>
@@ -41,7 +38,7 @@
         <th>{{ 'pokemon.stats.def'|trans }}</th>
         <td>{{ pokemon.statsEffort.def }}</td>
         <td>{{ pokemon.def }}</td>
-        <td class="cell-barchart">
+        <td class="barchart-cell">
             <div class="barchart-bar" style="width: {{ (pokemon.def/255) * 100 }}%"></div>
         </td>
         <td>{{ pokemon.defFormula(0, 0, 100, 0.9) }}</td>
@@ -53,7 +50,7 @@
         <th>{{ 'pokemon.stats.spa'|trans }}</th>
         <td>{{ pokemon.statsEffort.spa }}</td>
         <td>{{ pokemon.spa }}</td>
-        <td class="cell-barchart">
+        <td class="barchart-cell">
             <div class="barchart-bar" style="width: {{ (pokemon.spa/255) * 100 }}%"></div>
         </td>
         <td>{{ pokemon.spaFormula(0, 0, 100, 0.9) }}</td>
@@ -65,7 +62,7 @@
         <th>{{ 'pokemon.stats.spd'|trans }}</th>
         <td>{{ pokemon.statsEffort.spd }}</td>
         <td>{{ pokemon.spd }}</td>
-        <td class="cell-barchart">
+        <td class="barchart-cell">
             <div class="barchart-bar" style="width: {{ (pokemon.spd/255) * 100 }}%"></div>
         </td>
         <td>{{ pokemon.spdFormula(0, 0, 100, 0.9) }}</td>
@@ -77,7 +74,7 @@
         <th>{{ 'pokemon.stats.spe'|trans }}</th>
         <td>{{ pokemon.statsEffort.spe }}</td>
         <td>{{ pokemon.spe }}</td>
-        <td class="cell-barchart">
+        <td class="barchart-cell">
             <div class="barchart-bar" style="width: {{ (pokemon.spe/255) * 100 }}%"></div>
         </td>
         <td>{{ pokemon.speFormula(0, 0, 100, 0.9) }}</td>
@@ -88,7 +85,7 @@
     <tr>
         <th>{{ 'pokemon.stats.total'|trans }}</th>
         <td></td>
-        <td><strong>{{ pokemon.totalStats }}</strong></td>
+        <td class="th">{{ pokemon.totalStats }}</td>
     </tr>
     </tbody>
 </table>

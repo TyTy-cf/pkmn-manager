@@ -26,7 +26,7 @@
     </div>
     <div>
         <h2 class="text-center bordered-title">{{ 'move.title.pokemons'|trans }}</h2>
-        <div class="list-card-pkmn list-card-pkmn-lg">
+        <div class="pkmnCard-container">
             {% for pmlv in moveLearnPokemon %}
                 {% if pmlv.pokemon.pokemonSprites.spriteFrontDefault is not null %}
                     {% include'Pokemon/Cards/pokemon_card.html.twig' with {'pokemon' : pmlv.pokemon, 'size': moveLearnPokemon|length} %}

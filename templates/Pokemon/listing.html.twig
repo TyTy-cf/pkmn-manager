@@ -6,9 +6,11 @@
     {% for pokedex in pokedex %}
         <h2 class="p-2 border-light">{{ 'pokedex.description.listing'|trans({'%pokedex%': pokedex.description}) }}</h2>
         <hr>
-        <div class="list-card-pkmn list-card-pkmn-lg">
+        <div class="pkmnCard-container">
             {% for pokemon in pokemons %}
-                {% include'Pokemon/pokemon_card.html.twig' with {'pokemon' : pokemon} %}
+                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 px-2 mb-3">
+                    {% include'Pokemon/pokemon_card.html.twig' with {'pokemon' : pokemon} %}
+                </div>
             {% endfor %}
         </div>
     {% endfor %}

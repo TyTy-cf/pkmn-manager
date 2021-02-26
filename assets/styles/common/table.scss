@@ -6,50 +6,6 @@
 	}
 }
 
-.list-card-pkmn {
-	display: grid;
-	grid-gap: 2rem .75rem;
-	margin-bottom: 1rem;
-
-	.pkmn-card {
-		display: inline-block;
-		width: auto;
-		padding: 0;
-		line-height: 1.25;
-		text-align: center;
-	}
-}
-
-.list-card-pkmn-lg {
-	grid-template-columns: repeat( auto-fit, minmax( 150px, 1fr ) );
-}
-
-.link-pokedex {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	margin-left: 0;
-	padding: .6rem .3rem .6rem 1.2rem;
-	border-radius: 15px;
-	background-color: lightcyan;
-	list-style: none;
-	text-align: center;
-
-	> li {
-		padding: .1rem;
-	}
-
-	.title {
-		padding: .2rem;
-		font-weight: bold;
-	}
-}
-
-.pokedex-pages-link {
-	font-size: 1.1em;
-	font-weight: 500;
-}
-
 .table-stats {
 	border-collapse: collapse;
 }

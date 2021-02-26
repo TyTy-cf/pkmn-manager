@@ -2,11 +2,18 @@
 // Bootstrap Imports (need optimisations)
 // --------------------------------------------------
 
+// These are already imported in main index.scss
+// They are needed here too)
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins';
-@import '~bootstrap/scss/root';
-@import '~bootstrap/scss/reboot';
+
+// These are already imported in main index.scss
+// (they are not necessary here)
+//@import '~bootstrap/scss/utilities';
+// @import '~bootstrap/scss/root';
+// @import '~bootstrap/scss/reboot';
+
 @import '~bootstrap/scss/type';
 @import '~bootstrap/scss/images';
 @import '~bootstrap/scss/code';
@@ -37,5 +44,6 @@
 @import '~bootstrap/scss/popover';
 @import '~bootstrap/scss/carousel';
 @import '~bootstrap/scss/spinners';
-@import '~bootstrap/scss/utilities';
+
+// Not necessary for now
 // @import "~bootstrap/scss/print";

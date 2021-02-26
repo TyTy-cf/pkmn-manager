@@ -1,37 +1,27 @@
-
-<h2 class="bordered-title text-center">{{ 'pokemon.sprites.title'|trans }}</h2>
-<hr>
-
-<div>
-    <table class="table table-striped col-8 offset-2">
-        <tbody>
-            <tr>
-                <th>
-
-                </th>
-                <th class="text-center">
-                    {{ 'pokemon.sprites.default'|trans }}
-                </th>
-                <th class="text-center">
-                    {{ 'pokemon.sprites.shiny'|trans }}
-                </th>
-            </tr>
-            {% for version, sprites in arraySprites %}
-                <tr>
-                    <th class="align-middle">
-                        {{ version }}
-                    </th>
-                    {% for urlSprite in sprites[0] %}
-                        <td class="text-center">
-                            {% if urlSprite is not same as(null) %}
-                                <img src="{{ urlSprite }}"
-                                     alt="{{ pokemon.name }}"
-                                >
-                            {% endif %}
-                        </td>
-                    {% endfor %}
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+<table class="table table-striped">
+	<tbody>
+		<tr>
+			<th></th>
+			<th class="text-center">
+				{{ 'pokemon.sprites.default'|trans }}
+			</th>
+			<th class="text-center">
+				{{ 'pokemon.sprites.shiny'|trans }}
+			</th>
+		</tr>
+		{% for version, sprites in arraySprites %}
+			<tr>
+				<th class="align-middle">
+					{{ version }}
+				</th>
+				{% for urlSprite in sprites[0] %}
+					<td class="text-center">
+						{% if urlSprite is not same as(null) %}
+							<img src="{{ urlSprite }}" alt="{{ pokemon.name }}">
+						{% endif %}
+					</td>
+				{% endfor %}
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>

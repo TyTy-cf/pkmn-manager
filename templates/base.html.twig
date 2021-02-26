@@ -3,6 +3,7 @@
 
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>
             {% block title %}{% endblock %}
         </title>
@@ -17,13 +18,13 @@
             {% include 'Common/nav.html.twig' %}
         </header>
 
-        <div class="container-fluid p-2 app-mainContent">
+        <div class="app-mainContent container-fluid">
             {% block body %}{% endblock %}
+            {% block footer %}
+                {{ include('Common/footer.html.twig') }}
+            {% endblock %}
         </div>
 
-        {% block footer %}
-            {{ include('Common/footer.html.twig') }}
-        {% endblock %}
 
         {% block javascripts %}
             {{ encore_entry_script_tags('scripts') }}

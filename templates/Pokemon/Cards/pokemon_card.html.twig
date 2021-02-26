@@ -1,38 +1,17 @@
-
-<div class="pkmn-card">
-    <div>
-        <span>
-            {% if pokemon.pokemonSprites.spriteFrontDefault is not null %}
-                <a href="{{ path('profile_pokemon', {slug_pokemon: pokemon.slug }) }}">
-                    <img class="mb-2" src="{{ pokemon.pokemonSprites.spriteFrontDefault }}" alt="Pokemon {{ pokemon.name }}">
-                </a>
-            {% else %}
-                <div class="h-100 mt-1">
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                </div>
-            {% endif %}
-        </span>
-    </div>
-    <div>
-        <span>
-            <a class="bold-link" href="{{ path('profile_pokemon', {slug_pokemon: pokemon.slug }) }}">
-                {{ pokemon.name }}
-            </a>
-        </span>
-        <div class="row justify-content-center">
-            {% for type in pokemon.types %}
-                    {% if size == 1 %}
-                        <img class="size-5" src="{{ type.img }}" alt="Type {{ type.name|lower }}">
-                    {% elseif size <= 5 %}
-                        <img class="size-15" src="{{ type.img }}" alt="Type {{ type.name|lower }}">
-                    {% else %}
-                        <img class="size-40" src="{{ type.img }}" alt="Type {{ type.name|lower }}">
-                    {% endif %}
-            {% endfor %}
-        </div>
-    </div>
-</div>
+<a class="pkmnCard" href="{{ path('profile_pokemon', {slug_pokemon: pokemon.slug }) }}">
+	<div class="pkmnCard-header">
+		{% if pokemon.pokemonSprites.spriteFrontDefault is not null %}
+			<img class="pkmnCard-pict" src="{{ pokemon.pokemonSprites.spriteFrontDefault }}" alt="Pokemon {{ pokemon.name }}">
+		{% else %}
+			<img class="pkmnCard-pict" src="TTTTOOOOODDDDDOOOOOOOO" alt="Pokemon {{ pokemon.name }}, mais sans sa photo">
+		{% endif %}
+		<h4 class="pkmnCard-name">
+			{{ pokemon.name }}
+		</h4>
+	</div>
+	<div class="pkmnCard-rowTypes">
+		{% for type in pokemon.types %}
+			<img class="pkmnCard-typesPict" src="{{ type.img }}" alt="Type {{ type.name|lower }}">
+		{% endfor %}
+	</div>
+</a>

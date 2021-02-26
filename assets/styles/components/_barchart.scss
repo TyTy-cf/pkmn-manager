@@ -1,0 +1,30 @@
+//
+// Barchart Coponent
+// --------------------------------------------------
+
+.barchart-cell {
+	width: 100%;
+	min-width: 255px;
+}
+
+.barchart-bar {
+	position: relative;
+	height: .75rem;
+
+	&,
+	&::before {
+		background: linear-gradient( 180deg, lighten( $primary, 14% ) 0%, $primary 85%, darken( $primary, 10% ) 90%, darken( $primary, 10% ) 100% );
+		background-color: $primary;
+	}
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		right: 0;
+		right: calc( -#{$spacer / 2} + 1px );
+		width: $spacer / 2;
+		height: 100%;
+		clip-path: polygon( 0 0, 100% 0, 5% 100%, 0% 100% );
+	}
+}

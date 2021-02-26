@@ -90,6 +90,9 @@ pokedex:
     description:
         goto: "Aller au : "
         listing: "Pokemons du %pokedex%"
+    selection_header:
+        title: "Pokédex par Génération"
+        indication: "Selectionnez votre Pokédex "
 
 move:
     title:

@@ -41,7 +41,7 @@ $black: black;
 //
 // Theme
 $primary: #e3350d;
-$secondary: #323232;
+$secondary: lighten( $gray-900, 4% );
 $success: $green;
 $info: $cyan;
 $warning: $yellow;

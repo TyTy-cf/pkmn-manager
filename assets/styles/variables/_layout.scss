@@ -16,9 +16,14 @@ $container-max-widths: (
 	sm: 540px,
 	md: 720px,
 	lg: 960px,
-	xl: 1140px
+	xl: 1600px
 );
 
 $grid-columns: 12;
 $grid-gutter-width: 30px;
 $grid-row-columns: 6;
+
+$app-header-height: 56px;
+$app-footer-height: 56px;
+
+$pokedex-selector-top-bar-height: 64px;

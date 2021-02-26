@@ -7,7 +7,7 @@
     <div class="grid-row">
         <div class="grid-col ">
             <h2>{{ 'index.egg_group.pokemons'|trans }}</h2>
-            <div class="list-card-pkmn list-card-pkmn-lg">
+            <div class="pkmnCard-container">
                 {% for pokemonSpecies in eggGroup.pokemonSpecies %}
                     {% for pokemon in pokemonSpecies.pokemons %}
                         {% if pokemon.pokemonSprites.spriteFrontDefault is not null %}

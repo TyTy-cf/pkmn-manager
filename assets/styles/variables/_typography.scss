@@ -2,6 +2,11 @@
 // Typography
 // --------------------------------------------------
 
+// Import Google Font
+//
+@import url('https://fonts.googleapis.com/css2?family=Francois+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300&display=swap');
+
 // Font weights definition
 //
 $font-weight-extra-light: 200;
@@ -13,6 +18,9 @@ $font-weight-bold: 700;
 
 // Texts base style definition
 //
-$font-family-sans-serif: -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, 'Helvetica Neue', arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+$font-family-sans-serif: 'Francois One', sans-serif;
+$font-family-sans-serif-light: 'Oswald', sans-serif;
 $font-family-monospace: sfmono-regular, menlo, monaco, consolas, 'Liberation Mono', 'Courier New', monospace;
-$font-family-base: $font-family-sans-serif;
+
+$font-family-base: $font-family-sans-serif-light;
+$font-family-headings: $font-family-sans-serif;

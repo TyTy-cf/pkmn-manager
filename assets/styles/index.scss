@@ -10,20 +10,25 @@
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins';
 @import '~bootstrap/scss/utilities';
+@import '~bootstrap/scss/root';
+@import '~bootstrap/scss/reboot';
 
 // Import base style
 @import './general';
 
 // Import components style
+@import './components/index';
 
 // Imports to be checked
-@import './pokemon/profile';
-@import './pokemon/tabpan';
 @import './layout/images';
 @import './layout/autocomplete/autocomplete';
 @import './common/body';
 @import './common/header';
-@import './common/footer';
 @import './common/grid';
 @import './common/table';
 @import './common/var_colors';
+
+// A virer pour retourver la toolbar de symfo
+.sf-toolbar {
+	display: none !important;
+}

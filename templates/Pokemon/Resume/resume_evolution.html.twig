@@ -1,35 +1,27 @@
-
-<h2 class="bordered-title text-center">{{ 'pokemon.evolution.title'|trans }}</h2>
-<hr>
-
-<div>
+<div class="pkmnCard-container">
     {% if arrayEvolutionChain|length == 0 %}
         <p>{{ 'pokemon.evolution.empty'|trans({'%pokemon%' : pokemon.name }) }}</p>
     {% else %}
         {% for key, evolutionChain in arrayEvolutionChain %}
-            <div class="float-left col-{{ 12 / (arrayEvolutionChain|length)  }}">
-                <div class="text-center">
-                    <h4>
-                        {% if evolutionChain[0].is_baby %}
-                            {{ 'pokemon.evolution.stage_baby'|trans }}
-                        {% elseif key is same as (1) %}
-                            {{ 'pokemon.evolution.stage_inital'|trans }}
-                        {% else %}
-                            {{ 'pokemon.evolution.stage'|trans({'%number%' : key-1}) }}
-                        {% endif %}
-                    </h4>
-                </div>
-                <div class="list-card-pkmn list-card-pkmn-lg bordered-card p-3">
-                    {% for pokemonEvolution in evolutionChain %}
-                        {% include'Pokemon/Cards/pokemon_evolution_card.html.twig' with {
-                            'pokemon' : pokemonEvolution.pokemon[0],
-                            'evolutionDetail' : pokemonEvolution.evolution_detail,
-                            'size': evolutionChain|length,
-                            'nbEvol': arrayEvolutionChain|length,
-                            'baby_trigger_item': pokemonEvolution.baby_trigger_item
-                        } %}
-                    {% endfor %}
-                </div>
+            <div class="pkmnCard_evolution-container col-{{ 12 / (arrayEvolutionChain|length)  }}">
+                <h4 class="text-center">
+                    {% if evolutionChain[0].is_baby %}
+                        {{ 'pokemon.evolution.stage_baby'|trans }}
+                    {% elseif key is same as (1) %}
+                        {{ 'pokemon.evolution.stage_inital'|trans }}
+                    {% else %}
+                        {{ 'pokemon.evolution.stage'|trans({'%number%' : key-1}) }}
+                    {% endif %}
+                </h4>
+                {% for pokemonEvolution in evolutionChain %}
+                    {% include'Pokemon/Cards/pokemon_evolution_card.html.twig' with {
+                        'pokemon' : pokemonEvolution.pokemon[0],
+                        'evolutionDetail' : pokemonEvolution.evolution_detail,
+                        'size': evolutionChain|length,
+                        'nbEvol': arrayEvolutionChain|length,
+                        'baby_trigger_item': pokemonEvolution.baby_trigger_item
+                    } %}
+                {% endfor %}
             </div>
         {% endfor %}
     {% endif %}
