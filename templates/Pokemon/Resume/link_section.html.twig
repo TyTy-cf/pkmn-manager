@@ -8,11 +8,13 @@
 		{{ 'pokemon.stats.section'|trans }}
 	</a>
 </li>
-<li class="nav-item">
-	<a class="pkmnProfile-datasTabLink nav-link" id="section-evolutions-tab" data-toggle="pill" href="#section-evolutions" role="tab" aria-controls="section-evolutions" aria-selected="true">
-		{{ 'pokemon.evolutions.section'|trans }}
-	</a>
-</li>
+{% if arrayEvolutionChain|length > 0 %}
+	<li class="nav-item">
+		<a class="pkmnProfile-datasTabLink nav-link" id="section-evolutions-tab" data-toggle="pill" href="#section-evolutions" role="tab" aria-controls="section-evolutions" aria-selected="true">
+			{{ 'pokemon.evolutions.section'|trans }}
+		</a>
+	</li>
+{% endif %}
 <li class="nav-item">
 	<a class="pkmnProfile-datasTabLink nav-link" id="section-descriptions-tab" data-toggle="pill" href="#section-descriptions" role="tab" aria-controls="section-descriptions" aria-selected="true">
 		{{ 'pokemon.descriptions.section'|trans }}

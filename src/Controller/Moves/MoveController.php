@@ -4,7 +4,6 @@
 namespace App\Controller\Moves;
 
 
-use App\Entity\Versions\VersionGroup;
 use App\Service\Moves\MoveDescriptionService;
 use App\Service\Moves\MoveMachineService;
 use App\Service\Moves\MoveService;
