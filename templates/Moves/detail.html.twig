@@ -6,32 +6,34 @@
 
 {% block body %}
 
-    <h1 class="text-center bordered-title">{{ move.name }}</h1>
-    <hr>
-    <div class="grid-row">
-        <div class="col-4 float-left">
-            <h2>{{ 'move.title.datas'|trans }}</h2>
-            {% include 'Moves/detail_infos.html.twig' with {'move' : move} %}
-        </div>
-        <div class="col-8 float-left">
-            <h2>{{ 'move.title.description'|trans }}</h2>
-            {% include 'Moves/detail_description.html.twig' with {'moveDescription' : moveDescription} %}
-        </div>
-        {% if moveMachine|length > 0 %}
-            <div class="col-5 float-left">
-                <h2>{{ 'move.title.machine'|trans }}</h2>
-                {% include 'Moves/detail_machines.html.twig' with {'moveMachine' : moveMachine} %}
+    <div class="container">
+        <h1 class="text-center bordered-title">{{ move.name }}</h1>
+        <hr>
+        <div class="grid-row">
+            <div class="col-4 float-left">
+                <h2>{{ 'move.title.datas'|trans }}</h2>
+                {% include 'Moves/detail_infos.html.twig' with {'move' : move} %}
             </div>
-        {% endif %}
-    </div>
-    <div>
-        <h2 class="text-center bordered-title">{{ 'move.title.pokemons'|trans }}</h2>
-        <div class="pkmnCard-container">
-            {% for pmlv in moveLearnPokemon %}
-                {% if pmlv.pokemon.pokemonSprites.spriteFrontDefault is not null %}
-                    {% include'Pokemon/Cards/pokemon_card.html.twig' with {'pokemon' : pmlv.pokemon, 'size': moveLearnPokemon|length} %}
-                {% endif %}
-            {% endfor %}
+            <div class="col-8 float-left">
+                <h2>{{ 'move.title.description'|trans }}</h2>
+                {% include 'Moves/detail_description.html.twig' with {'moveDescription' : moveDescription} %}
+            </div>
+            {% if moveMachine|length > 0 %}
+                <div class="col-5 float-left">
+                    <h2>{{ 'move.title.machine'|trans }}</h2>
+                    {% include 'Moves/detail_machines.html.twig' with {'moveMachine' : moveMachine} %}
+                </div>
+            {% endif %}
+        </div>
+        <div>
+            <h2 class="text-center bordered-title">{{ 'move.title.pokemons'|trans }}</h2>
+            <div class="pkmnCard-container">
+                {% for pmlv in moveLearnPokemon %}
+                    {% if pmlv.pokemon.pokemonSprites.spriteFrontDefault is not null %}
+                        {% include'Pokemon/Cards/pokemon_card.html.twig' with {'pokemon' : pmlv.pokemon, 'size': moveLearnPokemon|length} %}
+                    {% endif %}
+                {% endfor %}
+            </div>
         </div>
     </div>
 

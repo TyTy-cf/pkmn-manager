@@ -2,21 +2,23 @@
 
 {% block body %}
 
-    <h1 class="text-center bordered-title">{{ ability.name }}</h1>
-    <hr>
-    <div class="grid-row">
-        <div class="grid-col ">
-            <h2>{{ 'index.ability.description'|trans }}</h2>
-            <p>{{ ability.description }}</p>
-        </div>
-        <div class="grid-col ">
-            <h2>{{ 'index.ability.pokemons'|trans }}</h2>
-            <div class="pkmnCard-container">
-                {% for pokemonAbility in ability.pokemonsAbility %}
-                    {% if pokemonAbility.pokemon.pokemonSprites.spriteFrontDefault is not null %}
-                        {% include'Pokemon/Cards/pokemon_card.html.twig' with {'pokemon' : pokemonAbility.pokemon, 'size': ability.pokemonsAbility|length} %}
-                    {% endif %}
-                {% endfor %}
+    <div class="container">
+        <h1 class="text-center bordered-title">{{ ability.name }}</h1>
+        <hr>
+        <div class="grid-row">
+            <div class="grid-col ">
+                <h2>{{ 'index.ability.description'|trans }}</h2>
+                <p>{{ ability.description }}</p>
+            </div>
+            <div class="grid-col ">
+                <h2>{{ 'index.ability.pokemons'|trans }}</h2>
+                <div class="pkmnCard-container">
+                    {% for pokemonAbility in ability.pokemonsAbility %}
+                        {% if pokemonAbility.pokemon.pokemonSprites.spriteFrontDefault is not null %}
+                            {% include'Pokemon/Cards/pokemon_card.html.twig' with {'pokemon' : pokemonAbility.pokemon, 'size': ability.pokemonsAbility|length} %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>

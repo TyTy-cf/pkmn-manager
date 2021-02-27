@@ -2,19 +2,21 @@
 
 {% block body %}
 
-    <h1 class="text-center bordered-title">{{ eggGroup.name }}</h1>
-    <hr>
-    <div class="grid-row">
-        <div class="grid-col ">
-            <h2>{{ 'index.egg_group.pokemons'|trans }}</h2>
-            <div class="pkmnCard-container">
-                {% for pokemonSpecies in eggGroup.pokemonSpecies %}
-                    {% for pokemon in pokemonSpecies.pokemons %}
-                        {% if pokemon.pokemonSprites.spriteFrontDefault is not null %}
-                            {% include'Pokemon/Cards/pokemon_card.html.twig' with {'pokemon' : pokemon, 'size': pokemonSpecies.pokemons|length} %}
-                        {% endif %}
+    <div class="container">
+        <h1 class="text-center bordered-title">{{ eggGroup.name }}</h1>
+        <hr>
+        <div class="grid-row">
+            <div class="grid-col ">
+                <h2>{{ 'index.egg_group.pokemons'|trans }}</h2>
+                <div class="pkmnCard-container">
+                    {% for pokemonSpecies in eggGroup.pokemonSpecies %}
+                        {% for pokemon in pokemonSpecies.pokemons %}
+                            {% if pokemon.pokemonSprites.spriteFrontDefault is not null %}
+                                {% include'Pokemon/Cards/pokemon_card.html.twig' with {'pokemon' : pokemon, 'size': pokemonSpecies.pokemons|length} %}
+                            {% endif %}
+                        {% endfor %}
                     {% endfor %}
-                {% endfor %}
+                </div>
             </div>
         </div>
     </div>
