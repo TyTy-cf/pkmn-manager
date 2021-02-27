@@ -73,9 +73,9 @@ index:
         pokemons: "Pokémons avec cette capacité"
     type:
         damage_relation: "Relation du type avec les autres types"
-        type: "Type"
-        relation: "Faiblesses"
         pokemons: "Pokemons ayant le type %type%"
+        to: "Offensif"
+        from: "Défensif"
     egg_group:
         pokemons: "Pokémons ayant ce groupe d'oeuf"
     generation:
@@ -111,3 +111,4 @@ move:
             title: "Est prioritaire ?"
             no: "Non"
             yes: "Oui"
+

@@ -11,19 +11,60 @@
             </div>
             <div class="grid-col">
                 <div class="row">
-                    <div class="align-bottom">
-                        <img class="size-80" src="{{ type.img }}" alt="{{ type.name }}">
-                    </div>
-                    <div class="d-flex">
-                        {% for typeElement in types %}
-                            <div class="d-flex">
-                                <img class="size-80" src="{{ typeElement.img|imagine_filter('rotate270') }}" alt="{{ typeElement.name }}">
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-                <div>
-
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="align-bottom">
+                                    <img class="size-80" src="{{ type.img }}" alt="{{ type.name }}">
+                                </th>
+                                {% for typeElement in types %}
+                                    <th>
+                                        <div class="d-flex">
+                                            <img class="size-80" src="{{ typeElement.img|imagine_filter('rotate270') }}" alt="{{ typeElement.name }}">
+                                        </div>
+                                    </th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th class="text-center">
+                                    {{ 'index.type.to'|trans }}
+                                </th>
+                                {% for typeElement in types %}
+                                    {% set coef = 1 %}
+                                    {% for typeRelated in typeRelation %}
+                                        {% if typeRelated.damageRelation is same as 'to' %}
+                                            {% if typeElement.id is same as typeRelated.damageRelationType.id %}
+                                                {% set coef = typeRelated.damageRelationCoefficient %}
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <td class="text-center type-related-{{ coef|type_return }}">
+                                        {{ coef }}
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <th class="text-center">
+                                    {{ 'index.type.from'|trans }}
+                                </th>
+                                {% for typeElement in types %}
+                                    {% set coef = 1 %}
+                                    {% for typeRelated in typeRelation %}
+                                        {% if typeRelated.damageRelation is same as 'from' %}
+                                            {% if typeElement.id is same as typeRelated.damageRelationType.id %}
+                                                {% set coef = typeRelated.damageRelationCoefficient %}
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <td class="text-center type-related-{{ coef|type_return }}">
+                                        {{ coef }}
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

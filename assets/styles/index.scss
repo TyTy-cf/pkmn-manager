@@ -21,6 +21,7 @@
 
 // Imports to be checked
 @import './layout/images';
+@import './layout/types';
 @import './layout/autocomplete/autocomplete';
 @import './common/body';
 @import './common/header';
@@ -30,5 +31,5 @@
 
 // A virer pour retourver la toolbar de symfo
 .sf-toolbar {
-	display: none !important;
+	//display: none !important;
 }

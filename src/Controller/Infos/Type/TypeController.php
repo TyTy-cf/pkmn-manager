@@ -48,7 +48,6 @@ class TypeController extends AbstractController
      * @return Response
      */
     public function typeDetail(Type $type): Response {
-        dump($this->typeRelationManager->getRelationTypeByType($type));
         return $this->render('Type/detail.html.twig', [
             'type' => $type,
             'typeRelation' => $this->typeRelationManager->getRelationTypeByType($type),
