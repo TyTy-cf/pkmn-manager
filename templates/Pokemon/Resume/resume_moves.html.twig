@@ -1,52 +1,44 @@
-
-<h2 class="bordered-title text-center">{{ 'pokemon.moves.title'|trans }}</h2>
-<hr>
-
-<div>
-    <div class="tab">
-        {% for versionGroup in arrayMoves.version_groups %}
-            <button class="tablinks font-weight-bold" id="{{ versionGroup.id }}">
-                {{ versionGroup.name }}
-            </button>
-        {% endfor %}
-    </div>
-
-    {% if arrayMoves.moves_infos is defined  %}
-        {% for key, pokemonMoves in arrayMoves.moves_infos %}
-            <div id="tab-{{ key }}" class="tabcontent">
-                {% for title, moveLearnMethodArray in pokemonMoves.moves %}
-                    <div class="col-md-6 float-left mt-2">
-                        <h2>{{ title }}</h2>
-                        <table class="table table-striped table-moves">
-                            <thead>
-                                <tr>
-                                    {% if title is same as ('pokemon.moves.method.levelup'|trans) %}
-                                        <th>{{ 'pokemon.moves.table.level'|trans }}</th>
-                                    {% elseif title is same as ('pokemon.moves.method.machine'|trans) %}
-                                        <th>{{ 'pokemon.moves.table.machine'|trans }}</th>
-                                    {% endif %}
-                                    <th class="col-moves-name">{{ 'pokemon.moves.table.name'|trans }}</th>
-                                    <th class="col-moves-type text-center">{{ 'pokemon.moves.table.type'|trans }}</th>
-                                    <th>{{ 'pokemon.moves.table.category'|trans }}</th>
-                                    <th class="col-moves-infos">{{ 'pokemon.moves.table.power'|trans }}</th>
-                                    <th class="col-moves-infos">{{ 'pokemon.moves.table.accuracy'|trans }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% if title is same as ('pokemon.moves.method.machine'|trans) %}
-                                    {% for moveMachine in moveLearnMethodArray %}
-                                        {% include'Moves/table_moves_machines.html.twig' with {'moveMachine' : moveMachine} %}
-                                    {% endfor %}
-                                {% else %}
-                                    {% for moveLearnMethod in moveLearnMethodArray %}
-                                        {% include'Moves/table_moves.html.twig' with {'moveLearnMethod' : moveLearnMethod} %}
-                                    {% endfor %}
-                                 {% endif %}
-                            </tbody>
-                        </table>
-                    </div>
-                {% endfor %}
-            </div>
-        {% endfor %}
-    {% endif %}
+<div class="tabPan-navigation mb-4">
+	{% for versionGroup in arrayMoves.version_groups %}
+		<button class="tablinks tabPan-navigationButton selector-tabNavigationButton" id="{{ versionGroup.id }}">
+			{{ versionGroup.name }}
+		</button>
+	{% endfor %}
 </div>
+
+{% if arrayMoves.moves_infos is defined  %}
+	{% for key, pokemonMoves in arrayMoves.moves_infos %}
+		<div id="tab-{{ key }}" class="tabPan-content selector-tabContent">
+			{% for title, moveLearnMethodArray in pokemonMoves.moves %}
+				<h2>{{ title }}</h2>
+				<table class="table table-striped table-fixed">
+					<thead>
+						<tr>
+							{% if title is same as ('pokemon.moves.method.levelup'|trans) %}
+								<th class="text-center">{{ 'pokemon.moves.table.level'|trans }}</th>
+							{% elseif title is same as ('pokemon.moves.method.machine'|trans) %}
+								<th class="text-center">{{ 'pokemon.moves.table.machine'|trans }}</th>
+							{% endif %}
+							<th class="text-center col-moves-name">{{ 'pokemon.moves.table.name'|trans }}</th>
+							<th class="text-center col-moves-type">{{ 'pokemon.moves.table.type'|trans }}</th>
+							<th class="text-center">{{ 'pokemon.moves.table.category'|trans }}</th>
+							<th class="text-center col-moves-infos">{{ 'pokemon.moves.table.power'|trans }}</th>
+							<th class="text-center col-moves-infos">{{ 'pokemon.moves.table.accuracy'|trans }}</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% if title is same as ('pokemon.moves.method.machine'|trans) %}
+							{% for moveMachine in moveLearnMethodArray %}
+								{% include'Moves/table_moves_machines.html.twig' with {'moveMachine' : moveMachine} %}
+							{% endfor %}
+						{% else %}
+							{% for moveLearnMethod in moveLearnMethodArray %}
+								{% include'Moves/table_moves.html.twig' with {'moveLearnMethod' : moveLearnMethod} %}
+							{% endfor %}
+						{% endif %}
+					</tbody>
+				</table>
+			{% endfor %}
+		</div>
+	{% endfor %}
+{% endif %}

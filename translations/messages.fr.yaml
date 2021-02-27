@@ -34,6 +34,9 @@ pokemon:
             accuracy: "Précis."
         section: "Attaques"
         title: "Attaques par versions"
+    presentation:
+        title: "Présentation"
+        section: "Présentation"
     stats:
         title: "Stats"
         ev: "EV"
@@ -87,6 +90,9 @@ pokedex:
     description:
         goto: "Aller au : "
         listing: "Pokemons du %pokedex%"
+    selection_header:
+        title: "Pokédex par Génération"
+        indication: "Selectionnez votre Pokédex "
 
 move:
     title:

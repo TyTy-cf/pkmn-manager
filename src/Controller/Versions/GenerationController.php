@@ -33,8 +33,7 @@ class GenerationController extends AbstractController
     (
         LanguageService $languageManager,
         GenerationRepository $generationRepository
-    )
-    {
+    ) {
         $this->languageManager = $languageManager;
         $this->generationRepository = $generationRepository;
     }

@@ -1,30 +1,35 @@
 <!DOCTYPE html>
 <html>
+
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>
+            {% block title %}{% endblock %}
+        </title>
         {% block stylesheets %}
-            {{ encore_entry_link_tags('styles') }}
+            {{ encore_entry_link_tags('libs') }}
+            {{ encore_entry_link_tags('style') }}
         {% endblock %}
     </head>
-    <body >
-        <header>
+
+    <body class='app'>
+        <header class='app-header'>
             {% include 'Common/nav.html.twig' %}
         </header>
 
-        <div class="container p-2">
+        <div class="app-mainContent container-fluid">
             {% block body %}
-
+            {% endblock %}
+            {% block footer %}
+                {{ include('Common/footer.html.twig') }}
             {% endblock %}
         </div>
 
-
-        {% block footer %}
-            {{ include('Common/footer.html.twig') }}
-        {% endblock %}
 
         {% block javascripts %}
             {{ encore_entry_script_tags('scripts') }}
         {% endblock %}
     </body>
+
 </html>

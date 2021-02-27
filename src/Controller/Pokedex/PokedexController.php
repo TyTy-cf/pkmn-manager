@@ -44,8 +44,7 @@ class PokedexController extends AbstractController
         PokemonService $pokemonManager,
         PokedexService $pokedexManager,
         LanguageService $languageManager
-    )
-    {
+    ) {
         $this->pokemonManager = $pokemonManager;
         $this->pokedexManager = $pokedexManager;
         $this->languageManager = $languageManager;

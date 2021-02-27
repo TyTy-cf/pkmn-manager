@@ -1,0 +1,15 @@
+//
+// Transitions Animations
+// --------------------------------------------------
+
+// Easings
+$standard-easing: cubic-bezier( .4, 0, .2, 1 );
+$decelerate-easing: cubic-bezier( 0, 0, .2, 1 );
+$accelerate-easing: cubic-bezier( .4, 0, 1, 1 );
+
+// Durations
+$transition-small-element-duration: .1s;
+$transition-medium-element-expanding-duration: .25s;
+$transition-medium-element-collapsing-duration: .2s;
+$transition-large-element-expanding-duration: .3s;
+$transition-large-element-collapsing-duration: .25s;

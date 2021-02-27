@@ -2,41 +2,64 @@
 
 {% block title %}
 
-    {{ 'pokedex.listing.title'|trans({'%number%': generation.name}) }}
+	{{ 'pokedex.listing.title'|trans({'%number%': generation.name}) }}
 
 {% endblock %}
 
 {% block body %}
-    <div>
+    <div class="container-fluid pokedexPage">
         {% if arrayPokedex|length > 1 %}
-            <ul class="p-3 link-pokedex title">
-                {% for pokedex in arrayPokedex %}
-                    {% if loop.index != 1 %}
-                        <li class="p-1 ml-3">
-                    {% else %}
-                        <li class="p-1">
-                    {% endif %}
-                            <a class="pokedex-pages-link" href="#id-{{ pokedex.pokedex.slug }}">{{ pokedex.pokedex.description }}</a>
-                        </li>
-                {% endfor %}
-            </ul>
+            <div class="pokedexSelector">
+                <div class="container">
+                    <div class="pokedexSelector-topBar">
+                        <h1 class="pokedexSelector-title">{{ 'pokedex.selection_header.title'|trans}}</h1>
+                        <button class="btn btn-primary ml-auto" type="button" data-toggle="collapse" data-target="#collapsePokedex" aria-expanded="false" aria-controls="collapsePokedex">
+                            {{ 'pokedex.selection_header.indication'|trans }} <i class="fas fa-angle-down"></i>
+                        </button>
+                    </div>
+                    <div class="pokedexSelector-collapse collapse" id="collapsePokedex">
+                        <ul class="tabPan-navigation px-1 py-4 nav" id="pills-tab" role="tablist">
+                            {% for pokedex in arrayPokedex %}
+                                <li class="nav-item">
+                                    <a
+                                        class="tabPan-navigationButton tabPan-navigationButton_lg nav-link{% if loop.first %} active{% endif %}"
+                                        id="tab-{{ loop.index }}-tab"
+                                        data-toggle="pill"
+                                        href="#tab-{{ loop.index }}"
+                                        role="tab"
+                                        aria-controls="tab-{{ loop.index }}"
+                                    >
+                                        {{ pokedex.pokedex.description }}
+                                        <small>({{ pokedex.pokedex.generation.name }})</small>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
         {% endif %}
+        <div class="container pokedexPage-content">
+            <div class="tab-content pokedex{% if arrayPokedex|length > 1 %} pokedex_withNav{% endif %}">
+                {% for pokedex in arrayPokedex %}
+                    <div
+                        class="tab-pane fade{% if loop.first %} active show{% endif %}"
+                        id="tab-{{ loop.index }}"
+                        role="tabpanel"
+                        aria-labelledby="tab-{{ loop.index }}-tab"
+                    >
+                        <div class="pkmnCard-container">
+                            {% for pokemon in pokedex.pokemons %}
+                                {% if pokemon.isDefault is same as(true) %}
+                                    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 px-2 mb-3">
+                                        {% include'Pokemon/Cards/pokemon_card.html.twig' with {'pokemon' : pokemon, 'size': pokedex.pokemons|length } %}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
-    {% for pokedex in arrayPokedex %}
-        <hr>
-        <div class="border bordered-title">
-            <h2 id="id-{{ pokedex.pokedex.slug }}">
-                {{ 'pokedex.description.listing'|trans({'%pokedex%': pokedex.pokedex.description}) }}
-                <span class="hidden-talent">({{ pokedex.pokedex.generation.name }})</span>
-            </h2>
-        </div>
-        <hr>
-        <div class="list-card-pkmn list-card-pkmn-lg">
-            {% for pokemon in pokedex.pokemons %}
-                {% if pokemon.isDefault is same as(true) %}
-                    {% include'Pokemon/Cards/pokemon_card.html.twig' with {'pokemon' : pokemon, 'size': pokedex.pokemons|length } %}
-                {% endif %}
-            {% endfor %}
-        </div>
-    {% endfor %}
 {% endblock %}

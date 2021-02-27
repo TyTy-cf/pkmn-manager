@@ -1,55 +1,59 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ 'pokemon.profile'|trans({'%pokemon%': pokemon.name}) }}
+	{{ 'pokemon.profile'|trans({'%pokemon%': pokemon.name}) }}
 {% endblock %}
 
 {% block body %}
+	<div class="pkmnProfile">
 
-    <h1 class="text-center bordered-title">{{ pokemon.name }}</h1>
-    <hr>
-    <div class="text-center">
-        {% include 'Pokemon/Resume/link_section.html.twig' %}
-    </div>
-    <hr>
-    <div class="grid-row">
-        <div class="col-md-6 d-flex text-center">
-            <img class="size-100" src="{{ pokemon.pokemonSprites.spriteOfficial }}" alt="Image de {{ pokemon.name|capitalize }}">
-        </div>
-        <div class="col-md-6">
-            {% include 'Pokemon/Resume/resume_profil.html.twig' with {'pokemon' : pokemon} %}
-        </div>
-    </div>
-    <hr>
-    <div class="row" id="section-stats">
-        <div class="col-md">
-            {% include 'Pokemon/Resume/resume_stats.html.twig' with {'pokemon' : pokemon} %}
-        </div>
-    </div>
-    <hr>
-    <div class="row" id="section-evolutions">
-        <div class="col-md">
-            {% include 'Pokemon/Resume/resume_evolution.html.twig' with {'pokemon' : pokemon} %}
-        </div>
-    </div>
-    <hr>
-    <div class="row" id="section-descriptions">
-        <div class="col-md">
-            {% include 'Pokemon/Resume/resume_pokedex_flavor.html.twig' with {'arrayDescriptionVersion' : arrayDescriptionVersion} %}
-        </div>
-    </div>
-    <hr>
-    <div class="row" id="section-moves">
-        <div class="col-md">
-            {% include 'Pokemon/Resume/resume_moves.html.twig' with {'pokemon' : pokemon} %}
-        </div>
-    </div>
-    <hr>
-    <div class="row" id="section-sprites">
-        <div class="col-md">
-            {% include 'Pokemon/Resume/resume_sprites.html.twig' with {'arraySprites' : arraySprites} %}
-        </div>
-    </div>
+		<div class="pkmnProfile-mainContent">
 
+			<div class="pkmnProfile-colSprite col-lg-6 col-md-12 col-sm-12">
+				<div class="pkmnProfile-colSpriteContainer">
+					<img class="pkmnProfile_sprite" src="{{ pokemon.pokemonSprites.spriteOfficial }}" alt="Image de {{ pokemon.name|capitalize }}">
+					<p class="pkmnProfile_bckgrdNumber"><small>#</small>{{ pokemon.idApi }}</p>
+				</div>
+			</div>
+
+			<div class="pkmnProfile-colDatas col-lg-6 col-md-12 col-sm-12">
+				<div class="pkmnProfile-colDatasContainer">
+					<div class="pkmnProfile-datasHeader">
+						<h1 class="pkmnProfile-datasMainTitle"><span>{{ pokemon.name }}</span></h1>
+						<ul class="pkmnProfile-datasNavigation nav" id="pills-tab" role="tablist">
+							{% include 'Pokemon/Resume/link_section.html.twig' %}
+						</ul>
+					</div>
+					<div class="pkmnProfile-datasTabWrapper tab-content" id="pills-tabContent">
+						<div class="pkmnProfile-datasTab tab-pane fade show active" id="section-presentation" role="tabpanel" aria-labelledby="section-presentation-tab">
+							{% include 'Pokemon/Resume/resume_profil.html.twig' with {'pokemon' : pokemon} %}
+						</div>
+						<div class="pkmnProfile-datasTab tab-pane fade" id="section-stats" role="tabpanel" aria-labelledby="section-stats-tab">
+							{% include 'Pokemon/Resume/resume_stats.html.twig' with {'pokemon' : pokemon} %}
+						</div>
+						{% if arrayEvolutionChain|length > 0 %}
+							<div class="pkmnProfile-datasTab tab-pane fade" id="section-evolutions" role="tabpanel" aria-labelledby="section-evolutions-tab">
+								{% include 'Pokemon/Resume/resume_evolution.html.twig' with {'pokemon' : pokemon} %}
+							</div>
+						{% endif %}
+						<div class="pkmnProfile-datasTab tab-pane fade" id="section-descriptions" role="tabpanel" aria-labelledby="section-descriptions-tab">
+							{% include 'Pokemon/Resume/resume_pokedex_flavor.html.twig' with {'arrayDescriptionVersion' : arrayDescriptionVersion} %}
+						</div>
+						<div class="pkmnProfile-datasTab tab-pane fade" id="section-moves" role="tabpanel" aria-labelledby="section-moves-tab">
+							{% include 'Pokemon/Resume/resume_moves.html.twig' with {'pokemon' : pokemon} %}
+						</div>
+						<div class="pkmnProfile-datasTab tab-pane fade" id="section-sprites" role="tabpanel" aria-labelledby="section-sprites-tab">
+							{% include 'Pokemon/Resume/resume_sprites.html.twig' with {'arraySprites' : arraySprites} %}
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="pkmnProfile-background">
+				<div class="pkmnProfile-backgroundSprite col-10"></div>
+				<div class="pkmnProfile-backgroundDatas col-2"></div>
+			</div>
+
+		</div>
+	</div>
 {% endblock %}
-

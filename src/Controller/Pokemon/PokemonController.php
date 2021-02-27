@@ -3,10 +3,10 @@
 
 namespace App\Controller\Pokemon;
 
+use App\Repository\Pokemon\PokemonSpeciesVersionRepository;
 use App\Service\Api\ApiService;
 use App\Service\Pokedex\EvolutionChainService;
 use App\Service\Pokemon\PokemonService;
-use App\Service\Pokemon\PokemonSpeciesVersionService;
 use App\Service\Users\LanguageService;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -39,9 +39,9 @@ class PokemonController extends AbstractController
     private EvolutionChainService $evolutionChainService;
 
     /**
-     * @var PokemonSpeciesVersionService $pokemonSpeciesVersionService
+     * @var PokemonSpeciesVersionRepository $pokemonSpeciesVersionRepository
      */
-    private PokemonSpeciesVersionService $pokemonSpeciesVersionService;
+    private PokemonSpeciesVersionRepository $pokemonSpeciesVersionRepository;
 
     /**
      * PokemonController constructor.
@@ -50,20 +50,20 @@ class PokemonController extends AbstractController
      * @param ApiService $apiService
      * @param EvolutionChainService $evolutionChainService
      * @param LanguageService $languageService
-     * @param PokemonSpeciesVersionService $pokemonSpeciesVersionService
+     * @param PokemonSpeciesVersionRepository $pokemonSpeciesVersionRepository
      */
     public function __construct (
         PokemonService $pokemonService,
         ApiService $apiService,
         EvolutionChainService $evolutionChainService,
         LanguageService $languageService,
-        PokemonSpeciesVersionService $pokemonSpeciesVersionService
+        PokemonSpeciesVersionRepository $pokemonSpeciesVersionRepository
     ) {
         $this->evolutionChainService = $evolutionChainService;
-        $this->pokemonSpeciesVersionService = $pokemonSpeciesVersionService;
         $this->pokemonService = $pokemonService;
         $this->apiService = $apiService;
         $this->languageService = $languageService;
+        $this->pokemonSpeciesVersionRepository = $pokemonSpeciesVersionRepository;
     }
 
     /**
@@ -82,7 +82,7 @@ class PokemonController extends AbstractController
             'pokemon' => $pokemon,
             'arrayMoves' => $this->pokemonService->generateArrayByVersionForPokemon($pokemon),
             'arrayEvolutionChain' => $this->evolutionChainService->generateEvolutionChainFromPokemon($pokemon),
-            'arrayDescriptionVersion' => $this->pokemonSpeciesVersionService->getDescriptionVersionByVersionsAndPokemon(
+            'arrayDescriptionVersion' => $this->pokemonSpeciesVersionRepository->getDescriptionVersionByVersionsAndPokemon(
                 $pokemon->getPokemonSpecies()
             ),
             'arraySprites' => $this->pokemonService->getSpritesArrayByPokemon($pokemon)

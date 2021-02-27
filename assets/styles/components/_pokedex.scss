@@ -1,0 +1,89 @@
+//
+// Pokedex
+// --------------------------------------------------
+
+.pokedexPage {
+	position: relative;
+	overflow: hidden;
+
+	&::before {
+		content: '';
+		position: absolute;
+		z-index: -1;
+		top: 0%;
+		right: 0%;
+		bottom: 0%;
+		left: 0%;
+		width: calc( 100% + 200px );
+		height: calc( 100% + 200px );
+		animation: 2s linear 0s infinite translatePkball;
+		opacity: .04;
+		background-image: url( '../../img/pkmn-profile-bckgrd-pokeball_pokedex-bckgrd.svg' );
+		background-repeat: repeat;
+		background-position: center;
+		background-size: 200px;
+	}
+
+	@keyframes translatePkball {
+		from {
+			transform: translateX( -200px ) translateY( -200px );
+		}
+
+		to {
+			transform: translateX( 0 ) translateY( 0 );
+		}
+	}
+}
+
+.pokedexPage-content {
+	background-color: $white;
+}
+
+.pokedexSelector {
+	position: fixed;
+	z-index: 99;
+	left: 0;
+	width: 100%;
+	margin-bottom: $spacer * 2;
+	border-bottom: 6px solid $primary;
+	background-color: $white;
+
+	@include media-breakpoint-down(md) {
+		.nav-item {
+			width: 100%;
+
+			.tabPan-navigationButton {
+				width: 100%;
+				text-align: center;
+			}
+		}
+	}
+}
+
+.pokedexSelector-topBar {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	height: $pokedex-selector-top-bar-height;
+}
+
+.pokedexSelector-title {
+	margin: 0;
+
+	@include media-breakpoint-down(sm) {
+		font-size: 1.4rem;
+	}
+}
+
+.pokedexSelector-collapse {
+	border-top: solid 1px $gray-400;
+}
+
+.pokedex {
+	padding-top: $spacer;
+}
+
+.pokedex_withNav {
+	padding-top: calc( #{$pokedex-selector-top-bar-height} + #{$spacer} );
+}

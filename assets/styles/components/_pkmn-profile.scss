@@ -1,0 +1,437 @@
+//
+// Pokémon Profil Components
+// --------------------------------------------------
+
+$pokedex-radius: 8px;
+
+.pkmnProfile {
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+	overflow: hidden;
+	background: linear-gradient( 45deg, darken( $primary, 22% ) 0%, $primary 100% );
+	background-color: $primary;
+
+	@include media-breakpoint-down(md) {
+		background: linear-gradient( 90deg, darken( $primary, 22% ) 0%, $primary 100% );
+	}
+}
+
+.pkmnProfile-mainContent {
+	display: flex;
+	position: relative;
+	flex-grow: 1;
+	flex-wrap: wrap;
+}
+
+.pkmnProfile-colSpriteContainer,
+.pkmnProfile-colDatasContainer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	max-width: 800px;
+	height: 100%;
+}
+
+.pkmnProfile-colSpriteContainer {
+	justify-content: center;
+}
+
+.pkmnProfile-colSprite {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+
+	@include media-breakpoint-down(md) {
+		overflow: visible;
+	}
+}
+
+.pkmnProfile_sprite {
+	filter: drop-shadow( rgba( $black, .16 ) 16px 32px 32px );
+	z-index: 3;
+	animation:
+		$transition-large-element-expanding-duration * 2 $decelerate-easing
+		$transition-large-element-expanding-duration * 2 both slideInPkmn;
+
+	@keyframes slideInPkmn {
+		0% {
+			transform: translateX( 10% );
+			opacity: 0;
+		}
+
+		40% {
+			opacity: 1;
+		}
+
+		100% {
+			transform: translateX( 0 );
+		}
+	}
+}
+
+.pkmnProfile_bckgrdNumber {
+	position: absolute;
+	top: 0;
+	right: 12%;
+	opacity: .14;
+	color: lighten( $primary, 8% );
+	font-family: $font-family-sans-serif;
+	font-size: 1000%;
+	font-style: italic;
+	font-weight: 900;
+	text-align: right;
+
+	@include media-breakpoint-down(md) {
+		display: none;
+	}
+}
+
+.pkmnProfile-colDatas {
+	position: relative;
+
+	@include media-breakpoint-down(sm) {
+		padding: 0;
+	}
+}
+
+.pkmnProfile-colDatasContainer {
+	@include box-shadow-lg;
+
+	position: absolute;
+	z-index: 9;
+	top: $spacer * 3;
+	left: 0;
+	justify-content: flex-start;
+	width: 100%;
+	height: calc( 100% - (#{$spacer} * 6) );
+	padding: 0;
+	animation:
+		$transition-large-element-expanding-duration * 2 $decelerate-easing
+		$transition-large-element-expanding-duration both slideInPanel;
+	border-radius: $pokedex-radius;
+	background-color: $white;
+
+	@include media-breakpoint-down(md) {
+		position: relative;
+		top: 0;
+		max-width: none;
+		height: 100%;
+		animation: none;
+	}
+
+	@include media-breakpoint-down(sm) {
+		padding: $spacer $spacer / 2;
+		background-color: $white;
+	}
+
+	@include media-breakpoint-down(lg) {
+		@keyframes slideInPanel {
+			0% {
+				transform: translateX( 10% );
+				opacity: 0;
+			}
+
+			40% {
+				opacity: 1;
+			}
+
+			100% {
+				transform: translateX( -20px );
+			}
+		}
+	}
+
+	@keyframes slideInPanel {
+		0% {
+			transform: translateX( 10% );
+			opacity: 0;
+		}
+
+		40% {
+			opacity: 1;
+		}
+
+		100% {
+			transform: translateX( -10% );
+		}
+	}
+}
+
+.pkmnProfile-datasHeader {
+	position: relative;
+	width: 100%;
+	border-top-left-radius: $pokedex-radius;
+	border-top-right-radius: $pokedex-radius;
+	background-color: $secondary;
+	box-shadow: 0 2px 10px lighten( $secondary, 12% ) inset;
+	text-align: right;
+
+	@include media-breakpoint-down(sm) {
+		text-align: center;
+	}
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: 10px;
+		right: 0;
+		bottom: 0;
+		left: 14px;
+		background-image: url( '../../img/pkmn-profile-pokedex-capteurs.svg' );
+		background-repeat: no-repeat;
+		background-position: left top;
+		background-size: 120px;
+
+		@include media-breakpoint-down(lg) {
+			top: 12px;
+			left: 12px;
+			background-size: 88px;
+		}
+
+		@include media-breakpoint-down(sm) {
+			content: none;
+		}
+	}
+}
+
+.pkmnProfile-datasMainTitle {
+	display: inline-flex;
+	position: relative;
+	justify-content: flex-end;
+	min-width: 340px;
+	margin: 0;
+	padding: $spacer $spacer $spacer $spacer * 2;
+	border-top-right-radius: $pokedex-radius;
+	background: white;
+	font-size: 2.5rem;
+
+	@include media-breakpoint-down(lg) {
+		font-size: 2rem;
+	}
+
+	@include media-breakpoint-down(sm) {
+		display: flex;
+		justify-content: center;
+	}
+
+	span {
+		max-width: 430px;
+		margin-right: $spacer;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+
+		@include media-breakpoint-down(lg) {
+			max-width: 400px;
+		}
+
+		@include media-breakpoint-down(sm) {
+			max-width: none;
+			margin-right: 0;
+		}
+	}
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: -90px;
+		width: 92px;
+		clip-path: polygon( 95% 0, 100% 0, 100% 100%, 0% 100% );
+		background-color: $white;
+		// background-image: url( '../../img/pkmn-profile-pokedex-curve.svg' );
+		// background-repeat: no-repeat;
+		// background-position: left top;
+		// background-size: contain;
+
+		@include media-breakpoint-down(lg) {
+			left: -78px;
+			width: 80px;
+		}
+
+		@include media-breakpoint-down(sm) {
+			content: none;
+		}
+	}
+}
+
+.pkmnProfile-datasNavigation {
+	justify-content: flex-end;
+	padding: $spacer / 2 $spacer;
+	background-color: $white;
+
+	@include media-breakpoint-down(sm) {
+		flex-direction: column;
+		padding: 0;
+	}
+}
+
+.pkmnProfile-datasTabLink {
+	position: relative;
+	margin: 1px calc( (#{$spacer} / 2) + 1px );
+	padding: $spacer / 2;
+	color: $white;
+	font-family: $font-family-sans-serif;
+	text-transform: uppercase;
+
+	@include media-breakpoint-down(sm) {
+		margin: 1px 0;
+	}
+
+	&,
+	&::before,
+	&::after {
+		transition: all $accelerate-easing $transition-small-element-duration;
+		background: linear-gradient( -0deg, lighten( $secondary, 8% ) 0%, $secondary 100% );
+		box-shadow: 0 0 $primary inset, 0 0 $primary inset;
+	}
+
+	&::before,
+	&::after {
+		content: '';
+		position: absolute;
+		z-index: 0;
+		top: 0;
+		width: $spacer;
+		height: 100%;
+		box-shadow: 0 0 $primary inset, 0 0 $primary inset;
+
+		@include media-breakpoint-down(sm) {
+			content: none;
+		}
+	}
+
+	&::before {
+		left: calc( -#{$spacer} + 1px );
+		clip-path: polygon( 95% 0, 100% 0, 100% 100%, 0% 100% );
+	}
+
+	&::after {
+		right: calc( -#{$spacer} + 1px );
+		pointer-events: none;
+		clip-path: polygon( 0 0, 100% 0, 5% 100%, 0% 100% );
+	}
+
+	&:hover {
+		color: $primary;
+	}
+
+	&.active:hover {
+		color: $white;
+	}
+
+	&.active,
+	&.active::before,
+	&.active::after {
+		box-shadow: 0 -4px $primary inset, 0 4px $primary inset;
+	}
+}
+
+.pkmnProfile-datasTabWrapper {
+	flex-grow: 1;
+	width: 100%;
+	margin-bottom: $spacer * 2;
+	padding: $spacer;
+	overflow: auto;
+	border-top: solid 1px $gray-300;
+	border-bottom: solid 1px $gray-300;
+	background-color: $white;
+
+	@include media-breakpoint-down(md) {
+		display: flex;
+		flex-grow: 1;
+		justify-content: center;
+		width: 100%;
+	}
+
+	@include media-breakpoint-down(sm) {
+		padding: $spacer 0;
+	}
+}
+
+.pkmnProfile-datasTab {
+	flex-grow: 1;
+}
+
+// .pkmnProfile-datasTab_evolution {
+// 	background-image: url( '../../img/pkmn-profile-bckgrd-panel-evolution.svg' );
+// 	background-repeat: no-repeat;
+// 	background-position: center bottom;
+// 	background-size: 80%;
+// }
+
+.pkmnProfile-background {
+	display: flex;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
+
+.pkmnProfile-backgroundSprite,
+.pkmnProfile-backgroundDatas {
+	flex-grow: 1;
+}
+
+.pkmnProfile-backgroundSprite {
+	position: relative;
+
+	@include media-breakpoint-down(md) {
+		height: 2880px;
+	}
+
+	&::before {
+		content: '';
+		position: absolute;
+		z-index: 2;
+		top: 0;
+		right: -2px;
+		width: 100%;
+		height: 100%;
+		background-image: url( '../../img/pkmn-profile-bckgrd-panel.svg' );
+		background-repeat: no-repeat;
+		background-position: top right;
+		background-size: cover;
+	}
+
+	&::after {
+		content: '';
+		position: absolute;
+		z-index: 0;
+		bottom: 0%;
+		left: -50%;
+		width: 100%;
+		height: 100%;
+		animation: 4s linear 0s infinite rotatePkball;
+		opacity: .06;
+		background-image: url( '../../img/pkmn-profile-bckgrd-pokeball_primary-light.svg' );
+		background-repeat: no-repeat;
+		background-position: center center;
+		background-size: contain;
+		pointer-events: none;
+
+		@include media-breakpoint-down(md) {
+			content: none;
+		}
+	}
+
+	@keyframes rotatePkball {
+		from {
+			transform: rotate( 0deg );
+		}
+
+		to {
+			transform: rotate( 360deg );
+		}
+	}
+}
+
+.pkmnProfile-backgroundDatas {
+	background: linear-gradient( 270deg, darken( $white, 8% ) 0%, $white 80% );
+	background-color: $white;
+}
