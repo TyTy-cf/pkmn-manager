@@ -10,17 +10,21 @@
                 <h2>{{ 'index.type.damage_relation'|trans }}</h2>
             </div>
             <div class="grid-col">
-                <div class="d-flex">
-                    <div>
-
+                <div class="row">
+                    <div class="align-bottom">
+                        <img class="size-80" src="{{ type.img }}" alt="{{ type.name }}">
                     </div>
-                    {% for typeElement in types %}
-                        <div class="d-flex size-80">
-                            <img class="size-80" src="{{ typeElement.img|imagine_filter('rotate270') }}" alt="{{ typeElement.name }}">
-                        </div>
-                    {% endfor %}
+                    <div class="d-flex">
+                        {% for typeElement in types %}
+                            <div class="d-flex">
+                                <img class="size-80" src="{{ typeElement.img|imagine_filter('rotate270') }}" alt="{{ typeElement.name }}">
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
+                <div>
 
+                </div>
             </div>
         </div>
         <div class="grid-col mt-5">

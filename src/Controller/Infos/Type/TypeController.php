@@ -9,7 +9,6 @@ use App\Service\Infos\Type\TypeDamageRelationTypeService;
 use App\Service\Infos\Type\TypeService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -34,8 +33,7 @@ class TypeController extends AbstractController
     public function __construct(
         TypeDamageRelationTypeService $typeRelationManager,
         TypeService $typeManager
-    )
-    {
+    ) {
         $this->typeRelationManager = $typeRelationManager;
         $this->typeManager = $typeManager;
     }
@@ -51,7 +49,6 @@ class TypeController extends AbstractController
      */
     public function typeDetail(Type $type): Response {
         dump($this->typeRelationManager->getRelationTypeByType($type));
-        dump($this->typeManager->getAllTypesByLanguage($type->getLanguage()));
         return $this->render('Type/detail.html.twig', [
             'type' => $type,
             'typeRelation' => $this->typeRelationManager->getRelationTypeByType($type),
