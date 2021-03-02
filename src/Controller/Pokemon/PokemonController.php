@@ -3,7 +3,9 @@
 
 namespace App\Controller\Pokemon;
 
+use App\Repository\Pokemon\PokemonRepository;
 use App\Repository\Pokemon\PokemonSpeciesVersionRepository;
+use App\Repository\Pokemon\PokemonSpritesVersionRepository;
 use App\Service\Api\ApiService;
 use App\Service\Pokedex\EvolutionChainService;
 use App\Service\Pokemon\PokemonService;
@@ -44,26 +46,42 @@ class PokemonController extends AbstractController
     private PokemonSpeciesVersionRepository $pokemonSpeciesVersionRepository;
 
     /**
+     * @var PokemonSpritesVersionRepository $pokemonSpritesVersionRepository
+     */
+    private PokemonSpritesVersionRepository $pokemonSpritesVersionRepository;
+
+    /**
+     * @var PokemonRepository $pokemonRepository
+     */
+    private PokemonRepository $pokemonRepository;
+
+    /**s
      * PokemonController constructor.
      *
      * @param PokemonService $pokemonService
      * @param ApiService $apiService
      * @param EvolutionChainService $evolutionChainService
      * @param LanguageService $languageService
+     * @param PokemonRepository $pokemonRepository
      * @param PokemonSpeciesVersionRepository $pokemonSpeciesVersionRepository
+     * @param PokemonSpritesVersionRepository $pokemonSpritesVersionRepository
      */
-    public function __construct (
+    public function __construct(
         PokemonService $pokemonService,
         ApiService $apiService,
         EvolutionChainService $evolutionChainService,
         LanguageService $languageService,
-        PokemonSpeciesVersionRepository $pokemonSpeciesVersionRepository
+        PokemonRepository $pokemonRepository,
+        PokemonSpeciesVersionRepository $pokemonSpeciesVersionRepository,
+        PokemonSpritesVersionRepository $pokemonSpritesVersionRepository
     ) {
         $this->evolutionChainService = $evolutionChainService;
+        $this->pokemonRepository = $pokemonRepository;
         $this->pokemonService = $pokemonService;
         $this->apiService = $apiService;
         $this->languageService = $languageService;
         $this->pokemonSpeciesVersionRepository = $pokemonSpeciesVersionRepository;
+        $this->pokemonSpritesVersionRepository = $pokemonSpritesVersionRepository;
     }
 
     /**
@@ -77,7 +95,7 @@ class PokemonController extends AbstractController
      */
     function displayProfile(Request $request): Response
     {
-        $pokemon = $this->pokemonService->getPokemonProfileBySlug($request->get('slug_pokemon'));
+        $pokemon = $this->pokemonRepository->getPokemonProfileBySlug($request->get('slug_pokemon'));
         return $this->render('Pokemon/profile.html.twig', [
             'pokemon' => $pokemon,
             'arrayMoves' => $this->pokemonService->generateArrayByVersionForPokemon($pokemon),
@@ -85,7 +103,7 @@ class PokemonController extends AbstractController
             'arrayDescriptionVersion' => $this->pokemonSpeciesVersionRepository->getDescriptionVersionByVersionsAndPokemon(
                 $pokemon->getPokemonSpecies()
             ),
-            'arraySprites' => $this->pokemonService->getSpritesArrayByPokemon($pokemon)
+            'spritesVersionGroup' => $this->pokemonSpritesVersionRepository->getSpritesVersionGroupByPokemon($pokemon),
         ]);
     }
 

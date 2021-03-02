@@ -27,10 +27,10 @@ class PokemonSpeciesVersionRepository extends AbstractRepository
      */
     public function getDescriptionVersionByVersionsAndPokemon(PokemonSpecies $pokemonSpecies)
     {
-        return $this->createQueryBuilder('psv')
-            ->select('psv', 'version')
-            ->join('psv.pokemonSpecies', 'pokemon_species')
-            ->join('psv.version', 'version')
+        return $this->createQueryBuilder('pokemon_species_version')
+            ->select('pokemon_species_version', 'version')
+            ->join('pokemon_species_version.pokemonSpecies', 'pokemon_species')
+            ->join('pokemon_species_version.version', 'version')
             ->join('version.versionGroup', 'version_group')
             ->where('pokemon_species = :pokemonSpecies')
             ->setParameter('pokemonSpecies', $pokemonSpecies)

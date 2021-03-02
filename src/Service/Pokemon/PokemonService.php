@@ -87,8 +87,7 @@ class PokemonService extends AbstractService
      * @param PokemonRepository $pokemonRepository
      * @param PokemonMovesLearnVersionRepository $repoMovesLearnPokemon
      */
-    public function __construct
-    (
+    public function __construct(
         EntityManagerInterface $entityManager,
         ApiService $apiService,
         TextService $textService,
@@ -116,8 +115,7 @@ class PokemonService extends AbstractService
      * @param Language $language
      * @return Pokemon[]
      */
-    public function getAllPokemonByLanguage(Language $language)
-    {
+    public function getAllPokemonByLanguage(Language $language) {
         return $this->pokemonRepository->getAllPokemonByLanguage($language);
     }
 
@@ -125,27 +123,15 @@ class PokemonService extends AbstractService
      * @param string $slug
      * @return Pokemon|null
      */
-    public function getPokemonBySlug(string $slug): ?Pokemon
-    {
+    public function getPokemonBySlug(string $slug): ?Pokemon {
         return $this->pokemonRepository->findOneBySlug($slug);
-    }
-
-    /**
-     * @param string $slug
-     * @return Pokemon|null
-     * @throws NonUniqueResultException
-     */
-    public function getPokemonProfileBySlug(string $slug): ?Pokemon
-    {
-        return $this->pokemonRepository->getPokemonProfileBySlug($slug);
     }
 
     /**
      * @param Language $language
      * @return array
      */
-    public function getAllPokemonNameForLanguage(Language $language): array
-    {
+    public function getAllPokemonNameForLanguage(Language $language): array {
         return $this->pokemonRepository->getAllPokemonNameForLanguage($language);
     }
 
@@ -216,27 +202,6 @@ class PokemonService extends AbstractService
             }
         }
         return $arrayMoves;
-    }
-
-    /**
-     * @param Pokemon $pokemon
-     * @return mixed
-     */
-    public function getSpritesArrayByPokemon(Pokemon $pokemon): array
-    {
-        $versionsGroups = $this->versionGroupService->getVersionGroupByLanguage(
-            $pokemon->getLanguage(), 'DESC'
-        );
-        $arraySprites = [];
-        if (sizeof($versionsGroups) > 0) {
-            foreach($versionsGroups as $versionGroup) {
-               $sprites = $this->spritesVersionRepository->getSpritesByVersionGroupIdAndPokemon($versionGroup, $pokemon);
-               if (count($sprites) > 0) {
-                   $arraySprites[$versionGroup->getName()] = $sprites;
-               }
-            }
-        }
-        return $arraySprites;
     }
 
     /**

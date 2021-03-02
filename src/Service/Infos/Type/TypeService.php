@@ -60,17 +60,6 @@ class TypeService extends AbstractService
     }
 
     /**
-     * Return all Type based on a Language
-     *
-     * @param Language $language
-     * @return Type[]|object[]
-     */
-    public function getAllTypesByLanguage(Language $language)
-    {
-        return $this->typeRepository->getAllTypesByLanguage($language);
-    }
-
-    /**
      * If not exist, save Type in Database according in language
      * @param Language $language
      * @param mixed $type

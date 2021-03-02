@@ -9,18 +9,21 @@
 				{{ 'pokemon.sprites.shiny'|trans }}
 			</th>
 		</tr>
-		{% for version, sprites in arraySprites %}
+		{% for sprites in spritesVersionGroup %}
 			<tr>
 				<th class="align-middle">
-					{{ version }}
+					{{ sprites.versionGroup.name }}
 				</th>
-				{% for urlSprite in sprites[0] %}
-					<td class="text-center">
-						{% if urlSprite is not same as(null) %}
-							<img src="{{ urlSprite }}" alt="{{ pokemon.name }}">
-						{% endif %}
-					</td>
-				{% endfor %}
+				<td class="text-center">
+					{% if sprites.urlDefault is not same as(null) %}
+						<img src="{{ sprites.urlDefault }}" alt="{{ pokemon.name }}">
+					{% endif %}
+				</td>
+				<td class="text-center">
+					{% if sprites.urlDefaultShiny is not same as(null) %}
+						<img src="{{ sprites.urlDefaultShiny }}" alt="{{ pokemon.name }}">
+					{% endif %}
+				</td>
 			</tr>
 		{% endfor %}
 	</tbody>
