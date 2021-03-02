@@ -5,6 +5,7 @@ namespace App\Controller\Pokedex;
 
 
 use App\Entity\Pokedex\EggGroup;
+use App\Repository\Pokedex\EggGroupRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,12 +21,15 @@ class EggGroupController extends AbstractController
      * @ParamConverter(class="App\Entity\Pokedex\EggGroup", name="eggGroup", options={"mapping": {"slug_egg" : "slug"}})
      *
      * @param Request $request
-     * @param EggGroup $eggGroup
+     * @param EggGroupRepository $eggGroupRepository
      * @return Response
      */
-    public function abilityDetail(Request $request, EggGroup $eggGroup): Response {
+    public function abilityDetail(
+        Request $request,
+        EggGroupRepository $eggGroupRepository
+    ): Response {
         return $this->render('EggGroup/detail.html.twig', [
-            'eggGroup' => $eggGroup,
+            'eggGroup' => $eggGroupRepository->findOneBySlugWithRelation($request->get('slug_egg')),
         ]);
     }
 }
