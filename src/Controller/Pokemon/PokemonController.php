@@ -26,11 +26,6 @@ class PokemonController extends AbstractController
     private PokemonService $pokemonService;
 
     /**
-     * @var ApiService
-     */
-    private ApiService $apiService;
-
-    /**
      * @var LanguageService $languageService
      */
     private LanguageService $languageService;
@@ -59,7 +54,6 @@ class PokemonController extends AbstractController
      * PokemonController constructor.
      *
      * @param PokemonService $pokemonService
-     * @param ApiService $apiService
      * @param EvolutionChainService $evolutionChainService
      * @param LanguageService $languageService
      * @param PokemonRepository $pokemonRepository
@@ -68,7 +62,6 @@ class PokemonController extends AbstractController
      */
     public function __construct(
         PokemonService $pokemonService,
-        ApiService $apiService,
         EvolutionChainService $evolutionChainService,
         LanguageService $languageService,
         PokemonRepository $pokemonRepository,
@@ -78,7 +71,6 @@ class PokemonController extends AbstractController
         $this->evolutionChainService = $evolutionChainService;
         $this->pokemonRepository = $pokemonRepository;
         $this->pokemonService = $pokemonService;
-        $this->apiService = $apiService;
         $this->languageService = $languageService;
         $this->pokemonSpeciesVersionRepository = $pokemonSpeciesVersionRepository;
         $this->pokemonSpritesVersionRepository = $pokemonSpritesVersionRepository;
