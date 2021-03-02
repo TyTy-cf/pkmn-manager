@@ -49,8 +49,7 @@ class MoveController extends AbstractController
         MoveMachineService $moveMachineManager,
         MoveService $moveManager,
         PokemonMovesLearnVersionService $pmlvm
-    )
-    {
+    ) {
         $this->moveDescriptionManager = $moveDescriptionManager;
         $this->moveMachineManager = $moveMachineManager;
         $this->pmlvm = $pmlvm;

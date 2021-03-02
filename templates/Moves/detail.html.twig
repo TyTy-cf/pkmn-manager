@@ -27,12 +27,16 @@
         </div>
         <div>
             <h2 class="text-center bordered-title">{{ 'move.title.pokemons'|trans }}</h2>
-            <div class="pkmnCard-container">
-                {% for pmlv in moveLearnPokemon %}
-                    {% if pmlv.pokemon.pokemonSprites.spriteFrontDefault is not null %}
-                        {% include'Pokemon/Cards/pokemon_card.html.twig' with {'pokemon' : pmlv.pokemon, 'size': moveLearnPokemon|length} %}
-                    {% endif %}
-                {% endfor %}
+            <div class="container pokedexPage-content">
+                <div class="pkmnCard-container">
+                    {% for pmlv in moveLearnPokemon %}
+                        {% if pmlv.pokemon.pokemonSprites.spriteFrontDefault is not null %}
+                            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 px-2 mb-3">
+                                {% include'Pokemon/Cards/pokemon_card.html.twig' with {'pokemon' : pmlv.pokemon, 'size': moveLearnPokemon|length } %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>

@@ -70,12 +70,16 @@
         </div>
         <div class="grid-col mt-5">
             <h2>{{ 'index.type.pokemons'|trans({'%type%' : type.name}) }}</h2>
-            <div class="pkmnCard-container">
-                {% for pokemonType in type.pokemons %}
-                    {% if pokemonType.pokemonSprites.spriteFrontDefault is not null %}
-                        {% include'Pokemon/Cards/pokemon_card.html.twig' with {'pokemon' : pokemonType, 'size': type.pokemons|length} %}
-                    {% endif %}
-                {% endfor %}
+            <div class="container pokedexPage-content">
+                <div class="pkmnCard-container">
+                    {% for pokemon in type.pokemons %}
+                        {% if pokemon.isDefault is same as(true) %}
+                            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 px-2 mb-3">
+                                {% include'Pokemon/Cards/pokemon_card.html.twig' with {'pokemon' : pokemon, 'size': type.pokemons|length } %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>
