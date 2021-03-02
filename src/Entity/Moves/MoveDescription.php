@@ -39,7 +39,7 @@ class MoveDescription
     /**
      * @var Move $move
      *
-     * @ManyToOne(targetEntity="App\Entity\Moves\Move")
+     * @ManyToOne(targetEntity="App\Entity\Moves\Move", inversedBy="movesDescription")
      * @JoinColumn(name="move_id", referencedColumnName="id")
      */
     private Move $move;

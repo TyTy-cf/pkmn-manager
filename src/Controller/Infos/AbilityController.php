@@ -26,7 +26,7 @@ class AbilityController extends AbstractController
      * @return Response
      * @throws NonUniqueResultException
      */
-    public function abilityDetail(
+    public function index(
         Request $request,
         AbilityRepository $abilityRepository,
         AbilityVersionGroupRepository $abilityVersionGroupRepository

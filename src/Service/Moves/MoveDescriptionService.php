@@ -37,15 +37,13 @@ class MoveDescriptionService extends AbstractService
      * @param TextService $textService
      * @param EntityManagerInterface $em
      */
-    public function __construct
-    (
+    public function __construct(
         MoveDescriptionRepository $repo,
         ApiService $apiService,
         VersionGroupService $versionGroupService,
         TextService $textService,
         EntityManagerInterface $em
-    )
-    {
+    ) {
         $this->repo = $repo;
         $this->versionGroupManager = $versionGroupService;
         parent::__construct($em, $apiService, $textService);
@@ -55,19 +53,8 @@ class MoveDescriptionService extends AbstractService
      * @param string $slug
      * @return MoveDescription|null
      */
-    public function getMoveDescriptionBySlug(string $slug): ?MoveDescription
-    {
+    public function getMoveDescriptionBySlug(string $slug): ?MoveDescription {
         return $this->repo->findOneBySlug($slug);
-    }
-
-    /**
-     * @param Move $move
-     * @param $array
-     * @return MoveDescription[]|array
-     */
-    public function getMoveDescriptionByMove(Move $move)
-    {
-        return $this->repo->getMoveDescriptionByMove($move);
     }
 
     /**

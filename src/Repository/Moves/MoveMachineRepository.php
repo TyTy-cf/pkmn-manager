@@ -22,10 +22,9 @@ class MoveMachineRepository extends AbstractRepository
 
     /**
      * @param Move $move
-     * @param $array
      * @return int|mixed|string
      */
-    public function getMachineByMove(Move $move)
+    public function getMoveMachineByMove(Move $move)
     {
         return $this->createQueryBuilder('move_machine')
             ->select('move_machine', 'versionGroup')

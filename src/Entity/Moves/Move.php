@@ -77,13 +77,19 @@ class Move
     private ?int $priority;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Moves\PokemonMovesLearnVersion", mappedBy="move", fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="App\Entity\Moves\PokemonMovesLearnVersion", mappedBy="move")
      */
     private Collection $pokemonMovesLearnVersion;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Moves\MoveDescription", mappedBy="move")
+     */
+    private Collection $movesDescription;
 
     public function __construct()
     {
         $this->pokemonMovesLearnVersion = new ArrayCollection();
+        $this->movesDescription = new ArrayCollection();
     }
 
     /**
@@ -235,6 +241,34 @@ class Move
     {
         if ($this->pokemonMovesLearnVersion->contains($pokemonMovesLearnVersion)) {
             $this->pokemonMovesLearnVersion->remove($pokemonMovesLearnVersion);
+        }
+    }
+
+    /**
+     * @return Collection|MoveDescription[]
+     */
+    public function getMovesDescription(): Collection
+    {
+        return $this->movesDescription;
+    }
+
+    /**
+     * @param MoveDescription $moveDescription
+     */
+    public function addMoveDescription(MoveDescription $moveDescription)
+    {
+        if (!$this->movesDescription->contains($moveDescription)) {
+            $this->movesDescription[] = $moveDescription;
+        }
+    }
+
+    /**
+     * @param MoveDescription $moveDescription
+     */
+    public function removeMoveDescription(MoveDescription $moveDescription)
+    {
+        if ($this->movesDescription->contains($moveDescription)) {
+            $this->movesDescription->remove($moveDescription);
         }
     }
 }

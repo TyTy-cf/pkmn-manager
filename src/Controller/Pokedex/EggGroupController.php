@@ -4,8 +4,8 @@
 namespace App\Controller\Pokedex;
 
 
-use App\Entity\Pokedex\EggGroup;
 use App\Repository\Pokedex\EggGroupRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,8 +23,9 @@ class EggGroupController extends AbstractController
      * @param Request $request
      * @param EggGroupRepository $eggGroupRepository
      * @return Response
+     * @throws NonUniqueResultException
      */
-    public function abilityDetail(
+    public function index(
         Request $request,
         EggGroupRepository $eggGroupRepository
     ): Response {

@@ -77,15 +77,6 @@ class MoveMachineService extends AbstractService
     }
 
     /**
-     * @param Move $move
-     * @return MoveMachine[]|array
-     */
-    public function getMoveMachineByMove(Move $move): array
-    {
-        return $this->moveMachineRepository->getMachineByMove($move);
-    }
-
-    /**
      * @param Language $language
      * @param $apiResponse
      * @throws TransportExceptionInterface
