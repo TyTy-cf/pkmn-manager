@@ -46,8 +46,7 @@ class ApiService
      *
      * @throws TransportExceptionInterface
      */
-    public function getPokemonFromName($pokemonName)
-    {
+    public function getPokemonFromName($pokemonName) {
         return $this->apiConnect('https://pokeapi.co/api/v2/pokemon/' . $pokemonName);
     }
 
@@ -59,8 +58,7 @@ class ApiService
      *
      * @throws TransportExceptionInterface
      */
-    public function getPokemonDetailedFromPokemon(Pokemon $pokemon)
-    {
+    public function getPokemonDetailedFromPokemon(Pokemon $pokemon) {
         return $this->apiConnect('https://pokeapi.co/api/v2/pokemon/'.$pokemon->getIdApi().'/');
     }
 
@@ -68,8 +66,7 @@ class ApiService
      * @return mixed
      * @throws TransportExceptionInterface
      */
-    public function getAllPokemonJson()
-    {
+    public function getAllPokemonJson() {
         return $this->apiConnect('https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1118');
     }
 
@@ -77,8 +74,7 @@ class ApiService
      * @return mixed
      * @throws TransportExceptionInterface
      */
-    public function getAllTypeJson()
-    {
+    public function getAllTypeJson() {
         return $this->apiConnect('https://pokeapi.co/api/v2/type');
     }
 
@@ -86,8 +82,7 @@ class ApiService
      * @return mixed
      * @throws TransportExceptionInterface
      */
-    public function getAllNatureJson()
-    {
+    public function getAllNatureJson() {
         return $this->apiConnect('https://pokeapi.co/api/v2/nature?offset=0&limit=25');
     }
 
@@ -95,8 +90,7 @@ class ApiService
      * @return mixed
      * @throws TransportExceptionInterface
      */
-    public function getAllAbilitiesJson()
-    {
+    public function getAllAbilitiesJson() {
         return $this->apiConnect('http://pokeapi.co/api/v2/ability/?offset=0&limit=327');
     }
 
@@ -104,8 +98,7 @@ class ApiService
      * @return mixed
      * @throws TransportExceptionInterface
      */
-    public function getAllDamageClassJson()
-    {
+    public function getAllDamageClassJson() {
         return $this->apiConnect('https://pokeapi.co/api/v2/move-damage-class/');
     }
 
@@ -113,8 +106,7 @@ class ApiService
      * @return mixed
      * @throws TransportExceptionInterface
      */
-    public function getAllGenerationJson()
-    {
+    public function getAllGenerationJson() {
         return $this->apiConnect('https://pokeapi.co/api/v2/generation/');
     }
 
@@ -122,8 +114,7 @@ class ApiService
      * @return mixed
      * @throws TransportExceptionInterface
      */
-    public function getAllVersionGroupJson()
-    {
+    public function getAllVersionGroupJson() {
         return $this->apiConnect('https://pokeapi.co/api/v2/version-group/');
     }
 
@@ -131,8 +122,7 @@ class ApiService
      * @return mixed
      * @throws TransportExceptionInterface
      */
-    public function getAllVersionJson()
-    {
+    public function getAllVersionJson() {
         return $this->apiConnect('https://pokeapi.co/api/v2/version?offset=0&limit=34');
     }
 
@@ -140,8 +130,7 @@ class ApiService
      * @return mixed
      * @throws TransportExceptionInterface
      */
-    public function getAllMoveLearnMethodJson()
-    {
+    public function getAllMoveLearnMethodJson() {
         return $this->apiConnect('https://pokeapi.co/api/v2/move-learn-method/');
     }
 
@@ -149,8 +138,7 @@ class ApiService
      *
      * @throws TransportExceptionInterface
      */
-    public function getAllMoveJson()
-    {
+    public function getAllMoveJson() {
         return $this->apiConnect('https://pokeapi.co/api/v2/move/?offset=0&limit=813');
     }
 
@@ -158,8 +146,7 @@ class ApiService
      *
      * @throws TransportExceptionInterface
      */
-    public function getAllPokemonSpeciesJson()
-    {
+    public function getAllPokemonSpeciesJson() {
         return $this->apiConnect('https://pokeapi.co/api/v2/pokemon-species/?offset=0&limit=898');
     }
 
@@ -167,8 +154,7 @@ class ApiService
      *
      * @throws TransportExceptionInterface
      */
-    public function getAllMoveMachineJson()
-    {
+    public function getAllMoveMachineJson() {
         return $this->apiConnect('https://pokeapi.co/api/v2/machine/?offset=0&limit=1442');
     }
 
@@ -176,8 +162,7 @@ class ApiService
      * @return mixed
      * @throws TransportExceptionInterface
      */
-    public function getEggGroupJson()
-    {
+    public function getEggGroupJson() {
         return $this->apiConnect('https://pokeapi.co/api/v2/egg-group/');
     }
 
@@ -185,8 +170,7 @@ class ApiService
      * @return mixed
      * @throws TransportExceptionInterface
      */
-    public function getEvolutionChainJson()
-    {
+    public function getEvolutionChainJson() {
         return $this->apiConnect('https://pokeapi.co/api/v2/evolution-chain/?offset=0&limit=467');
     }
 
@@ -194,8 +178,7 @@ class ApiService
      * @return mixed
      * @throws TransportExceptionInterface
      */
-    public function getAllPokedexJson()
-    {
+    public function getAllPokedexJson() {
         return $this->apiConnect('https://pokeapi.co/api/v2/pokedex?offset=0&limit=28');
     }
 
@@ -203,8 +186,7 @@ class ApiService
      * @return mixed
      * @throws TransportExceptionInterface
      */
-    public function getAllItemsJson()
-    {
+    public function getAllItemsJson() {
         return $this->apiConnect('https://pokeapi.co/api/v2/item?offset=0&limit=954');
     }
 
@@ -212,8 +194,7 @@ class ApiService
      * @return mixed
      * @throws TransportExceptionInterface
      */
-    public function getEvolutionTriggerJson()
-    {
+    public function getEvolutionTriggerJson() {
         return $this->apiConnect('https://pokeapi.co/api/v2/evolution-trigger/');
     }
 
@@ -221,8 +202,7 @@ class ApiService
      * @return mixed
      * @throws TransportExceptionInterface
      */
-    public function getRegionsJson()
-    {
+    public function getRegionsJson() {
         return $this->apiConnect('https://pokeapi.co/api/v2/region/');
     }
 
@@ -232,8 +212,7 @@ class ApiService
      * @return mixed
      * @throws TransportExceptionInterface
      */
-    public function getNameBasedOnLanguage($lang, $url)
-    {
+    public function getNameBasedOnLanguage($lang, $url) {
         $apiResponse = $this->apiConnect($url)->toArray();
         return $this->getNameBasedOnLanguageFromArray($lang, $apiResponse);
     }
@@ -244,8 +223,7 @@ class ApiService
      * @param $apiResponse
      * @return string
      */
-    public function getNameBasedOnLanguageFromArray($lang, $apiResponse): ?string
-    {
+    public function getNameBasedOnLanguageFromArray($lang, $apiResponse): ?string {
         return $this->getFieldContentFromLanguage($lang, $apiResponse, 'names', 'name');
     }
 
@@ -254,8 +232,7 @@ class ApiService
      * @param $apiResponse
      * @return string|null
      */
-    public function getFlavorTextBasedOnLanguageFromArray(string $lang, $apiResponse): ?string
-    {
+    public function getFlavorTextBasedOnLanguageFromArray(string $lang, $apiResponse): ?string {
         return $this->getFieldContentFromLanguage($lang, $apiResponse, 'flavor_text_entries', 'flavor_text');
     }
 
@@ -267,8 +244,7 @@ class ApiService
      * @param $field
      * @return string
      */
-    public function getFieldContentFromLanguage(string $lang, $apiResponse, string $mainField, string $field): ?string
-    {
+    public function getFieldContentFromLanguage(string $lang, $apiResponse, string $mainField, string $field): ?string {
         $description = null;
         if ($apiResponse !== null) {
             foreach ($apiResponse[$mainField] as $flavor_text_entry) {
@@ -285,8 +261,7 @@ class ApiService
      * @param $url
      * @return mixed|string
      */
-    public function getIdFromUrl($url)
-    {
+    public function getIdFromUrl($url)  {
         $splittedUrl = explode('/', $url);
         return $splittedUrl[6];
     }

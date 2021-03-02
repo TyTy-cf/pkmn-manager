@@ -48,8 +48,7 @@ class MoveService extends AbstractService
      * @param MoveRepository $moveRepository
      * @param TypeRepository $typeRepository
      */
-    public function __construct
-    (
+    public function __construct (
         EntityManagerInterface $em,
         ApiService $apiService,
         TextService $textService,

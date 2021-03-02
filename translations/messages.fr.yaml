@@ -69,7 +69,8 @@ pokemon:
 
 index:
     ability:
-        description: "Description"
+        description: "Effet"
+        empty: "Non renseigné"
         pokemons: "Pokémons avec cette capacité"
     type:
         damage_relation: "Relation du type avec les autres types"
@@ -81,6 +82,8 @@ index:
     generation:
         all:
             title: "Pokédex par générations"
+    title:
+        description: 'Description'
 
 pokedex:
     listing:

@@ -24,21 +24,19 @@ class TypeCommand extends AbstractCommand
      * @param LanguageService $languageManager
      * @param EntityManagerInterface $em
      */
-    public function __construct(
+    public function __construct (
         TypeService $typeManager,
         ApiService $apiManager,
         LanguageService $languageManager,
         EntityManagerInterface $em
-    )
-    {
+    ) {
         parent::__construct($typeManager, $languageManager, $apiManager, $em);
     }
 
     /**
      * ExcecCommand configuration
      */
-    protected function configure()
-    {
+    protected function configure() {
         $this
             ->setName('app:type:all')
             ->addArgument('lang', InputArgument::REQUIRED, 'Language used')
@@ -52,8 +50,7 @@ class TypeCommand extends AbstractCommand
      * @return int
      * @throws TransportExceptionInterface
      */
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
+    protected function execute(InputInterface $input, OutputInterface $output): int {
         $output->writeln('');
         $output->writeln('<info>Fetching all types...');
 
