@@ -35,8 +35,7 @@ class TypeService extends AbstractService
      * @param TextService $textService
      * @param TypeRepository $typeRepository
      */
-    public function __construct
-    (
+    public function __construct(
         EntityManagerInterface $entityManager,
         ApiService $apiService,
         TypeDamageRelationTypeService $typeDamageFromTypeService,

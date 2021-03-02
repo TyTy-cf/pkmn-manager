@@ -64,4 +64,22 @@ class TypeRepository extends AbstractRepository
         ;
     }
 
+    /**
+     * @param string $slug
+     * @return int|mixed|string|null
+     * @throws NonUniqueResultException
+     */
+    public function findOneBySlugWithRelation(string $slug) {
+        return $this->createQueryBuilder('type')
+            ->select('type', 'pokemons', 'pokemon_sprites', 'types')
+            ->join('type.pokemons', 'pokemons')
+            ->join('pokemons.types', 'types')
+            ->join('pokemons.pokemonSprites', 'pokemon_sprites')
+            ->where('type.slug = :slug')
+            ->setParameter('slug', $slug)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
 }
