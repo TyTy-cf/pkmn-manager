@@ -2,6 +2,8 @@
 
 namespace App\Repository\Versions;
 
+use App\Entity\Moves\PokemonMovesLearnVersion;
+use App\Entity\Pokemon\Pokemon;
 use App\Entity\Users\Language;
 use App\Entity\Versions\Generation;
 use App\Entity\Versions\VersionGroup;
@@ -72,6 +74,28 @@ class VersionGroupRepository extends AbstractRepository
             ->join('version_group.language', 'language')
             ->where('language = :language')
             ->setParameter('language', $language)
+            ->orderBy('version_group.order', $order)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @param Language $language
+     * @param Pokemon $pokemon
+     * @param string $order
+     * @return int|mixed|string
+     */
+    public function getVersionGroupByLanguageAndPokemon(Language $language, Pokemon $pokemon, string $order)
+    {
+        return $this->createQueryBuilder('version_group')
+            ->select('version_group')
+            ->join('version_group.language', 'language')
+            ->join(PokemonMovesLearnVersion::class, 'pmlv', 'WITH', 'pmlv.versionGroup = version_group')
+            ->where('language = :language')
+            ->andWhere('pmlv.pokemon = :pokemon')
+            ->setParameter('language', $language)
+            ->setParameter('pokemon', $pokemon)
             ->orderBy('version_group.order', $order)
             ->getQuery()
             ->getResult()

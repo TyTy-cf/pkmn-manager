@@ -86,7 +86,7 @@ class PokemonMovesLearnVersionService extends AbstractService
      */
     public function getMoveLearnByPokemon(?Move $move)
     {
-        return $this->repoPokemonMoves->getMoveLearnByPokemon($move);
+        return $this->repoPokemonMoves->getMoveLearnByMove($move);
     }
 
     /**

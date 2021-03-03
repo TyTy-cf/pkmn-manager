@@ -14,6 +14,7 @@ use App\Entity\Pokemon\PokemonSpecies;
 use App\Entity\Stats\StatsEffort;
 use App\Entity\Users\Language;
 use App\Entity\Versions\VersionGroup;
+use App\Repository\Versions\VersionGroupRepository;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
 use App\Service\TextService;
@@ -73,19 +74,25 @@ class PokemonService extends AbstractService
     private PokemonSpritesVersionRepository $spritesVersionRepository;
 
     /**
+     * @var VersionGroupRepository $versionGroupRepo
+     */
+    private VersionGroupRepository $versionGroupRepo;
+
+    /**
      * PokemonService constructor.
      *
      * @param EntityManagerInterface $entityManager
      * @param ApiService $apiService
      * @param TextService $textService
+     * @param VersionGroupService $versionGroupService
      * @param TypeRepository $typeRepo
      * @param AbilityRepository $abilitiesRepo
-     * @param VersionGroupService $versionGroupService
      * @param MoveLearnMethodRepository $moveLearnMethodRepo
      * @param PokemonSpritesVersionRepository $spritesVersionRepository
      * @param StatsEffortRepository $statsEffortRepo
      * @param PokemonRepository $pokemonRepository
      * @param PokemonMovesLearnVersionRepository $repoMovesLearnPokemon
+     * @param VersionGroupRepository $versionGroupRepo
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -98,8 +105,10 @@ class PokemonService extends AbstractService
         PokemonSpritesVersionRepository $spritesVersionRepository,
         StatsEffortRepository $statsEffortRepo,
         PokemonRepository $pokemonRepository,
-        PokemonMovesLearnVersionRepository $repoMovesLearnPokemon
+        PokemonMovesLearnVersionRepository $repoMovesLearnPokemon,
+        VersionGroupRepository $versionGroupRepo
     ) {
+        $this->versionGroupRepo = $versionGroupRepo;
         $this->versionGroupService = $versionGroupService;
         $this->typeRepo = $typeRepo;
         $this->abilitiesRepo = $abilitiesRepo;
@@ -168,12 +177,13 @@ class PokemonService extends AbstractService
      * @param Pokemon $pokemon
      * @return array
      */
-    public function generateArrayByVersionForPokemon(Pokemon $pokemon) {
+    public function generateArrayByVersionForPokemon(Pokemon $pokemon): array
+    {
         // Initialise the array of VersionGroup
         $language = $pokemon->getLanguage();
         $arrayMoves['version_groups'] = array();
-        $allMoveLearnMethod = $this->moveLearnMethodRepo->getAllMoveLearnMethodByLanguage($language);
-        $versionsGroups = $this->versionGroupService->getArrayVersionGroup($language);
+        $allMoveLearnMethod = $this->moveLearnMethodRepo->getMoveLearnMethodByLanguageAndPokemon($language, $pokemon);
+        $versionsGroups = $this->versionGroupRepo->getVersionGroupByLanguageAndPokemon($language, $pokemon, 'DESC');
         if (sizeof($versionsGroups) > 0) {
             foreach($versionsGroups as $versionGroup) {
                 /** @var VersionGroup $versionGroup */
@@ -181,7 +191,7 @@ class PokemonService extends AbstractService
                 // Fetch moves for pokemons by versions
                 foreach($allMoveLearnMethod as $moveLearnMethod) {
                     /** @var MoveLearnMethod $moveLearnMethod */
-                    if ($moveLearnMethod->getSlug() === $language->getCode().MoveLearnMethod::SLUG_MACHINE) {
+                    if ($moveLearnMethod->getCodeMethod() === MoveLearnMethod::CODE_MACHINE) {
                         $moves = $this->movesLearnPokemonRepo->getMovesLearnMachineBy($pokemon, $moveLearnMethod, $versionGroup);
                     } else {
                         $moves = $this->movesLearnPokemonRepo->getMovesLearnBy($pokemon, $moveLearnMethod, $versionGroup);

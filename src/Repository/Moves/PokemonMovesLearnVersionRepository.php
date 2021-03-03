@@ -58,11 +58,13 @@ class PokemonMovesLearnVersionRepository extends ServiceEntityRepository
     public function getMovesLearnBy(Pokemon $pokemon, MoveLearnMethod $moveLearnMethod, VersionGroup $versionGroup)
     {
         return $this->createQueryBuilder('pmlv')
-            ->select('pmlv', 'move')
+            ->select('pmlv', 'versionGroup', 'moveLearnMethod', 'move', 'type', 'damage_class')
             ->join('pmlv.moveLearnMethod', 'moveLearnMethod')
             ->join('pmlv.move', 'move')
             ->join('pmlv.pokemon', 'pokemon')
             ->join('pmlv.versionGroup', 'versionGroup')
+            ->join('move.damageClass', 'damage_class')
+            ->join('move.type', 'type')
             ->where('moveLearnMethod = :moveLearnMethod')
             ->andWhere('pokemon = :pokemon')
             ->andWhere('versionGroup = :versionGroup')
@@ -107,7 +109,7 @@ class PokemonMovesLearnVersionRepository extends ServiceEntityRepository
      * @param Move|null $move
      * @return int|mixed|string
      */
-    public function getMoveLearnByPokemon(?Move $move)
+    public function getMoveLearnByMove(?Move $move)
     {
         return $this->createQueryBuilder('pmlv')
             ->select('pmlv', 'pokemon')

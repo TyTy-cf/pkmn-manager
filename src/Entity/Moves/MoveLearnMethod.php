@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping\Entity;
 class MoveLearnMethod
 {
 
-    const SLUG_MACHINE = "/move-learn-method-machine";
+    const CODE_MACHINE = "machine";
 
     /**
      * @ORM\Id()

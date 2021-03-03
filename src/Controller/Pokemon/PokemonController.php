@@ -3,10 +3,10 @@
 
 namespace App\Controller\Pokemon;
 
+use App\Repository\Moves\PokemonMovesLearnVersionRepository;
 use App\Repository\Pokemon\PokemonRepository;
 use App\Repository\Pokemon\PokemonSpeciesVersionRepository;
 use App\Repository\Pokemon\PokemonSpritesVersionRepository;
-use App\Service\Api\ApiService;
 use App\Service\Pokedex\EvolutionChainService;
 use App\Service\Pokemon\PokemonService;
 use App\Service\Users\LanguageService;
