@@ -14,6 +14,7 @@ use App\Entity\Pokemon\PokemonSpecies;
 use App\Entity\Stats\StatsEffort;
 use App\Entity\Users\Language;
 use App\Entity\Versions\VersionGroup;
+use App\Repository\Moves\MoveMachineRepository;
 use App\Repository\Versions\VersionGroupRepository;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
@@ -79,6 +80,11 @@ class PokemonService extends AbstractService
     private VersionGroupRepository $versionGroupRepo;
 
     /**
+     * @var MoveMachineRepository $moveMachineRepository
+     */
+    private MoveMachineRepository $moveMachineRepository;
+
+    /**
      * PokemonService constructor.
      *
      * @param EntityManagerInterface $entityManager
@@ -91,6 +97,7 @@ class PokemonService extends AbstractService
      * @param PokemonSpritesVersionRepository $spritesVersionRepository
      * @param StatsEffortRepository $statsEffortRepo
      * @param PokemonRepository $pokemonRepository
+     * @param MoveMachineRepository $moveMachineRepository
      * @param PokemonMovesLearnVersionRepository $repoMovesLearnPokemon
      * @param VersionGroupRepository $versionGroupRepo
      */
@@ -105,9 +112,11 @@ class PokemonService extends AbstractService
         PokemonSpritesVersionRepository $spritesVersionRepository,
         StatsEffortRepository $statsEffortRepo,
         PokemonRepository $pokemonRepository,
+        MoveMachineRepository $moveMachineRepository,
         PokemonMovesLearnVersionRepository $repoMovesLearnPokemon,
         VersionGroupRepository $versionGroupRepo
     ) {
+        $this->moveMachineRepository = $moveMachineRepository;
         $this->versionGroupRepo = $versionGroupRepo;
         $this->versionGroupService = $versionGroupService;
         $this->typeRepo = $typeRepo;
@@ -177,22 +186,22 @@ class PokemonService extends AbstractService
      * @param Pokemon $pokemon
      * @return array
      */
-    public function generateArrayByVersionForPokemon(Pokemon $pokemon): array
+    public function getArrayMovesByVersionForPokemon(Pokemon $pokemon): array
     {
         // Initialise the array of VersionGroup
         $language = $pokemon->getLanguage();
         $arrayMoves['version_groups'] = array();
-        $allMoveLearnMethod = $this->moveLearnMethodRepo->getMoveLearnMethodByLanguageAndPokemon($language, $pokemon);
-        $versionsGroups = $this->versionGroupRepo->getVersionGroupByLanguageAndPokemon($language, $pokemon, 'DESC');
-        if (sizeof($versionsGroups) > 0) {
-            foreach($versionsGroups as $versionGroup) {
+        $moveLearnMethodByPokemon = $this->moveLearnMethodRepo->getMoveLearnMethodByLanguageAndPokemon($language, $pokemon);
+        $versionsGroupByPokemon = $this->versionGroupRepo->getVersionGroupByLanguageAndPokemon($language, $pokemon, 'DESC');
+        if (sizeof($versionsGroupByPokemon) > 0) {
+            foreach($versionsGroupByPokemon as $versionGroup) {
                 /** @var VersionGroup $versionGroup */
                 $arrayMovesLearn = [];
                 // Fetch moves for pokemons by versions
-                foreach($allMoveLearnMethod as $moveLearnMethod) {
+                foreach($moveLearnMethodByPokemon as $moveLearnMethod) {
                     /** @var MoveLearnMethod $moveLearnMethod */
                     if ($moveLearnMethod->getCodeMethod() === MoveLearnMethod::CODE_MACHINE) {
-                        $moves = $this->movesLearnPokemonRepo->getMovesLearnMachineBy($pokemon, $moveLearnMethod, $versionGroup);
+                        $moves = $this->moveMachineRepository->getMovesMachineBy($pokemon, $moveLearnMethod, $versionGroup);
                     } else {
                         $moves = $this->movesLearnPokemonRepo->getMovesLearnBy($pokemon, $moveLearnMethod, $versionGroup);
                     }
@@ -231,8 +240,7 @@ class PokemonService extends AbstractService
         );
         $urlDetailed = $this->apiService->apiConnect($apiResponse['url'])->toArray();
 
-        if (null === $pokemon = $this->getPokemonBySlug($slug) && sizeof($urlDetailed['stats']) > 0)
-        {
+        if (null === $pokemon = $this->getPokemonBySlug($slug) && sizeof($urlDetailed['stats']) > 0) {
             $pokemonName = $this->apiService->getNameBasedOnLanguage(
                 $language->getCode(),
                 $urlDetailed['species']['url']

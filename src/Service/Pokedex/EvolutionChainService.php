@@ -146,7 +146,7 @@ class EvolutionChainService extends AbstractService
      * @return int|mixed|string|null
      * @throws NonUniqueResultException
      */
-    public function generateEvolutionChainFromPokemon(Pokemon $pokemon)
+    public function getEvolutionChainFromPokemon(Pokemon $pokemon)
     {
         $evolutionChain = $this->evolutionChainRepository->getEvolutionChainByPokemon($pokemon);
         $arrayEvolutionChain = [];

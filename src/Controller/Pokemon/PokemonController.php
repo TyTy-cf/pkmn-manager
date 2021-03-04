@@ -90,8 +90,8 @@ class PokemonController extends AbstractController
         $pokemon = $this->pokemonRepository->getPokemonProfileBySlug($request->get('slug_pokemon'));
         return $this->render('Pokemon/profile.html.twig', [
             'pokemon' => $pokemon,
-            'arrayMoves' => $this->pokemonService->generateArrayByVersionForPokemon($pokemon),
-            'arrayEvolutionChain' => $this->evolutionChainService->generateEvolutionChainFromPokemon($pokemon),
+            'arrayMoves' => $this->pokemonService->getArrayMovesByVersionForPokemon($pokemon),
+            'arrayEvolutionChain' => $this->evolutionChainService->getEvolutionChainFromPokemon($pokemon),
             'arrayDescriptionVersion' => $this->pokemonSpeciesVersionRepository->getDescriptionVersionByVersionsAndPokemon(
                 $pokemon->getPokemonSpecies()
             ),
