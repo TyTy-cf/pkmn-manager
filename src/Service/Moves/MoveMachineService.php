@@ -23,11 +23,6 @@ class MoveMachineService extends AbstractService
 {
 
     /**
-     * @var MoveService $movesManager
-     */
-    private MoveService $movesManager;
-
-    /**
      * @var MoveMachineRepository
      */
     private MoveMachineRepository $moveMachineRepository;
@@ -51,29 +46,18 @@ class MoveMachineService extends AbstractService
      * @param VersionGroupService $versionGroupService
      * @param MoveMachineRepository $moveMachineRepository
      */
-    public function __construct
-    (
+    public function __construct(
         EntityManagerInterface $em,
         ApiService $apiService,
         TextService $textService,
         MoveRepository $movesRepository,
         VersionGroupService $versionGroupService,
         MoveMachineRepository $moveMachineRepository
-    )
-    {
+    ) {
         $this->moveMachineRepository = $moveMachineRepository;
         $this->movesRepository = $movesRepository;
         $this->versionGroupManager = $versionGroupService;
         parent::__construct($em, $apiService, $textService);
-    }
-
-    /**
-     * @param string $slug
-     * @return MoveMachine|null
-     */
-    private function getMoveMachineBySlug(string $slug): ?object
-    {
-        return $this->moveMachineRepository->findOneBySlug($slug);
     }
 
     /**
@@ -87,59 +71,82 @@ class MoveMachineService extends AbstractService
         $slug = $this->textService->generateSlugFromClassWithLanguage(
             $language, MoveMachine::class, $urlDetailed['item']['name'].'-version-group-'.$urlDetailed['version_group']['name']
         );
-        if (null === $this->getMoveMachineBySlug($slug))
+        $isNew = false;
+        if (null === $moveMachine = $this->moveMachineRepository->findOneBySlug($slug)) {
+            $moveMachine = new MoveMachine();
+            $isNew = true;
+        }
+        $move = $this->movesRepository->findOneBySlug(
+            $this->textService->generateSlugFromClassWithLanguage(
+                $language,Move::class, $urlDetailed['move']['name']
+            )
+        );
+        if (null !== $move)
         {
-            $move = $this->movesRepository->findOneBySlug(
+            $groupVersion = $this->versionGroupManager->getVersionGroupBySlug(
                 $this->textService->generateSlugFromClassWithLanguage(
-                    $language,Move::class, $urlDetailed['move']['name']
+                    $language, VersionGroup::class, $urlDetailed['version_group']['name']
                 )
             );
-            if (null !== $move)
+            $urlDetailedItem = $this->apiService->apiConnect($urlDetailed['item']['url'])->toArray();
+            $name = $this->apiService->getNameBasedOnLanguageFromArray(
+                $language->getCode(),
+                $urlDetailedItem
+            );
+
+            $moveMachine
+                ->setVersionGroup($groupVersion)
+                ->setName($name)
+                ->setNumber($this->getMachineNumberFromName($name))
+                ->setMove($move)
+                ->setCost($urlDetailedItem['cost'])
+            ;
+
+            if (isset($urlDetailedItem['sprites']['default']))
             {
-                $groupVersion = $this->versionGroupManager->getVersionGroupBySlug(
-                    $this->textService->generateSlugFromClassWithLanguage(
-                        $language, VersionGroup::class, $urlDetailed['version_group']['name']
-                    )
-                );
-                $urlDetailedItem = $this->apiService->apiConnect($urlDetailed['item']['url'])->toArray();
-
-                $moveMachine = (new MoveMachine())
-                    ->setLanguage($language)
-                    ->setSlug($slug)
-                    ->setVersionGroup($groupVersion)
-                    ->setName($this->apiService->getNameBasedOnLanguageFromArray(
-                        $language->getCode(),
-                        $urlDetailedItem
-                    ))
-                    ->setMove($move)
-                    ->setCost($urlDetailedItem['cost'])
-                ;
-
-                if (isset($urlDetailedItem['sprites']['default']))
-                {
-                    $moveMachine->setImageUrl($urlDetailedItem['sprites']['default']);
-                }
-                // Fetch the description
-                foreach($urlDetailedItem['flavor_text_entries'] as $flavorTextEntry)
-                {
-                    $slugVersion = $this->textService->generateSlugFromClassWithLanguage(
-                        $language,
-                        VersionGroup::class,
-                        $flavorTextEntry['version_group']['name']
-                    );
-                    if ($flavorTextEntry['language']['name'] === $language->getCode()
-                     && $slugVersion === $groupVersion->getSlug())
-                    {
-                        $moveMachine->setDescription(
-                            $this->textService->removeReturnLineFromText($flavorTextEntry['text'])
-                        );
-                        break;
-                    }
-                }
-                $this->entityManager->persist($moveMachine);
-                $this->entityManager->flush();
+                $moveMachine->setImageUrl($urlDetailedItem['sprites']['default']);
             }
+            // Fetch the description
+            foreach($urlDetailedItem['flavor_text_entries'] as $flavorTextEntry)
+            {
+                $slugVersion = $this->textService->generateSlugFromClassWithLanguage(
+                    $language,
+                    VersionGroup::class,
+                    $flavorTextEntry['version_group']['name']
+                );
+                if ($flavorTextEntry['language']['name'] === $language->getCode()
+                 && $slugVersion === $groupVersion->getSlug())
+                {
+                    $moveMachine->setDescription(
+                        $this->textService->removeReturnLineFromText($flavorTextEntry['text'])
+                    );
+                    break;
+                }
+            }
+
+            if ($isNew) {
+                $moveMachine
+                    ->setSlug($slug)
+                    ->setLanguage($language)
+                ;
+                $this->entityManager->persist($moveMachine);
+            }
+            $this->entityManager->flush();
         }
+    }
+
+    /**
+     * Substring the machine's name to get the number, in order to improve the order
+     * For CS the number would be something like 1003 to make sure they are at the end
+     * @param string $name
+     * @return false|int|string
+     */
+    public function getMachineNumberFromName(string $name) {
+        $number = substr($name, 2, strlen($name));
+        if (strpos($name, 'CS')) {
+            $number = $number + 1000;
+        }
+        return $number;
     }
 
 }

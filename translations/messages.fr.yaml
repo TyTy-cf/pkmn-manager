@@ -20,6 +20,7 @@ pokemon:
         stage_inital: "Stade initial"
         stage_baby: "Stade bébé"
         baby_label: "Faire tenir %item% au parent"
+        other_form: "Autres formes"
     moves:
         method:
             levelup: "Montée de niveau"

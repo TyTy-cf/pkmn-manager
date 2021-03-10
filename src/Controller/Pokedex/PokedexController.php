@@ -39,8 +39,7 @@ class PokedexController extends AbstractController
      * @param LanguageService $languageManager
      * @param PokemonRepository $pokemonRepository
      */
-    public function __construct
-    (
+    public function __construct(
         PokedexRepository $pokedexRepository,
         LanguageService $languageManager,
         PokemonRepository $pokemonRepository

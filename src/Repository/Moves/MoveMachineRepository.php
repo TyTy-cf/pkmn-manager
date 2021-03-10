@@ -67,7 +67,7 @@ class MoveMachineRepository extends AbstractRepository
             ->setParameter('moveLearnMethod', $moveLearnMethod)
             ->setParameter('pokemon', $pokemon)
             ->setParameter('versionGroup', $versionGroup)
-            ->orderBy('mm.name', 'ASC')
+            ->orderBy('mm.number', 'ASC')
             ->getQuery()
             ->getResult()
         ;

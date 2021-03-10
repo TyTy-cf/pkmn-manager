@@ -77,12 +77,18 @@ class PokemonRepository extends AbstractRepository
      */
     public function getPokemonProfileBySlug(string $slug) {
         return $this->createQueryBuilder('pokemon')
-            ->select('pokemon', 'pokemon_species', 'egg_group', 'stats_effort', 'pokemon_sprites', 'types', 'pokemons_ability', 'ability')
+            ->select('pokemon',
+                'pokemon_species', 'egg_group',
+                'stats_effort', 'pokemon_sprites',
+                'types', 'pokemons_ability',
+                'ability', 'pokemons'
+            )
             ->leftJoin('pokemon.pokemonSpecies', 'pokemon_species')
             ->join('pokemon.pokemonsAbility', 'pokemons_ability')
             ->join('pokemons_ability.ability', 'ability')
             ->leftJoin('pokemon_species.eggGroup', 'egg_group')
             ->leftJoin('pokemon.statsEffort', 'stats_effort')
+            ->leftJoin('pokemon_species.pokemons', 'pokemons')
             ->join('pokemon.pokemonSprites', 'pokemon_sprites')
             ->join('pokemon.types', 'types')
             ->andWhere('pokemon.slug = :slug')
