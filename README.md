@@ -29,6 +29,7 @@ And then come all the command to fetch all pokemons and their informations :
 ``
 symfony console app:ability:all 'language'
 ``
+<br>
 ``
 symfony console app:nature:all 'language'
 ``
