@@ -88,50 +88,51 @@ class MoveMachineService extends AbstractService
                     $language, VersionGroup::class, $urlDetailed['version_group']['name']
                 )
             );
-            $urlDetailedItem = $this->apiService->apiConnect($urlDetailed['item']['url'])->toArray();
-            $name = $this->apiService->getNameBasedOnLanguageFromArray(
-                $language->getCode(),
-                $urlDetailedItem
-            );
-
-            $moveMachine
-                ->setVersionGroup($groupVersion)
-                ->setName($name)
-                ->setNumber($this->getMachineNumberFromName($name))
-                ->setMove($move)
-                ->setCost($urlDetailedItem['cost'])
-            ;
-
-            if (isset($urlDetailedItem['sprites']['default']))
-            {
-                $moveMachine->setImageUrl($urlDetailedItem['sprites']['default']);
-            }
-            // Fetch the description
-            foreach($urlDetailedItem['flavor_text_entries'] as $flavorTextEntry)
-            {
-                $slugVersion = $this->textService->generateSlugFromClassWithLanguage(
-                    $language,
-                    VersionGroup::class,
-                    $flavorTextEntry['version_group']['name']
+            if (null !== $groupVersion) {
+                $urlDetailedItem = $this->apiService->apiConnect($urlDetailed['item']['url'])->toArray();
+                $name = $this->apiService->getNameBasedOnLanguageFromArray(
+                    $language->getCode(),
+                    $urlDetailedItem
                 );
-                if ($flavorTextEntry['language']['name'] === $language->getCode()
-                 && $slugVersion === $groupVersion->getSlug())
-                {
-                    $moveMachine->setDescription(
-                        $this->textService->removeReturnLineFromText($flavorTextEntry['text'])
-                    );
-                    break;
-                }
-            }
-
-            if ($isNew) {
                 $moveMachine
-                    ->setSlug($slug)
-                    ->setLanguage($language)
+                    ->setVersionGroup($groupVersion)
+                    ->setName($name)
+                    ->setNumber($this->getMachineNumberFromName($name))
+                    ->setMove($move)
+                    ->setCost($urlDetailedItem['cost'])
                 ;
-                $this->entityManager->persist($moveMachine);
+
+                if (isset($urlDetailedItem['sprites']['default']))
+                {
+                    $moveMachine->setImageUrl($urlDetailedItem['sprites']['default']);
+                }
+                // Fetch the description
+                foreach($urlDetailedItem['flavor_text_entries'] as $flavorTextEntry)
+                {
+                    $slugVersion = $this->textService->generateSlugFromClassWithLanguage(
+                        $language,
+                        VersionGroup::class,
+                        $flavorTextEntry['version_group']['name']
+                    );
+                    if ($flavorTextEntry['language']['name'] === $language->getCode()
+                     && $slugVersion === $groupVersion->getSlug())
+                    {
+                        $moveMachine->setDescription(
+                            $this->textService->removeReturnLineFromText($flavorTextEntry['text'])
+                        );
+                        break;
+                    }
+                }
+
+                if ($isNew) {
+                    $moveMachine
+                        ->setSlug($slug)
+                        ->setLanguage($language)
+                    ;
+                    $this->entityManager->persist($moveMachine);
+                }
+                $this->entityManager->flush();
             }
-            $this->entityManager->flush();
         }
     }
 
@@ -143,7 +144,7 @@ class MoveMachineService extends AbstractService
      */
     public function getMachineNumberFromName(string $name) {
         $number = substr($name, 2, strlen($name));
-        if (strpos($name, 'CS')) {
+        if (false !== strpos($name, 'CS')) {
             $number = $number + 1000;
         }
         return $number;
