@@ -147,14 +147,6 @@ class PokemonService extends AbstractService
 
     /**
      * @param Language $language
-     * @return array
-     */
-    public function getAllPokemonNameForLanguage(Language $language): array {
-        return $this->pokemonRepository->getAllPokemonNameForLanguage($language);
-    }
-
-    /**
-     * @param Language $language
      * @param int $offset
      * @param int $limit
      * @return array|int|string

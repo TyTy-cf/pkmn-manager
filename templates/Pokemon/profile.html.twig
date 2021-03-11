@@ -32,7 +32,6 @@
 						{% if arrayEvolutionChain|length > 0 or pokemon.pokemonSpecies.pokemons|length > 0 %}
 							<div class="pkmnProfile-datasTab tab-pane fade" id="section-evolutions" role="tabpanel" aria-labelledby="section-evolutions-tab">
 								{% include 'Pokemon/Resume/resume_evolution.html.twig' with {'pokemon' : pokemon} %}
-								<hr>
 								{% include 'Pokemon/Resume/resume_form.html.twig' with {'pokemon' : pokemon} %}
 							</div>
 						{% endif %}

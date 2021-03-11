@@ -1,17 +1,19 @@
 
-<div class="grid-row">
-    <div class="grid-col">
-        <h2>{{ 'pokemon.evolution.other_form'|trans }}</h2>
-        <div class="container pokedexPage-content">
-            <div class="pkmnCard-container">
-            {% for pokemonAlike in pokemon.pokemonSpecies.pokemons %}
-                <div class="pkmnCard_evolution-container col-{{ 12 / (pokemon.pokemonSpecies.pokemons|length)  }}">
-                    {% if pokemonAlike.isDefault is not same as (true) %}
-                         {% include 'Pokemon/Cards/pokemon_card.html.twig' with {'pokemon' : pokemonAlike} %}
-                    {% endif %}
+{% if pokemon.pokemonSpecies.pokemons|length > 1 %}
+    <div class="grid-row">
+        <div class="grid-col">
+            <h2>{{ 'pokemon.evolution.other_form'|trans }}</h2>
+            <div class="container pokedexPage-content">
+                <div class="pkmnCard-container">
+                {% for pokemonAlike in pokemon.pokemonSpecies.pokemons %}
+                    <div class="pkmnCard_evolution-container col-{{ 12 / (pokemon.pokemonSpecies.pokemons|length)  }}">
+                        {% if pokemonAlike.isDefault is not same as (true) %}
+                             {% include 'Pokemon/Cards/pokemon_card.html.twig' with {'pokemon' : pokemonAlike} %}
+                        {% endif %}
+                    </div>
+                {% endfor %}
                 </div>
-            {% endfor %}
             </div>
         </div>
     </div>
-</div>
+{% endif %}

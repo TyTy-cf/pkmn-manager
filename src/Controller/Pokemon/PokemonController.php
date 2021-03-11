@@ -3,7 +3,6 @@
 
 namespace App\Controller\Pokemon;
 
-use App\Repository\Moves\PokemonMovesLearnVersionRepository;
 use App\Repository\Pokemon\PokemonRepository;
 use App\Repository\Pokemon\PokemonSpeciesVersionRepository;
 use App\Repository\Pokemon\PokemonSpritesVersionRepository;
@@ -88,7 +87,6 @@ class PokemonController extends AbstractController
     function displayProfile(Request $request): Response
     {
         $pokemon = $this->pokemonRepository->getPokemonProfileBySlug($request->get('slug_pokemon'));
-        dump($pokemon);
         return $this->render('Pokemon/profile.html.twig', [
             'pokemon' => $pokemon,
             'arrayMoves' => $this->pokemonService->getArrayMovesByVersionForPokemon($pokemon),
@@ -107,7 +105,7 @@ class PokemonController extends AbstractController
      */
     function getAllPokemonNamesJson(): JsonResponse
     {
-        return new JsonResponse($this->pokemonService->getAllPokemonNameForLanguage(
+        return new JsonResponse($this->pokemonRepository->getAllPokemonNameForLanguage(
             $this->languageService->getLanguageByCode('fr')
         ));
     }
