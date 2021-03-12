@@ -84,8 +84,8 @@ class PokemonRepository extends AbstractRepository
                 'ability', 'pokemons'
             )
             ->leftJoin('pokemon.pokemonSpecies', 'pokemon_species')
-            ->join('pokemon.pokemonsAbility', 'pokemons_ability')
-            ->join('pokemons_ability.ability', 'ability')
+            ->leftJoin('pokemon.pokemonsAbility', 'pokemons_ability')
+            ->leftJoin('pokemons_ability.ability', 'ability')
             ->leftJoin('pokemon_species.eggGroup', 'egg_group')
             ->leftJoin('pokemon.statsEffort', 'stats_effort')
             ->leftJoin('pokemon_species.pokemons', 'pokemons')
