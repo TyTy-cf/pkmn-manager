@@ -10,14 +10,18 @@
 			<div class="pkmnProfile-colSprite col-lg-6 col-md-12 col-sm-12">
 				<div class="pkmnProfile-colSpriteContainer">
 					<img class="pkmnProfile_sprite" src="{{ pokemon.pokemonSprites.spriteOfficial }}" alt="Image de {{ pokemon.name|capitalize }}">
-					<p class="pkmnProfile_bckgrdNumber"><small>#</small>{{ pokemon.idApi }}</p>
+					<p class="pkmnProfile_bckgrdNumber">
+						<small>#</small>
+						{{ pokemon.idApi }}</p>
 				</div>
 			</div>
 
 			<div class="pkmnProfile-colDatas col-lg-6 col-md-12 col-sm-12">
 				<div class="pkmnProfile-colDatasContainer">
 					<div class="pkmnProfile-datasHeader">
-						<h1 class="pkmnProfile-datasMainTitle"><span>{{ pokemon.name }}</span></h1>
+						<h1 class="pkmnProfile-datasMainTitle">
+							<span>{{ pokemon.name }}</span>
+						</h1>
 						<ul class="pkmnProfile-datasNavigation nav" id="pills-tab" role="tablist">
 							{% include 'Pokemon/Resume/link_section.html.twig' %}
 						</ul>
@@ -31,8 +35,12 @@
 						</div>
 						{% if arrayEvolutionChain|length > 0 or pokemon.pokemonSpecies.pokemons|length > 0 %}
 							<div class="pkmnProfile-datasTab tab-pane fade" id="section-evolutions" role="tabpanel" aria-labelledby="section-evolutions-tab">
-								{% include 'Pokemon/Resume/resume_evolution.html.twig' with {'pokemon' : pokemon} %}
-								{% include 'Pokemon/Resume/resume_form.html.twig' with {'pokemon' : pokemon} %}
+								<div class="row">
+									{% include 'Pokemon/Resume/resume_evolution.html.twig' with {'pokemon' : pokemon} %}
+								</div>
+								<div class="row">
+									{% include 'Pokemon/Resume/resume_form.html.twig' with {'pokemon' : pokemon} %}
+								</div>
 							</div>
 						{% endif %}
 						<div class="pkmnProfile-datasTab tab-pane fade" id="section-descriptions" role="tabpanel" aria-labelledby="section-descriptions-tab">

@@ -3,7 +3,7 @@
 		{% if pokemon.pokemonSprites.spriteFrontDefault is not null %}
 			<img class="pkmnCard-pict" src="{{ pokemon.pokemonSprites.spriteFrontDefault }}" alt="Pokemon {{ pokemon.name }}">
 		{% else %}
-			<img class="pkmnCard-pict" src="TTTTOOOOODDDDDOOOOOOOO" alt="Pokemon {{ pokemon.name }}, mais sans sa photo">
+			<img class="pkmnCard-pict" src="{{ asset('missingno_sm.png') }}" alt="Pokemon {{ pokemon.name }}, mais sans sa photo">
 		{% endif %}
 		<h4 class="pkmnCard-name">
 			{{ pokemon.name }}
