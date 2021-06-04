@@ -58,6 +58,16 @@ class TypeDamageRelationTypeService extends AbstractService
 
     /**
      * @param Type $type
+     * @param string $relation
+     * @return int|mixed|string
+     */
+    public function getRelationTypeByTypeAndRelationName(Type $type, string $relation)
+    {
+        return $this->typeDamageRelationTypeRepository->getRelationTypeByTypeAndRelationName($type, $relation);
+    }
+
+    /**
+     * @param Type $type
      * @param string $lang
      * @throws TransportExceptionInterface
      * @throws NonUniqueResultException
