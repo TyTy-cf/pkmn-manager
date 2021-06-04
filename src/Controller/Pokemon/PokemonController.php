@@ -6,6 +6,7 @@ namespace App\Controller\Pokemon;
 use App\Repository\Pokemon\PokemonRepository;
 use App\Repository\Pokemon\PokemonSpeciesVersionRepository;
 use App\Repository\Pokemon\PokemonSpritesVersionRepository;
+use App\Service\Infos\Type\TypeService;
 use App\Service\Pokedex\EvolutionChainService;
 use App\Service\Pokemon\PokemonService;
 use App\Service\Users\LanguageService;
@@ -49,6 +50,11 @@ class PokemonController extends AbstractController
      */
     private PokemonRepository $pokemonRepository;
 
+    /**
+     * @var TypeService $typeService
+     */
+    private TypeService $typeService;
+
     /**s
      * PokemonController constructor.
      *
@@ -58,6 +64,7 @@ class PokemonController extends AbstractController
      * @param PokemonRepository $pokemonRepository
      * @param PokemonSpeciesVersionRepository $pokemonSpeciesVersionRepository
      * @param PokemonSpritesVersionRepository $pokemonSpritesVersionRepository
+     * @param TypeService $typeService
      */
     public function __construct(
         PokemonService $pokemonService,
@@ -65,11 +72,13 @@ class PokemonController extends AbstractController
         LanguageService $languageService,
         PokemonRepository $pokemonRepository,
         PokemonSpeciesVersionRepository $pokemonSpeciesVersionRepository,
-        PokemonSpritesVersionRepository $pokemonSpritesVersionRepository
+        PokemonSpritesVersionRepository $pokemonSpritesVersionRepository,
+        TypeService $typeService
     ) {
         $this->evolutionChainService = $evolutionChainService;
         $this->pokemonRepository = $pokemonRepository;
         $this->pokemonService = $pokemonService;
+        $this->typeService = $typeService;
         $this->languageService = $languageService;
         $this->pokemonSpeciesVersionRepository = $pokemonSpeciesVersionRepository;
         $this->pokemonSpritesVersionRepository = $pokemonSpritesVersionRepository;
@@ -95,6 +104,8 @@ class PokemonController extends AbstractController
                 $pokemon->getPokemonSpecies()
             ),
             'spritesVersionGroup' => $this->pokemonSpritesVersionRepository->getSpritesVersionGroupByPokemon($pokemon),
+            'typesRelation' => $this->typeService->getTypesWeaknessesByPokemon($pokemon),
+            'types' => $this->typeService->getAllTypeByLanguage($pokemon->getLanguage()),
         ]);
     }
 

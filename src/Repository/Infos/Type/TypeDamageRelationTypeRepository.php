@@ -32,4 +32,22 @@ class TypeDamageRelationTypeRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * @param Type $type
+     * @param string $relation
+     * @return int|mixed|string
+     */
+    public function getRelationTypeByTypeAndRelationName(Type $type, string $relation) {
+        return $this->createQueryBuilder('type_damage_relation_type')
+            ->select('type_damage_relation_type')
+            ->join('type_damage_relation_type.type', 'type')
+            ->where('type = :type')
+            ->andWhere('type_damage_relation_type.damageRelation = :relation')
+            ->setParameter('type', $type)
+            ->setParameter('relation', $relation)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 }

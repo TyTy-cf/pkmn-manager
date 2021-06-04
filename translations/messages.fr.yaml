@@ -13,6 +13,7 @@ pokemon:
     egg_group: "Groupe d'oeufs"
     hatch_counter: "Eclosion"
     hidden_talent: "Talent caché"
+    weaknesses: "Faiblesses de %pkmn%"
     evolution:
         title: "Evolutions"
         empty: "%pokemon% n'évolue pas"

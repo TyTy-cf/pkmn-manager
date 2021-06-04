@@ -70,3 +70,31 @@
         </tr>
     </tbody>
 </table>
+
+<div class="grid-col mt-4">
+    <h2>{{ 'pokemon.weaknesses'|trans({'%pkmn%': pokemon.name}) }}</h2>
+    <div class="row">
+        <table>
+            <thead>
+                <tr>
+                    {% for typeElement in types %}
+                        <th>
+                            <div class="d-flex">
+                                <img class="size-80" src="{{ typeElement.img|imagine_filter('rotate270') }}" alt="{{ typeElement.name }}">
+                            </div>
+                        </th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    {% for type, coef in typesRelation %}
+                        <td class="text-center type-related-{{ coef|type_return }}">
+                            {{ coef }}
+                        </td>
+                    {% endfor %}
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
