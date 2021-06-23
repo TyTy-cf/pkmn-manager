@@ -232,7 +232,7 @@ class PokemonService extends AbstractService
         );
         $urlDetailed = $this->apiService->apiConnect($apiResponse['url'])->toArray();
 
-        if (null === $pokemon = $this->getPokemonBySlug($slug) && sizeof($urlDetailed['stats']) > 0) {
+        if (null === $this->getPokemonBySlug($slug) && sizeof($urlDetailed['stats']) > 0) {
             $pokemonName = $this->apiService->getNameBasedOnLanguage(
                 $language->getCode(),
                 $urlDetailed['species']['url']
@@ -247,7 +247,7 @@ class PokemonService extends AbstractService
                 ->setWeight($urlDetailed['weight'])
                 ->setHeight($urlDetailed['height'])
                 ->setLanguage($language)
-                ->setIsDefault($urlDetailed['is_default']);
+                ->setIsDefault($urlDetailed['is_default'])
             ;
 
             // Add the stats
@@ -313,7 +313,6 @@ class PokemonService extends AbstractService
                     $this->entityManager->persist($pokemonAbility);
                 }
             }
-
             $this->entityManager->persist($pokemon);
         }
         $this->entityManager->flush();

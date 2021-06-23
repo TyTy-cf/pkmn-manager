@@ -133,7 +133,7 @@ class VersionGroupService extends AbstractService
                 ->setLanguage($language)
                 ->setName($urlDetailed['name'])
                 ->setGeneration($generation)
-                ->setOrder($urlDetailed['order'])
+                ->setDisplayedOrder($urlDetailed['order'])
             ;
             $this->entityManager->persist($newVersionGroup);
             $this->entityManager->flush();

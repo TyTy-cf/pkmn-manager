@@ -23,7 +23,7 @@ class Stats
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(name="id", type="integer", length=6)
      */
-    private $id;
+    private int $id;
 
     use TraitStatsPkmn;
 

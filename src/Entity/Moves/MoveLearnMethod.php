@@ -37,8 +37,8 @@ class MoveLearnMethod
     private int $displayOrder;
 
     /**
-     * @var string $codeMethod
-     * @ORM\Column(name="code_method", type="string", length=80)
+     * @var string|null $codeMethod
+     * @ORM\Column(name="code_method", type="string", length=80, nullable=true)
      */
     private string $codeMethod;
 
@@ -51,9 +51,9 @@ class MoveLearnMethod
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCodeMethod(): string
+    public function getCodeMethod(): ?string
     {
         return $this->codeMethod;
     }

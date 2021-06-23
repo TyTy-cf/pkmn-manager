@@ -119,11 +119,11 @@ class PokemonSpeciesService extends AbstractService
             $language, PokemonSpecies::class, $apiResponse['name']
         );
 
-        if (null === $pokemonSpecies = $this->getPokemonSpeciesBySlug($slug))
+        if (null === $this->getPokemonSpeciesBySlug($slug))
         {
             $codeLang = $language->getCode();
             $pokemonSpeciesName = $this->apiService->getNameBasedOnLanguageFromArray(
-                $language->getCode(), $urlDetailed
+                $codeLang, $urlDetailed
             );
             $genera = $this->apiService->getFieldContentFromLanguage(
                 $codeLang, $urlDetailed, 'genera',  'genus'
@@ -143,7 +143,7 @@ class PokemonSpeciesService extends AbstractService
                 ->setHasGenderDifferences($urlDetailed['has_gender_differences'])
             ;
 
-            if (count($urlDetailed['evolves_from_species']) > 0)
+            if (isset($urlDetailed['evolves_from_species']))
             {
                 // Set le evolve from species
                 $pokemonSpecies->setEvolvesFromSpecies(

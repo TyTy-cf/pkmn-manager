@@ -62,11 +62,11 @@ class Pokemon
     private Collection $pokemonForms;
 
     /**
-     * @var PokemonSprites $pokemonSprites
+     * @var PokemonSprites|null $pokemonSprites
      * @OneToOne(targetEntity="App\Entity\Pokemon\PokemonSprites")
-     * @JoinColumn(name="pokemon_sprites_id", referencedColumnName="id")
+     * @JoinColumn(name="pokemon_sprites_id", referencedColumnName="id", nullable=true)
      */
-    private PokemonSprites $pokemonSprites;
+    private ?PokemonSprites $pokemonSprites;
 
     /**
      * @ManyToMany(targetEntity="App\Entity\Infos\Type\Type", inversedBy="pokemons")
@@ -305,18 +305,18 @@ class Pokemon
     }
 
     /**
-     * @return PokemonSprites
+     * @return PokemonSprites|null
      */
-    public function getPokemonSprites(): PokemonSprites
+    public function getPokemonSprites(): ?PokemonSprites
     {
         return $this->pokemonSprites;
     }
 
     /**
-     * @param PokemonSprites $pokemonSprites
+     * @param PokemonSprites|null $pokemonSprites
      * @return Pokemon
      */
-    public function setPokemonSprites(PokemonSprites $pokemonSprites): self
+    public function setPokemonSprites(?PokemonSprites $pokemonSprites): self
     {
         $this->pokemonSprites = $pokemonSprites;
         return $this;

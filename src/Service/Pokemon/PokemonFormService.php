@@ -91,7 +91,7 @@ class PokemonFormService extends AbstractService
                 $language, $urlDetailed, 'form_names', 'name'
             );
 
-            if (($newPokemonForm = $this->getPokemonFormBySlug($slug)) === null && $formName !== null) {
+            if ($this->getPokemonFormBySlug($slug) === null && $formName !== null) {
                 $newPokemonForm = (new PokemonForm())
                     ->setSlug($slug)
                     ->setName($name)

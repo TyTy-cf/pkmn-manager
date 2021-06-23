@@ -74,7 +74,7 @@ class VersionGroupRepository extends AbstractRepository
             ->join('version_group.language', 'language')
             ->where('language = :language')
             ->setParameter('language', $language)
-            ->orderBy('version_group.order', $order)
+            ->orderBy('version_group.displayedOrder', $order)
             ->getQuery()
             ->getResult()
         ;
@@ -96,7 +96,7 @@ class VersionGroupRepository extends AbstractRepository
             ->andWhere('pmlv.pokemon = :pokemon')
             ->setParameter('language', $language)
             ->setParameter('pokemon', $pokemon)
-            ->orderBy('version_group.order', $order)
+            ->orderBy('version_group.displayedOrder', $order)
             ->getQuery()
             ->getResult()
         ;
