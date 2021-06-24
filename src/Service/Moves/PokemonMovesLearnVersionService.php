@@ -123,8 +123,9 @@ class PokemonMovesLearnVersionService extends AbstractService
         {
             // Fetch the move from data
             $moveName = $detailedMove['move']['name'];
+            $codeLang = $language->getCode();
             $move = $this->movesRepository->findOneBySlug(
-                $language->getCode() . '/move-'.$moveName
+                $codeLang . '/move-'.$moveName
             );
             foreach ($detailedMove['version_group_details'] as $detailGroup)
             {
@@ -132,11 +133,12 @@ class PokemonMovesLearnVersionService extends AbstractService
                 if (isset($arrayGroupVersion[$versionGroupName])) {
                     $versionGroup = $arrayGroupVersion[$versionGroupName];
                     $moveLearnMethodName = $detailGroup['move_learn_method']['name'];
-                    if (isset($arrayMoveLearnMethod[$language->getCode() . '/move-learn-method-'.$moveLearnMethodName]))
+                    $slugMoveLeanMethod = $codeLang . '/move-learn-method-'.$moveLearnMethodName;
+                    if (isset($arrayMoveLearnMethod[$slugMoveLeanMethod]))
                     {
-                        $moveLearnMethod = $arrayMoveLearnMethod[$language->getCode() . '/move-learn-method-'.$moveLearnMethodName];
+                        $moveLearnMethod = $arrayMoveLearnMethod[$slugMoveLeanMethod];
                         // Slug
-                        $slug = $language->getCode().'-'.
+                        $slug = $codeLang.'-'.
                             $pokemon->getNameApi().'-'.
                             $moveName.'-'.
                             $moveLearnMethodName.'-'.
@@ -160,10 +162,10 @@ class PokemonMovesLearnVersionService extends AbstractService
                             }
                         }
                         $this->entityManager->persist($pokemonMoveLearn);
-                        $this->entityManager->flush();
                     }
                 }
             }
+            $this->entityManager->flush();
         }
     }
 

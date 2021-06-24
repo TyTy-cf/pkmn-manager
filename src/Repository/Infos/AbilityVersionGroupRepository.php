@@ -30,7 +30,7 @@ class AbilityVersionGroupRepository extends AbstractRepository
             ->join('ability_version_group.ability', 'ability')
             ->where('ability.slug = :slug')
             ->setParameter('slug', $slug)
-            ->orderBy('version_group.order', 'DESC')
+            ->orderBy('version_group.displayedOrder', 'DESC')
             ->getQuery()
             ->getResult()
         ;

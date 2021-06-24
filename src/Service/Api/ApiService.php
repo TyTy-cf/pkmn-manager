@@ -91,7 +91,7 @@ class ApiService
      * @throws TransportExceptionInterface
      */
     public function getAllAbilitiesJson() {
-        return $this->apiConnect('http://pokeapi.co/api/v2/ability/?offset=0&limit=327');
+        return $this->apiConnect('https://pokeapi.co/api/v2/ability/?offset=0&limit=327');
     }
 
     /**
@@ -139,7 +139,7 @@ class ApiService
      * @throws TransportExceptionInterface
      */
     public function getAllMoveJson() {
-        return $this->apiConnect('https://pokeapi.co/api/v2/move/?offset=0&limit=813');
+        return $this->apiConnect('https://pokeapi.co/api/v2/move/?offset=0&limit=844');
     }
 
     /**
@@ -237,11 +237,10 @@ class ApiService
     }
 
     /**
-     * @param $lang
-     *
+     * @param string $lang     *
      * @param $apiResponse
-     * @param $mainField
-     * @param $field
+     * @param string $mainField
+     * @param string $field
      * @return string
      */
     public function getFieldContentFromLanguage(string $lang, $apiResponse, string $mainField, string $field): ?string {

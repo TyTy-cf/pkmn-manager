@@ -29,9 +29,6 @@ class TextService
         {
             $text = substr($text, 1);
         }
-        if (empty($text)) {
-            return 'n-a';
-        }
         return strtolower($text);
     }
 

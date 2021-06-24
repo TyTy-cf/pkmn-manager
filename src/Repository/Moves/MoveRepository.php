@@ -55,8 +55,7 @@ class MoveRepository extends AbstractRepository
             ->where('move.slug = :slug')
             ->setParameter('slug', $slug)
             ->groupBy('pokemon', 'versionGroup')
-            ->orderBy('versionGroup.order', 'DESC')
-            ->orderBy('pokemon.idApi', 'ASC')
+            ->orderBy('versionGroup.displayedOrder', 'DESC')
             ->getQuery()
             ->getOneOrNullResult()
         ;

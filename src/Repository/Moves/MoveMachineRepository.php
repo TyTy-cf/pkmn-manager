@@ -36,7 +36,7 @@ class MoveMachineRepository extends AbstractRepository
             ->join('move_machine.versionGroup', 'versionGroup')
             ->where('move = :move')
             ->setParameter('move', $move)
-            ->orderBy('versionGroup.order', 'DESC')
+            ->orderBy('versionGroup.displayedOrder', 'DESC')
             ->getQuery()
             ->getResult()
         ;
