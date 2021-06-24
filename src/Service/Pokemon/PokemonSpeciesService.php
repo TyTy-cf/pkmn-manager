@@ -119,74 +119,86 @@ class PokemonSpeciesService extends AbstractService
             $language, PokemonSpecies::class, $apiResponse['name']
         );
 
-        if (null === $this->getPokemonSpeciesBySlug($slug))
-        {
-            $codeLang = $language->getCode();
-            $pokemonSpeciesName = $this->apiService->getNameBasedOnLanguageFromArray(
-                $codeLang, $urlDetailed
-            );
-            $genera = $this->apiService->getFieldContentFromLanguage(
-                $codeLang, $urlDetailed, 'genera',  'genus'
-            );
+        $codeLang = $language->getCode();
 
-            $pokemonSpecies = (new PokemonSpecies())
-                ->setGenera($genera)
+        $isNew = false;
+        if (null === $pokemonSpecies = $this->getPokemonSpeciesBySlug($slug)) {
+            $pokemonSpecies = new PokemonSpecies();
+            $isNew = true;
+        }
+
+        $pokemonSpeciesName = $this->apiService->getNameBasedOnLanguageFromArray(
+            $codeLang, $urlDetailed
+        );
+        $genera = $this->apiService->getFieldContentFromLanguage(
+            $codeLang, $urlDetailed, 'genera',  'genus'
+        );
+
+        $pokemonSpecies
+            ->setGenera($genera)
+            ->setName($pokemonSpeciesName)
+            ->setGrowthRate($urlDetailed['growth_rate']['name'])
+            ->setIsMythical($urlDetailed['is_mythical'])
+            ->setIsBaby($urlDetailed['is_baby'])
+            ->setIsLegendary($urlDetailed['is_legendary'])
+            ->setBaseHappiness($urlDetailed['base_happiness'])
+            ->setCaptureRate($urlDetailed['capture_rate'])
+            ->setHasGenderDifferences($urlDetailed['has_gender_differences'])
+            ->setHatchCounter($urlDetailed['hatch_counter'])
+        ;
+
+        if ($isNew) {
+            $pokemonSpecies
+                ->setSlug($slug)
                 ->setLanguage($language)
-                ->setName($pokemonSpeciesName)
-                ->setSlug($codeLang.'/'.$slug)
-                ->setGrowthRate($urlDetailed['growth_rate']['name'])
-                ->setIsMythical($urlDetailed['is_mythical'])
-                ->setIsBaby($urlDetailed['is_baby'])
-                ->setIsLegendary($urlDetailed['is_legendary'])
-                ->setBaseHappiness($urlDetailed['base_happiness'])
-                ->setCaptureRate($urlDetailed['capture_rate'])
-                ->setHasGenderDifferences($urlDetailed['has_gender_differences'])
             ;
-
-            if (isset($urlDetailed['evolves_from_species']))
-            {
-                // Set le evolve from species
-                $pokemonSpecies->setEvolvesFromSpecies(
-                    $this->getPokemonSpeciesBySlug(
-                        $this->textService->generateSlugFromClassWithLanguage(
-                            $language, PokemonSpecies::class, $urlDetailed['evolves_from_species']['name']
-                        )
-                    )
-                );
-            }
-
-            // Set the egg(s) group
-            foreach($urlDetailed['egg_groups'] as $eggGroupName)
-            {
-                $eggGroup = $this->eggGroupRepository->findOneBySlug(
-                    $language->getCode().'/egg-group-' . $eggGroupName['name']
-                );
-                if ($eggGroup !== null)
-                {
-                    $pokemonSpecies->addEggGroup($eggGroup);
-                }
-            }
-
             $this->entityManager->persist($pokemonSpecies);
+        }
 
-            // Finally get the pokemon linked to this species and update it
-            $pokemon = $this->pokemonService->getPokemonBySlug(
-                $this->textService->generateSlugFromClassWithLanguage(
-                    $language,Pokemon::class, $urlDetailed['varieties'][0]['pokemon']['name']
+        if (isset($urlDetailed['evolves_from_species']))
+        {
+            // Set le evolve from species
+            $pokemonSpecies->setEvolvesFromSpecies(
+                $this->getPokemonSpeciesBySlug(
+                    $this->textService->generateSlugFromClassWithLanguage(
+                        $language, PokemonSpecies::class, $urlDetailed['evolves_from_species']['name']
+                    )
                 )
             );
-
-            $pokemon->setPokemonSpecies($pokemonSpecies);
-            $this->entityManager->persist($pokemon);
-
-            // Set PokemonSpeciesVersion
-            $this->pokemonSpeciesVersionService->createFromApi(
-                $language,
-                $urlDetailed['flavor_text_entries'],
-                $pokemonSpecies,
-                $this->versionService->getArrayVersions($language)
-            );
         }
+
+        // Set the egg(s) group
+        foreach($urlDetailed['egg_groups'] as $eggGroupName)
+        {
+            $eggGroup = $this->eggGroupRepository->findOneBySlug(
+                $language->getCode().'/egg-group-' . $eggGroupName['name']
+            );
+            if ($eggGroup !== null)
+            {
+                $pokemonSpecies->addEggGroup($eggGroup);
+            }
+        }
+
+        $this->entityManager->persist($pokemonSpecies);
+
+        // Finally get the pokemon linked to this species and update it
+        $pokemon = $this->pokemonService->getPokemonBySlug(
+            $this->textService->generateSlugFromClassWithLanguage(
+                $language,Pokemon::class, $urlDetailed['varieties'][0]['pokemon']['name']
+            )
+        );
+
+        $pokemon->setPokemonSpecies($pokemonSpecies);
+        $this->entityManager->persist($pokemon);
+
+        // Set PokemonSpeciesVersion
+        $this->pokemonSpeciesVersionService->createFromApi(
+            $language,
+            $urlDetailed['flavor_text_entries'],
+            $pokemonSpecies,
+            $this->versionService->getArrayVersions($language)
+        );
+
         $this->entityManager->flush();
     }
 }

@@ -104,7 +104,7 @@ class EvolutionChainService extends AbstractService
      * @param GenderRepository $genderRepository
      * @param LocationRepository $locationRepository
      * @param PokemonService $pokemonService
-     * @param ItemService $itemService
+     * @param ItemRepository $itemRepo
      * @param MoveService $moveService
      * @param TypeService $typeService
      * @param ApiService $apiService
@@ -121,7 +121,7 @@ class EvolutionChainService extends AbstractService
         GenderRepository $genderRepository,
         LocationRepository $locationRepository,
         PokemonService $pokemonService,
-        ItemService $itemService,
+        ItemRepository $itemRepo,
         MoveService $moveService,
         TypeService $typeService,
         ApiService $apiService,
@@ -130,7 +130,7 @@ class EvolutionChainService extends AbstractService
         $this->evolutionChainRepository = $evolutionChainRepository;
         $this->evolutionChainLinkRepository = $evolutionChainLinkRepository;
         $this->typeRepository = $typeRepository;
-        $this->itemService = $itemService;
+        $this->itemRepo = $itemRepo;
         $this->moveManager = $moveService;
         $this->typeService = $typeService;
         $this->pokemonService = $pokemonService;

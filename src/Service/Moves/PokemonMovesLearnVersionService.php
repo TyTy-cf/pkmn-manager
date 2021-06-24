@@ -129,37 +129,39 @@ class PokemonMovesLearnVersionService extends AbstractService
             foreach ($detailedMove['version_group_details'] as $detailGroup)
             {
                 $versionGroupName = $detailGroup['version_group']['name'];
-                $versionGroup = $arrayGroupVersion[$versionGroupName];
-                $moveLearnMethodName = $detailGroup['move_learn_method']['name'];
-                if (isset($arrayMoveLearnMethod['move-learn-method-'.$moveLearnMethodName]))
-                {
-                    $moveLearnMethod = $arrayMoveLearnMethod['move-learn-method-'.$moveLearnMethodName];
-                    // Slug
-                    $slug = $language->getCode().'-'.
-                        $pokemon->getNameApi().'-'.
-                        $moveName.'-'.
-                        $moveLearnMethodName.'-'.
-                        $versionGroupName
-                    ;
-
-                    if (null === $pokemonMoveLearn = $this->getPokemonMovesLearnVersionBySlug($slug))
+                if (isset($arrayGroupVersion[$versionGroupName])) {
+                    $versionGroup = $arrayGroupVersion[$versionGroupName];
+                    $moveLearnMethodName = $detailGroup['move_learn_method']['name'];
+                    if (isset($arrayMoveLearnMethod[$language->getCode() . '/move-learn-method-'.$moveLearnMethodName]))
                     {
-                        $pokemonMoveLearn = (new PokemonMovesLearnVersion())
-                            ->setMove($move)
-                            ->setPokemon($pokemon)
-                            ->setVersionGroup($versionGroup)
-                            ->setMoveLearnMethod($moveLearnMethod)
-                            ->setLevel($detailGroup['level_learned_at'])
-                            ->setSlug($slug)
+                        $moveLearnMethod = $arrayMoveLearnMethod[$language->getCode() . '/move-learn-method-'.$moveLearnMethodName];
+                        // Slug
+                        $slug = $language->getCode().'-'.
+                            $pokemon->getNameApi().'-'.
+                            $moveName.'-'.
+                            $moveLearnMethodName.'-'.
+                            $versionGroupName
                         ;
-                    } else {
-                        if ($pokemonMoveLearn->getLevel() !== $detailGroup['level_learned_at'])
+
+                        if (null === $pokemonMoveLearn = $this->getPokemonMovesLearnVersionBySlug($slug))
                         {
-                            $pokemonMoveLearn->setLevel($detailGroup['level_learned_at']);
+                            $pokemonMoveLearn = (new PokemonMovesLearnVersion())
+                                ->setMove($move)
+                                ->setPokemon($pokemon)
+                                ->setVersionGroup($versionGroup)
+                                ->setMoveLearnMethod($moveLearnMethod)
+                                ->setLevel($detailGroup['level_learned_at'])
+                                ->setSlug($slug)
+                            ;
+                        } else {
+                            if ($pokemonMoveLearn->getLevel() !== $detailGroup['level_learned_at'])
+                            {
+                                $pokemonMoveLearn->setLevel($detailGroup['level_learned_at']);
+                            }
                         }
+                        $this->entityManager->persist($pokemonMoveLearn);
+                        $this->entityManager->flush();
                     }
-                    $this->entityManager->persist($pokemonMoveLearn);
-                    $this->entityManager->flush();
                 }
             }
         }

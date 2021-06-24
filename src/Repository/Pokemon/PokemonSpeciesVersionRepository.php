@@ -34,7 +34,7 @@ class PokemonSpeciesVersionRepository extends AbstractRepository
             ->join('version.versionGroup', 'version_group')
             ->where('pokemon_species = :pokemonSpecies')
             ->setParameter('pokemonSpecies', $pokemonSpecies)
-            ->orderBy('version_group.order', 'DESC')
+            ->orderBy('version_group.displayedOrder', 'DESC')
             ->getQuery()
             ->getResult()
         ;

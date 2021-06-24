@@ -103,7 +103,6 @@ class PokemonFormService extends AbstractService
                     ->setBattleOnly($urlDetailed['is_battle_only'])
                     ->setFormSprite($urlDetailed['sprites']['front_default'])
                 ;
-                $this->entityManager->persist($pokemonForm);
                 // Change the name of the original pokemon
                 if ($newPokemonForm->isDefault() && $name != null) {
                     $pokemon->setName($name);

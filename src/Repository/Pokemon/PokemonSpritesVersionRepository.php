@@ -53,7 +53,7 @@ class PokemonSpritesVersionRepository extends ServiceEntityRepository
             ->join('pokemon_sprites_version.versionGroup', 'versionGroup')
             ->where('pokemon_sprites_version.pokemon = :pokemon')
             ->setParameter('pokemon', $pokemon)
-            ->orderBy('versionGroup.order', 'DESC')
+            ->orderBy('versionGroup.displayedOrder', 'DESC')
             ->getQuery()
             ->getResult()
         ;

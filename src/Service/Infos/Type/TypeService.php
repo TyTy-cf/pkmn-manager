@@ -87,7 +87,7 @@ class TypeService extends AbstractService
 
             //If database is null, create type
             if (empty($newType) && $type['name'] !== "shadow" && $type['name'] !== "unknown") {
-                $urlImg = '/images/types/' . $language->getCode() . '/';
+                $urlImg = '/images/types/';
                 //Create new object and save in databases
                 $newType = new Type();
                 $newType->setName($typeNameLang);

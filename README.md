@@ -41,14 +41,13 @@ symfony console app:damage-relation:all
 symfony console app:move:all
 symfony console app:pokemon:all
 symfony console app:move-learn-method:all
-
-symfony console app:item:all
 symfony console app:pokemon-form:all
 symfony console app:pokemon-species:all
-symfony console app:sprites:all
-symfony console app:pokedex:all
 symfony console app:move-machine:all
-symfony console app:move-learn-method:all 'offset' 'limit' 'language' (I recommand launching this one 15 by 15 until gen 3 is reached, then increase to 0 30)
+symfony console app:evolution-trigger:all
+symfony console app:pokedex:all
+symfony console app:evolution:all
+symfony console app:pokemon-move-learn:all 'offset' 'limit' 'language' (I recommand launching this one 15 by 15 until gen 3 is reached, then increase to 0 30)
 ```
 
 ## Style linter
