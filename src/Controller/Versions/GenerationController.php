@@ -3,6 +3,8 @@
 
 namespace App\Controller\Versions;
 
+use App\Form\SearchPokemonType;
+use App\Repository\Pokemon\PokemonRepository;
 use App\Repository\Versions\GenerationRepository;
 use App\Service\Users\LanguageService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,18 +26,26 @@ class GenerationController extends AbstractController
     private GenerationRepository $generationRepository;
 
     /**
+     * @var PokemonRepository $pokemonRepository
+     */
+    private PokemonRepository $pokemonRepository;
+
+    /**
      * PokemonController constructor.
      *
      * @param LanguageService $languageManager
      * @param GenerationRepository $generationRepository
+     * @param PokemonRepository $pokemonRepository
      */
     public function __construct
     (
         LanguageService $languageManager,
-        GenerationRepository $generationRepository
+        GenerationRepository $generationRepository,
+        PokemonRepository $pokemonRepository
     ) {
         $this->languageManager = $languageManager;
         $this->generationRepository = $generationRepository;
+        $this->pokemonRepository = $pokemonRepository;
     }
 
     /**
@@ -45,10 +55,22 @@ class GenerationController extends AbstractController
      * @return Response
      */
     public function generationIndex(Request $request): Response {
+        $form = $this->createForm(SearchPokemonType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $selectedPokemon = $form->getData();
+            $selectedPokemon = $this->pokemonRepository->findOneBy(['name' => $selectedPokemon['name_pokemon']]);
+            return $this->redirectToRoute('profile_pokemon', [
+                'slug_pokemon' => $selectedPokemon->getSlug()
+            ]);
+        }
+
         return $this->render('Versions/generation_index.html.twig', [
             'generationList' => $this->generationRepository->getGenerationByLanguage(
                 $this->languageManager->getLanguageByCode('fr')
             ),
+            'formSearchPokemon' => $form->createView(),
         ]);
     }
 

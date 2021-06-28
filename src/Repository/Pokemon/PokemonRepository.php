@@ -136,4 +136,22 @@ class PokemonRepository extends AbstractRepository
         ;
     }
 
+    /**
+     * @param Language|null $language
+     * @param string $name
+     * @return int|mixed|string
+     */
+    public function getPokemonNameForLanguage(?Language $language, string $name): array
+    {
+        return $this->createQueryBuilder('pokemon')
+            ->select('pokemon.name')
+            ->where('pokemon.language = :language')
+            ->andWhere('pokemon.name LIKE :approxName')
+            ->setParameter('approxName', '%'.$name.'%')
+            ->setParameter('language', $language)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 }

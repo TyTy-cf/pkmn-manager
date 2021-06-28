@@ -16,9 +16,7 @@ class SearchPokemonType extends AbstractType
             ->add('name_pokemon', SearchType::class, [
                 'label' => false,
                 'attr' => [
-                    'maxlength' => 20,
                     'autocomplete' => 'off',
-                    'class' => 'form-control',
                     'placeholder' => 'Pokemon...',
                 ],
             ])
