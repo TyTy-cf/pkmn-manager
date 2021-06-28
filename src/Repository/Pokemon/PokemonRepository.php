@@ -24,27 +24,13 @@ class PokemonRepository extends AbstractRepository
 
     /**
      * @param Language $language
-     * @return int|mixed|string
+     * @return Pokemon[]|null
      */
-    public function getAllPokemonByLanguage(Language $language) {
+    public function getAllPokemonByLanguage(Language $language): ?array {
         return $this->createQueryBuilder('pokemon')
             ->select('pokemon')
             ->where('pokemon.language = :lang')
             ->setParameter('lang', $language)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
-    /**
-     * @param Language $language
-     * @return int|mixed|string
-     */
-    public function getAllPokemonNameForLanguage(Language $language) {
-        return $this->createQueryBuilder('pokemon')
-            ->select('pokemon.name')
-            ->where('pokemon.language = :language')
-            ->setParameter('language', $language)
             ->getQuery()
             ->getResult()
         ;
@@ -100,9 +86,9 @@ class PokemonRepository extends AbstractRepository
 
     /**
      * @param Pokedex $pokedex
-     * @return int|mixed|string
+     * @return Pokemon[]|null
      */
-    public function getPokemonsByPokedex(Pokedex $pokedex) {
+    public function getPokemonsByPokedex(Pokedex $pokedex): ?array {
         return $this->createQueryBuilder('pokemon')
             ->select('pokemon', 'types', 'sprites')
             ->join('pokemon.types', 'types')
@@ -138,16 +124,16 @@ class PokemonRepository extends AbstractRepository
 
     /**
      * @param Language|null $language
-     * @param string $name
-     * @return int|mixed|string
+     * @param string $approxName
+     * @return Pokemon[]|null
      */
-    public function getPokemonNameForLanguage(?Language $language, string $name): array
+    public function getPokemonNameForLanguage(?Language $language, string $approxName): ?array
     {
         return $this->createQueryBuilder('pokemon')
             ->select('pokemon.name')
             ->where('pokemon.language = :language')
             ->andWhere('pokemon.name LIKE :approxName')
-            ->setParameter('approxName', '%'.$name.'%')
+            ->setParameter('approxName', '%'.$approxName.'%')
             ->setParameter('language', $language)
             ->getQuery()
             ->getResult()

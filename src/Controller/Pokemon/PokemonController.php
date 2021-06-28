@@ -110,18 +110,6 @@ class PokemonController extends AbstractController
     }
 
     /**
-     * @Route(path="/pokemons/getAll", name="get_all_pokemon_names")
-     *
-     * @return JsonResponse
-     */
-    function getAllPokemonNamesJson(): JsonResponse
-    {
-        return new JsonResponse($this->pokemonRepository->getAllPokemonNameForLanguage(
-            $this->languageService->getLanguageByCode('fr')
-        ));
-    }
-
-    /**
      * @Route(path="/pokemons/searchPokemonByName/{approxName}", name="get_pokemon_by_name")
      *
      * @param string $approxName

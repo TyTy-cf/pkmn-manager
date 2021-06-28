@@ -59,18 +59,17 @@ class GenerationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $selectedPokemon = $form->getData();
-            $selectedPokemon = $this->pokemonRepository->findOneBy(['name' => $selectedPokemon['name_pokemon']]);
+            $selectedPokemon = $this->pokemonRepository->findOneBy(['name' => $form->getData()['name_pokemon']]);
             return $this->redirectToRoute('profile_pokemon', [
                 'slug_pokemon' => $selectedPokemon->getSlug()
             ]);
         }
 
         return $this->render('Versions/generation_index.html.twig', [
+            'formSearchPokemon' => $form->createView(),
             'generationList' => $this->generationRepository->getGenerationByLanguage(
                 $this->languageManager->getLanguageByCode('fr')
             ),
-            'formSearchPokemon' => $form->createView(),
         ]);
     }
 
