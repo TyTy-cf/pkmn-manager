@@ -3,10 +3,12 @@
 
 namespace App\Controller\Pokemon;
 
-use App\Service\Api\ApiService;
+use App\Repository\Pokemon\PokemonRepository;
+use App\Repository\Pokemon\PokemonSpeciesVersionRepository;
+use App\Repository\Pokemon\PokemonSpritesVersionRepository;
+use App\Service\Infos\Type\TypeService;
 use App\Service\Pokedex\EvolutionChainService;
 use App\Service\Pokemon\PokemonService;
-use App\Service\Pokemon\PokemonSpeciesVersionService;
 use App\Service\Users\LanguageService;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,11 +26,6 @@ class PokemonController extends AbstractController
     private PokemonService $pokemonService;
 
     /**
-     * @var ApiService
-     */
-    private ApiService $apiService;
-
-    /**
      * @var LanguageService $languageService
      */
     private LanguageService $languageService;
@@ -39,31 +36,52 @@ class PokemonController extends AbstractController
     private EvolutionChainService $evolutionChainService;
 
     /**
-     * @var PokemonSpeciesVersionService $pokemonSpeciesVersionService
+     * @var PokemonSpeciesVersionRepository $pokemonSpeciesVersionRepository
      */
-    private PokemonSpeciesVersionService $pokemonSpeciesVersionService;
+    private PokemonSpeciesVersionRepository $pokemonSpeciesVersionRepository;
 
     /**
+     * @var PokemonSpritesVersionRepository $pokemonSpritesVersionRepository
+     */
+    private PokemonSpritesVersionRepository $pokemonSpritesVersionRepository;
+
+    /**
+     * @var PokemonRepository $pokemonRepository
+     */
+    private PokemonRepository $pokemonRepository;
+
+    /**
+     * @var TypeService $typeService
+     */
+    private TypeService $typeService;
+
+    /**s
      * PokemonController constructor.
      *
      * @param PokemonService $pokemonService
-     * @param ApiService $apiService
      * @param EvolutionChainService $evolutionChainService
      * @param LanguageService $languageService
-     * @param PokemonSpeciesVersionService $pokemonSpeciesVersionService
+     * @param PokemonRepository $pokemonRepository
+     * @param PokemonSpeciesVersionRepository $pokemonSpeciesVersionRepository
+     * @param PokemonSpritesVersionRepository $pokemonSpritesVersionRepository
+     * @param TypeService $typeService
      */
-    public function __construct (
+    public function __construct(
         PokemonService $pokemonService,
-        ApiService $apiService,
         EvolutionChainService $evolutionChainService,
         LanguageService $languageService,
-        PokemonSpeciesVersionService $pokemonSpeciesVersionService
+        PokemonRepository $pokemonRepository,
+        PokemonSpeciesVersionRepository $pokemonSpeciesVersionRepository,
+        PokemonSpritesVersionRepository $pokemonSpritesVersionRepository,
+        TypeService $typeService
     ) {
         $this->evolutionChainService = $evolutionChainService;
-        $this->pokemonSpeciesVersionService = $pokemonSpeciesVersionService;
+        $this->pokemonRepository = $pokemonRepository;
         $this->pokemonService = $pokemonService;
-        $this->apiService = $apiService;
+        $this->typeService = $typeService;
         $this->languageService = $languageService;
+        $this->pokemonSpeciesVersionRepository = $pokemonSpeciesVersionRepository;
+        $this->pokemonSpritesVersionRepository = $pokemonSpritesVersionRepository;
     }
 
     /**
@@ -77,27 +95,30 @@ class PokemonController extends AbstractController
      */
     function displayProfile(Request $request): Response
     {
-        $pokemon = $this->pokemonService->getPokemonProfileBySlug($request->get('slug_pokemon'));
+        $pokemon = $this->pokemonRepository->getPokemonProfileBySlug($request->get('slug_pokemon'));
         return $this->render('Pokemon/profile.html.twig', [
             'pokemon' => $pokemon,
-            'arrayMoves' => $this->pokemonService->generateArrayByVersionForPokemon($pokemon),
-            'arrayEvolutionChain' => $this->evolutionChainService->generateEvolutionChainFromPokemon($pokemon),
-            'arrayDescriptionVersion' => $this->pokemonSpeciesVersionService->getDescriptionVersionByVersionsAndPokemon(
+            'arrayMoves' => $this->pokemonService->getArrayMovesByVersionForPokemon($pokemon),
+            'arrayEvolutionChain' => $this->evolutionChainService->getEvolutionChainFromPokemon($pokemon),
+            'arrayDescriptionVersion' => $this->pokemonSpeciesVersionRepository->getDescriptionVersionByVersionsAndPokemon(
                 $pokemon->getPokemonSpecies()
             ),
-            'arraySprites' => $this->pokemonService->getSpritesArrayByPokemon($pokemon)
+            'spritesVersionGroup' => $this->pokemonSpritesVersionRepository->getSpritesVersionGroupByPokemon($pokemon),
+            'typesRelation' => $this->typeService->getTypesWeaknessesByPokemon($pokemon),
+            'types' => $this->typeService->getAllTypeByLanguage($pokemon->getLanguage()),
         ]);
     }
 
     /**
-     * @Route(path="/pokemons/getAll", name="get_all_pokemon_names")
+     * @Route(path="/pokemons/searchPokemonByName/{approxName}", name="get_pokemon_by_name")
      *
+     * @param string $approxName
      * @return JsonResponse
      */
-    function getAllPokemonNamesJson(): JsonResponse
-    {
-        return new JsonResponse($this->pokemonService->getAllPokemonNameForLanguage(
-            $this->languageService->getLanguageByCode('fr')
+    function searchPokemonByName(string $approxName): JsonResponse {
+        return new JsonResponse($this->pokemonRepository->getPokemonNameForLanguage(
+            $this->languageService->getLanguageByCode('fr'),
+            $approxName
         ));
     }
 }

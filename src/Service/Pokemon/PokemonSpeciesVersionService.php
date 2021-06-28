@@ -58,15 +58,6 @@ class PokemonSpeciesVersionService
     }
 
     /**
-     * @param PokemonSpecies $pokemonSpecies
-     * @return QueryBuilder
-     */
-    public function getDescriptionVersionByVersionsAndPokemon(PokemonSpecies $pokemonSpecies)
-    {
-        return $this->repository->getDescriptionVersionByVersionsAndPokemon($pokemonSpecies);
-    }
-
-    /**
      * @param Language $language
      * @param $urlDetailed
      * @param PokemonSpecies $pokemonSpecies

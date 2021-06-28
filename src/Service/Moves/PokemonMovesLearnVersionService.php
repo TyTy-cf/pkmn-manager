@@ -86,7 +86,7 @@ class PokemonMovesLearnVersionService extends AbstractService
      */
     public function getMoveLearnByPokemon(?Move $move)
     {
-        return $this->repoPokemonMoves->getMoveLearnByPokemon($move);
+        return $this->repoPokemonMoves->getMoveLearnByMove($move);
     }
 
     /**
@@ -123,45 +123,49 @@ class PokemonMovesLearnVersionService extends AbstractService
         {
             // Fetch the move from data
             $moveName = $detailedMove['move']['name'];
+            $codeLang = $language->getCode();
             $move = $this->movesRepository->findOneBySlug(
-                $language->getCode() . '/move-'.$moveName
+                $codeLang . '/move-'.$moveName
             );
             foreach ($detailedMove['version_group_details'] as $detailGroup)
             {
                 $versionGroupName = $detailGroup['version_group']['name'];
-                $versionGroup = $arrayGroupVersion[$versionGroupName];
-                $moveLearnMethodName = $detailGroup['move_learn_method']['name'];
-                if (isset($arrayMoveLearnMethod['move-learn-method-'.$moveLearnMethodName]))
-                {
-                    $moveLearnMethod = $arrayMoveLearnMethod['move-learn-method-'.$moveLearnMethodName];
-                    // Slug
-                    $slug = $language->getCode().'-'.
-                        $pokemon->getNameApi().'-'.
-                        $moveName.'-'.
-                        $moveLearnMethodName.'-'.
-                        $versionGroupName
-                    ;
-
-                    if (null === $pokemonMoveLearn = $this->getPokemonMovesLearnVersionBySlug($slug))
+                if (isset($arrayGroupVersion[$versionGroupName])) {
+                    $versionGroup = $arrayGroupVersion[$versionGroupName];
+                    $moveLearnMethodName = $detailGroup['move_learn_method']['name'];
+                    $slugMoveLeanMethod = $codeLang . '/move-learn-method-'.$moveLearnMethodName;
+                    if (isset($arrayMoveLearnMethod[$slugMoveLeanMethod]))
                     {
-                        $pokemonMoveLearn = (new PokemonMovesLearnVersion())
-                            ->setMove($move)
-                            ->setPokemon($pokemon)
-                            ->setVersionGroup($versionGroup)
-                            ->setMoveLearnMethod($moveLearnMethod)
-                            ->setLevel($detailGroup['level_learned_at'])
-                            ->setSlug($slug)
+                        $moveLearnMethod = $arrayMoveLearnMethod[$slugMoveLeanMethod];
+                        // Slug
+                        $slug = $codeLang.'-'.
+                            $pokemon->getNameApi().'-'.
+                            $moveName.'-'.
+                            $moveLearnMethodName.'-'.
+                            $versionGroupName
                         ;
-                    } else {
-                        if ($pokemonMoveLearn->getLevel() !== $detailGroup['level_learned_at'])
+
+                        if (null === $pokemonMoveLearn = $this->getPokemonMovesLearnVersionBySlug($slug))
                         {
-                            $pokemonMoveLearn->setLevel($detailGroup['level_learned_at']);
+                            $pokemonMoveLearn = (new PokemonMovesLearnVersion())
+                                ->setMove($move)
+                                ->setPokemon($pokemon)
+                                ->setVersionGroup($versionGroup)
+                                ->setMoveLearnMethod($moveLearnMethod)
+                                ->setLevel($detailGroup['level_learned_at'])
+                                ->setSlug($slug)
+                            ;
+                        } else {
+                            if ($pokemonMoveLearn->getLevel() !== $detailGroup['level_learned_at'])
+                            {
+                                $pokemonMoveLearn->setLevel($detailGroup['level_learned_at']);
+                            }
                         }
+                        $this->entityManager->persist($pokemonMoveLearn);
                     }
-                    $this->entityManager->persist($pokemonMoveLearn);
-                    $this->entityManager->flush();
                 }
             }
+            $this->entityManager->flush();
         }
     }
 

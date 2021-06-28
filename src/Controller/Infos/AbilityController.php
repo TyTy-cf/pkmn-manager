@@ -4,8 +4,9 @@
 namespace App\Controller\Infos;
 
 
-use App\Entity\Infos\Ability;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use App\Repository\Infos\AbilityRepository;
+use App\Repository\Infos\AbilityVersionGroupRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,15 +19,21 @@ class AbilityController extends AbstractController
      * Display the last pokemon add in the database
      *
      * @Route (path="/ability/{slug_ability}", name="ability_detail", requirements={"slug_ability": ".+"})
-     * @ParamConverter(class="App\Entity\Infos\Ability", name="ability", options={"mapping": {"slug_ability" : "slug"}})
      *
      * @param Request $request
-     * @param Ability $ability
+     * @param AbilityRepository $abilityRepository
+     * @param AbilityVersionGroupRepository $abilityVersionGroupRepository
      * @return Response
+     * @throws NonUniqueResultException
      */
-    public function abilityDetail(Request $request, Ability $ability): Response {
+    public function index(
+        Request $request,
+        AbilityRepository $abilityRepository,
+        AbilityVersionGroupRepository $abilityVersionGroupRepository
+    ): Response {
         return $this->render('Ability/detail.html.twig', [
-            'ability' => $ability,
+            'ability' => $abilityRepository->findOneBySlugWithRelation($request->get('slug_ability')),
+            'abilityVersionGroup' => $abilityVersionGroupRepository->findAbilityVersionGroupBySlug($request->get('slug_ability')),
         ]);
     }
 

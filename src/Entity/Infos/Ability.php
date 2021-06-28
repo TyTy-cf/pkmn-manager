@@ -39,6 +39,11 @@ class Ability
     private int $id;
 
     /**
+     * @OneToMany(targetEntity="App\Entity\Infos\AbilityVersionGroup", mappedBy="ability")
+     */
+    private Collection $abilityVersionGroup;
+
+    /**
      * @OneToMany(targetEntity="App\Entity\Infos\PokemonAbility", mappedBy="ability", cascade={"persist"})
      */
     private Collection $pokemonsAbility;
@@ -50,6 +55,7 @@ class Ability
     public function __construct()
     {
         $this->pokemonsAbility = new ArrayCollection();
+        $this->abilityVersionGroup = new ArrayCollection();
     }
 
     /**
@@ -85,6 +91,34 @@ class Ability
     {
         if ($this->pokemonsAbility->contains($pokemon)) {
             $this->pokemonsAbility->remove($pokemon);
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAbilityVersionGroup(): Collection
+    {
+        return $this->abilityVersionGroup;
+    }
+
+    /**
+     * @param $ability
+     */
+    public function addAbilityVersionGroup($ability): void
+    {
+        if (!$this->abilityVersionGroup->contains($ability)) {
+            $this->abilityVersionGroup->add($ability);
+        }
+    }
+
+    /**
+     * @param $ability
+     */
+    public function removeAbilityVersionGroup($ability): void
+    {
+        if ($this->abilityVersionGroup->contains($ability)) {
+            $this->abilityVersionGroup->remove($ability);
         }
     }
 

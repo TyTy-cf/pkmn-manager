@@ -63,7 +63,7 @@ class DamageClassService extends AbstractService
                 ->setName(ucfirst($damageClassNameLang))
                 ->setSlug($slug)
                 ->setLanguage($language)
-                ->setImage('/images/moves/damage_class/' . $slug . '.png')
+                ->setImage('/images/moves/damage_class/' . DamageClass::class . $apiDamageClass['name'] . '.png')
             ;
             $this->entityManager->persist($damageClass);
             $this->entityManager->flush();

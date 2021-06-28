@@ -1,0 +1,11 @@
+//
+// Main style
+// --------------------------------------------------
+
+// Import variables
+// (specially to override Bootstrap Specific variables)
+@import './variables/index';
+
+// Import libraries style
+@import './libs/bootstrap';
+@import './libs/font-awesome';

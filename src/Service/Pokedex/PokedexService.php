@@ -83,19 +83,9 @@ class PokedexService extends AbstractService
      * @param string $slug
      * @return Pokedex|null
      */
-    private function getPokedexBySlug(string $slug)
+    private function getPokedexBySlug(string $slug): ?Pokedex
     {
         return $this->pokedexRepository->findOneBySlug($slug);
-    }
-
-    /**
-     * @param Generation $generation
-     * @param Language $language
-     * @return int|mixed|string
-     */
-    public function getPokedexByGeneration(Generation $generation, Language $language)
-    {
-        return $this->pokedexRepository->getPokedexByGeneration($generation, $language);
     }
 
     /**
@@ -114,7 +104,7 @@ class PokedexService extends AbstractService
             $urlPokedexDetailed['name']
         );
 
-        if (null === $pokedex = $this->getPokedexBySlug($slug))
+        if (null === $this->getPokedexBySlug($slug))
         {
             $codeLang = $language->getCode();
             // Fetch name & description according the language

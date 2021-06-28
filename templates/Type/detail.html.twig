@@ -2,31 +2,85 @@
 
 {% block body %}
 
-    <h1 class="text-center bordered-title">{{ type.name }}</h1>
-    <hr>
-    <div class="grid-row">
-        <div class="grid-col ">
-            <h2>{{ 'index.type.damage_relation'|trans }}</h2>
-        </div>
-        <div class="grid-col">
-            <div class="d-flex">
-                {% for typeElement in types %}
-                    <div class="d-flex size-80">
-                        <img class="size-80" src="{{ typeElement.img|imagine_filter('rotate270') }}" alt="{{ typeElement.name }}">
-                    </div>
-                {% endfor %}
+    <div class="container">
+        <h1 class="text-center bordered-title">{{ type.name }}</h1>
+        <hr>
+        <div class="grid-row">
+            <div class="grid-col ">
+                <h2>{{ 'index.type.damage_relation'|trans }}</h2>
             </div>
-            
+            <div class="grid-col">
+                <div class="row">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="align-bottom">
+                                    <img class="size-80" src="{{ type.img }}" alt="{{ type.name }}">
+                                </th>
+                                {% for typeElement in types %}
+                                    <th>
+                                        <div class="d-flex">
+                                            <img class="size-80" src="{{ typeElement.img|imagine_filter('rotate270') }}" alt="{{ typeElement.name }}">
+                                        </div>
+                                    </th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th class="text-center">
+                                    {{ 'index.type.to'|trans }}
+                                </th>
+                                {% for typeElement in types %}
+                                    {% set coef = 1 %}
+                                    {% for typeRelated in typeRelation %}
+                                        {% if typeRelated.damageRelation is same as 'to' %}
+                                            {% if typeElement.id is same as typeRelated.damageRelationType.id %}
+                                                {% set coef = typeRelated.damageRelationCoefficient %}
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <td class="text-center type-related-{{ coef|type_return }}">
+                                        {{ coef }}
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <th class="text-center">
+                                    {{ 'index.type.from'|trans }}
+                                </th>
+                                {% for typeElement in types %}
+                                    {% set coef = 1 %}
+                                    {% for typeRelated in typeRelation %}
+                                        {% if typeRelated.damageRelation is same as 'from' %}
+                                            {% if typeElement.id is same as typeRelated.damageRelationType.id %}
+                                                {% set coef = typeRelated.damageRelationCoefficient %}
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <td class="text-center type-related-{{ coef|type_return }}">
+                                        {{ coef }}
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="grid-col mt-5">
-        <h2>{{ 'index.type.pokemons'|trans({'%type%' : type.name}) }}</h2>
-        <div class="list-card-pkmn list-card-pkmn-lg">
-            {% for pokemonType in type.pokemons %}
-                {% if pokemonType.pokemonSprites.spriteFrontDefault is not null %}
-                    {% include'Pokemon/Cards/pokemon_card.html.twig' with {'pokemon' : pokemonType, 'size': type.pokemons|length} %}
-                {% endif %}
-            {% endfor %}
+        <div class="grid-col mt-5">
+            <h2>{{ 'index.type.pokemons'|trans({'%type%' : type.name}) }}</h2>
+            <div class="container pokedexPage-content">
+                <div class="pkmnCard-container">
+                    {% for pokemon in type.pokemons %}
+                        {% if pokemon.isDefault is same as(true) %}
+                            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 px-2 mb-3">
+                                {% include'Pokemon/Cards/pokemon_card.html.twig' with {'pokemon' : pokemon, 'size': type.pokemons|length } %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
         </div>
     </div>
 

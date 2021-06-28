@@ -47,14 +47,12 @@ abstract class AbstractCommand extends Command
      * @param ApiService $apiManager
      * @param EntityManagerInterface $em
      */
-    public function __construct
-    (
+    public function __construct (
         AbstractService $manager,
         LanguageService $languageManager,
         ApiService $apiManager,
         EntityManagerInterface $em
-    )
-    {
+    ) {
         $this->em = $em;
         $this->languageManager = $languageManager;
         $this->manager = $manager;
@@ -70,8 +68,7 @@ abstract class AbstractCommand extends Command
      * @return int
      * @throws Exception
      */
-    protected function executeCommand(OutputInterface $output, string $lang, string $command): int
-    {
+    protected function executeCommand(OutputInterface $output, string $lang, string $command): int {
         $command = $this->getApplication()->find($command);
         $langArguments = ['lang' => $lang];
         // Run Ability Command
@@ -84,10 +81,8 @@ abstract class AbstractCommand extends Command
      * @param string $lang
      * @return bool
      */
-    protected function checkLanguageExists(OutputInterface $output, string $lang)
-    {
-        if (!in_array($lang, $this->supportedLanguages))
-        {
+    protected function checkLanguageExists(OutputInterface $output, string $lang) {
+        if (!in_array($lang, $this->supportedLanguages)) {
             $output->writeln('<fg=red>' . $lang . ' isn\'t a supported language</>');
             return false;
         }
@@ -101,20 +96,17 @@ abstract class AbstractCommand extends Command
      * @param array $arrayApiResponse
      * @return int
      */
-    protected function executeFromManager
-    (
+    protected function executeFromManager (
         InputInterface $input,
         OutputInterface $output,
         array $arrayApiResponse
-    )
-    {
+    ) {
         // Fetch parameter
         $lang = $input->getArgument('lang');
 
         $output->writeln('For language ' . $lang . '</info>');
 
-        if ($this->checkLanguageExists($output, $lang))
-        {
+        if ($this->checkLanguageExists($output, $lang)) {
            $language = $this->languageManager->getLanguageByCode($lang);
 
             //Initialize progress bar

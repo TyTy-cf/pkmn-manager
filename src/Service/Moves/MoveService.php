@@ -48,8 +48,7 @@ class MoveService extends AbstractService
      * @param MoveRepository $moveRepository
      * @param TypeRepository $typeRepository
      */
-    public function __construct
-    (
+    public function __construct (
         EntityManagerInterface $em,
         ApiService $apiService,
         TextService $textService,
@@ -87,12 +86,22 @@ class MoveService extends AbstractService
         );
         $urlDetailedMove = $this->apiService->apiConnect($apiResponse['url'])->toArray();
 
-        if (null === $this->movesRepository->findOneBySlug($slug) && isset($urlDetailedMove['damage_class']))
-        {
+        if (($urlDetailedMove['pp'] !== null
+         || $urlDetailedMove['power'] !== null
+         || $urlDetailedMove['accuracy'] !== null)
+         && isset($urlDetailedMove['damage_class'])
+        ) {
+            $isNew = false;
+            if (null === $move = $this->movesRepository->findOneBySlug($slug)) {
+                $move = new Move();
+                $isNew = true;
+            }
+
             $moveName = $this->apiService->getNameBasedOnLanguageFromArray(
                 $language->getCode(),
                 $urlDetailedMove
             );
+
             // Get the DamageClass
             $damageClass = $this->damageClassRepository->findOneBySlug(
                 $this->textService->generateSlugFromClassWithLanguage(
@@ -101,6 +110,7 @@ class MoveService extends AbstractService
                     $urlDetailedMove['damage_class']['name']
                 )
             );
+
             // Get the Type
             $type = $this->typeRepository->findOneBySlug(
                 $this->textService->generateSlugFromClassWithLanguage(
@@ -109,31 +119,31 @@ class MoveService extends AbstractService
                     $urlDetailedMove['type']['name']
                 )
             );
-            if ($urlDetailedMove['pp'] !== null || $urlDetailedMove['power'] !== null || $urlDetailedMove['accuracy'] !== null)
-            {
-                // Create the Move
-                $move = (new Move())
-                    ->setType($type)
+
+            if ($isNew) {
+                $move
                     ->setSlug($slug)
-                    ->setName($moveName)
                     ->setLanguage($language)
-                    ->setPp($urlDetailedMove['pp'])
-                    ->setDamageClass($damageClass)
-                    ->setPower($urlDetailedMove['power'])
-                    ->setPriority($urlDetailedMove['priority'])
-                    ->setAccuracy($urlDetailedMove['accuracy'])
                 ;
-
                 $this->entityManager->persist($move);
-
-                // Create the MoveDescription
-                $this->moveDescriptionManager->createMoveDescription(
-                    $language,
-                    $move,
-                    $urlDetailedMove['flavor_text_entries']
-                );
-                $this->entityManager->flush();
             }
+
+            $move->setType($type)
+                ->setName($moveName)
+                ->setPp($urlDetailedMove['pp'])
+                ->setDamageClass($damageClass)
+                ->setPower($urlDetailedMove['power'])
+                ->setPriority($urlDetailedMove['priority'])
+                ->setAccuracy($urlDetailedMove['accuracy'])
+            ;
+
+            // Create the MoveDescription
+            $this->moveDescriptionManager->createMoveDescription(
+                $language,
+                $move,
+                $urlDetailedMove['flavor_text_entries']
+            );
+            $this->entityManager->flush();
         }
     }
 

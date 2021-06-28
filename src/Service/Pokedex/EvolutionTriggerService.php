@@ -52,11 +52,13 @@ class EvolutionTriggerService extends AbstractService
         {
             //Fetch URL details type
             $urlEvolutionTrigger = $this->apiService->apiConnect($apiResponse['url'])->toArray();
+            $name = $this->apiService->getNameBasedOnLanguageFromArray(
+                $language->getCode(),
+                $urlEvolutionTrigger
+            );
             $eggGroup = (new EvolutionTrigger())
-                ->setName($this->apiService->getNameBasedOnLanguageFromArray(
-                    $language->getCode(),
-                    $urlEvolutionTrigger
-                ))
+                ->setName($name)
+                ->setTitle($name)
                 ->setSlug($slug)
                 ->setLanguage($language)
             ;

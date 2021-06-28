@@ -5,8 +5,8 @@ namespace App\Controller\Pokedex;
 
 
 use App\Entity\Versions\Generation;
-use App\Service\Pokedex\PokedexService;
-use App\Service\Pokemon\PokemonService;
+use App\Repository\Pokedex\PokedexRepository;
+use App\Repository\Pokemon\PokemonRepository;
 use App\Service\Users\LanguageService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,37 +18,35 @@ class PokedexController extends AbstractController
 {
 
     /**
-     * @var PokemonService $pokemonManager
+     * @var LanguageService $languageService
      */
-    private PokemonService $pokemonManager;
+    private LanguageService $languageService;
 
     /**
-     * @var LanguageService $languageManager
+     * @var PokemonRepository $pokemonRepository
      */
-    private LanguageService $languageManager;
+    private PokemonRepository $pokemonRepository;
 
     /**
-     * @var PokedexService $pokedexManager
+     * @var PokedexRepository $pokedexRepository
      */
-    private PokedexService $pokedexManager;
+    private PokedexRepository $pokedexRepository;
 
     /**
      * PokemonController constructor.
      *
-     * @param PokemonService $pokemonManager
-     * @param PokedexService $pokedexManager
+     * @param PokedexRepository $pokedexRepository
      * @param LanguageService $languageManager
+     * @param PokemonRepository $pokemonRepository
      */
-    public function __construct
-    (
-        PokemonService $pokemonManager,
-        PokedexService $pokedexManager,
-        LanguageService $languageManager
-    )
-    {
-        $this->pokemonManager = $pokemonManager;
-        $this->pokedexManager = $pokedexManager;
-        $this->languageManager = $languageManager;
+    public function __construct(
+        PokedexRepository $pokedexRepository,
+        LanguageService $languageManager,
+        PokemonRepository $pokemonRepository
+    ) {
+        $this->pokemonRepository = $pokemonRepository;
+        $this->pokedexRepository = $pokedexRepository;
+        $this->languageService = $languageManager;
     }
 
     /**
@@ -64,13 +62,13 @@ class PokedexController extends AbstractController
     function listing(Request $request, Generation $generation): Response
     {
         $arrayPokedex = [];
-        $pokedexes = $this->pokedexManager->getPokedexByGeneration(
-            $generation, $this->languageManager->getLanguageByCode('fr')
+        $pokedexes = $this->pokedexRepository->getPokedexByGeneration(
+            $generation, $this->languageService->getLanguageByCode('fr')
         );
         foreach($pokedexes as $pokedex) {
             $arrayPokedex[] = [
                 'pokedex' => $pokedex,
-                'pokemons' => $this->pokemonManager->getPokemonsByPokedex($pokedex),
+                'pokemons' => $this->pokemonRepository->getPokemonsByPokedex($pokedex),
             ];
         }
         return $this->render('Pokedex/listing.html.twig', [

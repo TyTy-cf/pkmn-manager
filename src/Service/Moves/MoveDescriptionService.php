@@ -37,15 +37,13 @@ class MoveDescriptionService extends AbstractService
      * @param TextService $textService
      * @param EntityManagerInterface $em
      */
-    public function __construct
-    (
+    public function __construct(
         MoveDescriptionRepository $repo,
         ApiService $apiService,
         VersionGroupService $versionGroupService,
         TextService $textService,
         EntityManagerInterface $em
-    )
-    {
+    ) {
         $this->repo = $repo;
         $this->versionGroupManager = $versionGroupService;
         parent::__construct($em, $apiService, $textService);
@@ -55,19 +53,8 @@ class MoveDescriptionService extends AbstractService
      * @param string $slug
      * @return MoveDescription|null
      */
-    public function getMoveDescriptionBySlug(string $slug): ?MoveDescription
-    {
+    public function getMoveDescriptionBySlug(string $slug): ?MoveDescription {
         return $this->repo->findOneBySlug($slug);
-    }
-
-    /**
-     * @param Move $move
-     * @param $array
-     * @return MoveDescription[]|array
-     */
-    public function getMoveDescriptionByMove(Move $move)
-    {
-        return $this->repo->getMoveDescriptionByMove($move);
     }
 
     /**
@@ -91,21 +78,30 @@ class MoveDescriptionService extends AbstractService
                     MoveDescription::class,
                     $move->getSlug().'-'.$slugVersion
                 );
-                if ($this->getMoveDescriptionBySlug($slug) === null)
-                {
-                    $description = $descriptionDetailed['flavor_text'];
-                    $versionGroup = $this->versionGroupManager->getVersionGroupBySlug($slugVersion);
-                    $moveDescription = (new MoveDescription())
-                        ->setMove($move)
+
+                $isNew = false;
+                if (null === $moveDescription = $this->getMoveDescriptionBySlug($slug)) {
+                    $moveDescription = new MoveDescription();
+                    $isNew = true;
+                }
+
+                if ($isNew) {
+                    $moveDescription
                         ->setSlug($slug)
                         ->setLanguage($lang)
-                        ->setVersionGroup($versionGroup)
-                        ->setDescription($this->textService->removeReturnLineFromText(
-                            $description
-                        ))
                     ;
-                    $this->entityManager->persist($moveDescription);
                 }
+                $description = $descriptionDetailed['flavor_text'];
+                $moveDescription = (new MoveDescription())
+                    ->setMove($move)
+                    ->setVersionGroup(
+                        $this->versionGroupManager->getVersionGroupBySlug($slugVersion)
+                    )
+                    ->setDescription(
+                        $this->textService->removeReturnLineFromText($description)
+                    )
+                ;
+                $this->entityManager->persist($moveDescription);
             }
         }
     }

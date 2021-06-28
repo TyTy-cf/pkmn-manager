@@ -1,13 +1,12 @@
 
 .grid-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  margin: 0 -1rem;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-start;
 }
 
 .grid-col {
-  margin-bottom: 1rem;
-  padding: 0 1rem;
-  width: 100%;
+	width: 100%;
+	margin-bottom: 1rem;
+	padding: 0 1rem;
 }

@@ -23,6 +23,7 @@ yarn-error.log
 
 ### Autres
 .idea
+.DS_Store
 
 ###> liip/imagine-bundle ###
 /public/media/cache/

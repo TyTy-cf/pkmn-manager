@@ -42,7 +42,8 @@ class PokemonSpeciesCommand extends AbstractCommand
         $this
             ->setName('app:pokemon-species:all')
             ->addArgument('lang', InputArgument::REQUIRED, 'Language used')
-            ->setDescription('Execute app:sprites to fetch sprites for all pokemons by version');
+            ->setDescription('Execute app:sprites to fetch sprites for all pokemons by version')
+        ;
     }
 
     /**

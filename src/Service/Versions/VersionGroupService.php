@@ -85,16 +85,6 @@ class VersionGroupService extends AbstractService
     }
 
     /**
-     * @param Generation $generation
-     * @param Language $language
-     * @return int|mixed|string
-     */
-    public function getVersionGroupByGenerationAndLanguage(Generation $generation, Language $language)
-    {
-        return $this->versionGroupRepository->getVersionGroupByGenerationAndLanguage($generation, $language);
-    }
-
-    /**
      * @param Language $language
      * @param string $order
      * @return int|mixed|string
@@ -133,7 +123,7 @@ class VersionGroupService extends AbstractService
                 ->setLanguage($language)
                 ->setName($urlDetailed['name'])
                 ->setGeneration($generation)
-                ->setOrder($urlDetailed['order'])
+                ->setDisplayedOrder($urlDetailed['order'])
             ;
             $this->entityManager->persist($newVersionGroup);
             $this->entityManager->flush();

@@ -52,7 +52,7 @@ class MoveLearnMethodService extends AbstractService
      * @param string $slug
      * @return MoveLearnMethod|null
      */
-    public function getMoveLearnMethodBySlug(string $slug): object
+    public function getMoveLearnMethodBySlug(string $slug): ?MoveLearnMethod
     {
         return $this->repo->findOneBySlug($slug);
     }
@@ -61,7 +61,7 @@ class MoveLearnMethodService extends AbstractService
      * @param Language $language
      * @return array
      */
-    public function getAllMoveLearnMethodByLanguage(Language $language)
+    public function getAllMoveLearnMethodByLanguage(Language $language): array
     {
         return $this->repo->getAllMoveLearnMethodByLanguage($language);
     }

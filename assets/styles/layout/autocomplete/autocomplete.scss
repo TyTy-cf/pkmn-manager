@@ -1,54 +1,28 @@
 
-// Variables relatives à l'application
-
 .autocomplete {
-  position: relative;
-  display: inline-block;
+	background: white;
+	z-index: 1000;
+	font: 14px/22px "-apple-system", BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-input {
-  border: 1px solid transparent;
-  background-color: #f1f1f1;
-  padding: 10px;
-  font-size: 16px;
+.autocomplete * {
+	font: inherit;
 }
 
-input[type=text] {
-  background-color: #f1f1f1;
-  width: 100%;
+.autocomplete > div {
+	padding: 0 4px;
 }
 
-input[type=submit] {
-  background-color: DodgerBlue;
-  color: #fff;
+.autocomplete .form-control {
+	background: white;
 }
 
-.autocomplete-items {
-  position: absolute;
-  border: 1px solid #d4d4d4;
-  border-bottom: none;
-  border-top: none;
-  z-index: 99;
-  /*position the autocomplete items to be the same width as the container:*/
-  top: 100%;
-  left: 0;
-  right: 0;
+.autocomplete-item {
+	&:hover,
+	> div.selected {
+		background: $background-title;
+		color: $background-lighter;
+		cursor: pointer;
+	}
 }
 
-.autocomplete-items div {
-  padding: 10px;
-  cursor: pointer;
-  background-color: #fff;
-  border-bottom: 1px solid #d4d4d4;
-}
-
-.autocomplete-items div:hover {
-  /*when hovering an item:*/
-  background-color: #e9e9e9;
-}
-
-.autocomplete-active {
-  /*when navigating through the items using the arrow keys:*/
-  background-color: DodgerBlue !important;
-  color: #ffffff;
-}

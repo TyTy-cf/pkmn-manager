@@ -61,10 +61,10 @@ class GenerationService extends AbstractService
             $language, Generation::class, $generation['name']
         );
 
-        //Fetch URL details type
-        $urlDetailed = $this->apiService->apiConnect($generation['url'])->toArray();
-        if (null === $newGeneration = $this->$this->generationRepository->findOneBySlug($slug))
+        if (null === ($newGeneration = $this->generationRepository->findOneBySlug($slug)))
         {
+            //Fetch URL details type
+            $urlDetailed = $this->apiService->apiConnect($generation['url'])->toArray();
             // Fetch name & description according the language
             $generationLang = $this->apiService->getNameBasedOnLanguageFromArray(
                 $language->getCode(), $urlDetailed

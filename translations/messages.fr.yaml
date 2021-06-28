@@ -13,6 +13,7 @@ pokemon:
     egg_group: "Groupe d'oeufs"
     hatch_counter: "Eclosion"
     hidden_talent: "Talent caché"
+    weaknesses: "Faiblesses de %pkmn%"
     evolution:
         title: "Evolutions"
         empty: "%pokemon% n'évolue pas"
@@ -20,6 +21,7 @@ pokemon:
         stage_inital: "Stade initial"
         stage_baby: "Stade bébé"
         baby_label: "Faire tenir %item% au parent"
+        other_form: "Autres formes"
     moves:
         method:
             levelup: "Montée de niveau"
@@ -34,6 +36,9 @@ pokemon:
             accuracy: "Précis."
         section: "Attaques"
         title: "Attaques par versions"
+    presentation:
+        title: "Présentation"
+        section: "Présentation"
     stats:
         title: "Stats"
         ev: "EV"
@@ -66,18 +71,21 @@ pokemon:
 
 index:
     ability:
-        description: "Description"
+        description: "Effet"
+        empty: "Non renseigné"
         pokemons: "Pokémons avec cette capacité"
     type:
         damage_relation: "Relation du type avec les autres types"
-        type: "Type"
-        relation: "Faiblesses"
         pokemons: "Pokemons ayant le type %type%"
+        to: "Offensif"
+        from: "Défensif"
     egg_group:
         pokemons: "Pokémons ayant ce groupe d'oeuf"
     generation:
         all:
             title: "Pokédex par générations"
+    title:
+        description: 'Description'
 
 pokedex:
     listing:
@@ -87,6 +95,9 @@ pokedex:
     description:
         goto: "Aller au : "
         listing: "Pokemons du %pokedex%"
+    selection_header:
+        title: "Pokédex par Génération"
+        indication: "Selectionnez votre Pokédex "
 
 move:
     title:
@@ -105,3 +116,4 @@ move:
             title: "Est prioritaire ?"
             no: "Non"
             yes: "Oui"
+

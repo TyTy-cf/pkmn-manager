@@ -5,10 +5,7 @@ namespace App\Entity\Moves;
 
 
 use App\Entity\Traits\TraitDescription;
-use App\Entity\Traits\TraitLanguage;
-use App\Entity\Traits\TraitNames;
 use App\Entity\Traits\TraitNomenclature;
-use App\Entity\Traits\TraitSlug;
 use App\Entity\Versions\VersionGroup;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
@@ -34,6 +31,12 @@ class MoveMachine
     use TraitNomenclature;
 
     use TraitDescription;
+
+    /**
+     * @var int|null
+     * @ORM\Column(name="number", type="integer", length=8)
+     */
+    private ?int $number;
 
     /**
      * @var Move $move
@@ -140,6 +143,24 @@ class MoveMachine
     public function setVersionGroup(VersionGroup $versionGroup): self
     {
         $this->versionGroup = $versionGroup;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getNumber(): ?int
+    {
+        return $this->number;
+    }
+
+    /**
+     * @param int|null $number
+     * @return MoveMachine
+     */
+    public function setNumber(?int $number): MoveMachine
+    {
+        $this->number = $number;
         return $this;
     }
 

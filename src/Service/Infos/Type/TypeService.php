@@ -5,6 +5,8 @@ namespace App\Service\Infos\Type;
 
 
 use App\Entity\Infos\Type\Type;
+use App\Entity\Infos\Type\TypeDamageRelationType;
+use App\Entity\Pokemon\Pokemon;
 use App\Entity\Users\Language;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
@@ -35,8 +37,7 @@ class TypeService extends AbstractService
      * @param TextService $textService
      * @param TypeRepository $typeRepository
      */
-    public function __construct
-    (
+    public function __construct(
         EntityManagerInterface $entityManager,
         ApiService $apiService,
         TypeDamageRelationTypeService $typeDamageFromTypeService,
@@ -58,17 +59,6 @@ class TypeService extends AbstractService
     public function getAllTypeByLanguage(string $lang)
     {
         return $this->typeRepository->getAllTypeByLanguage($lang);
-    }
-
-    /**
-     * Return all Type based on a Language
-     *
-     * @param Language $language
-     * @return Type[]|object[]
-     */
-    public function getAllTypesByLanguage(Language $language)
-    {
-        return $this->typeRepository->getAllTypesByLanguage($language);
     }
 
     /**
@@ -97,7 +87,7 @@ class TypeService extends AbstractService
 
             //If database is null, create type
             if (empty($newType) && $type['name'] !== "shadow" && $type['name'] !== "unknown") {
-                $urlImg = '/images/types/' . $language->getCode() . '/';
+                $urlImg = '/images/types/';
                 //Create new object and save in databases
                 $newType = new Type();
                 $newType->setName($typeNameLang);
@@ -109,5 +99,32 @@ class TypeService extends AbstractService
                 $this->entityManager->flush();
             }
         }
+    }
+
+    /**
+     * @param Pokemon $pokemon
+     * @return mixed
+     */
+    public function getTypesWeaknessesByPokemon(Pokemon $pokemon): array
+    {
+        $allTypes = $this->typeRepository->getAllTypesByLanguage($pokemon->getLanguage());
+        $typesRelation = [];
+        foreach($pokemon->getTypes() as $type) {
+            $typesRelation[] = $this->typeDamageFromTypeManager->getRelationTypeByTypeAndRelationName($type, 'from');
+        }
+        $returnedTypes = [];
+        foreach($allTypes as $type) {
+            /** @var Type $type */
+            $returnedTypes[$type->getName()] = 1;
+            foreach ($typesRelation as $typeRelation) {
+                foreach ($typeRelation as $otherType) {
+                    /** @var TypeDamageRelationType $otherType */
+                    if ($type === $otherType->getDamageRelationType()) {
+                        $returnedTypes[$type->getName()] *= $otherType->getDamageRelationCoefficient();
+                    }
+                }
+            }
+        }
+        return $returnedTypes;
     }
 }

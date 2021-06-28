@@ -1,0 +1,76 @@
+//
+// General
+// --------------------------------------------------
+
+body {
+	color: $gray-600;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+// Typography
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+	font-family: $font-family-sans-serif;
+}
+
+th,
+.th {
+	font-family: $font-family-sans-serif;
+}
+
+// Table
+
+.table-striped tbody tr:nth-of-type( odd ) {
+	background-color: darken( $gray-100, 2% );
+}
+
+.table-fixed {
+	table-layout: fixed;
+}
+
+// App global layout style
+
+.app {
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+	min-height: 100vh;
+	padding-top: $app-header-height;
+}
+
+.app-header {
+	position: fixed;
+	z-index: 99;
+	top: 0;
+	width: 100%;
+	max-height: $app-header-height;
+}
+
+.app-mainContent {
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+	width: 100%;
+	padding: 0;
+}
+
+.app-footer {
+	flex-grow: 1;
+	max-height: $app-footer-height;
+	background-color: $secondary;
+	color: $white;
+}

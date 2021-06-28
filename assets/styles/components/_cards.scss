@@ -1,0 +1,119 @@
+//
+// Pokémon Cards Components
+// --------------------------------------------------
+
+.pkmnCard-container {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	width: 100%;
+}
+
+.pkmnCard,
+.pkmnCard::after,
+.pkmnCard-pict {
+	transition: all $decelerate-easing $transition-medium-element-expanding-duration;
+}
+
+.pkmnCard {
+	display: flex;
+	position: relative;
+	flex-direction: column;
+	flex-grow: 1;
+	align-items: center;
+	//min-width: 230px;
+	padding: $spacer;
+	border: solid 2px rgba( $primary, 0% );
+	//margin: $spacer / 2;
+	border-radius: 12px;
+	//background: linear-gradient( 45deg, darken($gray-100, 2%) 0%, darken($gray-100, 2%) 100% );
+	background-color: darken( $gray-100, 2% );
+	text-align: center;
+
+	&::after {
+		content: '';
+		position: absolute;
+		//opacity: 0.06;
+		z-index: 0;
+		top: 0;
+		left: 10%;
+		width: 80%;
+		height: 80%;
+		background-color: $gray-200;
+		// background-image: url("../../img/pkmn-profile-bckgrd-pokeball_dark.svg");
+		// background-repeat: no-repeat;
+		// background-position: center center;
+		// background-size: contain;
+		-webkit-mask-image: url( '../../img/pkmn-profile-bckgrd-pokeball_dark.svg' );
+		mask-image: url( '../../img/pkmn-profile-bckgrd-pokeball_dark.svg' );
+		-webkit-mask-size: auto;
+		mask-size: auto;
+		-webkit-mask-repeat: no-repeat;
+		mask-repeat: no-repeat;
+		-webkit-mask-position: top center;
+		mask-position: top center;
+	}
+
+	&:hover {
+		background-color: rgba( darken( $primary, 2% ), .1 );
+		text-decoration: none;
+		//border: solid 2px rgba($secondary, .1);
+		//box-shadow: 0 0 40px rgba($secondary, .1) inset;
+		//background: radial-gradient($primary, darken( $primary, 10% ) );
+
+		&::after {
+			transform: scale( .8 );
+			background-color: $white;
+		}
+
+		.pkmnCard-pict {
+			transform: scale( 1.2 );
+		}
+	}
+}
+
+.pkmnCard-header {
+	z-index: 2;
+	width: 100%;
+}
+
+.pkmnCard-name {
+	z-index: 2;
+	color: $gray-700;
+}
+
+.pkmnCard-rowTypes {
+	display: flex;
+	z-index: 2;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+}
+
+.pkmnCard-typesPict {
+	width: calc( 50% - 8px );
+	max-width: 80px;
+	margin: 2px 4px;
+	border-radius: 4px;
+}
+
+.pkmnCard-rowEvolution {
+	z-index: 2;
+	width: 100%;
+	margin-top: $spacer / 2;
+}
+
+.pkmnCard-evolutionInfo {
+	margin: $spacer / 2 0;
+	color: $gray-600;
+	font-family: $font-family-headings;
+	line-height: 1.35;
+}
+
+.pkmnCard_evolution-container {
+	display: flex;
+	flex-direction: column;
+}

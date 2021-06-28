@@ -3,14 +3,14 @@ function detailedMoves(evt, version) {
     // Declare all variables
     let i, tabcontent, tablinks;
 
-    // Get all elements with class="tabcontent" and hide them
-    tabcontent = document.getElementsByClassName('tabcontent');
+    // Get all elements with class="selector-tabContent" and hide them
+    tabcontent = document.getElementsByClassName('selector-tabContent');
     for (i = 0; i < tabcontent.length; i++) {
         tabcontent[i].style.display = 'none';
     }
 
-    // Get all elements with class="tablinks" and remove the class "active"
-    tablinks = document.getElementsByClassName('tablinks');
+    // Get all elements with class="selector-tabNavigationButton" and remove the class "active"
+    tablinks = document.getElementsByClassName('selector-tabNavigationButton');
     for (i = 0; i < tablinks.length; i++) {
         tablinks[i].className = tablinks[i].className.replace(' active', '');
     }
@@ -24,7 +24,7 @@ function detailedMoves(evt, version) {
  * TabNav works on tablinks classes
  */
 window.addEventListener('load', () => {
-    let tablinks = document.getElementsByClassName('tablinks');
+    let tablinks = document.getElementsByClassName('selector-tabNavigationButton');
     for (let i = 0; i < tablinks.length; i++) {
         tablinks[i].addEventListener('click', (evt) => {
             detailedMoves(evt, tablinks[i].id);

@@ -18,17 +18,15 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class PokemonRepository extends AbstractRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
+    public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, Pokemon::class);
     }
 
     /**
      * @param Language $language
-     * @return int|mixed|string
+     * @return Pokemon[]|null
      */
-    public function getAllPokemonByLanguage(Language $language)
-    {
+    public function getAllPokemonByLanguage(Language $language): ?array {
         return $this->createQueryBuilder('pokemon')
             ->select('pokemon')
             ->where('pokemon.language = :lang')
@@ -40,30 +38,13 @@ class PokemonRepository extends AbstractRepository
 
     /**
      * @param Language $language
-     * @return int|mixed|string
-     */
-    public function getAllPokemonNameForLanguage(Language $language)
-    {
-        return $this->createQueryBuilder('pokemon')
-            ->select('pokemon.name')
-            ->where('pokemon.language = :language')
-            ->setParameter('language', $language)
-            ->getQuery()
-            ->getResult()
-            ;
-    }
-
-    /**
-     * @param Language $language
      * @param int $offset
      * @param int $limit
      * @return array|int|string
      */
-    public function getPokemonOffsetLimitByLanguage
-    (
+    public function getPokemonOffsetLimitByLanguage(
         Language $language, int $offset, int $limit
-    )
-    {
+    ) {
         return $this->createQueryBuilder('pokemon')
             ->select('pokemon')
             ->where('pokemon.language = :lang')
@@ -80,15 +61,23 @@ class PokemonRepository extends AbstractRepository
      * @return int|mixed|string|null
      * @throws NonUniqueResultException
      */
-    public function getPokemonProfileBySlug(string $slug)
-    {
-        return $this->createQueryBuilder('p')
-            ->select('p', 'ps', 'eg', 'se', 'sprites')
-            ->leftJoin('p.pokemonSpecies', 'ps')
-            ->leftJoin('ps.eggGroup', 'eg')
-            ->leftJoin('p.statsEffort', 'se')
-            ->join('p.pokemonSprites', 'sprites')
-            ->andWhere('p.slug = :slug')
+    public function getPokemonProfileBySlug(string $slug) {
+        return $this->createQueryBuilder('pokemon')
+            ->select('pokemon',
+                'pokemon_species', 'egg_group',
+                'stats_effort', 'pokemon_sprites',
+                'types', 'pokemons_ability',
+                'ability', 'pokemons'
+            )
+            ->leftJoin('pokemon.pokemonSpecies', 'pokemon_species')
+            ->leftJoin('pokemon.pokemonsAbility', 'pokemons_ability')
+            ->leftJoin('pokemons_ability.ability', 'ability')
+            ->leftJoin('pokemon_species.eggGroup', 'egg_group')
+            ->leftJoin('pokemon.statsEffort', 'stats_effort')
+            ->leftJoin('pokemon_species.pokemons', 'pokemons')
+            ->join('pokemon.pokemonSprites', 'pokemon_sprites')
+            ->join('pokemon.types', 'types')
+            ->andWhere('pokemon.slug = :slug')
             ->setParameter('slug', $slug)
             ->getQuery()
             ->getOneOrNullResult()
@@ -97,10 +86,9 @@ class PokemonRepository extends AbstractRepository
 
     /**
      * @param Pokedex $pokedex
-     * @return int|mixed|string
+     * @return Pokemon[]|null
      */
-    public function getPokemonsByPokedex(Pokedex $pokedex)
-    {
+    public function getPokemonsByPokedex(Pokedex $pokedex): ?array {
         return $this->createQueryBuilder('pokemon')
             ->select('pokemon', 'types', 'sprites')
             ->join('pokemon.types', 'types')
@@ -121,8 +109,7 @@ class PokemonRepository extends AbstractRepository
      * @param PokemonSpecies $pokemonSpecies
      * @return int|mixed|string
      */
-    public function getPokemonSpriteByPokemonSpecies(PokemonSpecies $pokemonSpecies)
-    {
+    public function getPokemonSpriteByPokemonSpecies(PokemonSpecies $pokemonSpecies) {
         return $this->createQueryBuilder('pokemon')
             ->select('pokemon', 'pokemon_sprites')
             ->join('pokemon.pokemonSprites', 'pokemon_sprites')
@@ -130,6 +117,24 @@ class PokemonRepository extends AbstractRepository
             ->where('pokemon_species = :pokemonSpecies')
             ->andWhere('pokemon.isDefault = 1')
             ->setParameter('pokemonSpecies', $pokemonSpecies)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @param Language|null $language
+     * @param string $approxName
+     * @return Pokemon[]|null
+     */
+    public function getPokemonNameForLanguage(?Language $language, string $approxName): ?array
+    {
+        return $this->createQueryBuilder('pokemon')
+            ->select('pokemon.name')
+            ->where('pokemon.language = :language')
+            ->andWhere('pokemon.name LIKE :approxName')
+            ->setParameter('approxName', '%'.$approxName.'%')
+            ->setParameter('language', $language)
             ->getQuery()
             ->getResult()
         ;

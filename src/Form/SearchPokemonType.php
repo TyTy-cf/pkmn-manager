@@ -16,16 +16,14 @@ class SearchPokemonType extends AbstractType
             ->add('name_pokemon', SearchType::class, [
                 'label' => false,
                 'attr' => [
-                    'maxlength' => 20,
                     'autocomplete' => 'off',
-                    'class' => 'form-control',
                     'placeholder' => 'Pokemon...',
                 ],
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'OK',
+                'label' => false,
                 'attr' => [
-                    'class' => 'btn-primary btn ml-2'
+                    'class' => 'btn btn-primary ml-1 fas fa-arrow-circle-right btn-search-pokemon',
                 ],
             ]);
     }

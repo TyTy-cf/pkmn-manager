@@ -47,11 +47,11 @@ class VersionGroup
     private Generation $generation;
 
     /**
-     * @var int $order
+     * @var int $displayedOrder
      *
-     * @ORM\Column(name="order", type="integer", nullable=true)
+     * @ORM\Column(name="displayed_order", type="integer", nullable=true)
      */
-    private int $order;
+    private int $displayedOrder;
 
     /**
      * @var array|string[]
@@ -159,18 +159,18 @@ class VersionGroup
     /**
      * @return int
      */
-    public function getOrder(): int
+    public function getDisplayedOrder(): int
     {
-        return $this->order;
+        return $this->displayedOrder;
     }
 
     /**
-     * @param int $order
+     * @param int $displayedOrder
      * @return VersionGroup
      */
-    public function setOrder(int $order): self
+    public function setDisplayedOrder(int $displayedOrder): self
     {
-        $this->order = $order;
+        $this->displayedOrder = $displayedOrder;
         return $this;
     }
 

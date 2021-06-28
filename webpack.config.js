@@ -23,7 +23,9 @@ Encore
      * Each entry will result in one JavaScript file (e.g. app.js)
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
-    .addStyleEntry('styles', './assets/styles.scss')
+    .addStyleEntry('style', './assets/styles/index.scss')
+    .addStyleEntry('libs', './assets/styles/libs.scss')
+
     .addEntry('scripts', './assets/scripts.js')
     //.addEntry('page2', './assets/page2.js')
 
@@ -58,7 +60,8 @@ Encore
     .enableSassLoader()
 
     // uncomment if you use TypeScript
-    //.enableTypeScriptLoader()
+    // .enableTypeScriptLoader()
+    // .enableForkedTypeScriptTypesChecking()
 
     // uncomment to get integrity="..." attributes on your script & link tags
     // requires WebpackEncoreBundle 1.4 or higher

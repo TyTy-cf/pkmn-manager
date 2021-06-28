@@ -1,0 +1,70 @@
+//
+// Base colours
+// --------------------------------------------------
+
+//
+// (Need refactoring)
+$font-special-color: #737373;
+$light-font-special-color: #c4c4c4;
+$background: #d9e7ff;
+$background-light: #ebf1ff;
+$background-lighter: #f7faff;
+$background-title: #5eb5e0;
+
+//
+// Colors
+$blue: #007bff;
+$indigo: #6610f2;
+$purple: #6f42c1;
+$pink: #e83e8c;
+$red: #dc3545;
+$orange: #fd7e14;
+$yellow: #ffc107;
+$green: #28a745;
+$teal: #20c997;
+$cyan: #17a2b8;
+
+//
+// Grays
+$white: white;
+$gray-100: #f8f9fa;
+$gray-200: #e9ecef;
+$gray-300: #dee2e6;
+$gray-400: #ced4da;
+$gray-500: #adb5bd;
+$gray-600: #6c757d;
+$gray-700: #495057;
+$gray-800: #343a40;
+$gray-900: #212529;
+$black: black;
+
+//
+// Theme
+$primary: #e3350d;
+$secondary: lighten( $gray-900, 4% );
+$success: $green;
+$info: $cyan;
+$warning: $yellow;
+$danger: $red;
+$light: $gray-100;
+$dark: $gray-800;
+
+//
+// Type
+$type-x025: #14d91a;
+$type-x05: #5fd463;
+$type-x1: #feffe6;
+$type-x2: #ffa319;
+$type-x4: #ff1919;
+$type-x0: #8f8f8f;
+
+//
+// statsbar
+$stats-very-low: #960000;
+$stats-low: $type-x4;
+$stats-average-low: #ff8f26;
+$stats-average: #ffbe26;
+$stats-average-high: #b3ff26;
+$stats-high-low: #03c900;
+$stats-high: #00c284;
+$stats-very-high: #00c9a8;

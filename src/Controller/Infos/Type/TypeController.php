@@ -4,10 +4,9 @@
 namespace App\Controller\Infos\Type;
 
 
-use App\Entity\Infos\Type\Type;
+use App\Repository\Infos\Type\TypeRepository;
 use App\Service\Infos\Type\TypeDamageRelationTypeService;
-use App\Service\Infos\Type\TypeService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,45 +16,26 @@ class TypeController extends AbstractController
 {
 
     /**
-     * @var TypeDamageRelationTypeService $typeRelationManager
-     */
-    public TypeDamageRelationTypeService $typeRelationManager;
-
-    /**
-     * @var TypeService $typeManager
-     */
-    private TypeService $typeManager;
-
-    /**
-     * TypeController constructor.
-     * @param TypeDamageRelationTypeService $typeRelationManager
-     * @param TypeService $typeManager
-     */
-    public function __construct(
-        TypeDamageRelationTypeService $typeRelationManager,
-        TypeService $typeManager
-    )
-    {
-        $this->typeRelationManager = $typeRelationManager;
-        $this->typeManager = $typeManager;
-    }
-
-    /**
      * Display the last pokemon add in the database
      *
      * @Route (path="/type/{slug_type}", name="type_detail", requirements={"slug_type": ".+"})
-     * @ParamConverter(class="App\Entity\Infos\Type\Type", name="type", options={"mapping": {"slug_type" : "slug"}})
      *
-     * @param Type $type
+     * @param Request $request
+     * @param TypeDamageRelationTypeService $typeRelationService
+     * @param TypeRepository $typeRepository
      * @return Response
+     * @throws NonUniqueResultException
      */
-    public function typeDetail(Type $type): Response {
-        dump($this->typeRelationManager->getRelationTypeByType($type));
-        dump($this->typeManager->getAllTypesByLanguage($type->getLanguage()));
+    public function index(
+        Request $request,
+        TypeDamageRelationTypeService $typeRelationService,
+        TypeRepository $typeRepository
+    ): Response {
+        $type = $typeRepository->findOneBySlugWithRelation($request->get('slug_type'));
         return $this->render('Type/detail.html.twig', [
             'type' => $type,
-            'typeRelation' => $this->typeRelationManager->getRelationTypeByType($type),
-            'types' => $this->typeManager->getAllTypesByLanguage($type->getLanguage()),
+            'typeRelation' => $typeRelationService->getRelationTypeByType($type),
+            'types' => $typeRepository->getAllTypesByLanguage($type->getLanguage()),
         ]);
     }
 }

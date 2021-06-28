@@ -1,6 +1,33 @@
+<li class="nav-item">
+	<a class="pkmnProfile-datasTabLink nav-link active" id="section-presentation-tab" data-toggle="pill" href="#section-presentation" role="tab" aria-controls="section-presentation" aria-selected="true">
+		{{ 'pokemon.presentation.section'|trans }}
+	</a>
+</li>
+<li class="nav-item">
+	<a class="pkmnProfile-datasTabLink nav-link" id="section-stats-tab" data-toggle="pill" href="#section-stats" role="tab" aria-controls="section-stats" aria-selected="true">
+		{{ 'pokemon.stats.section'|trans }}
+	</a>
+</li>
+{% if arrayEvolutionChain|length > 0 %}
+	<li class="nav-item">
+		<a class="pkmnProfile-datasTabLink nav-link" id="section-evolutions-tab" data-toggle="pill" href="#section-evolutions" role="tab" aria-controls="section-evolutions" aria-selected="true">
+			{{ 'pokemon.evolutions.section'|trans }}
+		</a>
+	</li>
+{% endif %}
+<li class="nav-item">
+	<a class="pkmnProfile-datasTabLink nav-link" id="section-descriptions-tab" data-toggle="pill" href="#section-descriptions" role="tab" aria-controls="section-descriptions" aria-selected="true">
+		{{ 'pokemon.descriptions.section'|trans }}
+	</a>
+</li>
+<li class="nav-item">
+	<a class="pkmnProfile-datasTabLink nav-link" id="section-moves-tab" data-toggle="pill" href="#section-moves" role="tab" aria-controls="section-moves" aria-selected="true">
+		{{ 'pokemon.moves.section'|trans }}
+	</a>
+</li>
+<li class="nav-item">
+	<a class="pkmnProfile-datasTabLink nav-link" id="section-sprites-tab" data-toggle="pill" href="#section-sprites" role="tab" aria-controls="section-sprites" aria-selected="true">
+		{{ 'pokemon.sprites.section'|trans }}
+	</a>
+</li>
 
-<a class="super-button" href="#section-stats" role="button">{{ 'pokemon.stats.section'|trans }}</a>
-<a class="super-button" href="#section-evolutions" role="button">{{ 'pokemon.evolutions.section'|trans }}</a>
-<a class="super-button" href="#section-descriptions" role="button">{{ 'pokemon.descriptions.section'|trans }}</a>
-<a class="super-button" href="#section-moves" role="button">{{ 'pokemon.moves.section'|trans }}</a>
-<a class="super-button" href="#section-sprites" role="button">{{ 'pokemon.sprites.section'|trans }}</a>
