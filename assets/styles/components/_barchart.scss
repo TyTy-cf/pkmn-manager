@@ -1,5 +1,5 @@
 //
-// Barchart Coponent
+// Barchart Component
 // --------------------------------------------------
 
 .barchart-cell {
@@ -11,12 +11,6 @@
 	position: relative;
 	height: .75rem;
 
-	&,
-	&::before {
-		background: linear-gradient( 180deg, lighten( $primary, 14% ) 0%, $primary 85%, darken( $primary, 10% ) 90%, darken( $primary, 10% ) 100% );
-		background-color: $primary;
-	}
-
 	&::before {
 		content: '';
 		position: absolute;
@@ -27,4 +21,44 @@
 		height: 100%;
 		clip-path: polygon( 0 0, 100% 0, 5% 100%, 0% 100% );
 	}
+}
+
+.stats-very-low {
+	background: linear-gradient(180deg, lighten($stats-very-low, 14%) 0%, $stats-very-low 85%, darken($stats-very-low, 10%) 90%, darken($stats-very-low, 10%) 100%);
+	background-color: $stats-very-low;
+}
+
+.stats-low {
+	background: linear-gradient( 180deg, lighten( $stats-low, 14% ) 0%, $stats-low 85%, darken( $stats-low, 10% ) 90%, darken( $stats-low, 10% ) 100% );
+	background-color: $stats-low;
+}
+
+.stats-average-low {
+	background: linear-gradient( 180deg, lighten( $stats-average-low, 14% ) 0%, $stats-average-low 85%, darken( $stats-average-low, 10% ) 90%, darken( $stats-average-low, 10% ) 100% );
+	background-color: $stats-average-low;
+}
+
+.stats-average {
+	background: linear-gradient( 180deg, lighten( $stats-average, 14% ) 0%, $stats-average 85%, darken( $stats-average, 10% ) 90%, darken( $stats-average, 10% ) 100% );
+	background-color: $stats-average;
+}
+
+.stats-average-high {
+	background: linear-gradient( 180deg, lighten( $stats-average-high, 14% ) 0%, $stats-average-high 85%, darken( $stats-average-high, 10% ) 90%, darken( $stats-average-high, 10% ) 100% );
+	background-color: $stats-average-high;
+}
+
+.stats-high-low {
+	background: linear-gradient( 180deg, lighten( $stats-high-low, 14% ) 0%, $stats-high-low 85%, darken( $stats-high-low, 10% ) 90%, darken( $stats-high-low, 10% ) 100% );
+	background-color: $stats-high-low;
+}
+
+.stats-high {
+	background: linear-gradient( 180deg, lighten( $stats-high, 14% ) 0%, $stats-high 85%, darken( $stats-high, 10% ) 90%, darken( $stats-high, 10% ) 100% );
+	background-color: $stats-high;
+}
+
+.stats-very-high {
+	background: linear-gradient( 180deg, lighten( $stats-very-high, 14% ) 0%, $stats-very-high 85%, darken( $stats-very-high, 10% ) 90%, darken( $stats-very-high, 10% ) 100% );
+	background-color: $stats-very-high;
 }
