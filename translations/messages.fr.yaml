@@ -69,6 +69,33 @@ pokemon:
         default: "Normal"
         shiny: "Shiny"
 
+form_stats:
+    title:
+        main: 'Outil pour la stratégie'
+        iv: "Calculateur d'IV"
+    level: 'niveau'
+    stats:
+        hp: 'Stat HP'
+        atk: 'Stat ATK'
+        def: 'Stat DEF'
+        spa: 'Stat SPA'
+        spd: 'Stat SPD'
+        spe: 'Stat SPE'
+    ev:
+        hp: 'EV HP'
+        atk: 'EV ATK'
+        def: 'EV DEF'
+        spa: 'EV SPA'
+        spd: 'EV SPD'
+        spe: 'EV SPE'
+    iv:
+        hp: 'IV HP'
+        atk: 'IV ATK'
+        def: 'IV DEF'
+        spa: 'IV SPA'
+        spd: 'IV SPD'
+        spe: 'IV SPE'
+
 index:
     ability:
         description: "Effet"

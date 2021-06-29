@@ -176,11 +176,4 @@ class Nature
         return $this;
     }
 
-//    public function getCoefFromStat(string $requiredStat): float
-//    {
-//        if ($requiredStat === 'atk' && ) {
-//
-//        }
-//    }
-
 }

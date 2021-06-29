@@ -5,6 +5,7 @@ namespace App\Service\Pokemon;
 
 
 use App\Entity\Infos\Ability;
+use App\Entity\Infos\Nature;
 use App\Entity\Infos\PokemonAbility;
 use App\Entity\Infos\Type\Type;
 use App\Entity\Moves\MoveLearnMethod;
@@ -133,7 +134,8 @@ class PokemonService extends AbstractService
      * @param Language $language
      * @return Pokemon[]
      */
-    public function getAllPokemonByLanguage(Language $language) {
+    public function getAllPokemonByLanguage(Language $language): array
+    {
         return $this->pokemonRepository->getAllPokemonByLanguage($language);
     }
 
@@ -154,15 +156,6 @@ class PokemonService extends AbstractService
     public function getPokemonOffsetLimitByLanguage(Language $language, int $offset, int $limit)
     {
         return $this->pokemonRepository->getPokemonOffsetLimitByLanguage($language, $offset, $limit);
-    }
-
-    /**
-     * @param Pokedex $pokedex
-     * @return int|mixed|string
-     */
-    public function getPokemonsByPokedex(Pokedex $pokedex)
-    {
-        return $this->pokemonRepository->getPokemonsByPokedex($pokedex);
     }
 
     /**

@@ -89,3 +89,59 @@
     </tr>
     </tbody>
 </table>
+
+<h2 class="mb-4">{{ 'form_stats.title.main'|trans }}</h2>
+<h3>{{ 'form_stats.title.iv'|trans }}</h3>
+<div>
+    {{ form_start(formCalculateIv) }}
+    <div class="form-group row">
+        <div class="col-sm-2">
+            {{ form_row(formCalculateIv.statsPv) }}
+        </div>
+        <div class="col-sm-2">
+            {{ form_row(formCalculateIv.statsAtk) }}
+        </div>
+        <div class="col-sm-2">
+            {{ form_row(formCalculateIv.statsDef) }}
+        </div>
+        <div class="col-sm-2">
+            {{ form_row(formCalculateIv.statsSpa) }}
+        </div>
+        <div class="col-sm-2">
+            {{ form_row(formCalculateIv.statsSpd) }}
+        </div>
+        <div class="col-sm-2">
+            {{ form_row(formCalculateIv.statsSpe) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-2">
+            {{ form_row(formCalculateIv.evPv) }}
+        </div>
+        <div class="col-sm-2">
+            {{ form_row(formCalculateIv.evAtk) }}
+        </div>
+        <div class="col-sm-2">
+            {{ form_row(formCalculateIv.evDef) }}
+        </div>
+        <div class="col-sm-2">
+            {{ form_row(formCalculateIv.evSpa) }}
+        </div>
+        <div class="col-sm-2">
+            {{ form_row(formCalculateIv.evSpd) }}
+        </div>
+        <div class="col-sm-2">
+            {{ form_row(formCalculateIv.evSpe) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-6">
+            {{ form_row(formCalculateIv.level) }}
+        </div>
+        <div class="col-sm-6">
+            {{ form_row(formCalculateIv.nature) }}
+        </div>
+    </div>
+    {{ form_row(formCalculateIv.submit) }}
+    {{ form_end(formCalculateIv) }}
+</div>

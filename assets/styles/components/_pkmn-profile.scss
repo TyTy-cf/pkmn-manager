@@ -435,3 +435,9 @@ $pokedex-radius: 8px;
 	background: linear-gradient( 270deg, darken( $white, 8% ) 0%, $white 80% );
 	background-color: $white;
 }
+
+#result-calculator {
+	> li {
+		list-style: none;
+	}
+}
