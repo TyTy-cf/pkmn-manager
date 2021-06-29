@@ -7,6 +7,7 @@ use App\Entity\Traits\TraitLanguage;
 use App\Entity\Traits\TraitNames;
 use App\Entity\Traits\TraitNomenclature;
 use App\Entity\Traits\TraitSlug;
+use App\Entity\Traits\TraitStatsPkmn;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -24,6 +25,13 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class Nature
 {
+
+    public static string $ATK_API = 'attack';
+    public static string $DEF_API = 'defense';
+    public static string $SPA_API = 'special-attack';
+    public static string $SPD_API = 'special-defense';
+    public static string $SPE_API = 'speed';
+
     /**
      * @var int $id id de l'abstract info
      *
@@ -36,18 +44,39 @@ class Nature
     use TraitNomenclature;
 
     /**
-     * @var string|null $statIncreased la stats "bonus" de la nature
+     * @var float $atk
      *
-     * @ORM\Column(name="stat_increased", type="string", length=120, nullable=true)
+     * @ORM\Column(name="atk", type="float", length=3, nullable=true)
      */
-    private ?string $statIncreased;
+    private float $atk;
 
     /**
-     * @var string|null $statDecreased
+     * @var float $def
      *
-     * @ORM\Column(name="stat_decreased", type="string", length=120, nullable=true)
+     * @ORM\Column(name="def", type="float", length=3, nullable=true)
      */
-    private ?string $statDecreased;
+    private float $def;
+
+    /**
+     * @var float $spa
+     *
+     * @ORM\Column(name="spa", type="float", length=3, nullable=true)
+     */
+    private float $spa;
+
+    /**
+     * @var float $spd
+     *
+     * @ORM\Column(name="spd", type="float", length=3, nullable=true)
+     */
+    private float $spd;
+
+    /**
+     * @var float $spe
+     *
+     * @ORM\Column(name="spe", type="float", length=3, nullable=true)
+     */
+    private float $spe;
 
     /**
      * @return int
@@ -58,39 +87,100 @@ class Nature
     }
 
     /**
-     * @return string|null
+     * @return int
      */
-    public function getStatIncreased(): ?string
+    public function getAtk(): float
     {
-        return $this->statIncreased;
+        return $this->atk;
     }
 
     /**
-     * @param string|null $statIncreased
+     * @param float $atk
      * @return Nature
      */
-    public function setStatIncreased(?string $statIncreased): self
+    public function setAtk(float $atk): Nature
     {
-        $this->statIncreased = $statIncreased;
+        $this->atk = $atk;
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return float
      */
-    public function getStatDecreased(): ?string
+    public function getDef(): float
     {
-        return $this->statDecreased;
+        return $this->def;
     }
 
     /**
-     * @param string|null $statDecreased
+     * @param float $def
      * @return Nature
      */
-    public function setStatDecreased(?string $statDecreased): self
+    public function setDef(float $def): Nature
     {
-        $this->statDecreased = $statDecreased;
+        $this->def = $def;
         return $this;
     }
+
+    /**
+     * @return float
+     */
+    public function getSpa(): float
+    {
+        return $this->spa;
+    }
+
+    /**
+     * @param float $spa
+     * @return Nature
+     */
+    public function setSpa(float $spa): Nature
+    {
+        $this->spa = $spa;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getSpd(): float
+    {
+        return $this->spd;
+    }
+
+    /**
+     * @param float $spd
+     * @return Nature
+     */
+    public function setSpd(float $spd): Nature
+    {
+        $this->spd = $spd;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getSpe(): float
+    {
+        return $this->spe;
+    }
+
+    /**
+     * @param float $spe
+     * @return Nature
+     */
+    public function setSpe(float $spe): Nature
+    {
+        $this->spe = $spe;
+        return $this;
+    }
+
+//    public function getCoefFromStat(string $requiredStat): float
+//    {
+//        if ($requiredStat === 'atk' && ) {
+//
+//        }
+//    }
 
 }
