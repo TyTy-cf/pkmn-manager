@@ -2,6 +2,8 @@ const autocomplete = require('autocompleter');
 
 let arrayPokemonNames = [];
 const input = document.getElementById('search_pokemon_name_pokemon');
+const formSearch = document.forms['search_pokemon'];
+console.log(formSearch);
 
 if (input) {
     autocomplete({
@@ -29,6 +31,11 @@ if (input) {
             const itemElement = document.createElement("div");
             itemElement.classList.add('autocomplete-item');
             itemElement.textContent = item.name;
+            itemElement.addEventListener('click', ()=> {
+                const inputForm = document.getElementById('search_pokemon_name_pokemon');
+                inputForm.value = item.name;
+                formSearch.submit();
+            });
             return itemElement;
         }
     });
