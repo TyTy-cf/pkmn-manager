@@ -3,7 +3,6 @@ const autocomplete = require('autocompleter');
 let arrayPokemonNames = [];
 const input = document.getElementById('search_pokemon_name_pokemon');
 const formSearch = document.forms['search_pokemon'];
-console.log(formSearch);
 
 if (input) {
     autocomplete({
