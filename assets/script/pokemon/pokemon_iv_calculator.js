@@ -18,10 +18,10 @@ buttonIvSubmit.addEventListener('click', (e) => {
    const nature = document.getElementById('calculate_iv_form_nature').value
    const idPokemon = document.getElementById('pokemonProfileId').innerText;
 
-   let datas = {statsHp, statsAtk, statsDef, statsSpa, statsSpd, statsSpe, evHp, evAtk, evDef, evSpa, evSpd, evSpe, level, nature, idPokemon}
+   let datas = {'toCalculate' : 'iv', statsHp, statsAtk, statsDef, statsSpa, statsSpd, statsSpe, evHp, evAtk, evDef, evSpa, evSpd, evSpe, level, nature, idPokemon}
    const header = new Headers();
    header.append("Content-Type", "text/html");
-   fetch('/pokemons/calculate_iv/' + JSON.stringify(datas), header)
+   fetch('/pokemons/calculate/' + JSON.stringify(datas), header)
        .then((response) => {
             return response.text();
        }).then(data => {

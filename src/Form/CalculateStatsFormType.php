@@ -13,11 +13,11 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * Class CalculateIvFormType.php
+ * Class CalculateStatsFormType.php
  *
  * @author Kevin Tourret
  */
-class CalculateIvFormType extends AbstractType
+class CalculateStatsFormType extends AbstractType
 {
 
     private NatureRepository $natureRepository;
@@ -34,46 +34,46 @@ class CalculateIvFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('statsPv', NumberType::class, [
+            ->add('ivPv', NumberType::class, [
                 'label' => false,
                 'required' => true,
                 'attr' => [
-                    'placeholder' => 'form_stats.stats.hp',
+                    'placeholder' => 'form_stats.iv.hp',
                 ]
             ])
-            ->add('statsAtk', NumberType::class, [
+            ->add('ivAtk', NumberType::class, [
                 'label' => false,
                 'required' => true,
                 'attr' => [
-                    'placeholder' => 'form_stats.stats.atk',
+                    'placeholder' => 'form_stats.iv.atk',
                 ]
             ])
-            ->add('statsDef', NumberType::class, [
+            ->add('ivDef', NumberType::class, [
                 'label' => false,
                 'required' => true,
                 'attr' => [
-                    'placeholder' => 'form_stats.stats.def',
+                    'placeholder' => 'form_stats.iv.def',
                 ]
             ])
-            ->add('statsSpa', NumberType::class, [
+            ->add('ivSpa', NumberType::class, [
                 'label' => false,
                 'required' => true,
                 'attr' => [
-                    'placeholder' => 'form_stats.stats.spa',
+                    'placeholder' => 'form_stats.iv.spa',
                 ]
             ])
-            ->add('statsSpd', NumberType::class, [
+            ->add('ivSpd', NumberType::class, [
                 'label' => false,
                 'required' => true,
                 'attr' => [
-                    'placeholder' => 'form_stats.stats.spd',
+                    'placeholder' => 'form_stats.iv.spd',
                 ]
             ])
-            ->add('statsSpe', NumberType::class, [
+            ->add('ivSpe', NumberType::class, [
                 'label' => false,
                 'required' => true,
                 'attr' => [
-                    'placeholder' => 'form_stats.stats.spe',
+                    'placeholder' => 'form_stats.iv.spe',
                 ]
             ])
             ->add('evPv', NumberType::class, [
@@ -139,4 +139,5 @@ class CalculateIvFormType extends AbstractType
                 ],
             ]);
     }
+
 }

@@ -73,6 +73,7 @@ form_stats:
     title:
         main: 'Outil pour la stratégie'
         iv: "Calculateur d'IV"
+        stats: 'Calculateur de stats'
     level: 'niveau'
     stats:
         hp: 'Stat HP'

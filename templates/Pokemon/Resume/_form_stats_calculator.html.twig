@@ -1,0 +1,58 @@
+
+<h3>{{ 'form_stats.title.stats'|trans }}</h3>
+<div>
+    {{ form_start(formCalculateStats) }}
+    <div class="form-group row">
+        <div class="col-sm-2">
+            {{ form_row(formCalculateStats.ivPv) }}
+        </div>
+        <div class="col-sm-2">
+            {{ form_row(formCalculateStats.ivAtk) }}
+        </div>
+        <div class="col-sm-2">
+            {{ form_row(formCalculateStats.ivDef) }}
+        </div>
+        <div class="col-sm-2">
+            {{ form_row(formCalculateStats.ivSpa) }}
+        </div>
+        <div class="col-sm-2">
+            {{ form_row(formCalculateStats.ivSpd) }}
+        </div>
+        <div class="col-sm-2">
+            {{ form_row(formCalculateStats.ivSpe) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-2">
+            {{ form_row(formCalculateStats.evPv) }}
+        </div>
+        <div class="col-sm-2">
+            {{ form_row(formCalculateStats.evAtk) }}
+        </div>
+        <div class="col-sm-2">
+            {{ form_row(formCalculateStats.evDef) }}
+        </div>
+        <div class="col-sm-2">
+            {{ form_row(formCalculateStats.evSpa) }}
+        </div>
+        <div class="col-sm-2">
+            {{ form_row(formCalculateStats.evSpd) }}
+        </div>
+        <div class="col-sm-2">
+            {{ form_row(formCalculateStats.evSpe) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-6">
+            {{ form_row(formCalculateStats.level) }}
+        </div>
+        <div class="col-sm-6">
+            {{ form_row(formCalculateStats.nature) }}
+        </div>
+    </div>
+    {{ form_row(formCalculateStats.submit) }}
+    {{ form_end(formCalculateStats) }}
+</div>
+<div class="collapse result-calculator" id="stats-results">
+
+</div>

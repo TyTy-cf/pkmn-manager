@@ -59,25 +59,35 @@ class StatsCalculatorService
         int $ivSpa, int $ivSpd, int $ivSpe, int $evHp, int $evAtk, int $evDef, int $evSpa, int $evSpd, int $evSpe
     ): array
     {
-        $stats['hp'] = floor($this->calculateStatsHPFromIvEv($ivHp, $level, $evHp, $pokemon->getHp()));
-        $stats['atk'] = floor($this->calculateStatsFromIvEv($ivAtk, $nature->getAtk(), $level, $evAtk, $pokemon->getAtk()));
-        $stats['def'] = floor($this->calculateStatsFromIvEv($ivDef, $nature->getDef(), $level, $evDef, $pokemon->getDef()));
-        $stats['spa'] = floor($this->calculateStatsFromIvEv($ivSpa, $nature->getSpa(), $level, $evSpa, $pokemon->getSpa()));
-        $stats['spd'] = floor($this->calculateStatsFromIvEv($ivSpd, $nature->getSpd(), $level, $evSpd, $pokemon->getSpd()));
-        $stats['spe'] = floor($this->calculateStatsFromIvEv($ivSpe, $nature->getSpe(), $level, $evSpe, $pokemon->getSpe()));
+        $stats['hp'] = $this->calculateStatsHPFromIvEv($ivHp, $level, $evHp, $pokemon->getHp());
+        $stats['atk'] = $this->calculateStatsFromIvEv($ivAtk, $nature->getAtk(), $level, $evAtk, $pokemon->getAtk());
+        $stats['def'] = $this->calculateStatsFromIvEv($ivDef, $nature->getDef(), $level, $evDef, $pokemon->getDef());
+        $stats['spa'] = $this->calculateStatsFromIvEv($ivSpa, $nature->getSpa(), $level, $evSpa, $pokemon->getSpa());
+        $stats['spd'] = $this->calculateStatsFromIvEv($ivSpd, $nature->getSpd(), $level, $evSpd, $pokemon->getSpd());
+        $stats['spe'] = $this->calculateStatsFromIvEv($ivSpe, $nature->getSpe(), $level, $evSpe, $pokemon->getSpe());
 
         return $stats;
     }
 
-    private function calculateStatsFromIvEv(int $iv, float $coefNature, int $level, int $ev, int $baseStat): float {
-        return (((2 * $baseStat + $iv + $ev/4) * $level) / 100 + 5) * $coefNature;
+    private function calculateStatsFromIvEv(int $iv, float $coefNature, int $level, int $ev, int $baseStat) {
+        if ($iv < 0) {
+            return '<span class="error-calculator">Err. IV < 0</span>';
+        } else if ($iv > 31) {
+            return '<span class="error-calculator">Err. IV > 31</span>';
+        }
+        return floor((((2 * $baseStat + $iv + $ev/4) * $level) / 100 + 5) * $coefNature);
     }
 
-    private function calculateStatsHPFromIvEv(int $iv, int $level, int $ev, int $baseStat): float {
-        return ((2 * $baseStat + $iv + $ev / 4 + 100) * $level) / 100 + 10;
+    private function calculateStatsHPFromIvEv(int $iv, int $level, int $ev, int $baseStat) {
+        if ($iv < 0) {
+            return '<span class="error-calculator">Err. IV < 0</span>';
+        } else if ($iv > 31) {
+            return '<span class="error-calculator">Err. IV > 31</span>';
+        }
+        return floor(((2 * $baseStat + $iv + $ev / 4 + 100) * $level) / 100 + 10);
     }
 
-    // Checker
+    // Checker IV
 
     public function getIvRange(Pokemon $pokemon, Nature $nature, int $level, array $stats, array $evs): array {
         $ivs = $this->getIVFromStatsAndEv(
@@ -119,7 +129,8 @@ class StatsCalculatorService
         return $range;
     }
 
-    private function getRange($iv, int $baseStat, float $coefNature, int $level, int $ev, int $stats, bool $isHp = false) {
+    private function getRange($iv, int $baseStat, float $coefNature, int $level, int $ev, int $stats, bool $isHp = false): int
+    {
         if ($iv == 31) {
             return $iv;
         }
@@ -138,6 +149,15 @@ class StatsCalculatorService
             $iv++;
         }
         return $iv;
+    }
+
+    public function getStatsRange(?Pokemon $pokemon, ?Nature $nature, int $level, array $arrayIv, array $arrayEv): array
+    {
+        return $this->getStatsFromIvAndEv(
+            $pokemon, $nature, $level,
+            $arrayIv['hp'], $arrayIv['atk'], $arrayIv['def'], $arrayIv['spa'], $arrayIv['spd'], $arrayIv['spe'],
+            $arrayEv['hp'], $arrayEv['atk'], $arrayEv['def'], $arrayEv['spa'], $arrayEv['spd'], $arrayEv['spe']
+        );
     }
 
 }
