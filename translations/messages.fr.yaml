@@ -145,3 +145,14 @@ move:
             no: "Non"
             yes: "Oui"
 
+nature:
+    title: 'Liste des natures'
+    table:
+        header:
+            label: 'Natures'
+            atk: 'Attaque'
+            def: 'Défense'
+            spa: 'Attaque spé.'
+            spd: 'Défense spé.'
+            spe: 'Vitesse'
+
