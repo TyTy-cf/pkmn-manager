@@ -19,14 +19,17 @@ buttonIvSubmit.addEventListener('click', (e) => {
    const idPokemon = document.getElementById('pokemonProfileId').innerText;
 
    let datas = {statsHp, statsAtk, statsDef, statsSpa, statsSpd, statsSpe, evHp, evAtk, evDef, evSpa, evSpd, evSpe, level, nature, idPokemon}
-   fetch('/pokemons/calculate_iv/' + JSON.stringify(datas))
+   const header = new Headers();
+   header.append("Content-Type", "text/html");
+   fetch('/pokemons/calculate_iv/' + JSON.stringify(datas), header)
        .then((response) => {
-           // const form = document.getElementsByName('calculate_iv_form');
-           // form.append(response.html);
-       })
-       .then((stats) => {
-       })
-       .catch((e) => {
+            return response.text();
+       }).then(data => {
+            const results = document.getElementById('iv-results');
+            data = JSON.parse(data);
+            results.innerHTML = data.html;
+            results.className = results.className.replace('collapse', '');
+       }).catch((e) => {
        })
    ;
 

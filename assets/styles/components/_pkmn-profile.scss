@@ -436,8 +436,10 @@ $pokedex-radius: 8px;
 	background-color: $white;
 }
 
-#result-calculator {
-	> li {
-		list-style: none;
+.result-calculator {
+	background-color: $background-lighter;
+	padding: 0.5em;
+	span {
+		font-weight: bold;
 	}
 }

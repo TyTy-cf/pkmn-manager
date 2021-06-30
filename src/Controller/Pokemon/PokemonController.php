@@ -138,9 +138,9 @@ class PokemonController extends AbstractController
      * @Route(path="/pokemons/calculate_iv/{datas}", name="calculate_iv")
      *
      * @param Request $request
-     * @return string
+     * @return JsonResponse
      */
-    function calculateIv(Request $request): Response
+    function calculateIv(Request $request): JsonResponse
     {
         $jsonIv = json_decode($request->get('datas'), true);
         $pokemon = $this->pokemonRepository->findOneBy(['id' => $jsonIv['idPokemon']]);
@@ -167,12 +167,11 @@ class PokemonController extends AbstractController
             ]
         );
 
-        return $this->render('Pokemon/Resume/_result_stats_calculator.html.twig', [
-            'range' => $range,
+        return (new JsonResponse())->setData([
+            'html' => $this->renderView('Pokemon/Resume/_result_stats_calculator.html.twig', [
+                'range' => $range,
+            ]),
         ]);
-
-//        dump($range);
-//        die();
     }
 
     /**

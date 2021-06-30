@@ -1,23 +1,23 @@
 
-<div id="result-calculator">
-    <ul>
+<div>
+    <ul class="list-unstyled result-calculator">
         <li>
-            HP : {{ range['hp'][0] }} - {{ range['hp'][1] }}
+            <span>HP :</span> {{ range['hp'][0]|raw }} - {{ range['hp'][1]|raw }}
         </li>
         <li>
-            ATK : {{ range['atk'][0] }} - {{ range['atk'][1] }}
+            <span>ATK :</span> {{ range['atk'][0]|raw }} - {{ range['atk'][1]|raw }}
         </li>
         <li>
-            DEF : {{ range['def'][0] }} - {{ range['def'][1] }}
+            <span>DEF :</span> {{ range['def'][0]|raw }} - {{ range['def'][1]|raw }}
         </li>
         <li>
-            SPA : {{ range['spa'][0] }} - {{ range['spa'][1] }}
+            <span>SPA :</span> {{ range['spa'][0]|raw }} - {{ range['spa'][1]|raw }}
         </li>
         <li>
-            SPD : {{ range['spd'][0] }} - {{ range['spd'][1] }}
+            <span>SPD :</span> {{ range['spd'][0]|raw }} - {{ range['spd'][1]|raw }}
         </li>
         <li>
-            SPE : {{ range['spe'][0] }} - {{ range['spe'][1] }}
+            <span>SPE :</span> {{ range['spe'][0]|raw }} - {{ range['spe'][1]|raw }}
         </li>
     </ul>
 </div>
