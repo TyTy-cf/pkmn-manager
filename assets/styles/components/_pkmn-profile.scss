@@ -443,3 +443,15 @@ $pokedex-radius: 8px;
 		font-weight: bold;
 	}
 }
+
+.error-calculator {
+	color: $red;
+}
+
+.close-calculator {
+	color: black;
+	&:hover {
+		cursor: pointer;
+		color: dimgrey;
+	}
+}

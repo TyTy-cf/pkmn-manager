@@ -1,23 +1,54 @@
 
-<div>
+<div class="main-result-calculator">
+    <i class="fas fa-times float-right close-calculator"></i>
     <ul class="list-unstyled result-calculator">
         <li>
-            <span>HP :</span> {{ range['hp'][0]|raw }} - {{ range['hp'][1]|raw }}
+            <span>HP :</span>
+            {% if range['hp'][0] is not defined  %}
+                {{ range['hp']|raw }}
+            {% else %}
+                {{ range['hp'][0]|raw }} - {{ range['hp'][1]|raw }}
+            {% endif %}
         </li>
         <li>
-            <span>ATK :</span> {{ range['atk'][0]|raw }} - {{ range['atk'][1]|raw }}
+            <span>ATK :</span>
+            {% if range['atk'][0] is not defined  %}
+                {{ range['atk']|raw }}
+            {% else %}
+                {{ range['atk'][0]|raw }} - {{ range['atk'][1]|raw }}
+            {% endif %}
         </li>
         <li>
-            <span>DEF :</span> {{ range['def'][0]|raw }} - {{ range['def'][1]|raw }}
+            <span>DEF :</span>
+            {% if range['def'][0] is not defined  %}
+                {{ range['def']|raw }}
+            {% else %}
+                {{ range['def'][0]|raw }} - {{ range['def'][1]|raw }}
+            {% endif %}
         </li>
         <li>
-            <span>SPA :</span> {{ range['spa'][0]|raw }} - {{ range['spa'][1]|raw }}
+            <span>SPA :</span>
+            {% if range['spa'][0] is not defined  %}
+                {{ range['spa']|raw }}
+            {% else %}
+                {{ range['spa'][0]|raw }} - {{ range['spa'][1]|raw }}
+            {% endif %}
         </li>
         <li>
-            <span>SPD :</span> {{ range['spd'][0]|raw }} - {{ range['spd'][1]|raw }}
+            <span>SPD :</span>
+            {% if range['spd'][0] is not defined  %}
+                {{ range['spd']|raw }}
+            {% else %}
+                {{ range['spd'][0]|raw }} - {{ range['spd'][1]|raw }}
+            {% endif %}
         </li>
         <li>
-            <span>SPE :</span> {{ range['spe'][0]|raw }} - {{ range['spe'][1]|raw }}
+            <span>SPE :</span>
+            {% if range['spe'][0] is not defined  %}
+                {{ range['spe']|raw }}
+            {% else %}
+                {{ range['spe'][0]|raw }} - {{ range['spe'][1]|raw }}
+            {% endif %}
         </li>
     </ul>
 </div>

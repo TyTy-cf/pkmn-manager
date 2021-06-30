@@ -35,9 +35,9 @@ class StatsCalculatorService
     private function calculateIVHPFromStat(int $stat, int $level, int $ev, int $baseStat) {
         $value = (($stat - 10) * 100) / $level - (2 * $baseStat) - ($ev / 4) - 100;
         if ($value < 0) {
-            return 'IV < 0 ??';
+            return  '<span class="error-calculator">Err. IV < 0</span>';
         } else if ($value > 31) {
-            return 'IV > 0 ??';
+            return '<span class="error-calculator">Err. IV > 31</span>';
         }
         return ceil($value);
     }
@@ -45,9 +45,9 @@ class StatsCalculatorService
     private function calculateIVFromStat(int $stat, float $coefNature, int $level, int $ev, int $baseStat) {
         $value = (($stat / $coefNature - 5) * 100) / $level - $ev / 4 - 2 * $baseStat;
         if ($value < 0) {
-            return '<span class="">Err. IV < 0</span>';
+            return '<span class="error-calculator">Err. IV < 0</span>';
         } else if ($value > 31) {
-            return '<span class="">Err. IV > 0</span>';
+            return '<span class="error-calculator">Err. IV > 31</span>';
         }
         return ceil($value);
     }
@@ -85,19 +85,42 @@ class StatsCalculatorService
             $stats['hp'], $stats['atk'], $stats['def'], $stats['spa'], $stats['spd'], $stats['spe'],
             $evs['hp'], $evs['atk'], $evs['def'], $evs['spa'], $evs['spd'], $evs['spe']
         );
-
-        $range['hp'] = [$ivs['hp'], $this->getRange($ivs['hp'], $pokemon->getHp(), 0.0, $level, $evs['hp'], $stats['hp'], true)];
-        $range['atk'] = [$ivs['atk'], $this->getRange($ivs['atk'], $pokemon->getAtk(), $nature->getAtk(), $level, $evs['atk'], $stats['atk'])];
-        $range['def'] = [$ivs['def'], $this->getRange($ivs['def'], $pokemon->getDef(), $nature->getDef(), $level, $evs['def'], $stats['def'])];
-        $range['spa'] = [$ivs['spa'], $this->getRange($ivs['spa'], $pokemon->getSpa(), $nature->getSpa(), $level, $evs['spa'], $stats['spa'])];
-        $range['spd'] = [$ivs['spd'], $this->getRange($ivs['spd'], $pokemon->getSpd(), $nature->getSpd(), $level, $evs['spd'], $stats['spd'])];
-        $range['spe'] = [$ivs['spe'], $this->getRange($ivs['spe'], $pokemon->getSpe(), $nature->getSpe(), $level, $evs['spe'], $stats['spe'])];
+        if (is_string($ivs['hp'])) {
+            $range['hp'] = $ivs['hp'];
+        } else {
+            $range['hp'] = [$ivs['hp'], $this->getRange($ivs['hp'], $pokemon->getHp(), 0.0, $level, $evs['hp'], $stats['hp'], true)];
+        }
+        if (is_string($ivs['atk'])) {
+            $range['atk'] = $ivs['atk'];
+        } else {
+            $range['atk'] = [$ivs['atk'], $this->getRange($ivs['atk'], $pokemon->getAtk(), $nature->getAtk(), $level, $evs['atk'], $stats['atk'])];
+        }
+        if (is_string($ivs['def'])) {
+            $range['def'] = $ivs['def'];
+        } else {
+            $range['def'] = [$ivs['def'], $this->getRange($ivs['def'], $pokemon->getDef(), $nature->getDef(), $level, $evs['def'], $stats['def'])];
+        }
+        if (is_string($ivs['spa'])) {
+            $range['spa'] = $ivs['spa'];
+        } else {
+            $range['spa'] = [$ivs['spa'], $this->getRange($ivs['spa'], $pokemon->getSpa(), $nature->getSpa(), $level, $evs['spa'], $stats['spa'])];
+        }
+        if (is_string($ivs['spd'])) {
+            $range['spd'] = $ivs['spd'];
+        } else {
+            $range['spd'] = [$ivs['spd'], $this->getRange($ivs['spd'], $pokemon->getSpd(), $nature->getSpd(), $level, $evs['spd'], $stats['spd'])];
+        }
+        if (is_string($ivs['spe'])) {
+            $range['spe'] = $ivs['spe'];
+        } else {
+            $range['spe'] = [$ivs['spe'], $this->getRange($ivs['spe'], $pokemon->getSpe(), $nature->getSpe(), $level, $evs['spe'], $stats['spe'])];
+        }
 
         return $range;
     }
 
     private function getRange($iv, int $baseStat, float $coefNature, int $level, int $ev, int $stats, bool $isHp = false) {
-        if (is_string($iv) || $iv == 31) {
+        if ($iv == 31) {
             return $iv;
         }
         $newStats = floor($this->calculateStatsFromIvEv($iv, $coefNature, $level, $ev, $baseStat));

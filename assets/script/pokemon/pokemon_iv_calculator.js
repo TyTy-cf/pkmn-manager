@@ -29,8 +29,19 @@ buttonIvSubmit.addEventListener('click', (e) => {
             data = JSON.parse(data);
             results.innerHTML = data.html;
             results.className = results.className.replace('collapse', '');
-       }).catch((e) => {
+            setHideResultPanel();
+   }).catch((e) => {
        })
    ;
-
 });
+
+function setHideResultPanel() {
+    const arrayHideCalculatorResult = document.getElementsByClassName('close-calculator');
+    arrayHideCalculatorResult.forEach((closeButton) => {
+        closeButton.addEventListener('click', () => {
+            let divToClose = closeButton.closest('div .result-calculator');
+            divToClose.className += ' collapse';
+        });
+    });
+}
+
