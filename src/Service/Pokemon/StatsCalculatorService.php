@@ -75,7 +75,7 @@ class StatsCalculatorService
         } else if ($iv > 31) {
             return '<span class="error-calculator">Err. IV > 31</span>';
         }
-        return floor((((2 * $baseStat + $iv + $ev/4) * $level) / 100 + 5) * $coefNature);
+        return floor((((2 * $baseStat + $iv + floor($ev/4)) * $level) / 100 + 5) * $coefNature);
     }
 
     private function calculateStatsHPFromIvEv(int $iv, int $level, int $ev, int $baseStat) {
@@ -84,7 +84,7 @@ class StatsCalculatorService
         } else if ($iv > 31) {
             return '<span class="error-calculator">Err. IV > 31</span>';
         }
-        return floor(((2 * $baseStat + $iv + $ev / 4 + 100) * $level) / 100 + 10);
+        return floor(((2 * $baseStat + $iv + floor($ev/4) + 100) * $level) / 100 + 10);
     }
 
     // Checker IV
