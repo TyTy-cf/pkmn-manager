@@ -2,6 +2,7 @@
 
 namespace App\Repository\Infos;
 
+use App\Entity\Infos\Ability;
 use App\Entity\Infos\AbilityVersionGroup;
 use App\Repository\AbstractRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -33,6 +34,22 @@ class AbilityVersionGroupRepository extends AbstractRepository
             ->orderBy('version_group.displayedOrder', 'DESC')
             ->getQuery()
             ->getResult()
+        ;
+    }
+
+
+    public function findLastDescriptionByAbility(Ability $ability): AbilityVersionGroup
+    {
+        return $this->createQueryBuilder('ability_version_group')
+            ->select('ability_version_group')
+            ->join('ability_version_group.versionGroup', 'version_group')
+            ->join('ability_version_group.ability', 'ability')
+            ->where('ability = :ability')
+            ->setParameter('ability', $ability)
+            ->orderBy('version_group.displayedOrder', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult()[0]
         ;
     }
 }

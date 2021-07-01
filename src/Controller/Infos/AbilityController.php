@@ -4,10 +4,14 @@
 namespace App\Controller\Infos;
 
 
+use App\Form\Filters\AbilityFormFilterType;
+use App\Form\Filters\OrderCollectionFilterType;
 use App\Repository\Infos\AbilityRepository;
 use App\Repository\Infos\AbilityVersionGroupRepository;
 use App\Repository\Users\LanguageRepository;
 use Doctrine\ORM\NonUniqueResultException;
+use Knp\Component\Pager\PaginatorInterface;
+use Lexik\Bundle\FormFilterBundle\Filter\FilterBuilderUpdaterInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -60,13 +64,38 @@ class AbilityController extends AbstractController
      * @Route (path="/ability", name="ability_index")
      *
      * @param Request $request
+     * @param FilterBuilderUpdaterInterface $builderUpdater
+     * @param PaginatorInterface $paginator
      * @return Response
      */
-    public function abilityIndex(Request $request): Response {
+    public function abilityIndex(
+        Request $request,
+        FilterBuilderUpdaterInterface $builderUpdater,
+        PaginatorInterface $paginator
+    ): Response {
+
+        $abilitiesQuery = $this->abilityRepository->queryAll($this->languageRepository->findOneBy(['code' => 'fr']));
+
+        $filterForm = $this->createForm(AbilityFormFilterType::class, null, [
+            'method' => 'GET',
+        ]);
+        if ($request->query->has($filterForm->getName())) {
+            $filterForm->submit($request->query->get($filterForm->getName()));
+            $builderUpdater->addFilterConditions($filterForm, $abilitiesQuery);
+        }
+
+        $abilities = $paginator->paginate(
+            $abilitiesQuery,
+            $request->query->getInt('page', 1),
+            20,
+            [
+                'wrap-queries' => true,
+            ]
+        );
+
         return $this->render('Ability/index.html.twig', [
-            'ability' => $this->abilityRepository->findBy([
-                'language' => $this->languageRepository->findOneBy(['code' => 'fr'])
-            ]),
+            'abilities' => $abilities,
+            'filters' => $filterForm->createView(),
         ]);
     }
 

@@ -3,8 +3,10 @@
 namespace App\Repository\Infos;
 
 use App\Entity\Infos\Ability;
+use App\Entity\Users\Language;
 use App\Repository\AbstractRepository;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -18,6 +20,21 @@ class AbilityRepository extends AbstractRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Ability::class);
+    }
+
+    /**
+     * @param Language $language
+     * @return QueryBuilder
+     */
+    public function queryAll(Language $language): QueryBuilder
+    {
+        return $this->createQueryBuilder('ability')
+            ->select('ability', 'pokemons_ability')
+            ->join('ability.pokemonsAbility', 'pokemons_ability')
+            ->where('ability.language = :language')
+            ->setParameter('language', $language)
+            ->orderBy('ability.name', 'ASC')
+        ;
     }
 
     /**

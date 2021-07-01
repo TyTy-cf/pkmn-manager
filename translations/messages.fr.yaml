@@ -102,7 +102,6 @@ index:
         description: "Effet"
         empty: "Non renseigné"
         pokemons: "Pokémons avec cette capacité"
-        list_all : "Liste des capacités"
     type:
         damage_relation: "Relation du type avec les autres types"
         pokemons: "Pokemons ayant le type %type%"
@@ -145,6 +144,14 @@ move:
             title: "Est prioritaire ?"
             no: "Non"
             yes: "Oui"
+
+ability:
+    title: "Liste des capacités"
+    table:
+        header:
+            name: 'Nom'
+            nb_pokemon: 'Pokémon'
+            description: 'Description'
 
 nature:
     title: 'Liste des natures'
