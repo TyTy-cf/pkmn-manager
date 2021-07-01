@@ -64,7 +64,9 @@ class AbilityController extends AbstractController
      */
     public function abilityIndex(Request $request): Response {
         return $this->render('Ability/index.html.twig', [
-            'ability' => $this->abilityRepository->findBy(['language' => $this->languageRepository->findOneBy(['code' => 'fr'])]),
+            'ability' => $this->abilityRepository->findBy([
+                'language' => $this->languageRepository->findOneBy(['code' => 'fr'])
+            ]),
         ]);
     }
 

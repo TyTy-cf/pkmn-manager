@@ -102,6 +102,7 @@ index:
         description: "Effet"
         empty: "Non renseigné"
         pokemons: "Pokémons avec cette capacité"
+        list_all : "Liste des capacités"
     type:
         damage_relation: "Relation du type avec les autres types"
         pokemons: "Pokemons ayant le type %type%"
