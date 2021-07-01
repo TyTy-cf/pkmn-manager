@@ -50,7 +50,7 @@ class PokemonSheet
     /**
      * @var string|null $nickname le surnom du pokemon
      *
-     * @ORM\Column(name="nickname", type="string", length=20, nullable=true)
+     * @ORM\Column(name="nickname", type="string", length=24, nullable=true)
      */
     private ?string $nickname;
 
@@ -109,6 +109,13 @@ class PokemonSheet
     private Collection $moves;
 
     /**
+     * @var string $moveSetName
+     *
+     * @ORM\Column(name="move_set_name", type="string", length=60, nullable=true)
+     */
+    private string $moveSetName;
+
+    /**
      * @var User|null
      *
      * @ManyToOne(targetEntity="App\Entity\Users\User", inversedBy="pokemonsSheet")
@@ -141,19 +148,21 @@ class PokemonSheet
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getNamePokemon()
+    public function getMoveSetName(): string
     {
-        return $this->namePokemon;
+        return $this->moveSetName;
     }
 
     /**
-     * @param mixed $namePokemon
+     * @param string $moveSetName
+     * @return PokemonSheet
      */
-    public function setNamePokemon($namePokemon): void
+    public function setMoveSetName(string $moveSetName): PokemonSheet
     {
-        $this->namePokemon = $namePokemon;
+        $this->moveSetName = $moveSetName;
+        return $this;
     }
 
     /**
