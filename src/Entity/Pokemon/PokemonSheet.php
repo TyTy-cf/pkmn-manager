@@ -83,19 +83,19 @@ class PokemonSheet
 
     /**
      * @OneToOne(targetEntity="App\Entity\Stats\StatsIv")
-     * @JoinColumn(name="ivs_id", referencedColumnName="id")
+     * @JoinColumn(name="ivs_id", referencedColumnName="id", nullable=true)
      */
     private StatsIv $ivs;
 
     /**
      * @OneToOne(targetEntity="App\Entity\Stats\StatsEv")
-     * @JoinColumn(name="evs_id", referencedColumnName="id")
+     * @JoinColumn(name="evs_id", referencedColumnName="id", nullable=true)
      */
     private StatsEv $evs;
 
     /**
      * @OneToOne(targetEntity="App\Entity\Stats\Stats")
-     * @JoinColumn(name="stats_id", referencedColumnName="id")
+     * @JoinColumn(name="stats_id", referencedColumnName="id", nullable=true)
      */
     private Stats $stats;
 
@@ -104,7 +104,7 @@ class PokemonSheet
      * @JoinTable(name="pokemon_sheet_moves",
      *      joinColumns={@JoinColumn(name="pokemon_sheet_id", referencedColumnName="id")},
      *      inverseJoinColumns={@JoinColumn(name="move_id", referencedColumnName="id")}
-     *      )
+     * )
      */
     private Collection $moves;
 
