@@ -4,6 +4,7 @@
 namespace App\Twig;
 
 
+use App\Entity\Infos\Nature;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
@@ -21,6 +22,7 @@ class NatureExtensions extends AbstractExtension
     {
         return [
             new TwigFilter('statsNatureCss', [$this, 'getCssByStats']),
+            new TwigFilter('statsNatureStatsDisplay', [$this, 'getStatsNatureStatsDisplay']),
             new TwigFilter('statsNatureDisplay', [$this, 'getStatsNatureDisplay']),
         ];
     }
@@ -43,7 +45,7 @@ class NatureExtensions extends AbstractExtension
      * @param float $stats
      * @return string
      */
-    public function getStatsNatureDisplay(float $stats): string {
+    public function getStatsNatureStatsDisplay(float $stats): string {
         $statsDisplay = '-';
         if ($stats === 0.9) {
             $statsDisplay = '-10%';

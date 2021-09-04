@@ -184,3 +184,5 @@ pokemon_sheet:
         ability: "Talent"
         nature: "Nature"
         gender: "Genre"
+        moveSetName: "Moveset"
+        moves: "Attaques"
