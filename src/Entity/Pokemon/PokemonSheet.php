@@ -57,7 +57,7 @@ class PokemonSheet
     /**
      * @var integer $level le niveau du pokemon
      *
-     * @ORM\Column(name="level", type="integer", length=3)
+     * @ORM\Column(name="level", type="integer", length=3, nullable=true)
      */
     private int $level;
 

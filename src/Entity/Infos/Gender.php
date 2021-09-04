@@ -39,10 +39,10 @@ class Gender
     use TraitNomenclature;
 
     /**
-     * @var string $image
+     * @var string|null $image
      * @ORM\Column(name="image", type="string", length=255, nullable=true)
      */
-    private string $image;
+    private ?string $image;
 
     /**
      * @return int
@@ -53,17 +53,17 @@ class Gender
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getImage(): string
+    public function getImage(): ?string
     {
         return $this->image;
     }
 
     /**
-     * @param string $image
+     * @param string|null $image
      */
-    public function setImage(string $image): void
+    public function setImage(?string $image): void
     {
         $this->image = $image;
     }

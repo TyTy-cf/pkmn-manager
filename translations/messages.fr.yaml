@@ -164,3 +164,23 @@ nature:
             spd: 'Défense spé.'
             spe: 'Vitesse'
 
+pokemon_sheet:
+    title:
+        add: "Ajouter un Pokémon"
+        add_move: "Création de %pokemon%"
+    form:
+        submit: "Créer"
+        field:
+            nickname: "Nickname"
+            ability: "Talent"
+            moves: "Attaques"
+            moveSetName: "Nom moveset"
+        move:
+            title: "Attaque "
+    show:
+        type: "Type"
+        nickname: "Surnom"
+        level: "Niveau"
+        ability: "Talent"
+        nature: "Nature"
+        gender: "Genre"

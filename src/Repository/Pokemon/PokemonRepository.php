@@ -31,6 +31,7 @@ class PokemonRepository extends AbstractRepository
             ->select('pokemon')
             ->where('pokemon.language = :lang')
             ->setParameter('lang', $language)
+            ->orderBy('pokemon.name')
             ->getQuery()
             ->getResult()
         ;

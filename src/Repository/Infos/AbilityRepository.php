@@ -3,6 +3,7 @@
 namespace App\Repository\Infos;
 
 use App\Entity\Infos\Ability;
+use App\Entity\Pokemon\Pokemon;
 use App\Entity\Users\Language;
 use App\Repository\AbstractRepository;
 use Doctrine\ORM\NonUniqueResultException;
@@ -61,5 +62,22 @@ class AbilityRepository extends AbstractRepository
             ->getQuery()
             ->getOneOrNullResult()
         ;
+    }
+
+    /**
+     * @param Pokemon $pokemon
+     * @return Ability[]|null
+     */
+    public function getAbilitysByPokemon(Pokemon $pokemon): ?array {
+        return $this->createQueryBuilder('ability')
+            ->select('ability')
+            ->join('ability.pokemonsAbility', 'pokemons_ability')
+            ->join('pokemons_ability.pokemon', 'pokemon')
+            ->where('pokemon = :pokemon')
+            ->setParameter('pokemon', $pokemon)
+            ->orderBy('ability.name', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
     }
 }

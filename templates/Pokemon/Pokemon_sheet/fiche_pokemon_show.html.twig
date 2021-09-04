@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="pkmnProfile">
+        <div class="pkmnProfile-mainContent">
+            <div class="pkmnProfile-colSprite col-lg-6 col-md-12 col-sm-12">
+                <div class="pkmnProfile-colSpriteContainer">
+                    <img class="pkmnProfile_sprite" src="{{ pokemonSheet.pokemon.pokemonSprites.spriteOfficial }}"
+                         alt="{{ pokemonSheet.pokemon.name|capitalize }}"
+                    >
+                </div>
+            </div>
+        </div>
+        <div class="pkmnProfile-colDatas col-lg-6 col-md-12 col-sm-12">
+            <div class="pkmnProfile-colDatasContainer">
+                <div class="pkmnProfile-datasHeader">
+                    <h1 class="pkmnProfile-datasMainTitle">
+                        <span>{{ pokemonSheet.pokemon.name }}</span>
+                        {% if pokemonSheet.gender.image is not empty %}
+                            <img src="{{ pokemonSheet.gender.image }}" alt="{{ pokemonSheet.gender.name }}">
+                        {% endif %}
+                    </h1>
+                </div>
+                <div class="pkmnProfile-datasTabWrapper">
+                    <div class="pkmnProfile-datasTab">
+                        <table class="table table-striped profile-table w-100">
+                            <tbody>
+                            <tr>
+                                <th>{{ 'pokemon_sheet.show.type'|trans }}</th>
+                                <td>
+                                    {% for type in pokemonSheet.pokemon.types %}
+                                        <a href="{{ path('type_detail', {slug_type: type.slug }) }}">
+                                            <img class="size-20" src="{{ type.img }}" alt="Type {{ type.name|lower }}"  title="{{ type.name|lower }}"/>
+                                        </a>
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'pokemon_sheet.show.nickname'|trans }}</th>
+                                <td>{{ pokemonSheet.nickname }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'pokemon_sheet.show.ability'|trans }}</th>
+                                <td>
+                                    <a href="{{ path('ability_show', {slug_ability: pokemonSheet.ability.slug}) }}"
+                                       title="{{ pokemonSheet.ability.description|capitalize }}"
+                                    >
+                                        {{ pokemonSheet.ability.name|capitalize }}
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'pokemon_sheet.show.nature'|trans }}</th>
+                                <td>{{ pokemonSheet.nature.name }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'pokemon_sheet.show.gender'|trans }}</th>
+                                <td>{{ pokemonSheet.gender.image }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

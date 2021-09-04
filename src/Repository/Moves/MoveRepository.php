@@ -5,8 +5,11 @@ namespace App\Repository\Moves;
 
 
 use App\Entity\Moves\Move;
+use App\Entity\Moves\PokemonMovesLearnVersion;
+use App\Entity\Pokemon\Pokemon;
 use App\Repository\AbstractRepository;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -58,6 +61,26 @@ class MoveRepository extends AbstractRepository
             ->orderBy('versionGroup.displayedOrder', 'DESC')
             ->getQuery()
             ->getOneOrNullResult()
+        ;
+    }
+
+    /**
+     * @param Pokemon $pokemon
+     * @return array
+     */
+    public function getMovesByPokemon(Pokemon $pokemon): array
+    {
+        return $this->createQueryBuilder('move')
+            ->select('move', 'type', 'damage_class')
+            ->join('move.type', 'type')
+            ->join('move.damageClass', 'damage_class')
+            ->join(PokemonMovesLearnVersion::class, 'pmlv', Join::WITH, 'pmlv.move = move')
+            ->where('pmlv.pokemon = :pokemon')
+            ->setParameter('pokemon', $pokemon)
+            ->groupBy('move.name')
+            ->orderBy('move.name', 'ASC')
+            ->getQuery()
+            ->getResult()
         ;
     }
 }

@@ -19,45 +19,22 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class PokemonController
+ * @package App\Controller\Pokemon
+ *
+ * @property PokemonService $pokemonService
+ * @property LanguageService $languageService
+ * @property EvolutionChainService $evolutionChainService
+ * @property PokemonSpeciesVersionRepository $pokemonSpeciesVersionRepository
+ * @property PokemonSpritesVersionRepository $pokemonSpritesVersionRepository
+ * @property PokemonRepository $pokemonRepository
+ * @property TypeService $typeService
+ */
 class PokemonController extends AbstractController
 {
 
     /**
-     * @var PokemonService
-     */
-    private PokemonService $pokemonService;
-
-    /**
-     * @var LanguageService $languageService
-     */
-    private LanguageService $languageService;
-
-    /**
-     * @var EvolutionChainService $evolutionChainService
-     */
-    private EvolutionChainService $evolutionChainService;
-
-    /**
-     * @var PokemonSpeciesVersionRepository $pokemonSpeciesVersionRepository
-     */
-    private PokemonSpeciesVersionRepository $pokemonSpeciesVersionRepository;
-
-    /**
-     * @var PokemonSpritesVersionRepository $pokemonSpritesVersionRepository
-     */
-    private PokemonSpritesVersionRepository $pokemonSpritesVersionRepository;
-
-    /**
-     * @var PokemonRepository $pokemonRepository
-     */
-    private PokemonRepository $pokemonRepository;
-
-    /**
-     * @var TypeService $typeService
-     */
-    private TypeService $typeService;
-
-    /**s
      * PokemonController constructor.
      *
      * @param PokemonService $pokemonService

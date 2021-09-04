@@ -79,6 +79,24 @@ class PokemonMovesLearnVersionRepository extends ServiceEntityRepository
 
     /**
      * @param Pokemon $pokemon
+     * @return PokemonMovesLearnVersion[]
+     */
+    public function getMovesLearnByPokemon(Pokemon $pokemon): array
+    {
+        return $this->createQueryBuilder('pmlv')
+            ->select('DISTINCT move')
+            ->join('pmlv.move', 'move')
+            ->join('pmlv.pokemon', 'pokemon')
+            ->where('pokemon = :pokemon')
+            ->setParameter('pokemon', $pokemon)
+            ->orderBy('move.name', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @param Pokemon $pokemon
      * @param $moveLearnMethod
      * @param $versionGroup
      * @return int|mixed|string
