@@ -5,49 +5,60 @@
     {% if pokemons|length > 0 %}
         <div class="container">
             <h1>{{ 'pokemon_sheet.index.title'|trans }}</h1>
-            <table class="table table-striped col-8 mx-auto text-center">
-                <thead>
-                    <tr>
-                        <th colspan="2">{{ 'pokemon_sheet.index.table.pokemon'|trans }}</th>
-                        <th>{{ 'pokemon_sheet.index.table.gender'|trans }}</th>
-                        <th>{{ 'pokemon_sheet.index.table.level'|trans }}</th>
-                        <th>{{ 'pokemon_sheet.index.table.nature'|trans }}</th>
-                        <th>{{ 'pokemon_sheet.index.table.ability'|trans }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for pokemonSheet in pokemons %}
+            <div class="col-8 mx-auto">
+                <a class="btn" href="{{ path('pokemon_create') }}">
+                    {{ 'pokemon_sheet.index.add'|trans }}
+                </a>
+                <table class="table table-striped text-center my-5">
+                    <thead>
                         <tr>
-                            <td class="float-right">
-                                {% if pokemonSheet.pokemon.pokemonSprites.spriteFrontDefault is not null %}
-                                    <img class="pkmnCard-pict" src="{{ pokemonSheet.pokemon.pokemonSprites.spriteFrontDefault }}" alt="Pokemon {{ pokemonSheet.pokemon.name }}">
-                                {% else %}
-                                    <img class="pkmnCard-pict" src="{{ asset('missingno_sm.png') }}" alt="Pokemon {{ pokemonSheet.pokemon.name }}, mais sans sa photo">
-                                {% endif %}
-                            </td>
-                            <td>
-                                {{ pokemonSheet.pokemon.name }}
-                            </td>
-                            <td>
-                                {{ pokemonSheet.gender.name }}
-                            </td>
-                            <td>
-                                {{ pokemonSheet.level }}
-                            </td>
-                            <td>
-                                {{ pokemonSheet.nature.name }}
-                            </td>
-                            <td>
-                                <a href="{{ path('ability_show', {slug_ability: pokemonSheet.ability.slug}) }}"
-                                   title="{{ pokemonSheet.ability.description|capitalize }}"
-                                >
-                                    {{ pokemonSheet.ability.name|capitalize }}
-                                </a>
-                            </td>
+                            <th colspan="2">{{ 'pokemon_sheet.index.table.pokemon'|trans }}</th>
+                            <th>{{ 'pokemon_sheet.index.table.gender'|trans }}</th>
+                            <th>{{ 'pokemon_sheet.index.table.level'|trans }}</th>
+                            <th>{{ 'pokemon_sheet.index.table.nature'|trans }}</th>
+                            <th>{{ 'pokemon_sheet.index.table.ability'|trans }}</th>
+                            <th></th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {% for pokemonSheet in pokemons %}
+                            <tr>
+                                <td class="float-right">
+                                    {% if pokemonSheet.pokemon.pokemonSprites.spriteFrontDefault is not null %}
+                                        <img class="pkmnCard-pict" src="{{ pokemonSheet.pokemon.pokemonSprites.spriteFrontDefault }}" alt="Pokemon {{ pokemonSheet.pokemon.name }}">
+                                    {% else %}
+                                        <img class="pkmnCard-pict" src="{{ asset('missingno_sm.png') }}" alt="Pokemon {{ pokemonSheet.pokemon.name }}, mais sans sa photo">
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {{ pokemonSheet.pokemon.name }}
+                                </td>
+                                <td>
+                                    {{ pokemonSheet.gender.name }}
+                                </td>
+                                <td>
+                                    {{ pokemonSheet.level }}
+                                </td>
+                                <td>
+                                    {{ pokemonSheet.nature.name }}
+                                </td>
+                                <td>
+                                    <a href="{{ path('ability_show', {slug_ability: pokemonSheet.ability.slug}) }}"
+                                       title="{{ pokemonSheet.ability.description|capitalize }}"
+                                    >
+                                        {{ pokemonSheet.ability.name|capitalize }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a class="btn" href="{{ path('pokemon_sheet_show', {'id': pokemonSheet.id}) }}">
+                                        <i class="fas fa-arrow-circle-right"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     {% else %}
         <p>{{ 'pokemon_sheet.index.empty'|trans }}</p>

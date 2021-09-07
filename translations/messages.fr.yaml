@@ -200,3 +200,4 @@ pokemon_sheet:
             nature: "Nature"
             gender: "Genre"
             ability: "Ability"
+        add: "Ajouter un pokemon"
