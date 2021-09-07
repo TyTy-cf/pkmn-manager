@@ -30,13 +30,11 @@ function setBtnAddAbilities() {
                 .then((response) => {
                     return response.text();
                 }).then(data => {
-                    const abilityBloc = document.getElementsByClassName('field-form pokemon-sheet-btn');
-                    abilityBloc.forEach((element) => {
-                        data = JSON.parse(data);
-                        element.innerHTML = data[0].html;
-                        document.getElementById('form-pokemon-sheet-ability').classList.add('d-none');
-                        enableEditButton();
-                    });
+                    data = JSON.parse(data);
+                    const abilityHtmlElement = document.getElementById('pokemon-sheet-ability-html');
+                    abilityHtmlElement.innerHTML = data[0].html;
+                    document.getElementById('form-pokemon-sheet-ability').classList.add('d-none');
+                    enableEditButton();
                 }).catch((e) => {
                 });
             });
