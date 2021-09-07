@@ -89,6 +89,10 @@ $pokedex-radius: 8px;
 	}
 }
 
+.lighten-profil {
+	color: lighten( $primary, 70% );
+}
+
 .pkmnProfile-colDatas {
 	position: relative;
 

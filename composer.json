@@ -12,6 +12,7 @@
         "doctrine/doctrine-fixtures-bundle": "^3.3",
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "doctrine/orm": "^2.7",
+        "drosalys-web/form-bundle": "^1.0",
         "fzaninotto/faker": "^1.9",
         "knplabs/knp-paginator-bundle": "^5.6",
         "lexik/form-filter-bundle": "^6.1",

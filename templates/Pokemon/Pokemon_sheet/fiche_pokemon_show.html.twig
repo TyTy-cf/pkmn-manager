@@ -13,6 +13,10 @@
                     <img class="pkmnProfile_sprite" src="{{ pokemonSheet.pokemon.pokemonSprites.spriteOfficial }}"
                          alt="{{ pokemonSheet.pokemon.name|capitalize }}"
                     >
+                    <p class="pkmnProfile_bckgrdNumber lighten-profil">
+                        <small>N. </small>
+                        {{ pokemonSheet.level }}
+                    </p>
                 </div>
             </div>
             <div class="pkmnProfile-colDatas col-lg-6 col-md-12 col-sm-12">
@@ -54,11 +58,13 @@
                                 <tr>
                                     <th>{{ 'pokemon_sheet.show.ability'|trans }}</th>
                                     <td>
-                                        <a href="{{ path('ability_show', {slug_ability: pokemonSheet.ability.slug}) }}"
-                                           title="{{ pokemonSheet.ability.description|capitalize }}"
-                                        >
-                                            {{ pokemonSheet.ability.name|capitalize }}
-                                        </a>
+                                        {% if pokemonSheet.ability is not null %}
+                                            <a href="{{ path('ability_show', {slug_ability: pokemonSheet.ability.slug}) }}"
+                                               title="{{ pokemonSheet.ability.description|capitalize }}"
+                                            >
+                                                {{ pokemonSheet.ability.name|capitalize }}
+                                            </a>
+                                        {% endif %}
                                     </td>
                                 </tr>
                                 <tr>
@@ -79,50 +85,54 @@
 
                         <div class="pkmnProfile-datasTab">
                             <h2>{{ 'pokemon_sheet.show.moves'|trans }}</h2>
-                            <table class="table table-striped table-fixed">
-                                <thead>
-                                <tr>
-                                    <th class="text-center col-moves-name">{{ 'pokemon.moves.table.name'|trans }}</th>
-                                    <th class="text-center col-moves-type">{{ 'pokemon.moves.table.type'|trans }}</th>
-                                    <th class="text-center">{{ 'pokemon.moves.table.category'|trans }}</th>
-                                    <th class="text-center col-moves-infos">{{ 'pokemon.moves.table.power'|trans }}</th>
-                                    <th class="text-center col-moves-infos">{{ 'pokemon.moves.table.accuracy'|trans }}</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for move in pokemonSheet.moves %}
+                            {% if pokemonSheet.moves|length > 0 %}
+                                <table class="table table-striped table-fixed">
+                                    <thead>
                                     <tr>
-                                        <td>
-                                            <a class="bold-link fs-100" href="{{ path('move_detail', {slug_move: move.slug }) }}">
-                                                {{ move.name }}
-                                            </a>
-                                        </td>
-                                        <td class="text-center">
-                                            <a href="{{ path('type_detail', {slug_type: move.type.slug }) }}">
-                                                <img class="size-50"
-                                                     title="{{ move.type.name }}"
-                                                     src="{{ move.type.img }}"
-                                                     alt="{{ move.type.name }}"
-                                                >
-                                            </a>
-                                        </td>
-                                        <td class="text-center">
-                                            <img class="size-25"
-                                                 title="{{ move.damageClass.name }}"
-                                                 src="{{ move.damageClass.image }}"
-                                                 alt="{{ move.damageClass.name }}"
-                                            >
-                                        </td>
-                                        <td class="text-center">
-                                            {{ move.power }}
-                                        </td>
-                                        <td class="text-center">
-                                            {{ move.accuracy }}
-                                        </td>
+                                        <th class="text-center col-moves-name">{{ 'pokemon.moves.table.name'|trans }}</th>
+                                        <th class="text-center col-moves-type">{{ 'pokemon.moves.table.type'|trans }}</th>
+                                        <th class="text-center">{{ 'pokemon.moves.table.category'|trans }}</th>
+                                        <th class="text-center col-moves-infos">{{ 'pokemon.moves.table.power'|trans }}</th>
+                                        <th class="text-center col-moves-infos">{{ 'pokemon.moves.table.accuracy'|trans }}</th>
                                     </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                    {% for move in pokemonSheet.moves %}
+                                        <tr>
+                                            <td>
+                                                <a class="bold-link fs-100" href="{{ path('move_detail', {slug_move: move.slug }) }}">
+                                                    {{ move.name }}
+                                                </a>
+                                            </td>
+                                            <td class="text-center">
+                                                <a href="{{ path('type_detail', {slug_type: move.type.slug }) }}">
+                                                    <img class="size-50"
+                                                         title="{{ move.type.name }}"
+                                                         src="{{ move.type.img }}"
+                                                         alt="{{ move.type.name }}"
+                                                    >
+                                                </a>
+                                            </td>
+                                            <td class="text-center">
+                                                <img class="size-25"
+                                                     title="{{ move.damageClass.name }}"
+                                                     src="{{ move.damageClass.image }}"
+                                                     alt="{{ move.damageClass.name }}"
+                                                >
+                                            </td>
+                                            <td class="text-center">
+                                                {{ move.power }}
+                                            </td>
+                                            <td class="text-center">
+                                                {{ move.accuracy }}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% else %}
+                                <p>{{ 'pokemon_sheet.show.empty'|trans }}</p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

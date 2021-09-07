@@ -1051,6 +1051,11 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
+"@drosalys/form-collection@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@drosalys/form-collection/-/form-collection-0.2.0.tgz#7fb06c4e4cd4d2b08cf32193a9ff89709521eeeb"
+  integrity sha512-NpJhuJNP+kI5YLs1bsx3bTgmInB8LNrar0UKPTcS/6w+v1mvKi6h0mQtK5VOc/12ad2JX+R2t63cFcrmWKbBXQ==
+
 "@fortawesome/fontawesome-free@^5.15.1":
   version "5.15.1"
   resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-free/-/fontawesome-free-5.15.1.tgz#ccfef6ddbe59f8fe8f694783e1d3eb88902dc5eb"

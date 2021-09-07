@@ -47,20 +47,6 @@ class PokemonSheetPokemonFormType extends AbstractType
         $pokemon = $options['data'];
         $moves = $this->moveRepository->getMovesByPokemon($pokemon->getPokemon());
         $builder
-            ->add('nickname', TextType::class, [
-                'label' => false,
-                'required' => false,
-                'attr' => [
-                    'placeholder' => 'pokemon_sheet.form.field.nickname',
-                ],
-            ])
-            ->add('moveSetName', TextType::class, [
-                'label' => false,
-                'required' => false,
-                'attr' => [
-                    'placeholder' => 'pokemon_sheet.form.field.moveSetName',
-                ],
-            ])
             ->add('ability', EntityType::class, [
                 'label' => 'pokemon_sheet.form.field.ability',
                 'class' => Ability::class,
@@ -68,37 +54,32 @@ class PokemonSheetPokemonFormType extends AbstractType
                 'choice_label' => 'name',
                 'choice_value' => 'id',
             ])
-            ->add('move_1', EntityType::class, [
+            ->add('moves', EntityType::class, [
                 'label' => 'pokemon_sheet.form.field.moves',
                 'class' => Move::class,
+                'by_reference' => false,
                 'choices' => $moves,
                 'choice_label' => 'name',
                 'choice_value' => 'id',
-                'mapped' => false,
-            ])
-            ->add('move_2', EntityType::class, [
-                'label' => false,
-                'class' => Move::class,
-                'choices' => $moves,
-                'choice_label' => 'name',
-                'choice_value' => 'id',
-                'mapped' => false,
-            ])
-            ->add('move_3', EntityType::class, [
-                'label' => false,
-                'class' => Move::class,
-                'choices' => $moves,
-                'choice_label' => 'name',
-                'choice_value' => 'id',
-                'mapped' => false,
-            ])
-            ->add('move_4', EntityType::class, [
-                'label' => false,
-                'class' => Move::class,
-                'choices' => $moves,
-                'choice_label' => 'name',
-                'choice_value' => 'id',
-                'mapped' => false,
+                'allow_add' => true,
+                'add_btn_class' => 'btn-arrow blue-btn-arrow mt-2',
+                'add_btn_label_translation_domain' => 'back_office',
+                'add_btn_label' => 'stage.availabilities.btn.add',
+                'allow_delete' => true,
+                'delete_btn_class' => 'btn-arrow red-btn-arrow',
+                'delete_btn_label_translation_domain' => 'back_office',
+                'delete_btn_label' => 'stage.availabilities.btn.delete',
+                'attr' => [
+                    'class' => 'mt-2 mb-2',
+                ],
+                'entry_options' => [
+                    'collapsable' => true,
+                    'attr' => [
+                        'data-form-collapsable' => false,
+                        'class' => 'mt-2',
+                    ],
+                    'label' => false,
+                ],
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'pokemon_sheet.form.submit',

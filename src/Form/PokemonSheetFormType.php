@@ -17,6 +17,7 @@ use App\Repository\Users\LanguageRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -75,6 +76,27 @@ class PokemonSheetFormType extends AbstractType
                 'choices' => $this->natureRepository->findBy(['language' => $this->languageRepository->findOneBy(['code' => 'fr'])], ['name' => 'ASC']),
                 'choice_label' => 'name',
                 'choice_value' => 'id',
+            ])
+            ->add('nickname', TextType::class, [
+                'label' => false,
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'pokemon_sheet.form.field.nickname',
+                ],
+            ])
+            ->add('moveSetName', TextType::class, [
+                'label' => false,
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'pokemon_sheet.form.field.moveSetName',
+                ],
+            ])
+            ->add('level', TextType::class, [
+                'label' => false,
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'pokemon_sheet.form.field.level',
+                ],
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'pokemon_sheet.form.submit',

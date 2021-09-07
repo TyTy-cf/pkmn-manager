@@ -46,7 +46,7 @@ class PokemonSheetController extends AbstractController
             $entityManager->persist($pokemonSheet);
             $entityManager->flush();
 
-            return $this->redirectToRoute('pokemon_create_next', ['id' => $pokemonSheet->getId()]);
+            return $this->redirectToRoute('pokemon_sheet_show', ['id' => $pokemonSheet->getId()]);
         }
 
         return $this->render('Pokemon/Pokemon_sheet/pokemon_add.html.twig', [
@@ -72,7 +72,7 @@ class PokemonSheetController extends AbstractController
             }
             $entityManager->persist($pokemonSheet);
             $entityManager->flush();
-            return $this->redirectToRoute('pokemon_show', ['id' => $pokemonSheet->getId()]);
+            return $this->redirectToRoute('pokemon_sheet_show', ['id' => $pokemonSheet->getId()]);
         }
 
         return $this->render('Pokemon/Pokemon_sheet/pokemon_add_moves.html.twig', [
@@ -82,7 +82,7 @@ class PokemonSheetController extends AbstractController
     }
 
     /**
-     * @Route(path="/fiche_pokemon/{id}", name="pokemon_show")
+     * @Route(path="/fiche_pokemon/{id}", name="pokemon_sheet_show")
      *
      * @param Request $request
      * @param PokemonSheet $pokemonSheet

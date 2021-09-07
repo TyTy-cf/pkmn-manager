@@ -175,6 +175,7 @@ pokemon_sheet:
             ability: "Talent"
             moves: "Attaques"
             moveSetName: "Nom moveset"
+            level: "Niveau"
         move:
             title: "Attaque "
     show:
@@ -186,3 +187,4 @@ pokemon_sheet:
         gender: "Genre"
         moveSetName: "Moveset"
         moves: "Attaques"
+        empty: "Aucune attaque pour le moment, ajoutez en"

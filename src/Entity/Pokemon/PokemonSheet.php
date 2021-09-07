@@ -55,49 +55,49 @@ class PokemonSheet
     private ?string $nickname;
 
     /**
-     * @var integer $level le niveau du pokemon
+     * @var integer|null $level le niveau du pokemon
      *
      * @ORM\Column(name="level", type="integer", length=3, nullable=true)
      */
-    private int $level;
+    private ?int $level;
 
     /**
-     * @var Gender $gender le genre du pokemon
+     * @var Gender|null $gender le genre du pokemon
      *
      * @OneToOne(targetEntity="App\Entity\Infos\Gender")
-     * @JoinColumn(name="gender_id", referencedColumnName="id")
+     * @JoinColumn(name="gender_id", referencedColumnName="id", nullable=true)
      */
-    private Gender $gender;
+    private ?Gender $gender;
 
     /**
      * @ManyToOne(targetEntity="App\Entity\Infos\Nature")
-     * @JoinColumn(name="nature_id", referencedColumnName="id")
+     * @JoinColumn(name="nature_id", referencedColumnName="id", nullable=true)
      */
-    private Nature $nature;
+    private ?Nature $nature;
 
     /**
      * @ManyToOne(targetEntity="App\Entity\Infos\Ability")
-     * @JoinColumn(name="ability_id", referencedColumnName="id")
+     * @JoinColumn(name="ability_id", referencedColumnName="id", nullable=true)
      */
-    private Ability $ability;
+    private ?Ability $ability;
 
     /**
      * @OneToOne(targetEntity="App\Entity\Stats\StatsIv")
      * @JoinColumn(name="ivs_id", referencedColumnName="id", nullable=true)
      */
-    private StatsIv $ivs;
+    private ?StatsIv $ivs;
 
     /**
      * @OneToOne(targetEntity="App\Entity\Stats\StatsEv")
      * @JoinColumn(name="evs_id", referencedColumnName="id", nullable=true)
      */
-    private StatsEv $evs;
+    private ?StatsEv $evs;
 
     /**
      * @OneToOne(targetEntity="App\Entity\Stats\Stats")
      * @JoinColumn(name="stats_id", referencedColumnName="id", nullable=true)
      */
-    private Stats $stats;
+    private ?Stats $stats;
 
     /**
      * @ManyToMany(targetEntity="App\Entity\Moves\Move")
@@ -109,11 +109,11 @@ class PokemonSheet
     private Collection $moves;
 
     /**
-     * @var string $moveSetName
+     * @var string|null $moveSetName
      *
      * @ORM\Column(name="move_set_name", type="string", length=60, nullable=true)
      */
-    private string $moveSetName;
+    private ?string $moveSetName;
 
     /**
      * @var User|null
@@ -198,17 +198,17 @@ class PokemonSheet
     }
 
     /**
-     * @return Ability
+     * @return Ability|null
      */
-    public function getAbility(): Ability
+    public function getAbility(): ?Ability
     {
         return $this->ability;
     }
 
     /**
-     * @param Ability $ability
+     * @param Ability|null $ability
      */
-    public function setAbility(Ability $ability): void
+    public function setAbility(?Ability $ability): void
     {
         $this->ability = $ability;
     }
