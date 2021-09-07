@@ -1,0 +1,13 @@
+.pokemon-sheet-edit-button {
+  color: $primary;
+
+  &:hover {
+    color: lighten($primary, 30%);
+  }
+}
+
+.field-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}

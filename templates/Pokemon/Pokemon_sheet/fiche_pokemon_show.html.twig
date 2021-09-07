@@ -58,11 +58,31 @@
                                 <tr>
                                     <th>{{ 'pokemon_sheet.show.ability'|trans }}</th>
                                     <td>
-                                        <a href="{{ path('ability_show', {slug_ability: pokemonSheet.ability.slug}) }}"
-                                           title="{{ pokemonSheet.ability.description|capitalize }}"
-                                        >
-                                            {{ pokemonSheet.ability.name|capitalize }}
-                                        </a>
+                                        <div class="field-form">
+                                            <a href="{{ path('ability_show', {slug_ability: pokemonSheet.ability.slug}) }}"
+                                               title="{{ pokemonSheet.ability.description|capitalize }}"
+                                               id="pokemon-sheet-current-ability"
+                                            >
+                                                {{ pokemonSheet.ability.name|capitalize }}
+                                            </a>
+                                            <div id="form-pokemon-sheet-ability" class="d-none">
+                                                <select name="select-pokemon-sheet-ability">
+                                                    {% for pkmnAbility in abilities %}
+                                                        <option value="{{ pkmnAbility.ability.id }}">
+                                                            {{ pkmnAbility.ability.name }}
+                                                            {% if pkmnAbility.hidden %}
+                                                                - <span class="hidden-talent">{{ 'pokemon.hidden_talent'|trans }}</span>
+                                                            {% endif %}
+                                                        </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <span class="ml-5" title="Edit">
+                                                <button class="btn pokemon-sheet-edit-button">
+                                                    <i class="far fa-edit"></i>
+                                                </button>
+                                            </span>
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>

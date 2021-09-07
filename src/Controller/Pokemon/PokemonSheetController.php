@@ -21,6 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class PokemonSheetController extends AbstractController
 {
+
     /**
      * PokemonSheetController constructor.
      * @param PokemonAbilityRepository $pokemonAbilityRepository
@@ -65,8 +66,10 @@ class PokemonSheetController extends AbstractController
      * @return Response
      */
     public function show(Request $request, PokemonSheet $pokemonSheet): Response {
+
         return $this->render('Pokemon/Pokemon_sheet/fiche_pokemon_show.html.twig', [
             'pokemonSheet' => $pokemonSheet,
+            'abilities' => $this->pokemonAbilityRepository->findBy(['pokemon' => $pokemonSheet->getPokemon()]),
         ]);
     }
 }
