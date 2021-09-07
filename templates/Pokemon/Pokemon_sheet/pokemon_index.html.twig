@@ -9,7 +9,7 @@
                 <a class="btn" href="{{ path('pokemon_create') }}">
                     {{ 'pokemon_sheet.index.add'|trans }}
                 </a>
-                <table class="table table-striped text-center my-5">
+                <table class="table table-striped text-center my-4">
                     <thead>
                         <tr>
                             <th colspan="2">{{ 'pokemon_sheet.index.table.pokemon'|trans }}</th>
@@ -40,7 +40,9 @@
                                     {{ pokemonSheet.level }}
                                 </td>
                                 <td>
-                                    {{ pokemonSheet.nature.name }}
+                                    <a href="{{ path('nature_index') }}">
+                                        {{ pokemonSheet.nature.name }}
+                                    </a>
                                 </td>
                                 <td>
                                     <a href="{{ path('ability_show', {slug_ability: pokemonSheet.ability.slug}) }}"
