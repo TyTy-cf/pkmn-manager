@@ -59,12 +59,7 @@
                                     <th>{{ 'pokemon_sheet.show.ability'|trans }}</th>
                                     <td>
                                         <div class="field-form pokemon-sheet-btn">
-                                            <a href="{{ path('ability_show', {slug_ability: pokemonSheet.ability.slug}) }}"
-                                               title="{{ pokemonSheet.ability.description|capitalize }}"
-                                               id="pokemon-sheet-current-ability"
-                                            >
-                                                {{ pokemonSheet.ability.name|capitalize }}
-                                            </a>
+                                            {% include 'Pokemon/Pokemon_sheet/_pokemon_sheet_ability.html.twig' with {ability: pokemonSheet.ability} %}
                                             <div id="form-pokemon-sheet-ability" class="d-none">
                                                 <select name="select-pokemon-sheet-ability" class="mt-1">
                                                     {% for pkmnAbility in abilities %}

@@ -7,8 +7,7 @@ function setBtnCancelAbilities() {
             formAbilities.classList.add('d-none');
             const href = document.getElementById('pokemon-sheet-current-ability');
             href.classList.remove('d-none');
-            const btnEditAbilities = document.getElementById('pokemon-sheet-edit-button');
-            btnEditAbilities.classList.remove('d-none');
+            enableEditButton();
         });
     }
 }
@@ -21,7 +20,6 @@ function setBtnAddAbilities() {
             const pokemonSheetId = document.getElementById('currentPokemonSheetId').textContent;
             selectFormAbilities.forEach((select) => {
                 const selectedAbilityId = select.options[select.selectedIndex].value;
-                console.log(pokemonSheetId);
                 let datas = {
                     'pokemonSheetId': pokemonSheetId,
                     'selectedAbilityId': selectedAbilityId,
@@ -32,7 +30,13 @@ function setBtnAddAbilities() {
                 .then((response) => {
                     return response.text();
                 }).then(data => {
-                    console.log(data);
+                    const abilityBloc = document.getElementsByClassName('field-form pokemon-sheet-btn');
+                    abilityBloc.forEach((element) => {
+                        data = JSON.parse(data);
+                        element.innerHTML = data[0].html;
+                        document.getElementById('form-pokemon-sheet-ability').classList.add('d-none');
+                        enableEditButton();
+                    });
                 }).catch((e) => {
                 });
             });
@@ -52,6 +56,11 @@ function setBtnEditAbilities() {
             btnEditAbilities.classList.add('d-none');
         });
     }
+}
+
+function enableEditButton() {
+    const btnEditAbilities = document.getElementById('pokemon-sheet-edit-button');
+    btnEditAbilities.classList.remove('d-none');
 }
 
 setBtnEditAbilities();
