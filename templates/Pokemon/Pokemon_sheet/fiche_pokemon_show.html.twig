@@ -75,13 +75,20 @@
                             {{ form_start(form) }}
                             <div class="row">
                                 <h2 class="ml-1">{{ 'pokemon_sheet.show.moves'|trans }}</h2>
-                                <button type="button" id="pokemon-sheet-moves-edit-button" class="ml-3 btn pokemon-sheet-edit-button float-right mb-1" title="Modifier">
+                                <button type="button" id="pokemon-sheet-moves-edit-button"
+                                        class="ml-3 btn pokemon-sheet-edit-button float-right mb-1 {% if pokemonSheet.moves|length == 0 %}d-none{% endif %}"
+                                        title="Modifier"
+                                >
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button type="submit" id="id-pokemon-sheet-moves-add-button" class="d-none ml-3 btn pokemon-sheet-add-button float-right mb-1" title="Valider">
+                                <button type="submit" id="id-pokemon-sheet-moves-add-button"
+                                        class="ml-3 btn pokemon-sheet-add-button float-right mb-1 {% if pokemonSheet.moves|length > 0 %}d-none{% endif %}" title="Valider"
+                                >
                                     <i class="fas fa-check-circle"></i>
                                 </button>
-                                <button type="button" id="id-pokemon-sheet-moves-cancel-button" class="d-none ml-1 btn pokemon-sheet-cancel-button float-right mb-1" title="Annuler">
+                                <button type="button" id="id-pokemon-sheet-moves-cancel-button"
+                                        class="ml-1 btn pokemon-sheet-cancel-button float-right mb-1 {% if pokemonSheet.moves|length > 0 %}d-none{% endif %}" title="Annuler"
+                                >
                                     <i class="fas fa-times-circle"></i>
                                 </button>
                             </div>

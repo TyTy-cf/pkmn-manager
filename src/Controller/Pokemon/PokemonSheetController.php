@@ -5,6 +5,7 @@ namespace App\Controller\Pokemon;
 
 
 use App\Entity\Pokemon\PokemonSheet;
+use App\Entity\Stats\StatsEv;
 use App\Form\PokemonSheetFormType;
 use App\Form\PokemonSheetMoveFormType;
 use App\Repository\Infos\AbilityRepository;
@@ -48,7 +49,7 @@ class PokemonSheetController extends AbstractController
     }
 
     /**
-     * @Route(path="/creer/pokemon", name="pokemon_create")
+     * @Route(path="/mes-pokemons/ajouter", name="pokemon_create")
      *
      * @param Request $request
      * @return Response
@@ -63,6 +64,16 @@ class PokemonSheetController extends AbstractController
             $pokemonSheet->setAbility(
                 $this->pokemonAbilityRepository->findBy(['pokemon' => $pokemonSheet->getPokemon()])[0]->getAbility()
             );
+            $evs = (new StatsEv())
+                ->setHp(0)
+                ->setAtk(0)
+                ->setDef(0)
+                ->setSpa(0)
+                ->setSpd(0)
+                ->setSpe(0)
+            ;
+            $entityManager->persist($evs);
+            $pokemonSheet->setEvs($evs);
             $entityManager->persist($pokemonSheet);
             $entityManager->flush();
 
@@ -75,7 +86,7 @@ class PokemonSheetController extends AbstractController
     }
 
     /**
-     * @Route(path="/fiche_pokemon/{id}", name="pokemon_sheet_show")
+     * @Route(path="/mes-pokemons/detail/{id}", name="pokemon_sheet_show")
      *
      * @param Request $request
      * @return Response

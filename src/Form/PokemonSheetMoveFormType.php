@@ -34,7 +34,6 @@ class PokemonSheetMoveFormType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        dump($options['data']);
         $pokemonSheet = $options['data'];
         $moves = $this->moveRepository->getMovesByPokemon($pokemonSheet->getPokemon());
         $builder
@@ -75,7 +74,6 @@ class PokemonSheetMoveFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'pokemon' => null,
             'data_class' => PokemonSheet::class,
         ]);
     }

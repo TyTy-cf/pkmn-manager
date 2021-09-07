@@ -248,7 +248,7 @@ class PokemonSheet
     /**
      * @return mixed
      */
-    public function getIvs()
+    public function getIvs(): ?StatsIv
     {
         return $this->ivs;
     }
@@ -262,17 +262,17 @@ class PokemonSheet
     }
 
     /**
-     * @return mixed
+     * @return StatsEv
      */
-    public function getEvs()
+    public function getEvs(): ?StatsEv
     {
         return $this->evs;
     }
 
     /**
-     * @param mixed $evs
+     * @param StatsEv $evs
      */
-    public function setEvs($evs): void
+    public function setEvs(StatsEv $evs): void
     {
         $this->evs = $evs;
     }
