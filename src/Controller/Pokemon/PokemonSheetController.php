@@ -6,8 +6,10 @@ namespace App\Controller\Pokemon;
 
 use App\Entity\Pokemon\PokemonSheet;
 use App\Form\PokemonSheetFormType;
+use App\Form\PokemonSheetMoveFormType;
 use App\Repository\Infos\AbilityRepository;
 use App\Repository\Infos\PokemonAbilityRepository;
+use App\Repository\Moves\MoveRepository;
 use App\Repository\Pokemon\PokemonSheetRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -78,10 +80,13 @@ class PokemonSheetController extends AbstractController
      * @return Response
      */
     public function show(Request $request, PokemonSheet $pokemonSheet): Response {
+        $form = $this->createForm(PokemonSheetMoveFormType::class, $pokemonSheet);
+        $form->handleRequest($request);
 
         return $this->render('Pokemon/Pokemon_sheet/fiche_pokemon_show.html.twig', [
             'pokemonSheet' => $pokemonSheet,
             'abilities' => $this->pokemonAbilityRepository->findBy(['pokemon' => $pokemonSheet->getPokemon()]),
+            'form' => $form->createView(),
         ]);
     }
 

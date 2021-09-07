@@ -124,6 +124,7 @@
                                 </table>
                             {% else %}
                                 <p>{{ 'pokemon_sheet.show.empty'|trans }}</p>
+                                {% include 'Pokemon/Pokemon_sheet/_form_pokemon_sheet_moves.html.twig' %}
                             {% endif %}
                         </div>
                     </div>

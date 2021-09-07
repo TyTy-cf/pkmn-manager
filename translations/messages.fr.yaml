@@ -176,6 +176,8 @@ pokemon_sheet:
             moves: "Attaques"
             moveSetName: "Nom moveset"
             level: "Niveau"
+            add: "Ajouter une attaque"
+            remove: "Enlever attaque"
         move:
             title: "Attaque "
     show:
