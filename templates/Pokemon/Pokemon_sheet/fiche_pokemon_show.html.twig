@@ -58,17 +58,11 @@
                                 <tr>
                                     <th>{{ 'pokemon_sheet.show.ability'|trans }}</th>
                                     <td>
-                                        {% if pokemonSheet.ability is not null %}
-                                            <a href="{{ path('ability_show', {slug_ability: pokemonSheet.ability.slug}) }}"
-                                               title="{{ pokemonSheet.ability.description|capitalize }}"
-                                            >
-                                                {{ pokemonSheet.ability.name|capitalize }}
-                                            </a>
-                                        {% else %}
-                                            {{ form_start(form) }}
-                                                {{ form_widget(form.ability) }}
-                                            {{ form_end(form) }}
-                                        {% endif %}
+                                        <a href="{{ path('ability_show', {slug_ability: pokemonSheet.ability.slug}) }}"
+                                           title="{{ pokemonSheet.ability.description|capitalize }}"
+                                        >
+                                            {{ pokemonSheet.ability.name|capitalize }}
+                                        </a>
                                     </td>
                                 </tr>
                                 <tr>
