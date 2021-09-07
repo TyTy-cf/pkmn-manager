@@ -1,0 +1,47 @@
+<table class="table table-striped text-center table-fixed">
+    <thead>
+        <tr>
+            <th></th>
+            <th>{{ 'pokemon_sheet.show.stats.hp'|trans }}</th>
+            <th>{{ 'pokemon_sheet.show.stats.atk'|trans }}</th>
+            <th>{{ 'pokemon_sheet.show.stats.def'|trans }}</th>
+            <th>{{ 'pokemon_sheet.show.stats.spa'|trans }}</th>
+            <th>{{ 'pokemon_sheet.show.stats.spd'|trans }}</th>
+            <th>{{ 'pokemon_sheet.show.stats.spe'|trans }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if pokemonSheet.stats is not null %}
+            <tr>
+                <th>{{ 'pokemon_sheet.show.stats.stats'|trans }}</th>
+                <td>{{ pokemonSheet.stats.hp }}</td>
+                <td>{{ pokemonSheet.stats.atk }}</td>
+                <td>{{ pokemonSheet.stats.def }}</td>
+                <td>{{ pokemonSheet.stats.spa }}</td>
+                <td>{{ pokemonSheet.stats.spd }}</td>
+                <td>{{ pokemonSheet.stats.spe }}</td>
+            </tr>
+        {% endif %}
+        <tr>
+            <th>{{ 'pokemon_sheet.show.stats.ev'|trans }}</th>
+            <td>{{ pokemonSheet.evs.hp }}</td>
+            <td>{{ pokemonSheet.evs.atk }}</td>
+            <td>{{ pokemonSheet.evs.def }}</td>
+            <td>{{ pokemonSheet.evs.spa }}</td>
+            <td>{{ pokemonSheet.evs.spd }}</td>
+            <td>{{ pokemonSheet.evs.spe }}</td>
+        </tr>
+        {% if pokemonSheet.ivs is not null %}
+            <tr>
+                <th>{{ 'pokemon_sheet.show.stats.iv'|trans }}</th>
+                <td>{{ pokemonSheet.ivs.hp }}</td>
+                <td>{{ pokemonSheet.ivs.atk }}</td>
+                <td>{{ pokemonSheet.ivs.def }}</td>
+                <td>{{ pokemonSheet.ivs.spa }}</td>
+                <td>{{ pokemonSheet.ivs.spd }}</td>
+                <td>{{ pokemonSheet.ivs.spe }}</td>
+            </tr>
+        {% endif %}
+    </tbody>
+</table>
+
