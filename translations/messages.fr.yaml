@@ -170,6 +170,7 @@ pokemon_sheet:
         add_move: "Création de %pokemon%"
     form:
         submit: "Créer"
+        add: "Ajouter"
         field:
             nickname: "Nickname"
             ability: "Talent"
