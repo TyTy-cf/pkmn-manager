@@ -38,11 +38,7 @@
                                 <tr>
                                     <th>{{ 'pokemon_sheet.show.type'|trans }}</th>
                                     <td>
-                                        {% for type in pokemonSheet.pokemon.types %}
-                                            <a href="{{ path('type_detail', {slug_type: type.slug }) }}">
-                                                <img class="size-20" src="{{ type.img }}" alt="Type {{ type.name|lower }}"  title="{{ type.name|lower }}"/>
-                                            </a>
-                                        {% endfor %}
+                                        {% include 'Type/_card_pokemon_types.html.twig' with {'pokemon' : pokemonSheet.pokemon} %}
                                     </td>
                                 </tr>
                                 {% if pokemonSheet.nickname is not empty %}
