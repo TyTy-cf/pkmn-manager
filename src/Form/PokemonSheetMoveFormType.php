@@ -4,12 +4,14 @@
 namespace App\Form;
 
 
-use App\Repository\Infos\AbilityRepository;
+use App\Entity\Moves\Move;
+use App\Entity\Pokemon\PokemonSheet;
 use App\Repository\Moves\MoveRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class PokemonSheetPokemonFormType.php
@@ -17,7 +19,6 @@ use Symfony\Component\Form\FormBuilderInterface;
  * @author Kevin Tourret
  *
  * @property MoveRepository $moveRepository
- * @property AbilityRepository $abilityRepository
  */
 class PokemonSheetMoveFormType extends AbstractType
 {
@@ -25,21 +26,17 @@ class PokemonSheetMoveFormType extends AbstractType
     /**
      * PokemonSheetMoveFormType constructor.
      * @param MoveRepository $moveRepository
-     * @param AbilityRepository $abilityRepository
      */
-    public function __construct(
-        MoveRepository $moveRepository,
-        AbilityRepository $abilityRepository
-    )
+    public function __construct(MoveRepository $moveRepository)
     {
         $this->moveRepository = $moveRepository;
-        $this->abilityRepository = $abilityRepository;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $pokemon = $options['data'];
-        $moves = $this->moveRepository->getMovesByPokemon($pokemon->getPokemon());
+        dump($options['data']);
+        $pokemonSheet = $options['data'];
+        $moves = $this->moveRepository->getMovesByPokemon($pokemonSheet->getPokemon());
         $builder
             ->add('moves', CollectionType::class, [
                 'label' => false,
@@ -55,11 +52,14 @@ class PokemonSheetMoveFormType extends AbstractType
                 'delete_btn_icon' => 'fas fa-trash-alt',
                 'delete_btn_label_translation_domain' => false,
                 'attr' => [
-                    'class' => 'mt-2 mb-2',
+                    'class' => 'my-2 mx-auto',
                 ],
-                'entry_type' => MoveFormType::class,
+                'entry_type' => EntityType::class,
                 'entry_options' => [
-                    'data' => $moves,
+                    'choices' => $moves,
+                    'class' => Move::class,
+                    'choice_label' => 'name',
+                    'choice_value' => 'id',
                     'collapsable' => true,
                     'attr' => [
                         'data-form-collapsable' => false,
@@ -67,14 +67,17 @@ class PokemonSheetMoveFormType extends AbstractType
                     ],
                     'label' => false,
                 ],
-            ])
-            ->add('submit', SubmitType::class, [
-                'label' => 'pokemon_sheet.form.add',
-                'attr' => [
-                    'class' => 'btn btn-primary ml-1 btn-search-pokemon',
-                ],
+
             ])
         ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'pokemon' => null,
+            'data_class' => PokemonSheet::class,
+        ]);
     }
 
 }

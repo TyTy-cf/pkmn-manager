@@ -11,7 +11,9 @@ use App\Repository\Infos\AbilityRepository;
 use App\Repository\Infos\PokemonAbilityRepository;
 use App\Repository\Moves\MoveRepository;
 use App\Repository\Pokemon\PokemonSheetRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -76,12 +78,18 @@ class PokemonSheetController extends AbstractController
      * @Route(path="/fiche_pokemon/{id}", name="pokemon_sheet_show")
      *
      * @param Request $request
-     * @param PokemonSheet $pokemonSheet
      * @return Response
+     * @throws NonUniqueResultException
      */
-    public function show(Request $request, PokemonSheet $pokemonSheet): Response {
+    public function show(Request $request): Response {
+        $pokemonSheet = $this->pokemonSheetRepository->findByIdWithRelations($request->get('id'));
         $form = $this->createForm(PokemonSheetMoveFormType::class, $pokemonSheet);
         $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
+        }
 
         return $this->render('Pokemon/Pokemon_sheet/fiche_pokemon_show.html.twig', [
             'pokemonSheet' => $pokemonSheet,

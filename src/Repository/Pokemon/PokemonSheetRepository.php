@@ -6,6 +6,7 @@ namespace App\Repository\Pokemon;
 
 use App\Entity\Pokemon\PokemonSheet;
 use App\Repository\AbstractRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -18,5 +19,25 @@ class PokemonSheetRepository extends AbstractRepository
 {
     public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, PokemonSheet::class);
+    }
+
+    /**
+     * @param int $id
+     * @return PokemonSheet|null
+     * @throws NonUniqueResultException
+     */
+    public function findByIdWithRelations(int $id): ?PokemonSheet
+    {
+        return $this->createQueryBuilder('ps')
+            ->select('ps', 'ability', 'moves', 'nature', 'gender')
+            ->join('ps.ability', 'ability')
+            ->innerJoin('ps.moves', 'moves')
+            ->join('ps.nature', 'nature')
+            ->join('ps.gender', 'gender')
+            ->where('ps.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
     }
 }
