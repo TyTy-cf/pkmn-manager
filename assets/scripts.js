@@ -8,3 +8,4 @@ import './script/pokemon/pokemon_iv_calculator';
 import './script/pokemon/pokemon_stats_calculator';
 import './script/tabnav/tabnav';
 import './script/tabnav/sticky_nav';
+import './script/pokemon_sheet/_ability';
