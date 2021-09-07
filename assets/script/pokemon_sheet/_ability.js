@@ -8,6 +8,7 @@ if (btnEditAbilities) {
             formAbilities.classList.remove('d-none');
             const href = document.getElementById('pokemon-sheet-current-ability');
             href.classList.add('d-none');
+            btnEdit.classList.add('d-none');
         })
     });
 }

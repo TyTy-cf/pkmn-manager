@@ -1,8 +1,28 @@
+
 .pokemon-sheet-edit-button {
   color: $primary;
+  padding: 0;
 
   &:hover {
     color: lighten($primary, 30%);
+  }
+}
+
+.pokemon-sheet-add-button {
+  color: $green;
+  padding: 0;
+
+  &:hover {
+    color: lighten($green, 30%);
+  }
+}
+
+.pokemon-sheet-cancel-button {
+  color: $red;
+  padding: 0;
+
+  &:hover {
+    color: lighten($red, 30%);
   }
 }
 
