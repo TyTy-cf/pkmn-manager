@@ -5,16 +5,12 @@ namespace App\Form;
 
 
 use App\Entity\Infos\Ability;
-use App\Entity\Infos\PokemonAbility;
 use App\Entity\Moves\Move;
 use App\Repository\Infos\AbilityRepository;
-use App\Repository\Infos\PokemonAbilityRepository;
 use App\Repository\Moves\MoveRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**

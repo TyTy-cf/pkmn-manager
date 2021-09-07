@@ -64,6 +64,10 @@
                                             >
                                                 {{ pokemonSheet.ability.name|capitalize }}
                                             </a>
+                                        {% else %}
+                                            {{ form_start(form) }}
+                                                {{ form_widget(form.ability) }}
+                                            {{ form_end(form) }}
                                         {% endif %}
                                     </td>
                                 </tr>
