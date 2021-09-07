@@ -5,10 +5,12 @@ namespace App\Controller\Pokemon;
 
 
 use App\Entity\Pokemon\PokemonSheet;
-use App\Form\PokemonSheetAbilityType;
 use App\Form\PokemonSheetFormType;
+use App\Repository\Infos\AbilityRepository;
 use App\Repository\Infos\PokemonAbilityRepository;
+use App\Repository\Pokemon\PokemonSheetRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,7 +19,10 @@ use Symfony\Component\Routing\Annotation\Route;
  * Class PokemonSheetController.php
  *
  * @author Kevin Tourret
+ *
  * @property PokemonAbilityRepository $pokemonAbilityRepository
+ * @property PokemonSheetRepository $pokemonSheetRepository
+ * @property AbilityRepository $abilityRepository
  */
 class PokemonSheetController extends AbstractController
 {
@@ -25,10 +30,17 @@ class PokemonSheetController extends AbstractController
     /**
      * PokemonSheetController constructor.
      * @param PokemonAbilityRepository $pokemonAbilityRepository
+     * @param PokemonSheetRepository $pokemonSheetRepository
+     * @param AbilityRepository $abilityRepository
      */
-    public function __construct(PokemonAbilityRepository $pokemonAbilityRepository)
-    {
+    public function __construct(
+        PokemonAbilityRepository $pokemonAbilityRepository,
+        PokemonSheetRepository $pokemonSheetRepository,
+        AbilityRepository $abilityRepository
+    ) {
         $this->pokemonAbilityRepository = $pokemonAbilityRepository;
+        $this->pokemonSheetRepository = $pokemonSheetRepository;
+        $this->abilityRepository = $abilityRepository;
     }
 
     /**
@@ -71,5 +83,22 @@ class PokemonSheetController extends AbstractController
             'pokemonSheet' => $pokemonSheet,
             'abilities' => $this->pokemonAbilityRepository->findBy(['pokemon' => $pokemonSheet->getPokemon()]),
         ]);
+    }
+
+    /**
+     * @Route(path="/pokemonSheet/changeAbility/{datas}", name="change_ability")
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function changeAbility(Request $request): JsonResponse {
+        $json = json_decode($request->get('datas'), true);
+        $pokemonSheet = $this->pokemonSheetRepository->findOneBy(['id' => $json['pokemonSheetId']]);
+        if ($pokemonSheet !== null && $pokemonSheet->getAbility()->getId() !== $json['selectedAbilityId']) {
+            $pokemonSheet->setAbility($this->abilityRepository->findOneBy(['id' => $json['selectedAbilityId']]));
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($pokemonSheet);
+            $entityManager->flush();
+        }
     }
 }

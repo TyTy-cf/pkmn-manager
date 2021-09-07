@@ -76,14 +76,15 @@
                                                         </option>
                                                     {% endfor %}
                                                 </select>
-                                                <button title="Valider" class="ml-1 btn pokemon-sheet-add-button">
+                                                <p id="currentPokemonSheetId" hidden>{{ pokemonSheet.id }}</p>
+                                                <button id="pokemon-sheet-add-button" title="Valider" class="ml-1 btn pokemon-sheet-add-button">
                                                     <i class="fas fa-check-circle"></i>
                                                 </button>
-                                                <button title="Annuler" class="btn pokemon-sheet-cancel-button">
+                                                <button id="pokemon-sheet-cancel-button" title="Annuler" class="btn pokemon-sheet-cancel-button">
                                                     <i class="fas fa-times-circle"></i>
                                                 </button>
                                             </div>
-                                            <button class="ml-5 btn pokemon-sheet-edit-button" title="Modifier">
+                                            <button id="pokemon-sheet-edit-button" class="ml-5 btn pokemon-sheet-edit-button" title="Modifier">
                                                 <i class="far fa-edit"></i>
                                             </button>
                                         </div>
