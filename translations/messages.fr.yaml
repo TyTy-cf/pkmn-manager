@@ -191,3 +191,12 @@ pokemon_sheet:
         moveSetName: "Moveset"
         moves: "Attaques"
         empty: "Aucune attaque pour le moment, ajoutez en"
+    index:
+        title: "Mes pokemons"
+        empty: "Ajouter des pokemons à votre liste"
+        table:
+            pokemon: "Pokemon"
+            level: "Niveau"
+            nature: "Nature"
+            gender: "Genre"
+            ability: "Ability"

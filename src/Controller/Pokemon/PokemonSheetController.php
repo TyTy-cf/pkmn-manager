@@ -10,11 +10,9 @@ use App\Form\PokemonSheetFormType;
 use App\Form\PokemonSheetMoveFormType;
 use App\Repository\Infos\AbilityRepository;
 use App\Repository\Infos\PokemonAbilityRepository;
-use App\Repository\Moves\MoveRepository;
 use App\Repository\Pokemon\PokemonSheetRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -49,6 +47,18 @@ class PokemonSheetController extends AbstractController
     }
 
     /**
+     * @Route(path="/mes-pokemons", name="my_pokemons")
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function myPokemons(Request $request): Response {
+        return $this->render('Pokemon/Pokemon_sheet/pokemon_index.html.twig', [
+            'pokemons' => $this->pokemonSheetRepository->findAll(),
+        ]);
+    }
+
+    /**
      * @Route(path="/mes-pokemons/ajouter", name="pokemon_create")
      *
      * @param Request $request
@@ -64,14 +74,7 @@ class PokemonSheetController extends AbstractController
             $pokemonSheet->setAbility(
                 $this->pokemonAbilityRepository->findBy(['pokemon' => $pokemonSheet->getPokemon()])[0]->getAbility()
             );
-            $evs = (new StatsEv())
-                ->setHp(0)
-                ->setAtk(0)
-                ->setDef(0)
-                ->setSpa(0)
-                ->setSpd(0)
-                ->setSpe(0)
-            ;
+            $evs = (new StatsEv())->setHp(0)->setAtk(0)->setDef(0)->setSpa(0)->setSpd(0)->setSpe(0);
             $entityManager->persist($evs);
             $pokemonSheet->setEvs($evs);
             $entityManager->persist($pokemonSheet);
