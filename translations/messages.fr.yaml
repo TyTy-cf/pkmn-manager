@@ -204,6 +204,7 @@ pokemon_sheet:
             stats: "Stats"
             ev: "EV"
             iv: "IV"
+            update: "Mettre à jour les stats"
     index:
         title: "Mes pokemons"
         empty: "Ajouter des pokemons à votre liste"

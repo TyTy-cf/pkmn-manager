@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Form;
+namespace App\Form\PokemonSheet;
 
 
 use App\Entity\Infos\Ability;

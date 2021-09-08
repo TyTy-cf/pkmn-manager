@@ -2,7 +2,6 @@
 
 {% block body %}
 
-    {% if pokemons|length > 0 %}
         <div class="container">
             <h1>{{ 'pokemon_sheet.index.title'|trans }}</h1>
             <div class="col-8 mx-auto">
@@ -21,49 +20,54 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for pokemonSheet in pokemons %}
+                        {% if pokemons|length > 0 %}
+                            {% for pokemonSheet in pokemons %}
+                                <tr>
+                                    <td class="float-right">
+                                        {% if pokemonSheet.pokemon.pokemonSprites.spriteFrontDefault is not null %}
+                                            <img class="pkmnCard-pict" src="{{ pokemonSheet.pokemon.pokemonSprites.spriteFrontDefault }}" alt="Pokemon {{ pokemonSheet.pokemon.name }}">
+                                        {% else %}
+                                            <img class="pkmnCard-pict" src="{{ asset('missingno_sm.png') }}" alt="Pokemon {{ pokemonSheet.pokemon.name }}, mais sans sa photo">
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {{ pokemonSheet.pokemon.name }}
+                                    </td>
+                                    <td>
+                                        {{ pokemonSheet.gender.name }}
+                                    </td>
+                                    <td>
+                                        {{ pokemonSheet.level }}
+                                    </td>
+                                    <td>
+                                        <a href="{{ path('nature_index') }}">
+                                            {{ pokemonSheet.nature.name }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ path('ability_show', {slug_ability: pokemonSheet.ability.slug}) }}"
+                                           title="{{ pokemonSheet.ability.description|capitalize }}"
+                                        >
+                                            {{ pokemonSheet.ability.name|capitalize }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a class="btn" href="{{ path('pokemon_sheet_show', {'id': pokemonSheet.id}) }}">
+                                            <i class="fas fa-arrow-circle-right"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
                             <tr>
-                                <td class="float-right">
-                                    {% if pokemonSheet.pokemon.pokemonSprites.spriteFrontDefault is not null %}
-                                        <img class="pkmnCard-pict" src="{{ pokemonSheet.pokemon.pokemonSprites.spriteFrontDefault }}" alt="Pokemon {{ pokemonSheet.pokemon.name }}">
-                                    {% else %}
-                                        <img class="pkmnCard-pict" src="{{ asset('missingno_sm.png') }}" alt="Pokemon {{ pokemonSheet.pokemon.name }}, mais sans sa photo">
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {{ pokemonSheet.pokemon.name }}
-                                </td>
-                                <td>
-                                    {{ pokemonSheet.gender.name }}
-                                </td>
-                                <td>
-                                    {{ pokemonSheet.level }}
-                                </td>
-                                <td>
-                                    <a href="{{ path('nature_index') }}">
-                                        {{ pokemonSheet.nature.name }}
-                                    </a>
-                                </td>
-                                <td>
-                                    <a href="{{ path('ability_show', {slug_ability: pokemonSheet.ability.slug}) }}"
-                                       title="{{ pokemonSheet.ability.description|capitalize }}"
-                                    >
-                                        {{ pokemonSheet.ability.name|capitalize }}
-                                    </a>
-                                </td>
-                                <td>
-                                    <a class="btn" href="{{ path('pokemon_sheet_show', {'id': pokemonSheet.id}) }}">
-                                        <i class="fas fa-arrow-circle-right"></i>
-                                    </a>
+                                <td colspan="6">
+                                    {{ 'pokemon_sheet.index.empty'|trans }}
                                 </td>
                             </tr>
-                        {% endfor %}
+                        {% endif %}
                     </tbody>
                 </table>
             </div>
         </div>
-    {% else %}
-        <p>{{ 'pokemon_sheet.index.empty'|trans }}</p>
-    {% endif %}
 
 {% endblock %}

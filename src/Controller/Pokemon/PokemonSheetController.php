@@ -5,12 +5,15 @@ namespace App\Controller\Pokemon;
 
 
 use App\Entity\Pokemon\PokemonSheet;
+use App\Entity\Stats\Stats;
 use App\Entity\Stats\StatsEv;
-use App\Form\PokemonSheetFormType;
-use App\Form\PokemonSheetMoveFormType;
+use App\Form\PokemonSheet\PokemonSheetFormType;
+use App\Form\PokemonSheet\PokemonSheetMoveFormType;
+use App\Form\PokemonSheet\PokemonSheetStatsFormType;
 use App\Repository\Infos\AbilityRepository;
 use App\Repository\Infos\PokemonAbilityRepository;
 use App\Repository\Pokemon\PokemonSheetRepository;
+use App\Service\Pokemon\StatsCalculatorService;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,6 +29,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @property PokemonAbilityRepository $pokemonAbilityRepository
  * @property PokemonSheetRepository $pokemonSheetRepository
  * @property AbilityRepository $abilityRepository
+ * @property StatsCalculatorService $statsCalculatorService
  */
 class PokemonSheetController extends AbstractController
 {
@@ -35,15 +39,18 @@ class PokemonSheetController extends AbstractController
      * @param PokemonAbilityRepository $pokemonAbilityRepository
      * @param PokemonSheetRepository $pokemonSheetRepository
      * @param AbilityRepository $abilityRepository
+     * @param StatsCalculatorService $statsCalculatorService
      */
     public function __construct(
         PokemonAbilityRepository $pokemonAbilityRepository,
         PokemonSheetRepository $pokemonSheetRepository,
-        AbilityRepository $abilityRepository
+        AbilityRepository $abilityRepository,
+        StatsCalculatorService $statsCalculatorService
     ) {
         $this->pokemonAbilityRepository = $pokemonAbilityRepository;
         $this->pokemonSheetRepository = $pokemonSheetRepository;
         $this->abilityRepository = $abilityRepository;
+        $this->statsCalculatorService = $statsCalculatorService;
     }
 
     /**
@@ -75,8 +82,11 @@ class PokemonSheetController extends AbstractController
                 $this->pokemonAbilityRepository->findBy(['pokemon' => $pokemonSheet->getPokemon()])[0]->getAbility()
             );
             $evs = (new StatsEv())->setHp(0)->setAtk(0)->setDef(0)->setSpa(0)->setSpd(0)->setSpe(0);
+            $stats = (new Stats())->setHp(0)->setAtk(0)->setDef(0)->setSpa(0)->setSpd(0)->setSpe(0);
             $entityManager->persist($evs);
+            $entityManager->persist($stats);
             $pokemonSheet->setEvs($evs);
+            $pokemonSheet->setStats($stats);
             $entityManager->persist($pokemonSheet);
             $entityManager->flush();
 
@@ -104,11 +114,25 @@ class PokemonSheetController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush();
         }
+        $formStats =  $this->createForm(PokemonSheetStatsFormType::class, $pokemonSheet);
+        $formStats->handleRequest($request);
+
+        if ($formStats->isSubmitted() && $formStats->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            // Calculate the IVs
+            $statsIvs = $this->statsCalculatorService->getIvs($pokemonSheet);
+            if ($pokemonSheet->getIvs() === null) {
+                $entityManager->persist($statsIvs);
+            }
+            $pokemonSheet->setIvs($statsIvs);
+            $entityManager->flush();
+        }
 
         return $this->render('Pokemon/Pokemon_sheet/fiche_pokemon_show.html.twig', [
             'pokemonSheet' => $pokemonSheet,
             'abilities' => $this->pokemonAbilityRepository->findBy(['pokemon' => $pokemonSheet->getPokemon()]),
             'form' => $form->createView(),
+            'formStats' => $formStats->createView(),
         ]);
     }
 

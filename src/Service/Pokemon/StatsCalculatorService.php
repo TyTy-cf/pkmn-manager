@@ -6,6 +6,9 @@ namespace App\Service\Pokemon;
 
 use App\Entity\Infos\Nature;
 use App\Entity\Pokemon\Pokemon;
+use App\Entity\Pokemon\PokemonSheet;
+use App\Entity\Stats\Stats;
+use App\Entity\Stats\StatsIv;
 
 /**
  * Class StatsCalculatorService.php
@@ -158,6 +161,75 @@ class StatsCalculatorService
             $arrayIv['hp'], $arrayIv['atk'], $arrayIv['def'], $arrayIv['spa'], $arrayIv['spd'], $arrayIv['spe'],
             $arrayEv['hp'], $arrayEv['atk'], $arrayEv['def'], $arrayEv['spa'], $arrayEv['spd'], $arrayEv['spe']
         );
+    }
+
+    /**
+     * @param PokemonSheet $pokemonSheet
+     * @return StatsIv
+     */
+    public function getIvs(PokemonSheet $pokemonSheet): StatsIv
+    {
+        $rangeIvs = $this->getIvRange(
+            $pokemonSheet->getPokemon(), $pokemonSheet->getNature(), $pokemonSheet->getLevel(),
+            [
+                'hp' => $pokemonSheet->getStats()->getHp(),
+                'atk' => $pokemonSheet->getStats()->getAtk(),
+                'def' => $pokemonSheet->getStats()->getDef(),
+                'spa' => $pokemonSheet->getStats()->getSpa(),
+                'spd' => $pokemonSheet->getStats()->getSpd(),
+                'spe' => $pokemonSheet->getStats()->getSpe(),
+            ],
+            [
+                'hp' => $pokemonSheet->getEvs()->getHp(),
+                'atk' => $pokemonSheet->getEvs()->getAtk(),
+                'def' => $pokemonSheet->getEvs()->getDef(),
+                'spa' => $pokemonSheet->getEvs()->getSpa(),
+                'spd' => $pokemonSheet->getEvs()->getSpd(),
+                'spe' => $pokemonSheet->getEvs()->getSpe(),
+            ]
+        );
+        $statIv = new StatsIv();
+        if ($pokemonSheet->getIvs() !== null) {
+            $statIv = $pokemonSheet->getIvs();
+        }
+        // HP
+        $content = $rangeIvs['hp'];
+        if (isset($rangeIvs['hp'][0])) {
+            $content = $rangeIvs['hp'][0] . ' - ' . $rangeIvs['hp'][1];
+        }
+        $statIv->setHp($content);
+        // ATK
+        $content = $rangeIvs['atk'];
+        if (isset($rangeIvs['atk'][0])) {
+            $content = $rangeIvs['atk'][0] . ' - ' . $rangeIvs['atk'][1];
+        }
+        $statIv->setAtk($content);
+        // DEF
+        $content = $rangeIvs['def'];
+        if (isset($rangeIvs['atk'][0])) {
+            $content = $rangeIvs['atk'][0] . ' - ' . $rangeIvs['atk'][1];
+        }
+        $statIv->setDef($content);
+        // SPA
+        $content = $rangeIvs['spa'];
+        if (isset($rangeIvs['spa'][0])) {
+            $content = $rangeIvs['spa'][0] . ' - ' . $rangeIvs['spa'][1];
+        }
+        $statIv->setSpa($content);
+        // SPD
+        $content = $rangeIvs['spd'];
+        if (isset($rangeIvs['spd'][0])) {
+            $content = $rangeIvs['spd'][0] . ' - ' . $rangeIvs['spd'][1];
+        }
+        $statIv->setSpd($content);
+        // SPE
+        $content = $rangeIvs['spe'];
+        if (isset($rangeIvs['spe'][0])) {
+            $content = $rangeIvs['spe'][0] . ' - ' . $rangeIvs['spe'][1];
+        }
+        $statIv->setSpe($content);
+
+        return $statIv;
     }
 
 }

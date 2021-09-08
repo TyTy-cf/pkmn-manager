@@ -29,11 +29,14 @@ class PokemonSheetRepository extends AbstractRepository
     public function findByIdWithRelations(int $id): ?PokemonSheet
     {
         return $this->createQueryBuilder('ps')
-            ->select('ps', 'ability', 'moves', 'nature', 'gender', 'pokemon')
+            ->select('ps', 'ability', 'moves', 'nature', 'gender', 'pokemon', 'stats', 'evs', 'ivs')
             ->join('ps.ability', 'ability')
             ->join('ps.nature', 'nature')
             ->join('ps.gender', 'gender')
             ->join('ps.pokemon', 'pokemon')
+            ->join('ps.stats', 'stats')
+            ->join('ps.evs', 'evs')
+            ->leftJoin('ps.ivs', 'ivs')
             ->leftJoin('ps.moves', 'moves')
             ->where('ps.id = :id')
             ->setParameter('id', $id)
