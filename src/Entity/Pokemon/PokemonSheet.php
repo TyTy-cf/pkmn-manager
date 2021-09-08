@@ -64,7 +64,7 @@ class PokemonSheet
     /**
      * @var Gender|null $gender le genre du pokemon
      *
-     * @OneToOne(targetEntity="App\Entity\Infos\Gender")
+     * @ManyToOne(targetEntity="App\Entity\Infos\Gender")
      * @JoinColumn(name="gender_id", referencedColumnName="id", nullable=true)
      */
     private ?Gender $gender;
