@@ -12,6 +12,15 @@
             </tr>
         </thead>
         <tbody>
+            <tr>
+                <th>{{ 'pokemon_sheet.show.stats.base_stats'|trans }}</th>
+                <td>{{ pokemonSheet.pokemon.hp }}</td>
+                <td>{{ pokemonSheet.pokemon.atk }}</td>
+                <td>{{ pokemonSheet.pokemon.def }}</td>
+                <td>{{ pokemonSheet.pokemon.spa }}</td>
+                <td>{{ pokemonSheet.pokemon.spd }}</td>
+                <td>{{ pokemonSheet.pokemon.spe }}</td>
+            </tr>
             {% if pokemonSheet.stats is not null %}
                 <tr>
                     <th>{{ 'pokemon_sheet.show.stats.stats'|trans }}</th>

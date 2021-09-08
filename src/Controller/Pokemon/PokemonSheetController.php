@@ -61,7 +61,7 @@ class PokemonSheetController extends AbstractController
      */
     public function myPokemons(Request $request): Response {
         return $this->render('Pokemon/Pokemon_sheet/pokemon_index.html.twig', [
-            'pokemons' => $this->pokemonSheetRepository->findAll(),
+            'pokemons' => $this->pokemonSheetRepository->findAllWithRelations(),
         ]);
     }
 
@@ -107,15 +107,16 @@ class PokemonSheetController extends AbstractController
      */
     public function show(Request $request): Response {
         $pokemonSheet = $this->pokemonSheetRepository->findByIdWithRelations($request->get('id'));
+
         $form = $this->createForm(PokemonSheetMoveFormType::class, $pokemonSheet);
         $form->handleRequest($request);
+        $formStats =  $this->createForm(PokemonSheetStatsFormType::class, $pokemonSheet);
+        $formStats->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush();
         }
-        $formStats =  $this->createForm(PokemonSheetStatsFormType::class, $pokemonSheet);
-        $formStats->handleRequest($request);
 
         if ($formStats->isSubmitted() && $formStats->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
@@ -153,7 +154,7 @@ class PokemonSheetController extends AbstractController
 
         return (new JsonResponse())->setData([
             $data = [
-                'html' => $this->renderView('Pokemon/Pokemon_sheet/_pokemon_sheet_ability.html.twig', [
+                'html' => $this->renderView('Pokemon/Pokemon_sheet/partials/_pokemon_sheet_ability.html.twig', [
                     'ability' => $ability,
                 ])
             ]

@@ -24,7 +24,7 @@
                     <div class="pkmnProfile-datasHeader">
                         <h1 class="pkmnProfile-datasMainTitle">
                             {% if pokemonSheet.gender.image is not empty %}
-                                <img src="{{ pokemonSheet.gender.image }}" alt="{{ pokemonSheet.gender.name }}">
+                                <img class="img-gender" src="{{ pokemonSheet.gender.image }}" alt="{{ pokemonSheet.gender.name }}">
                             {% endif %}
                             <span>
                                 {{ pokemonSheet.pokemon.name }}

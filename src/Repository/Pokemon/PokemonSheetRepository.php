@@ -44,4 +44,22 @@ class PokemonSheetRepository extends AbstractRepository
             ->getOneOrNullResult()
         ;
     }
+
+    /**
+     * @return array
+     */
+    public function findAllWithRelations(): array
+    {
+        return $this->createQueryBuilder('ps')
+            ->select('ps', 'ability', 'nature', 'gender', 'pokemon', 'pokemonSprites')
+            ->join('ps.ability', 'ability')
+            ->join('ps.nature', 'nature')
+            ->join('ps.gender', 'gender')
+            ->join('ps.pokemon', 'pokemon')
+            ->join('pokemon.pokemonSprites', 'pokemonSprites')
+            ->orderBy('ps.level', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

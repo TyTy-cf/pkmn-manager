@@ -196,36 +196,54 @@ class StatsCalculatorService
         $content = $rangeIvs['hp'];
         if (isset($rangeIvs['hp'][0])) {
             $content = $rangeIvs['hp'][0] . ' - ' . $rangeIvs['hp'][1];
+            if (intval($rangeIvs['hp'][0]) === intval($rangeIvs['hp'][1])) {
+                $content = $rangeIvs['hp'][0];
+            }
         }
         $statIv->setHp($content);
         // ATK
         $content = $rangeIvs['atk'];
         if (isset($rangeIvs['atk'][0])) {
             $content = $rangeIvs['atk'][0] . ' - ' . $rangeIvs['atk'][1];
+            if (intval($rangeIvs['atk'][0]) === intval($rangeIvs['atk'][1])) {
+                $content = $rangeIvs['atk'][0];
+            }
         }
         $statIv->setAtk($content);
         // DEF
         $content = $rangeIvs['def'];
-        if (isset($rangeIvs['atk'][0])) {
-            $content = $rangeIvs['atk'][0] . ' - ' . $rangeIvs['atk'][1];
+        if (isset($rangeIvs['def'][0])) {
+            $content = $rangeIvs['def'][0] . ' - ' . $rangeIvs['def'][1];
+            if (intval($rangeIvs['def'][0]) === intval($rangeIvs['def'][1])) {
+                $content = $rangeIvs['def'][0];
+            }
         }
         $statIv->setDef($content);
         // SPA
         $content = $rangeIvs['spa'];
         if (isset($rangeIvs['spa'][0])) {
             $content = $rangeIvs['spa'][0] . ' - ' . $rangeIvs['spa'][1];
+            if (intval($rangeIvs['spa'][0]) === intval($rangeIvs['spa'][1])) {
+                $content = $rangeIvs['spa'][0];
+            }
         }
         $statIv->setSpa($content);
         // SPD
         $content = $rangeIvs['spd'];
         if (isset($rangeIvs['spd'][0])) {
             $content = $rangeIvs['spd'][0] . ' - ' . $rangeIvs['spd'][1];
+            if (intval($rangeIvs['spd'][0]) === intval($rangeIvs['spd'][1])) {
+                $content = $rangeIvs['spd'][0];
+            }
         }
         $statIv->setSpd($content);
         // SPE
         $content = $rangeIvs['spe'];
         if (isset($rangeIvs['spe'][0])) {
             $content = $rangeIvs['spe'][0] . ' - ' . $rangeIvs['spe'][1];
+            if (intval($rangeIvs['spe'][0]) === intval($rangeIvs['spe'][1])) {
+                $content = $rangeIvs['spe'][0];
+            }
         }
         $statIv->setSpe($content);
 

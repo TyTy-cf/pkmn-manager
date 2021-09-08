@@ -201,6 +201,7 @@ pokemon_sheet:
             spa: "SPA"
             spd: "SPD"
             spe: "SPE"
+            base_stats: "Base stats"
             stats: "Stats"
             ev: "EV"
             iv: "IV"
