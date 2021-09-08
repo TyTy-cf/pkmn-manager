@@ -7,6 +7,7 @@ namespace App\Repository\Pokemon;
 use App\Entity\Pokemon\PokemonSheet;
 use App\Repository\AbstractRepository;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -46,9 +47,9 @@ class PokemonSheetRepository extends AbstractRepository
     }
 
     /**
-     * @return array
+     * @return QueryBuilder
      */
-    public function findAllWithRelations(): array
+    public function findAllWithRelations(): QueryBuilder
     {
         return $this->createQueryBuilder('ps')
             ->select('ps', 'ability', 'nature', 'gender', 'pokemon', 'pokemonSprites', 'evs')
@@ -59,8 +60,6 @@ class PokemonSheetRepository extends AbstractRepository
             ->join('ps.evs', 'evs')
             ->join('pokemon.pokemonSprites', 'pokemonSprites')
             ->orderBy('ps.level', 'DESC')
-            ->getQuery()
-            ->getResult()
         ;
     }
 }

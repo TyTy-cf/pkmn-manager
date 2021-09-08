@@ -11,17 +11,46 @@
                 <table class="table table-striped text-center my-4">
                     <thead>
                         <tr>
-                            <th>{{ 'pokemon_sheet.index.table.pokemon'|trans }}</th>
-                            <th>{{ 'pokemon_sheet.index.table.level'|trans }}</th>
-                            <th>{{ 'pokemon_sheet.index.table.nature'|trans }}</th>
-                            <th>{{ 'pokemon_sheet.index.table.ability'|trans }}</th>
-                            <th>{{ 'pokemon_sheet.index.table.evs_ok'|trans }}</th>
+                            <th>
+                                {{
+                                    knp_pagination_sortable(
+                                    pokemonsSheet,
+                                    'pokemon_sheet.index.table.pokemon'|trans,
+                                    'pokemon.name')|raw
+                                }}
+                            </th>
+                            <th>
+                                {{
+                                    knp_pagination_sortable(
+                                    pokemonsSheet,
+                                    'pokemon_sheet.index.table.level'|trans,
+                                    'ps.level')|raw
+                                }}
+                            </th>
+                            <th>
+                                {{
+                                    knp_pagination_sortable(
+                                    pokemonsSheet,
+                                    'pokemon_sheet.index.table.nature'|trans,
+                                    'nature.name')|raw
+                                }}
+                            </th>
+                            <th>
+                                {{
+                                knp_pagination_sortable(
+                                    pokemonsSheet,
+                                    'pokemon_sheet.index.table.ability'|trans,
+                                    'ability.name')|raw
+                                }}
+                            </th>
+                            <th>
+                                {{ 'pokemon_sheet.index.table.evs_ok'|trans }}</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% if pokemons|length > 0 %}
-                            {% for pokemonSheet in pokemons %}
+                        {% if pokemonsSheet|length > 0 %}
+                            {% for pokemonSheet in pokemonsSheet %}
                                 <tr>
                                     <td class="text-center">
                                         {% if pokemonSheet.pokemon.pokemonSprites.spriteFrontDefault is not null %}
@@ -79,6 +108,9 @@
                         {% endif %}
                     </tbody>
                 </table>
+                <div class="pagination pt-0">
+                    {{ knp_pagination_render(pokemonsSheet) }}
+                </div>
             </div>
         </div>
 

@@ -15,6 +15,7 @@ use App\Repository\Infos\PokemonAbilityRepository;
 use App\Repository\Pokemon\PokemonSheetRepository;
 use App\Service\Pokemon\StatsCalculatorService;
 use Doctrine\ORM\NonUniqueResultException;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -57,11 +58,26 @@ class PokemonSheetController extends AbstractController
      * @Route(path="/mes-pokemons", name="my_pokemons")
      *
      * @param Request $request
+     * @param PaginatorInterface $paginator
      * @return Response
      */
-    public function myPokemons(Request $request): Response {
+    public function myPokemons(
+        Request $request,
+       PaginatorInterface $paginator
+    ): Response {
+        $pokemonsQuery = $this->pokemonSheetRepository->findAllWithRelations();
+
+        $pokemons = $paginator->paginate(
+            $pokemonsQuery,
+            $request->query->getInt('page', 1),
+            6,
+            [
+                'wrap-queries' => true,
+            ]
+        );
+
         return $this->render('Pokemon/Pokemon_sheet/pokemon_index.html.twig', [
-            'pokemons' => $this->pokemonSheetRepository->findAllWithRelations(),
+            'pokemonsSheet' => $pokemons,
         ]);
     }
 
