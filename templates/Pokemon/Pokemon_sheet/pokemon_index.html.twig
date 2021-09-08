@@ -44,7 +44,11 @@
                                 }}
                             </th>
                             <th>
-                                {{ 'pokemon_sheet.index.table.evs_ok'|trans }}</th>
+                                {{ 'pokemon_sheet.index.table.moveset'|trans }}
+                            </th>
+                            <th>
+                                {{ 'pokemon_sheet.index.table.evs_ok'|trans }}
+                            </th>
                             <th></th>
                         </tr>
                     </thead>
@@ -85,6 +89,9 @@
                                         >
                                             {{ pokemonSheet.ability.name|capitalize }}
                                         </a>
+                                    </td>
+                                    <td>
+                                        {{ pokemonSheet.moveSetName }}
                                     </td>
                                     <td>
                                         {% set sumStats = pokemonSheet.evs|sumStats %}

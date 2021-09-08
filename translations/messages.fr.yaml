@@ -216,4 +216,5 @@ pokemon_sheet:
             gender: "Genre"
             ability: "Ability"
             evs_ok: "EVS"
+            moveset: "Moveset"
         add: "Ajouter un pokemon"
