@@ -4,6 +4,7 @@
 namespace App\Twig;
 
 
+use App\Entity\Stats\StatsEv;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
@@ -17,6 +18,7 @@ class StatsExtension extends AbstractExtension
         return [
             new TwigFilter('percent', [$this, 'getPercentByStats']),
             new TwigFilter('statsCss', [$this, 'getCssForStats']),
+            new TwigFilter('sumStats', [$this, 'getSumStats']),
         ];
     }
 
@@ -49,6 +51,14 @@ class StatsExtension extends AbstractExtension
         } else {
             return 'stats-very-high';
         }
+    }
+
+    /**
+     * @param StatsEv $statsEv
+     * @return int
+     */
+    public function getSumStats(StatsEv $statsEv): int {
+        return ($statsEv->getHp() + $statsEv->getAtk() + $statsEv->getDef() + $statsEv->getSpa() + $statsEv->getSpd() + $statsEv->getSpe());
     }
 
 }

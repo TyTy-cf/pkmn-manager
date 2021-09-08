@@ -37,4 +37,19 @@
   margin-right: 0.5em;
   width: 5% !important;
   height: 5% !important;
+
+  &-smaller {
+    width: 3% !important;
+    height: 3% !important;
+  }
+}
+
+.evs-empty {
+  color: $red;
+  font-weight: bold;
+}
+
+.evs-ok {
+  color: $green;
+  font-weight: bold;
 }

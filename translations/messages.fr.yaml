@@ -215,4 +215,5 @@ pokemon_sheet:
             nature: "Nature"
             gender: "Genre"
             ability: "Ability"
+            evs_ok: "EVS"
         add: "Ajouter un pokemon"

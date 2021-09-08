@@ -51,11 +51,12 @@ class PokemonSheetRepository extends AbstractRepository
     public function findAllWithRelations(): array
     {
         return $this->createQueryBuilder('ps')
-            ->select('ps', 'ability', 'nature', 'gender', 'pokemon', 'pokemonSprites')
+            ->select('ps', 'ability', 'nature', 'gender', 'pokemon', 'pokemonSprites', 'evs')
             ->join('ps.ability', 'ability')
             ->join('ps.nature', 'nature')
             ->join('ps.gender', 'gender')
             ->join('ps.pokemon', 'pokemon')
+            ->join('ps.evs', 'evs')
             ->join('pokemon.pokemonSprites', 'pokemonSprites')
             ->orderBy('ps.level', 'DESC')
             ->getQuery()
