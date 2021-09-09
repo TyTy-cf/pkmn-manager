@@ -41,7 +41,7 @@ class AbilityController extends AbstractController
     /**
      * Display the detailed ability and related pokemons with this ability
      *
-     * @Route (path="/ability/{slug_ability}", name="ability_show", requirements={"slug_ability": ".+"})
+     * @Route (path="/talents/{slug_ability}", name="ability_show", requirements={"slug_ability": ".+"})
      *
      * @param Request $request
      * @param AbilityVersionGroupRepository $abilityVersionGroupRepository
@@ -61,7 +61,7 @@ class AbilityController extends AbstractController
     /**
      * Display all abilities
      *
-     * @Route (path="/ability", name="ability_index")
+     * @Route (path="/talents", name="ability_index")
      *
      * @param Request $request
      * @param FilterBuilderUpdaterInterface $builderUpdater

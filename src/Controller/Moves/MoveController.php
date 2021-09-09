@@ -16,7 +16,7 @@ class MoveController extends AbstractController
 {
 
     /**
-     * @Route(path="/move/{slug_move}", name="move_detail", requirements={"slug_move": ".+"})
+     * @Route(path="/attaque/{slug_move}", name="move_detail", requirements={"slug_move": ".+"})
      *
      * @param Request $request
      * @param MoveRepository $moveRepository

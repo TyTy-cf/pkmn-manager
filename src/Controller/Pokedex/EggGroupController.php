@@ -17,7 +17,7 @@ class EggGroupController extends AbstractController
     /**
      * Display the last pokemon add in the database
      *
-     * @Route (path="/egg_group/{slug_egg}", name="egg_group_detail", requirements={"slug_egg": ".+"})
+     * @Route (path="/groupe-oeuf/{slug_egg}", name="egg_group_detail", requirements={"slug_egg": ".+"})
      * @ParamConverter(class="App\Entity\Pokedex\EggGroup", name="eggGroup", options={"mapping": {"slug_egg" : "slug"}})
      *
      * @param Request $request
