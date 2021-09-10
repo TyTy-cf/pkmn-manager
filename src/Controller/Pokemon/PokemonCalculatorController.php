@@ -54,9 +54,10 @@ class PokemonCalculatorController extends AbstractController
         $nature = $this->natureRepository->findOneBy(['id' => $json['nature']]);
         $level = intval($json['level']) === 0 ? 1 : intval($json['level']);
         $range = [];
-        if ($json['toCalculate'] === 'iv') {
+        $calculation = $json['toCalculate'];
+        if ($calculation === 'iv') {
             $range = $this->calculateIv($pokemon, $nature, $level, $json);
-        } elseif ($json['toCalculate'] === 'stats') {
+        } elseif ($calculation === 'stats') {
             $range = $this->calculateStats($pokemon, $nature, $level, $json);
         }
 
@@ -64,6 +65,7 @@ class PokemonCalculatorController extends AbstractController
             'html' => $this->renderView('Pokemon/Resume/_result_stats_calculator.html.twig', [
                 'range' => $range,
             ]),
+            'calculation' => $calculation,
         ]);
     }
 
@@ -78,22 +80,8 @@ class PokemonCalculatorController extends AbstractController
     {
        return $this->statsCalculatorService->getIvRange(
             $pokemon, $nature, $level,
-            [
-                'hp' => intval($json['statsHp']),
-                'atk' => intval($json['statsAtk']),
-                'def' => intval($json['statsDef']),
-                'spa' => intval($json['statsSpa']),
-                'spd' => intval($json['statsSpd']),
-                'spe' => intval($json['statsSpe']),
-            ],
-            [
-                'hp' => intval($json['evHp']),
-                'atk' => intval($json['evAtk']),
-                'def' => intval($json['evDef']),
-                'spa' => intval($json['evSpa']),
-                'spd' => intval($json['evSpd']),
-                'spe' => intval($json['evSpe']),
-            ]
+            $this->getArrayStatsIvFromJsonArray($json),
+            $this->getArrayEvFromJsonArray($json)
         );
     }
 
@@ -109,24 +97,31 @@ class PokemonCalculatorController extends AbstractController
     {
         return $this->statsCalculatorService->getStatsRange(
             $pokemon, $nature, $level,
-            [
-                'hp' => intval($json['ivHp']),
-                'atk' => intval($json['ivAtk']),
-                'def' => intval($json['ivDef']),
-                'spa' => intval($json['ivSpa']),
-                'spd' => intval($json['ivSpd']),
-                'spe' => intval($json['ivSpe']),
-            ],
-            [
-                'hp' => intval($json['evHp']),
-                'atk' => intval($json['evAtk']),
-                'def' => intval($json['evDef']),
-                'spa' => intval($json['evSpa']),
-                'spd' => intval($json['evSpd']),
-                'spe' => intval($json['evSpe']),
-            ]
+            $this->getArrayStatsIvFromJsonArray($json),
+            $this->getArrayEvFromJsonArray($json)
         );
     }
 
+    function getArrayStatsIvFromJsonArray($json): array {
+        return [
+            'hp' => intval($json['hp']),
+            'atk' => intval($json['atk']),
+            'def' => intval($json['def']),
+            'spa' => intval($json['spa']),
+            'spd' => intval($json['spd']),
+            'spe' => intval($json['spe']),
+        ];
+    }
+
+    function getArrayEvFromJsonArray($json): array {
+        return [
+            'hp' => intval($json['evHp']),
+            'atk' => intval($json['evAtk']),
+            'def' => intval($json['evDef']),
+            'spa' => intval($json['evSpa']),
+            'spd' => intval($json['evSpd']),
+            'spe' => intval($json['evSpe']),
+        ];
+    }
 
 }

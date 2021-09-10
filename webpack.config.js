@@ -26,7 +26,7 @@ Encore
     .addStyleEntry('style', './assets/styles/index.scss')
     .addStyleEntry('libs', './assets/styles/libs.scss')
 
-    .addEntry('scripts', './assets/scripts.js')
+    .addEntry('scripts', './assets/scripts.ts')
     //.addEntry('page2', './assets/page2.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
@@ -60,7 +60,7 @@ Encore
     .enableSassLoader()
 
     // uncomment if you use TypeScript
-    // .enableTypeScriptLoader()
+    .enableTypeScriptLoader()
     // .enableForkedTypeScriptTypesChecking()
 
     // uncomment to get integrity="..." attributes on your script & link tags

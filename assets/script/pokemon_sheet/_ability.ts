@@ -1,3 +1,4 @@
+import {HTMLData} from '../interface/html_data';
 
 function setBtnCancelAbilities() {
     const btnCancelAbilities = document.getElementById('pokemon-sheet-cancel-button');
@@ -18,24 +19,23 @@ function setBtnAddAbilities() {
         btnAddAbilities.addEventListener('click', () => {
             const selectFormAbilities = document.getElementsByName('select-pokemon-sheet-ability');
             const pokemonSheetId = document.getElementById('currentPokemonSheetId').textContent;
-            selectFormAbilities.forEach((select) => {
+            selectFormAbilities.forEach((select: HTMLSelectElement) => {
                 const selectedAbilityId = select.options[select.selectedIndex].value;
                 let datas = {
                     'pokemonSheetId': pokemonSheetId,
                     'selectedAbilityId': selectedAbilityId,
                 }
-                const header = new Headers();
-                header.append("Content-Type", "text/html");
-                fetch('/pokemonSheet/changeAbility/' + JSON.stringify(datas), header)
+                fetch('/pokemonSheet/changeAbility/' + JSON.stringify(datas))
                 .then((response) => {
-                    return response.text();
-                }).then(data => {
-                    data = JSON.parse(data);
+                    return response.json() as Promise<HTMLData>;
+                })
+                .then((data) => {
                     const abilityHtmlElement = document.getElementById('pokemon-sheet-ability-html');
-                    abilityHtmlElement.innerHTML = data[0].html;
+                    abilityHtmlElement.innerHTML = data.html;
                     document.getElementById('form-pokemon-sheet-ability').classList.add('d-none');
                     enableEditButton();
-                }).catch((e) => {
+                })
+                .catch((e) => {
                 });
             });
         });
@@ -44,12 +44,12 @@ function setBtnAddAbilities() {
 }
 
 function setBtnEditAbilities() {
-    const btnEditAbilities = document.getElementById('pokemon-sheet-edit-button');
+    const btnEditAbilities = document.getElementById('pokemon-sheet-edit-button') as HTMLButtonElement;
     if (btnEditAbilities) {
         btnEditAbilities.addEventListener('click', () => {
-            const formAbilities = document.getElementById('form-pokemon-sheet-ability');
+            const formAbilities: HTMLElement = document.getElementById('form-pokemon-sheet-ability');
             formAbilities.classList.remove('d-none');
-            const href = document.getElementById('pokemon-sheet-current-ability');
+            const href: HTMLElement = document.getElementById('pokemon-sheet-current-ability');
             href.classList.add('d-none');
             btnEditAbilities.classList.add('d-none');
         });
@@ -57,7 +57,7 @@ function setBtnEditAbilities() {
 }
 
 function enableEditButton() {
-    const btnEditAbilities = document.getElementById('pokemon-sheet-edit-button');
+    const btnEditAbilities: HTMLElement = document.getElementById('pokemon-sheet-edit-button');
     btnEditAbilities.classList.remove('d-none');
 }
 
