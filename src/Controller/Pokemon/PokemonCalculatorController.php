@@ -102,6 +102,11 @@ class PokemonCalculatorController extends AbstractController
         );
     }
 
+    /**
+     * Generate the array for IV or stats
+     * @param $json
+     * @return array
+     */
     function getArrayStatsIvFromJsonArray($json): array {
         return [
             'hp' => intval($json['hp']),
@@ -113,6 +118,11 @@ class PokemonCalculatorController extends AbstractController
         ];
     }
 
+    /**
+     * Generate the array for EV
+     * @param $json
+     * @return array
+     */
     function getArrayEvFromJsonArray($json): array {
         return [
             'hp' => intval($json['evHp']),

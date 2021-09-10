@@ -44,12 +44,12 @@
             {% if pokemonSheet.ivs is not null %}
                 <tr>
                     <th>{{ 'pokemon_sheet.show.stats.iv'|trans }}</th>
-                    <td>{{ pokemonSheet.ivs.hp }}</td>
-                    <td>{{ pokemonSheet.ivs.atk }}</td>
-                    <td>{{ pokemonSheet.ivs.def }}</td>
-                    <td>{{ pokemonSheet.ivs.spa }}</td>
-                    <td>{{ pokemonSheet.ivs.spd }}</td>
-                    <td>{{ pokemonSheet.ivs.spe }}</td>
+                    <td class="{{ pokemonSheet.ivs.hp|ivCss }}">{{ pokemonSheet.ivs.hp }}</td>
+                    <td class="{{ pokemonSheet.ivs.atk|ivCss }}">{{ pokemonSheet.ivs.atk }}</td>
+                    <td class="{{ pokemonSheet.ivs.def|ivCss }}">{{ pokemonSheet.ivs.def }}</td>
+                    <td class="{{ pokemonSheet.ivs.spa|ivCss }}">{{ pokemonSheet.ivs.spa }}</td>
+                    <td class="{{ pokemonSheet.ivs.spd|ivCss }}">{{ pokemonSheet.ivs.spd }}</td>
+                    <td class="{{ pokemonSheet.ivs.spe|ivCss }}">{{ pokemonSheet.ivs.spe }}</td>
                 </tr>
             {% endif %}
         </tbody>

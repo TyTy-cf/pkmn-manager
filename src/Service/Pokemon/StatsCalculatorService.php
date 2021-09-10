@@ -36,23 +36,23 @@ class StatsCalculatorService
     }
 
     private function calculateIVHPFromStat(int $stat, int $level, int $ev, int $baseStat) {
-        $value = (($stat - 10) * 100) / $level - (2 * $baseStat) - ($ev / 4) - 100;
+        $value = ceil((($stat - $level - 10) * 100 / $level) - 2 * $baseStat - floor($ev/4));
         if ($value < 0) {
             return  '<span class="error-calculator">Err. IV < 0</span>';
         } else if ($value > 31) {
             return '<span class="error-calculator">Err. IV > 31</span>';
         }
-        return ceil($value);
+        return $value;
     }
 
     private function calculateIVFromStat(int $stat, float $coefNature, int $level, int $ev, int $baseStat) {
-        $value = (($stat / $coefNature - 5) * 100) / $level - $ev / 4 - 2 * $baseStat;
+        $value = ceil((($stat/$coefNature - 5) * 100 / $level) - 2 * $baseStat - floor($ev/4));
         if ($value < 0) {
             return '<span class="error-calculator">Err. IV < 0</span>';
         } else if ($value > 31) {
             return '<span class="error-calculator">Err. IV > 31</span>';
         }
-        return ceil($value);
+        return $value;
     }
 
     // Stats
@@ -72,23 +72,24 @@ class StatsCalculatorService
         return $stats;
     }
 
-    private function calculateStatsFromIvEv(int $iv, float $coefNature, int $level, int $ev, int $baseStat) {
-        if ($iv < 0) {
-            return '<span class="error-calculator">Err. IV < 0</span>';
-        } else if ($iv > 31) {
-            return '<span class="error-calculator">Err. IV > 31</span>';
-        }
-        return floor((((2 * $baseStat + $iv + floor($ev/4)) * $level) / 100 + 5) * $coefNature);
-    }
-
     private function calculateStatsHPFromIvEv(int $iv, int $level, int $ev, int $baseStat) {
         if ($iv < 0) {
             return '<span class="error-calculator">Err. IV < 0</span>';
         } else if ($iv > 31) {
             return '<span class="error-calculator">Err. IV > 31</span>';
         }
-        return floor(((2 * $baseStat + $iv + floor($ev/4) + 100) * $level) / 100 + 10);
+        return floor(0.01 * (2 * $baseStat + $iv + floor($ev/4)) * $level)+ $level + 10;
     }
+
+    private function calculateStatsFromIvEv(int $iv, float $coefNature, int $level, int $ev, int $baseStat) {
+        if ($iv < 0) {
+            return '<span class="error-calculator">Err. IV < 0</span>';
+        } else if ($iv > 31) {
+            return '<span class="error-calculator">Err. IV > 31</span>';
+        }
+        return floor(0.01 * (2 * $baseStat + $iv + floor($ev/4)) * $level) * $coefNature;
+    }
+
 
     // Checker IV
 
@@ -134,7 +135,7 @@ class StatsCalculatorService
 
     private function getRange($iv, int $baseStat, float $coefNature, int $level, int $ev, int $stats, bool $isHp = false): int
     {
-        if ($iv == 31) {
+        if ($iv === 31 || $level === 100) {
             return $iv;
         }
         $newStats = floor($this->calculateStatsFromIvEv($iv, $coefNature, $level, $ev, $baseStat));
