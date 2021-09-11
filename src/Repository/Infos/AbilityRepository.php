@@ -52,13 +52,8 @@ class AbilityRepository extends AbstractRepository
             ->join('pokemon.pokemonSprites', 'pokemon_sprites')
             ->join('pokemon.types', 'types')
             ->join('pokemon.pokemonSpecies', 'pokemonSpecies')
-            ->join('pokemonSpecies.pokedexSpecies', 'pokedexSpecies')
-            ->join('pokedexSpecies.pokedex', 'pokedex')
             ->where('ability.slug = :slug')
-            ->andWhere('pokedex.name = :national')
             ->setParameter('slug', $slug)
-            ->setParameter('national', 'National')
-            ->orderBy('pokedexSpecies.number', 'ASC')
             ->getQuery()
             ->getOneOrNullResult()
         ;
