@@ -102,50 +102,34 @@ class PokemonSpeciesService extends AbstractService
     public function createFromApiResponse(Language $language, $apiResponse)
     {
         $urlDetailed = $this->apiService->apiConnect($apiResponse['url'])->toArray();
+        $codeLang = $language->getCode();
+
         $slug = $this->textService->generateSlugFromClassWithLanguage(
             $language, PokemonSpecies::class, $apiResponse['name']
         );
 
-        $codeLang = $language->getCode();
-
-        $isNew = false;
         if (null === $pokemonSpecies = $this->getPokemonSpeciesBySlug($slug)) {
-            $pokemonSpecies = new PokemonSpecies();
-            $isNew = true;
-        }
+            $genera = $this->apiService->getFieldContentFromLanguage($codeLang, $urlDetailed, 'genera',  'genus');
+            $pokemonSpeciesName = $this->apiService->getNameBasedOnLanguageFromArray($codeLang, $urlDetailed);
 
-        $pokemonSpeciesName = $this->apiService->getNameBasedOnLanguageFromArray(
-            $codeLang, $urlDetailed
-        );
-        $genera = $this->apiService->getFieldContentFromLanguage(
-            $codeLang, $urlDetailed, 'genera',  'genus'
-        );
-
-        $pokemonSpecies
-            ->setGenera($genera)
-            ->setName($pokemonSpeciesName)
-            ->setGrowthRate($urlDetailed['growth_rate']['name'])
-            ->setIsMythical($urlDetailed['is_mythical'])
-            ->setIsBaby($urlDetailed['is_baby'])
-            ->setIsLegendary($urlDetailed['is_legendary'])
-            ->setBaseHappiness($urlDetailed['base_happiness'])
-            ->setCaptureRate($urlDetailed['capture_rate'])
-            ->setHasGenderDifferences($urlDetailed['has_gender_differences'])
-            ->setHatchCounter($urlDetailed['hatch_counter'])
-        ;
-
-        $pokemonSpecies->setSlug($this->textService->slugify($pokemonSpeciesName));
-
-        if ($isNew) {
-            $pokemonSpecies
+            $pokemonSpecies = (new PokemonSpecies())
+                ->setGenera($genera)
+                ->setGrowthRate($urlDetailed['growth_rate']['name'])
+                ->setIsMythical($urlDetailed['is_mythical'])
+                ->setIsBaby($urlDetailed['is_baby'])
+                ->setIsLegendary($urlDetailed['is_legendary'])
+                ->setBaseHappiness($urlDetailed['base_happiness'])
+                ->setCaptureRate($urlDetailed['capture_rate'])
+                ->setHasGenderDifferences($urlDetailed['has_gender_differences'])
+                ->setHatchCounter($urlDetailed['hatch_counter'])
                 ->setSlug($slug)
                 ->setLanguage($language)
+                ->setName($pokemonSpeciesName)
+                ->setSlug($this->textService->slugify($pokemonSpeciesName))
             ;
-            $this->entityManager->persist($pokemonSpecies);
         }
 
-        if (isset($urlDetailed['evolves_from_species']))
-        {
+        if (isset($urlDetailed['evolves_from_species'])) {
             // Set le evolve from species
             $pokemonSpecies->setEvolvesFromSpecies(
                 $this->getPokemonSpeciesBySlug(
@@ -157,17 +141,14 @@ class PokemonSpeciesService extends AbstractService
         }
 
         // Set the egg(s) group
-        foreach($urlDetailed['egg_groups'] as $eggGroupName)
-        {
+        foreach($urlDetailed['egg_groups'] as $eggGroupName) {
             $eggGroup = $this->eggGroupRepository->findOneBySlug(
                 $language->getCode().'/egg-group-' . $eggGroupName['name']
             );
-            if ($eggGroup !== null)
-            {
+            if ($eggGroup !== null) {
                 $pokemonSpecies->addEggGroup($eggGroup);
             }
         }
-
         $this->entityManager->persist($pokemonSpecies);
 
         // Finally get the pokemon linked to this species and update it
