@@ -99,11 +99,11 @@ class PokemonMovesLearnVersionService extends AbstractService
         foreach ($urlDetailed['moves'] as $detailedMove)
         {
             // Fetch the move from data
-            $moveName = $detailedMove['move']['name'];
             $codeLang = $language->getCode();
-            $move = $this->movesRepository->findOneBySlug(
-                $codeLang . '/move-'.$moveName
-            );
+            $moveName = $this->apiService->getNameBasedOnLanguage($codeLang, $detailedMove['move']['url']);
+            $slug = $codeLang. '-' . $this->textService->slugify($moveName);
+            $move = $this->movesRepository->findOneBySlug($slug);
+
             foreach ($detailedMove['version_group_details'] as $detailGroup)
             {
                 $versionGroupName = $detailGroup['version_group']['name'];

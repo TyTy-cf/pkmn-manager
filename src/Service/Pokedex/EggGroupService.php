@@ -13,12 +13,14 @@ use App\Repository\Pokedex\EggGroupRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
+/**
+ * Class EggGroupService
+ * @package App\Service\Pokedex
+ *
+ * @property EggGroupRepository $eggGroupRepository
+ */
 class EggGroupService extends AbstractService
 {
-    /**
-     * @var EggGroupRepository
-     */
-    private EggGroupRepository $eggGroupRepository;
 
     /**
      * PokemonService constructor.
@@ -46,26 +48,23 @@ class EggGroupService extends AbstractService
      */
     public function createFromApiResponse(Language $language, $apiEggGroup)
     {
-        //Check if the data exist in databases
-        $slug = $this->textService->generateSlugFromClassWithLanguage(
-            $language, EggGroup::class, $apiEggGroup['name']
-        );
-        if (null === $this->eggGroupRepository->findOneBySlug($slug))
+        $languageCode = $language->getCode();
+        $urlDamageClassDetailed = $this->apiService->apiConnect($apiEggGroup['url'])->toArray();
+        $eggGroupName = $this->apiService->getNameBasedOnLanguageFromArray($languageCode, $urlDamageClassDetailed);
+        $slug = $languageCode . '-' . $this->textService->slugify($eggGroupName);
+        $isNew = false;
+
+        if (null === $eggGroup = $this->eggGroupRepository->findOneBySlug($slug))
         {
-            //Fetch URL details type
-            $urlDamageClassDetailed = $this->apiService->apiConnect($apiEggGroup['url'])->toArray();
-            // Fetch name & description according the language
-            $eggGroupName = $this->apiService->getNameBasedOnLanguageFromArray(
-                $language->getCode(),
-                $urlDamageClassDetailed
-            );
-            $eggGroup = (new EggGroup())
-                ->setName(ucfirst($eggGroupName))
-                ->setSlug($slug)
-                ->setLanguage($language)
-            ;
+            $eggGroup = (new EggGroup())->setLanguage($language);
+            $isNew = true;
+        }
+        $eggGroup
+            ->setName(ucfirst($eggGroupName))
+            ->setSlug($slug)
+        ;
+        if ($isNew) {
             $this->entityManager->persist($eggGroup);
-            $this->entityManager->flush();
         }
     }
 
