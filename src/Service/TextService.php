@@ -14,22 +14,6 @@ class TextService
      */
     public function slugify(string $text): string
     {
-//        // transliterate
-//        $text = iconv('utf-8', 'us-ascii//IGNORE', $text);
-//        // remove unwanted characters
-//        $text = preg_replace('~[^-\w]+~', '', $text);
-//        // trim
-//        $text = trim($text, '-');
-//        // remove duplicate -
-//        $text = preg_replace('~-+~', '-', $text);
-//        // add a - before an uppercase letter
-//        $text = preg_replace('/(?<!\ )[A-Z]/', '-$0', $text);
-//        // check if the 1st letter become a - and remove it
-//        if (substr($text, 0, 1) === '-')
-//        {
-//            $text = substr($text, 1);
-//        }
-//        return strtolower($text);
         $replace = [
             '&lt;' => '', '&gt;' => '', '&#039;' => '', '&amp;' => '',
             '&quot;' => '', 'À' => 'A', 'Á' => 'A', 'Â' => 'A', 'Ã' => 'A', 'Ä'=> 'Ae',
@@ -89,6 +73,18 @@ class TextService
 
         // remove unwanted characters
         $text = preg_replace('~[^-\w.]+~', '', $text);
+
+        // remove duplicate -
+        $text = preg_replace('~-+~', '-', $text);
+
+        // add a - before an uppercase letter
+        $text = preg_replace('/(?<!\ )[A-Z]/', '-$0', $text);
+
+        // check if the 1st letter become a - and remove it
+        if (substr($text, 0, 1) === '-')
+        {
+            $text = substr($text, 1);
+        }
 
         $text = strtolower($text);
 

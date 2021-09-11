@@ -10,12 +10,14 @@ use App\Service\TextService;
 use App\Repository\Pokemon\PokemonSpritesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
-class PokemonSpritesManager
+/**
+ * Class PokemonSpritesManager
+ * @package App\Service\Pokemon
+ *
+ * @property PokemonSpritesRepository $pokemonSpriteRepo
+ */
+class PokemonSpritesService
 {
-    /**
-     * @var PokemonSpritesRepository $pokemonSpriteRepo
-     */
-    private PokemonSpritesRepository $pokemonSpriteRepo;
 
     /**
      * PokemonSpritesManager constructor.
@@ -47,22 +49,20 @@ class PokemonSpritesManager
         TextService $textManager,
         $urlDetail
     ) {
-        $slug = $textManager->generateSlugFromClass(
-            PokemonSprites::class, $pokemon->getNameApi()
-        );
+        $slug = 'pokemon-sprites-' . $textManager->slugify($pokemon->getNameApi());
 
-        if (($pokemonSprite = $this->getPokemonSpritesBySlug($slug)) === null) {
-            $pokemonSprite = (new PokemonSprites())
-                ->setSpriteFrontDefault($urlDetail['front_default'])
-                ->setSpriteFrontShiny($urlDetail['front_shiny'])
-                ->setSpriteFrontFemale($urlDetail['front_female'])
-                ->setSpriteFemaleShiny($urlDetail['front_shiny_female'])
-                ->setSpriteOfficial($urlDetail['other']['official-artwork']['front_default'])
-                ->setSpriteIcon($urlDetail['versions']['generation-viii']['icons']['front_default'])
-                ->setSlug($slug)
-            ;
+        if (null === $pokemonSprite = $this->getPokemonSpritesBySlug($slug)) {
+            $pokemonSprite = (new PokemonSprites())->setSlug($slug);
             $entityManager->persist($pokemonSprite);
         }
+        $pokemonSprite
+            ->setSpriteFrontDefault($urlDetail['front_default'])
+            ->setSpriteFrontShiny($urlDetail['front_shiny'])
+            ->setSpriteFrontFemale($urlDetail['front_female'])
+            ->setSpriteFemaleShiny($urlDetail['front_shiny_female'])
+            ->setSpriteOfficial($urlDetail['other']['official-artwork']['front_default'])
+            ->setSpriteIcon($urlDetail['versions']['generation-viii']['icons']['front_default'])
+        ;
         $pokemon->setPokemonSprites($pokemonSprite);
     }
 }
