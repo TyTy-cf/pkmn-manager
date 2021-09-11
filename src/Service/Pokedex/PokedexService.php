@@ -20,32 +20,18 @@ use App\Repository\Versions\GenerationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
+/**
+ * Class PokedexService
+ * @package App\Service\Pokedex
+ *
+ * @property PokedexRepository $pokedexRepository
+ * @property VersionGroupService $versionGroupService
+ * @property PokemonSpeciesService $pokemonSpeciesService
+ * @property RegionRepository $regionRepo
+ * @property GenerationRepository $generationRepo
+ */
 class PokedexService extends AbstractService
 {
-    /**
-     * @var PokedexRepository
-     */
-    private PokedexRepository $pokedexRepository;
-
-    /**
-     * @var VersionGroupService $versionGroupService
-     */
-    private VersionGroupService $versionGroupService;
-
-    /**
-     * @var PokemonSpeciesService $pokemonSpeciesService
-     */
-    private PokemonSpeciesService $pokemonSpeciesService;
-
-    /**
-     * @var RegionRepository $regionRepo
-     */
-    private RegionRepository $regionRepo;
-
-    /**
-     * @var GenerationRepository $generationRepo
-     */
-    private GenerationRepository $generationRepo;
 
     /**
      * PokemonService constructor.
@@ -101,71 +87,70 @@ class PokedexService extends AbstractService
         $slug = $this->textService->generateSlugFromClassWithLanguage(
             $language,
             Pokedex::class,
-            $urlPokedexDetailed['name']
+            $urlPokedexDetailed['name'],
+            '-'
         );
 
-        if (null === $this->getPokedexBySlug($slug))
+        if (null === $pokedex = $this->getPokedexBySlug($slug)) {
+            $pokedex = (new Pokedex());
+        }
+
+        $codeLang = $language->getCode();
+
+        $pokedex
+            ->setName(ucfirst($this->apiService->getNameBasedOnLanguageFromArray($codeLang, $urlPokedexDetailed)))
+            ->setSlug($slug)
+            ->setLanguage($language)
+            ->setDescription($this->apiService->getFieldContentFromLanguage(
+                    $codeLang, $urlPokedexDetailed, 'descriptions',  'description'
+                )
+            )
+        ;
+
+        // Add the GroupVersion
+        if (sizeof($urlPokedexDetailed['version_groups']) > 0)
         {
-            $codeLang = $language->getCode();
-            // Fetch name & description according the language
-            $pokedexName = $this->apiService->getNameBasedOnLanguageFromArray(
-                $codeLang,
-                $urlPokedexDetailed
-            );
-            $pokedex = (new Pokedex())
-                ->setName(ucfirst($pokedexName))
-                ->setSlug($slug)
-                ->setLanguage($language)
-                ->setDescription($this->apiService->getFieldContentFromLanguage(
-                        $codeLang, $urlPokedexDetailed, 'descriptions',  'description'
-                    )
-                );
-
-            // Add the GroupVersion
-            if (sizeof($urlPokedexDetailed['version_groups']) > 0)
+            foreach($urlPokedexDetailed['version_groups'] as $versionGroupName)
             {
-                foreach($urlPokedexDetailed['version_groups'] as $versionGroupName)
-                {
-                    $versionGroup = $this->versionGroupService->getArrayVersionGroup(
-                        $language
-                    )[$codeLang.'/version-group-'.$versionGroupName['name']];
-                    $pokedex->addVersionGroup($versionGroup);
-                }
-            }
-            $this->entityManager->persist($pokedex);
-
-            // Create the link between pokedexes and the pokemon species number inside the pokedex
-            if (!empty($urlPokedexDetailed['pokemon_entries'])) {
-                foreach($urlPokedexDetailed['pokemon_entries'] as $pokemonSpeciesName)
-                {
-                    $pokemonSpecies = $this->pokemonSpeciesService->getPokemonSpeciesBySlug(
-                        $this->textService->generateSlugFromClassWithLanguage(
-                            $language,
-                            PokemonSpecies::class,
-                            $pokemonSpeciesName['pokemon_species']['name']
-                        )
-                    );
-                    $pokedexSpecies = (new PokedexSpecies())
-                        ->setNumber($pokemonSpeciesName['entry_number'])
-                        ->setPokedex($pokedex)
-                        ->setPokemonSpecies($pokemonSpecies)
-                    ;
-                    $this->entityManager->persist($pokedexSpecies);
-                }
-            }
-            if (null !== $urlPokedexDetailed['region']) {
-                $urlDetailedRegion = $this->apiService->apiConnect($urlPokedexDetailed['region']['url'])->toArray();
-                $region = $this->regionRepo->findOneBySlug($language->getCode().'/region-'.$urlDetailedRegion['name']);
-                $generation = $this->generationRepo->findOneBy([
-                    'mainRegion' => $region
-                ]);
-
-                if ($generation !== null) {
-                    $pokedex->setGeneration($generation);
-                }
+                $versionGroup = $this->versionGroupService->getArrayVersionGroup(
+                    $language
+                )[$codeLang.'/version-group-'.$versionGroupName['name']];
+                $pokedex->addVersionGroup($versionGroup);
             }
         }
-        $this->entityManager->flush();
+        $this->entityManager->persist($pokedex);
+
+        // Create the link between pokedexes and the pokemon species number inside the pokedex
+        if (!empty($urlPokedexDetailed['pokemon_entries'])) {
+            foreach($urlPokedexDetailed['pokemon_entries'] as $pokemonSpeciesName)
+            {
+                $pokemonSpecies = $this->pokemonSpeciesService->getPokemonSpeciesBySlug(
+                    $this->textService->generateSlugFromClassWithLanguage(
+                        $language,
+                        PokemonSpecies::class,
+                        $pokemonSpeciesName['pokemon_species']['name'],
+                        '-'
+                    )
+                );
+                $pokedexSpecies = (new PokedexSpecies())
+                    ->setNumber($pokemonSpeciesName['entry_number'])
+                    ->setPokedex($pokedex)
+                    ->setPokemonSpecies($pokemonSpecies)
+                ;
+                $this->entityManager->persist($pokedexSpecies);
+            }
+        }
+        if (null !== $urlPokedexDetailed['region']) {
+            $urlDetailedRegion = $this->apiService->apiConnect($urlPokedexDetailed['region']['url'])->toArray();
+            $region = $this->regionRepo->findOneBySlug($language->getCode().'/region-'.$urlDetailedRegion['name']);
+            $generation = $this->generationRepo->findOneBy([
+                'mainRegion' => $region
+            ]);
+
+            if ($generation !== null) {
+                $pokedex->setGeneration($generation);
+            }
+        }
     }
 
 }

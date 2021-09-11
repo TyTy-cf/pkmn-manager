@@ -106,11 +106,12 @@ class TextService
      * @param Language $language
      * @param string $className
      * @param string $text
+     * @param string $separator
      * @return string
      */
-    public function generateSlugFromClassWithLanguage(Language $language, string $className, string $text): string
+    public function generateSlugFromClassWithLanguage(Language $language, string $className, string $text, string $separator = '/'): string
     {
-        return $language.'/'.$this->generateSlugFromClass($className, $text);
+        return $language.$separator.$this->generateSlugFromClass($className, $text);
     }
 
     /**

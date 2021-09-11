@@ -125,7 +125,6 @@ class PokemonSpeciesService extends AbstractService
                 ->setSlug($slug)
                 ->setLanguage($language)
                 ->setName($pokemonSpeciesName)
-                ->setSlug($this->textService->slugify($pokemonSpeciesName))
             ;
         }
 
