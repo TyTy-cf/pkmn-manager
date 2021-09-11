@@ -16,27 +16,17 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
+/**
+ * Class MoveService
+ * @package App\Service\Moves
+ *
+ * @property MoveRepository $movesRepository
+ * @property MoveDescriptionService $moveDescriptionManager
+ * @property TypeRepository $typeRepository
+ * @property DamageClassRepository $damageClassRepository
+ */
 class MoveService extends AbstractService
 {
-    /**
-     * @var MoveRepository $movesRepository
-     */
-    private MoveRepository $movesRepository;
-
-    /**
-     * @var MoveDescriptionService
-     */
-    private MoveDescriptionService $moveDescriptionManager;
-
-    /**
-     * @var TypeRepository $typeRepository
-     */
-    private TypeRepository $typeRepository;
-
-    /**
-     * @var DamageClassRepository $damageClassRepository
-     */
-    private DamageClassRepository $damageClassRepository;
 
     /**
      * MoveService constructor
@@ -97,10 +87,8 @@ class MoveService extends AbstractService
                 $isNew = true;
             }
 
-            $moveName = $this->apiService->getNameBasedOnLanguageFromArray(
-                $language->getCode(),
-                $urlDetailedMove
-            );
+            $codeLanguage = $language->getCode();
+            $moveName = $this->apiService->getNameBasedOnLanguageFromArray($language->getCode(), $urlDetailedMove);
 
             // Get the DamageClass
             $damageClass = $this->damageClassRepository->findOneBySlug(
@@ -112,23 +100,18 @@ class MoveService extends AbstractService
             );
 
             // Get the Type
-            $type = $this->typeRepository->findOneBySlug(
-                $this->textService->generateSlugFromClassWithLanguage(
-                    $language,
-                    Type::class,
-                    $urlDetailedMove['type']['name']
-                )
-            );
+            $typeNameLang = $this->apiService->getNameBasedOnLanguage($codeLanguage, $urlDetailedMove['type']['url']);
+            $slugType = $codeLanguage. '-' . $this->textService->slugify($typeNameLang);
+            $type = $this->typeRepository->findOneBySlug($slugType);
 
             if ($isNew) {
-                $move
-                    ->setSlug($slug)
-                    ->setLanguage($language)
-                ;
+                $move->setLanguage($language);
                 $this->entityManager->persist($move);
             }
 
+            $slug = $codeLanguage. '-' . $this->textService->slugify($moveName);
             $move->setType($type)
+                ->setSlug($slug)
                 ->setName($moveName)
                 ->setPp($urlDetailedMove['pp'])
                 ->setDamageClass($damageClass)
@@ -143,7 +126,6 @@ class MoveService extends AbstractService
                 $move,
                 $urlDetailedMove['flavor_text_entries']
             );
-            $this->entityManager->flush();
         }
     }
 

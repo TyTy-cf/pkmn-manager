@@ -19,23 +19,16 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
+/**
+ * Class MoveMachineService
+ * @package App\Service\Moves
+ *
+ * @property MoveMachineRepository $moveMachineRepository
+ * @property VersionGroupService $versionGroupManager
+ * @property MoveRepository $movesRepository
+ */
 class MoveMachineService extends AbstractService
 {
-
-    /**
-     * @var MoveMachineRepository
-     */
-    private MoveMachineRepository $moveMachineRepository;
-
-    /**
-     * @var VersionGroupService $versionGroupManager
-     */
-    private VersionGroupService $versionGroupManager;
-
-    /**
-     * @var MoveRepository $movesRepository
-     */
-    private MoveRepository $movesRepository;
 
     /**
      * MoveService constructor
@@ -76,11 +69,12 @@ class MoveMachineService extends AbstractService
             $moveMachine = new MoveMachine();
             $isNew = true;
         }
-        $move = $this->movesRepository->findOneBySlug(
-            $this->textService->generateSlugFromClassWithLanguage(
-                $language,Move::class, $urlDetailed['move']['name']
-            )
-        );
+
+        $codeLanguage = $language->getCode();
+        $moveNameLang = $this->apiService->getNameBasedOnLanguage($codeLanguage, $urlDetailed['move']['url']);
+        $slugMove= $codeLanguage. '-' . $this->textService->slugify($moveNameLang);
+        $move = $this->movesRepository->findOneBySlug($slugMove);
+
         if (null !== $move)
         {
             $groupVersion = $this->versionGroupManager->getVersionGroupBySlug(
@@ -90,18 +84,16 @@ class MoveMachineService extends AbstractService
             );
             if (null !== $groupVersion) {
                 $urlDetailedItem = $this->apiService->apiConnect($urlDetailed['item']['url'])->toArray();
-                $name = $this->apiService->getNameBasedOnLanguageFromArray(
-                    $language->getCode(),
-                    $urlDetailedItem
-                );
+                $name = $this->apiService->getNameBasedOnLanguageFromArray($codeLanguage, $urlDetailedItem);
+                $slug = $codeLanguage . '-' . $urlDetailed['item']['name'] . '-' . $urlDetailed['version_group']['name'];
                 $moveMachine
                     ->setVersionGroup($groupVersion)
                     ->setName($name)
                     ->setNumber($this->getMachineNumberFromName($name))
                     ->setMove($move)
                     ->setCost($urlDetailedItem['cost'])
+                    ->setSlug($slug)
                 ;
-
                 if (isset($urlDetailedItem['sprites']['default']))
                 {
                     $moveMachine->setImageUrl($urlDetailedItem['sprites']['default']);
@@ -125,13 +117,9 @@ class MoveMachineService extends AbstractService
                 }
 
                 if ($isNew) {
-                    $moveMachine
-                        ->setSlug($slug)
-                        ->setLanguage($language)
-                    ;
+                    $moveMachine->setLanguage($language);
                     $this->entityManager->persist($moveMachine);
                 }
-                $this->entityManager->flush();
             }
         }
     }
