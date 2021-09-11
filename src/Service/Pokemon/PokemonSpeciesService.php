@@ -8,6 +8,7 @@ use App\Entity\Pokemon\Pokemon;
 use App\Entity\Pokemon\PokemonSpecies;
 use App\Entity\Users\Language;
 use App\Repository\Pokedex\EggGroupRepository;
+use App\Repository\Pokemon\PokemonRepository;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
 use App\Service\TextService;
@@ -18,37 +19,20 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
+/**
+ * Class PokemonSpeciesService
+ * @package App\Service\Pokemon
+ *
+ * @property PokemonService $pokemonService
+ * @property PokemonRepository $pokemonRepository
+ * @property PokemonSpeciesRepository $repository
+ * @property PokemonSpeciesVersionService $pokemonSpeciesVersionService
+ * @property EggGroupRepository $eggGroupRepository
+ * @property VersionService $versionService
+ * @property GenerationService $generationService
+ */
 class PokemonSpeciesService extends AbstractService
 {
-    /**
-     * @var PokemonService
-     */
-    private PokemonService $pokemonService;
-
-    /**
-     * @var PokemonSpeciesRepository
-     */
-    private PokemonSpeciesRepository $repository;
-
-    /**
-     * @var PokemonSpeciesVersionService
-     */
-    private PokemonSpeciesVersionService $pokemonSpeciesVersionService;
-
-    /**
-     * @var EggGroupRepository $eggGroupRepository
-     */
-    private EggGroupRepository $eggGroupRepository;
-
-    /**
-     * @var VersionService $versionService
-     */
-    private VersionService $versionService;
-
-    /**
-     * @var GenerationService $generationService
-     */
-    private GenerationService $generationService;
 
     /**
      * PokemonService constructor.
@@ -62,6 +46,7 @@ class PokemonSpeciesService extends AbstractService
      * @param GenerationService $generationService
      * @param PokemonSpeciesVersionService $pokemonSpeciesVersionService
      * @param PokemonSpeciesRepository $repository
+     * @param PokemonRepository $pokemonRepository
      */
     public function __construct
     (
@@ -73,7 +58,8 @@ class PokemonSpeciesService extends AbstractService
         VersionService $versionService,
         GenerationService $generationService,
         PokemonSpeciesVersionService $pokemonSpeciesVersionService,
-        PokemonSpeciesRepository $repository
+        PokemonSpeciesRepository $repository,
+        PokemonRepository $pokemonRepository
     ) {
         $this->repository = $repository;
         $this->eggGroupRepository = $eggGroupRepository;
@@ -81,6 +67,7 @@ class PokemonSpeciesService extends AbstractService
         $this->pokemonService = $pokemonService;
         $this->versionService = $versionService;
         $this->pokemonSpeciesVersionService = $pokemonSpeciesVersionService;
+        $this->pokemonRepository = $pokemonRepository;
         parent::__construct($entityManager, $apiService, $textService);
     }
 
@@ -147,6 +134,8 @@ class PokemonSpeciesService extends AbstractService
             ->setHatchCounter($urlDetailed['hatch_counter'])
         ;
 
+        $pokemonSpecies->setSlug($this->textService->slugify($pokemonSpeciesName));
+
         if ($isNew) {
             $pokemonSpecies
                 ->setSlug($slug)
@@ -182,14 +171,16 @@ class PokemonSpeciesService extends AbstractService
         $this->entityManager->persist($pokemonSpecies);
 
         // Finally get the pokemon linked to this species and update it
-        $pokemon = $this->pokemonService->getPokemonBySlug(
-            $this->textService->generateSlugFromClassWithLanguage(
-                $language,Pokemon::class, $urlDetailed['varieties'][0]['pokemon']['name']
-            )
-        );
-
-        $pokemon->setPokemonSpecies($pokemonSpecies);
-        $this->entityManager->persist($pokemon);
+        foreach($urlDetailed['varieties'] as $variety) {
+            $pokemon = $this->pokemonRepository->findOneBy([
+                'nameApi' => $variety['pokemon']['name'],
+                'language' => $language,
+            ]);
+            if ($pokemon !== null) {
+                $pokemon->setPokemonSpecies($pokemonSpecies);
+                $this->entityManager->persist($pokemon);
+            }
+        }
 
         // Set PokemonSpeciesVersion
         $this->pokemonSpeciesVersionService->createFromApi(
@@ -198,7 +189,5 @@ class PokemonSpeciesService extends AbstractService
             $pokemonSpecies,
             $this->versionService->getArrayVersions($language)
         );
-
-        $this->entityManager->flush();
     }
 }

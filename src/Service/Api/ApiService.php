@@ -212,7 +212,7 @@ class ApiService
      * @return mixed
      * @throws TransportExceptionInterface
      */
-    public function getNameBasedOnLanguage($lang, $url) {
+    public function getNameBasedOnLanguage($lang, $url): ?string {
         $apiResponse = $this->apiConnect($url)->toArray();
         return $this->getNameBasedOnLanguageFromArray($lang, $apiResponse);
     }
