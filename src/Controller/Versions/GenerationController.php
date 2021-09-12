@@ -12,23 +12,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class GenerationController
+ * @package App\Controller\Versions
+ *
+ * @property LanguageService $languageManager
+ * @property GenerationRepository $generationRepository
+ * @property PokemonRepository $pokemonRepository
+ */
 class GenerationController extends AbstractController
 {
-
-    /**
-     * @var LanguageService $languageManager
-     */
-    private LanguageService $languageManager;
-
-    /**
-     * @var GenerationRepository $generationRepository
-     */
-    private GenerationRepository $generationRepository;
-
-    /**
-     * @var PokemonRepository $pokemonRepository
-     */
-    private PokemonRepository $pokemonRepository;
 
     /**
      * PokemonController constructor.
@@ -49,7 +42,7 @@ class GenerationController extends AbstractController
     }
 
     /**
-     * @Route(path="/", name="generation_index")
+     * @Route(path="/{code}", name="generation_index")
      *
      * @param Request $request
      * @return Response
@@ -68,7 +61,7 @@ class GenerationController extends AbstractController
         return $this->render('Versions/generation_index.html.twig', [
             'formSearchPokemon' => $form->createView(),
             'generationList' => $this->generationRepository->getGenerationByLanguage(
-                $this->languageManager->getLanguageByCode('fr')
+                $this->languageManager->getLanguageByCode($request->get('code'))
             ),
         ]);
     }
