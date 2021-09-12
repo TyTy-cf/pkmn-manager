@@ -1,5 +1,5 @@
 {% for type in pokemon.types %}
-    <a href="{{ path('type_detail', {slug_type: type.slug }) }}">
+    <a href="{{ path('type_detail', {'code': type.language.code, 'slug': type.slug }) }}">
         <img class="size-20" src="{{ type.img }}" alt="Type {{ type.name|lower }}"  title="{{ type.name|lower }}"/>
     </a>
 {% endfor %}

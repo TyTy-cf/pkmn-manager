@@ -66,17 +66,21 @@ class TypeRepository extends AbstractRepository
 
     /**
      * @param string $slug
+     * @param string $code
      * @return int|mixed|string|null
      * @throws NonUniqueResultException
      */
-    public function findOneBySlugWithRelation(string $slug) {
+    public function findOneBySlugWithRelation(string $slug, string $code) {
         return $this->createQueryBuilder('type')
             ->select('type', 'pokemons', 'pokemon_sprites', 'types')
             ->join('type.pokemons', 'pokemons')
             ->join('pokemons.types', 'types')
             ->join('pokemons.pokemonSprites', 'pokemon_sprites')
+            ->join('type.language', 'language')
             ->where('type.slug = :slug')
+            ->andWhere('language.code = :code')
             ->setParameter('slug', $slug)
+            ->setParameter('code', $code)
             ->getQuery()
             ->getOneOrNullResult()
         ;

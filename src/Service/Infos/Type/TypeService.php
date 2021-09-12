@@ -13,6 +13,7 @@ use App\Service\Api\ApiService;
 use App\Service\TextService;
 use App\Repository\Infos\Type\TypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 /**
@@ -62,6 +63,7 @@ class TypeService extends AbstractService
      * @param Language $language
      * @param mixed $type
      * @throws TransportExceptionInterface
+     * @throws NonUniqueResultException
      */
     public function createFromApiResponse(Language $language, $type)
     {
@@ -69,9 +71,9 @@ class TypeService extends AbstractService
             $urlType = $type['url'];
             $codeLanguage = $language->getCode();
             $typeNameLang = $this->apiService->getNameBasedOnLanguage($codeLanguage, $urlType);
-            $slug = $codeLanguage. '-' . $this->textService->slugify($typeNameLang);
+            $slug = $this->textService->slugify($typeNameLang);
 
-            if (null === $newType = $this->typeRepository->findOneBySlug($slug)) {
+            if (null === $newType = $this->typeRepository->findOneBySlugAndLanguage($slug, $codeLanguage)) {
                 $newType = new Type();
             }
 

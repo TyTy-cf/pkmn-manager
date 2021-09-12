@@ -51,6 +51,7 @@ class GenerationService extends AbstractService
      * @param Language $language
      * @param $generation
      * @throws TransportExceptionInterface
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function createFromApiResponse(Language $language, $generation)
     {
