@@ -66,15 +66,17 @@ class PokemonController extends AbstractController
     /**
      * Display the characteristic for one pokemon
      *
-     * @Route(path="/pokemon/{slug_pokemon}", name="profile_pokemon", requirements={"slug_pokemon": ".+"})
+     * @Route(path="{code}/pokemon/{slug}", name="profile_pokemon")
      *
      * @param Request $request
+     * @param string $code
+     * @param string $slug
      * @return Response
      * @throws NonUniqueResultException
      */
-    function displayProfile(Request $request): Response
+    function displayProfile(Request $request, string $code, string $slug): Response
     {
-        $pokemon = $this->pokemonRepository->getPokemonProfileBySlug($request->get('slug_pokemon'));
+        $pokemon = $this->pokemonRepository->getPokemonProfileBySlug($slug, $code);
 
         $formCalculateIv = $this->createForm(CalculateIvFormType::class);
         $formCalculateStats = $this->createForm(CalculateStatsFormType::class);

@@ -1,4 +1,4 @@
-<a class="pkmnCard" href="{{ path('profile_pokemon', {slug_pokemon: pokemon.slug }) }}">
+<a class="pkmnCard" href="{{ path('profile_pokemon', {'slug': pokemon.slug, 'code' : pokemon.language.code }) }}">
 	<div class="pkmnCard-header">
 		{% if pokemon.pokemonSprites.spriteFrontDefault is not null %}
 			<img class="pkmnCard-pict" src="{{ pokemon.pokemonSprites.spriteFrontDefault }}" alt="Pokemon {{ pokemon.name }}">
