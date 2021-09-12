@@ -24,7 +24,7 @@
             <th>{{ 'pokemon.abilities'|trans }}</th>
             <td>
                 {% for pokemon_ability in pokemon.pokemonsAbility %}
-                    <a href="{{ path('ability_show', {slug_ability: pokemon_ability.ability.slug}) }}"
+                    <a href="{{ path('ability_show', {'code': pokemon_ability.ability.language.code , 'slug': pokemon_ability.ability.slug}) }}"
                        title="{{ pokemon_ability.ability.description|capitalize }}"
                     >
                         {{ pokemon_ability.ability.name|capitalize }}

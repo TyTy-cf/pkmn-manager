@@ -23,6 +23,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @property AbilityRepository $abilityRepository
  * @property LanguageRepository $languageRepository
+ * @property AbilityVersionGroupRepository $abilityVersionGroupRepository
  */
 class AbilityController extends AbstractController
 {
@@ -31,50 +32,55 @@ class AbilityController extends AbstractController
      * AbilityController constructor.
      * @param AbilityRepository $abilityRepository
      * @param LanguageRepository $languageRepository
+     * @param AbilityVersionGroupRepository $abilityVersionGroupRepository
      */
-    public function __construct(AbilityRepository $abilityRepository, LanguageRepository $languageRepository)
-    {
+    public function __construct(
+        AbilityRepository $abilityRepository,
+        LanguageRepository $languageRepository,
+        AbilityVersionGroupRepository $abilityVersionGroupRepository
+    ) {
         $this->abilityRepository = $abilityRepository;
         $this->languageRepository = $languageRepository;
+        $this->abilityVersionGroupRepository = $abilityVersionGroupRepository;
     }
 
     /**
      * Display the detailed ability and related pokemons with this ability
      *
-     * @Route (path="/talents/{slug_ability}", name="ability_show", requirements={"slug_ability": ".+"})
+     * @Route (path="{code}/talent/{slug}", name="ability_show")
      *
-     * @param Request $request
-     * @param AbilityVersionGroupRepository $abilityVersionGroupRepository
+     * @param string $code
+     * @param string $slug
      * @return Response
      * @throws NonUniqueResultException
      */
-    public function abilityShow(
-        Request $request,
-        AbilityVersionGroupRepository $abilityVersionGroupRepository
-    ): Response {
+    public function abilityShow(string $code, string $slug): Response {
+        $ability = $this->abilityRepository->findOneBySlugWithRelation($slug, $code);
         return $this->render('Ability/show.html.twig', [
-            'ability' => $this->abilityRepository->findOneBySlugWithRelation($request->get('slug_ability')),
-            'abilityVersionGroup' => $abilityVersionGroupRepository->findAbilityVersionGroupBySlug($request->get('slug_ability')),
+            'ability' => $ability,
+            'abilityVersionGroup' => $this->abilityVersionGroupRepository->findAbilityVersionGroupByAbility($ability),
         ]);
     }
 
     /**
      * Display all abilities
      *
-     * @Route (path="/talents", name="ability_index")
+     * @Route (path="{code}/talents", name="ability_index")
      *
      * @param Request $request
+     * @param string $code
      * @param FilterBuilderUpdaterInterface $builderUpdater
      * @param PaginatorInterface $paginator
      * @return Response
      */
     public function abilityIndex(
         Request $request,
+        string $code,
         FilterBuilderUpdaterInterface $builderUpdater,
         PaginatorInterface $paginator
     ): Response {
 
-        $abilitiesQuery = $this->abilityRepository->queryAll($this->languageRepository->findOneBy(['code' => 'fr']));
+        $abilitiesQuery = $this->abilityRepository->queryAll($this->languageRepository->findOneBy(['code' => $code]));
 
         $filterForm = $this->createForm(AbilityFormFilterType::class, null, [
             'method' => 'GET',
@@ -95,6 +101,7 @@ class AbilityController extends AbstractController
 
         return $this->render('Ability/index.html.twig', [
             'abilities' => $abilities,
+            'codeLanguage' => $code,
             'filters' => $filterForm->createView(),
         ]);
     }

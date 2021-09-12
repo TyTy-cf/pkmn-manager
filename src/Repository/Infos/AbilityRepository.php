@@ -40,10 +40,11 @@ class AbilityRepository extends AbstractRepository
 
     /**
      * @param string $slug
+     * @param string $code
      * @return int|mixed|object|string|null
      * @throws NonUniqueResultException
      */
-    public function findOneBySlugWithRelation(string $slug)
+    public function findOneBySlugWithRelation(string $slug, string $code)
     {
         return $this->createQueryBuilder('ability')
             ->select('ability', 'pokemons_ability', 'pokemon', 'pokemon_sprites', 'types')
@@ -52,11 +53,14 @@ class AbilityRepository extends AbstractRepository
             ->join('pokemon.pokemonSprites', 'pokemon_sprites')
             ->join('pokemon.types', 'types')
             ->join('pokemon.pokemonSpecies', 'pokemonSpecies')
+            ->join('ability.language', 'language')
             ->innerJoin('pokemonSpecies.pokedexSpecies', 'pokedexSpecies')
             ->innerJoin('pokedexSpecies.pokedex', 'pokedex')
             ->where('ability.slug = :slug')
             ->andWhere('pokedex.generation = 9')
+            ->andWhere('language.code = :code')
             ->setParameter('slug', $slug)
+            ->setParameter('code', $code)
             ->orderBy('pokedexSpecies.number', 'ASC')
             ->getQuery()
             ->getOneOrNullResult()
