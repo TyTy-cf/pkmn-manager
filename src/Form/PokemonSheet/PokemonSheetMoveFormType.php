@@ -7,6 +7,7 @@ namespace App\Form\PokemonSheet;
 use App\Entity\Moves\Move;
 use App\Entity\Pokemon\PokemonSheet;
 use App\Repository\Moves\MoveRepository;
+use App\Service\Moves\MoveService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -19,6 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @author Kevin Tourret
  *
  * @property MoveRepository $moveRepository
+ * @property MoveService $moveService
  */
 class PokemonSheetMoveFormType extends AbstractType
 {
@@ -26,16 +28,19 @@ class PokemonSheetMoveFormType extends AbstractType
     /**
      * PokemonSheetMoveFormType constructor.
      * @param MoveRepository $moveRepository
+     * @param MoveService $moveService
      */
-    public function __construct(MoveRepository $moveRepository)
+    public function __construct(MoveRepository $moveRepository, MoveService $moveService)
     {
         $this->moveRepository = $moveRepository;
+        $this->moveService = $moveService;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $pokemonSheet = $options['data'];
-        $moves = $this->moveRepository->getMovesByPokemon($pokemonSheet->getPokemon());
+
+        $moves = $this->moveService->findMovesByPokemon($pokemonSheet->getPokemon());
         $builder
             ->add('moves', CollectionType::class, [
                 'label' => false,

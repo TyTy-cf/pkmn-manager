@@ -2,12 +2,14 @@
 
 namespace App\Service\Moves;
 
-use App\Entity\Infos\Type\Type;
 use App\Entity\Moves\DamageClass;
 use App\Entity\Moves\Move;
+use App\Entity\Pokemon\Pokemon;
 use App\Entity\Users\Language;
 use App\Repository\Infos\Type\TypeRepository;
 use App\Repository\Moves\DamageClassRepository;
+use App\Repository\Pokedex\EvolutionChainLinkRepository;
+use App\Repository\Pokemon\PokemonRepository;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
 use App\Service\TextService;
@@ -23,7 +25,8 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
  * @property MoveRepository $movesRepository
  * @property MoveDescriptionService $moveDescriptionManager
  * @property TypeRepository $typeRepository
- * @property DamageClassRepository $damageClassRepository
+ * @property DamageClassRepository damageClassRepository
+ * @property PokemonRepository $pokemonRepository
  */
 class MoveService extends AbstractService
 {
@@ -37,6 +40,7 @@ class MoveService extends AbstractService
      * @param MoveDescriptionService $moveDescriptionService
      * @param MoveRepository $moveRepository
      * @param TypeRepository $typeRepository
+     * @param PokemonRepository $pokemonRepository
      */
     public function __construct (
         EntityManagerInterface $em,
@@ -45,12 +49,14 @@ class MoveService extends AbstractService
         DamageClassRepository $damageClassRepository,
         MoveDescriptionService $moveDescriptionService,
         MoveRepository $moveRepository,
-        TypeRepository $typeRepository
+        TypeRepository $typeRepository,
+        PokemonRepository $pokemonRepository
     ) {
         $this->movesRepository = $moveRepository;
         $this->typeRepository = $typeRepository;
         $this->damageClassRepository = $damageClassRepository;
         $this->moveDescriptionManager = $moveDescriptionService;
+        $this->pokemonRepository = $pokemonRepository;
         parent::__construct($em, $apiService, $textService);
     }
 
@@ -61,6 +67,20 @@ class MoveService extends AbstractService
      */
     public function getSimpleMoveBySlug(string $slug): ?Move {
         return $this->movesRepository->getSimpleMoveBySlug($slug);
+    }
+
+    /**
+     * @param Pokemon $pokemon
+     * @return array
+     */
+    public function findMovesByPokemon(Pokemon $pokemon): array {
+        $evolutionChain = $pokemon->getPokemonSpecies()->getEvolutionChain();
+        if ($evolutionChain === null) {
+            return $this->movesRepository->getMovesByPokemons([$pokemon]);
+        }
+        return $this->movesRepository->getMovesByPokemons(
+            $this->pokemonRepository->findByPokemonSpeciesEvolutionChain($evolutionChain)
+        );
     }
 
     /**

@@ -65,18 +65,18 @@ class MoveRepository extends AbstractRepository
     }
 
     /**
-     * @param Pokemon $pokemon
+     * @param array $pokemons
      * @return array
      */
-    public function getMovesByPokemon(Pokemon $pokemon): array
+    public function getMovesByPokemons(array $pokemons): array
     {
         return $this->createQueryBuilder('move')
             ->select('move', 'type', 'damage_class')
             ->join('move.type', 'type')
             ->join('move.damageClass', 'damage_class')
             ->join(PokemonMovesLearnVersion::class, 'pmlv', Join::WITH, 'pmlv.move = move')
-            ->where('pmlv.pokemon = :pokemon')
-            ->setParameter('pokemon', $pokemon)
+            ->where('pmlv.pokemon IN (:pokemon)')
+            ->setParameter('pokemon', $pokemons)
             ->groupBy('move.name')
             ->orderBy('move.name', 'ASC')
             ->getQuery()

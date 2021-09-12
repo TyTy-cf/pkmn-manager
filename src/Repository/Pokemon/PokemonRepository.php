@@ -2,6 +2,7 @@
 
 namespace App\Repository\Pokemon;
 
+use App\Entity\Pokedex\EvolutionChain;
 use App\Entity\Pokedex\Pokedex;
 use App\Entity\Pokemon\Pokemon;
 use App\Entity\Pokemon\PokemonSpecies;
@@ -136,6 +137,22 @@ class PokemonRepository extends AbstractRepository
             ->andWhere('pokemon.name LIKE :approxName')
             ->setParameter('approxName', '%'.$approxName.'%')
             ->setParameter('language', $language)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @param EvolutionChain $evolutionChain
+     * @return array
+     */
+    public function findByPokemonSpeciesEvolutionChain(EvolutionChain $evolutionChain): array
+    {
+        return $this->createQueryBuilder('pokemon')
+            ->select('pokemon')
+            ->join('pokemon.pokemonSpecies', 'pokemon_species')
+            ->where('pokemon_species.evolutionChain = :evolutionChain')
+            ->setParameter('evolutionChain', $evolutionChain)
             ->getQuery()
             ->getResult()
         ;

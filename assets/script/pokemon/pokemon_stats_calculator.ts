@@ -2,24 +2,28 @@ import {HTMLData} from "../interface/html_data";
 
 function ajaxIvCalculation(): void {
     const buttonIvSubmit = document.getElementById('calculate_iv_form_submit') as HTMLButtonElement;
-    const statsHp = (<HTMLInputElement>document.getElementById('calculate_iv_form_statsPv')).value;
-    const statsAtk = (<HTMLInputElement>document.getElementById('calculate_iv_form_statsAtk')).value;
-    const statsDef = (<HTMLInputElement>document.getElementById('calculate_iv_form_statsDef')).value;
-    const statsSpa = (<HTMLInputElement>document.getElementById('calculate_iv_form_statsSpa')).value;
-    const statsSpd = (<HTMLInputElement>document.getElementById('calculate_iv_form_statsSpd')).value;
-    const statsSpe = (<HTMLInputElement>document.getElementById('calculate_iv_form_statsSpe')).value;
-    sendAjaxDatasAndAddHtml(buttonIvSubmit, statsHp, statsAtk, statsDef, statsSpa, statsSpd, statsSpe, 'iv');
+    if (buttonIvSubmit) {
+        const statsHp = (<HTMLInputElement>document.getElementById('calculate_iv_form_statsPv')).value;
+        const statsAtk = (<HTMLInputElement>document.getElementById('calculate_iv_form_statsAtk')).value;
+        const statsDef = (<HTMLInputElement>document.getElementById('calculate_iv_form_statsDef')).value;
+        const statsSpa = (<HTMLInputElement>document.getElementById('calculate_iv_form_statsSpa')).value;
+        const statsSpd = (<HTMLInputElement>document.getElementById('calculate_iv_form_statsSpd')).value;
+        const statsSpe = (<HTMLInputElement>document.getElementById('calculate_iv_form_statsSpe')).value;
+        sendAjaxDatasAndAddHtml(buttonIvSubmit, statsHp, statsAtk, statsDef, statsSpa, statsSpd, statsSpe, 'iv');
+    }
 }
 
 function ajaxStatsCalculation(): void {
-    const buttonIvSubmit = document.getElementById('calculate_stats_form_submit') as HTMLButtonElement;
-    const ivHp = (<HTMLInputElement>document.getElementById('calculate_stats_form_ivPv')).value;
-    const ivAtk = (<HTMLInputElement>document.getElementById('calculate_stats_form_ivAtk')).value;
-    const ivDef = (<HTMLInputElement>document.getElementById('calculate_stats_form_ivDef')).value;
-    const ivSpa = (<HTMLInputElement>document.getElementById('calculate_stats_form_ivSpa')).value;
-    const ivSpd = (<HTMLInputElement>document.getElementById('calculate_stats_form_ivSpd')).value;
-    const ivSpe = (<HTMLInputElement>document.getElementById('calculate_stats_form_ivSpe')).value;
-    sendAjaxDatasAndAddHtml(buttonIvSubmit, ivHp, ivAtk, ivDef, ivSpa, ivSpd, ivSpe, 'stats');
+    const buttonStatsSubmit = document.getElementById('calculate_stats_form_submit') as HTMLButtonElement;
+    if (buttonStatsSubmit) {
+        const ivHp = (<HTMLInputElement>document.getElementById('calculate_stats_form_ivPv')).value;
+        const ivAtk = (<HTMLInputElement>document.getElementById('calculate_stats_form_ivAtk')).value;
+        const ivDef = (<HTMLInputElement>document.getElementById('calculate_stats_form_ivDef')).value;
+        const ivSpa = (<HTMLInputElement>document.getElementById('calculate_stats_form_ivSpa')).value;
+        const ivSpd = (<HTMLInputElement>document.getElementById('calculate_stats_form_ivSpd')).value;
+        const ivSpe = (<HTMLInputElement>document.getElementById('calculate_stats_form_ivSpe')).value;
+        sendAjaxDatasAndAddHtml(buttonStatsSubmit, ivHp, ivAtk, ivDef, ivSpa, ivSpd, ivSpe, 'stats');
+    }
 }
 
 function sendAjaxDatasAndAddHtml(
