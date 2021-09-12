@@ -54,21 +54,18 @@ class GenerationService extends AbstractService
      */
     public function createFromApiResponse(Language $language, $generation)
     {
-        //Check if the data exist in databases
-        $slug = $this->textService->generateSlugFromClassWithLanguage(
-            $language, Generation::class, $generation['name']
-        );
+        $urlDetailed = $this->apiService->apiConnect($generation['url'])->toArray();
+        $urlApiId = $urlDetailed['id'];
+        $codeLanguage = $language->getCode();
+        $generationLang = $this->apiService->getNameBasedOnLanguageFromArray($codeLanguage, $urlDetailed);
+        $splittedGeneration = explode(' ', $generationLang);
+        $nameGeneration = (empty($splittedGeneration[0]) ? 'Generation' : $splittedGeneration[0]) . ' ' . $urlApiId;
+        $slug = $this->textService->slugify($nameGeneration);
 
-        if (null === $newGeneration = $this->generationRepository->findOneBySlug($slug)) {
+        $isNew = false;
+        if (null === $newGeneration = $this->generationRepository->findOneBySlugAndLanguage($slug, $codeLanguage)) {
             $newGeneration = (new Generation());
         }
-        //Fetch URL details type
-        $urlDetailed = $this->apiService->apiConnect($generation['url'])->toArray();
-        // Fetch name & description according the language
-        $generationLang = $this->apiService->getNameBasedOnLanguageFromArray(
-            $language->getCode(), $urlDetailed
-        );
-        $splittedGeneration = explode(' ', $generationLang);
 
         $region = null;
         if (null !== $urlDetailed['main_region']) {
@@ -77,9 +74,6 @@ class GenerationService extends AbstractService
             );
             $region = $this->regionRepo->findOneBySlug($slug);
         }
-        $urlApiId = $urlDetailed['id'];
-        $nameGeneration = $splittedGeneration[0] . ' ' . $urlApiId;
-        $slug = $this->textService->slugify($language->getCode() . '-' . $generation['name']);
 
         $newGeneration
             ->setSlug($slug)
@@ -89,7 +83,9 @@ class GenerationService extends AbstractService
             ->setName($nameGeneration)
             ->setMainRegion($region)
         ;
-        $this->entityManager->persist($newGeneration);
+        if ($isNew) {
+            $this->entityManager->persist($newGeneration);
+        }
     }
 
 }

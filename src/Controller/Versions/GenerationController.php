@@ -42,12 +42,13 @@ class GenerationController extends AbstractController
     }
 
     /**
-     * @Route(path="/{code}", name="generation_index")
+     * @Route(path="/{code}/pokedex", name="generation_index")
      *
      * @param Request $request
      * @return Response
      */
     public function generationIndex(Request $request): Response {
+        $language = $this->languageManager->getLanguageByCode($request->get('code'));
         $form = $this->createForm(SearchPokemonType::class);
         $form->handleRequest($request);
 
@@ -60,9 +61,8 @@ class GenerationController extends AbstractController
 
         return $this->render('Versions/generation_index.html.twig', [
             'formSearchPokemon' => $form->createView(),
-            'generationList' => $this->generationRepository->getGenerationByLanguage(
-                $this->languageManager->getLanguageByCode($request->get('code'))
-            ),
+            'generationList' => $this->generationRepository->getGenerationByLanguage($language),
+            'language' => $language,
         ]);
     }
 
