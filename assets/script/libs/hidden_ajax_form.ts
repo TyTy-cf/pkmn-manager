@@ -34,8 +34,8 @@ function setUpHiddenFormBtnSubmit() {
                     inputValue = hiddenFormInput.value;
                 }
                 let datas = {
-                    'pokemonSheetId': document.querySelector('[data-entity-id="' + linkedFormName + '"]').textContent,
-                    'inputDataId': inputValue,
+                    'pokemonSheetId': document.querySelector('[data-entity-id]').textContent,
+                    'inputData': inputValue,
                 }
                 fetch(btnSubmit.getAttribute('data-action-hidden') + JSON.stringify(datas))
                 .then((response) => {

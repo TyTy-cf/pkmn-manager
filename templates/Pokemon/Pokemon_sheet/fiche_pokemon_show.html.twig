@@ -69,7 +69,9 @@
                                 </tr>
                                 <tr>
                                     <th>{{ 'pokemon_sheet.show.moveSetName'|trans }}</th>
-                                    <td>{{ pokemonSheet.moveSetName }}</td>
+                                    <td>
+                                        {% include 'Pokemon/Pokemon_sheet/partials/_form_pokemon_sheet_moveset.html.twig' %}
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -128,7 +130,7 @@
             </div>
         </div>
     </div>
-    <p data-entity-id="form_hidden_ability" hidden>{{ pokemonSheet.id }}</p>
+    <p data-entity-id hidden>{{ pokemonSheet.id }}</p>
 
 {% endblock %}
 

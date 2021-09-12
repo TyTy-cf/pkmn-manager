@@ -84,9 +84,10 @@ class PokemonSheetController extends AbstractController
      * @Route(path="{code}/mes-pokemons/ajouter", name="pokemon_create")
      *
      * @param Request $request
+     * @param string $code
      * @return Response
      */
-    public function addPokemonSheet(Request $request): Response {
+    public function addPokemonSheet(Request $request, string $code): Response {
         $pokemonSheet = new PokemonSheet();
         $form = $this->createForm(PokemonSheetFormType::class, $pokemonSheet);
         $form->handleRequest($request);
@@ -105,7 +106,7 @@ class PokemonSheetController extends AbstractController
             $entityManager->persist($pokemonSheet);
             $entityManager->flush();
 
-            return $this->redirectToRoute('pokemon_sheet_show', ['id' => $pokemonSheet->getId()]);
+            return $this->redirectToRoute('pokemon_sheet_show', ['code' => $code, 'id' => $pokemonSheet->getId()]);
         }
 
         return $this->render('Pokemon/Pokemon_sheet/pokemon_add.html.twig', [
@@ -163,10 +164,9 @@ class PokemonSheetController extends AbstractController
     public function changeAbility(Request $request): JsonResponse {
         $json = json_decode($request->get('datas'), true);
         $pokemonSheet = $this->pokemonSheetRepository->findOneBy(['id' => $json['pokemonSheetId']]);
-        $ability = $this->abilityRepository->findOneBy(['id' => $json['inputDataId']]);
+        $ability = $this->abilityRepository->findOneBy(['id' => $json['inputData']]);
         $pokemonSheet->setAbility($ability);
         $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($pokemonSheet);
         $entityManager->flush();
 
         return (new JsonResponse())->setData(
@@ -178,4 +178,25 @@ class PokemonSheetController extends AbstractController
             ]
         );
     }
+
+    /**
+     * @Route(path="/pokemonSheet/changeMoveSet/{datas}", name="change_ability")
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function changeMoveSet(Request $request): JsonResponse {
+        $json = json_decode($request->get('datas'), true);
+        $pokemonSheet = $this->pokemonSheetRepository->findOneBy(['id' => $json['pokemonSheetId']]);
+        $pokemonSheet->setMoveSetName($json['inputData']);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->flush();
+
+        return (new JsonResponse())->setData(
+            $data = [
+                'html' => $pokemonSheet->getMoveSetName(),
+           ]
+        );
+    }
+
 }

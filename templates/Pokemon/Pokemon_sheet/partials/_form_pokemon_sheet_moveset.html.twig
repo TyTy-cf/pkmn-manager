@@ -1,0 +1,19 @@
+<div class="field-form pokemon-sheet-btn">
+    <div data-original-hidden="form_hidden_moveset">
+        {{ pokemonSheet.moveSetName }}
+    </div>
+    <div class="d-none" data-form-hidden="form_hidden_moveset">
+        <input type="text" value="{{ pokemonSheet.moveSetName }}" class="mt-1" data-input-hidden="form_hidden_moveset"/>
+        <button title="Valider" class="ml-1 btn pokemon-sheet-add-button"
+                data-action-hidden="/pokemonSheet/changeMoveSet/" data-submit-hidden="form_hidden_moveset"
+        >
+            <i class="fas fa-check-circle"></i>
+        </button>
+        <button title="Annuler" class="btn pokemon-sheet-cancel-button" data-cancel-hidden="form_hidden_ability">
+            <i class="fas fa-times-circle"></i>
+        </button>
+    </div>
+    <button class="ml-5 btn pokemon-sheet-edit-button" title="Modifier" data-edit-hidden="form_hidden_moveset">
+        <i class="fas fa-edit"></i>
+    </button>
+</div>
