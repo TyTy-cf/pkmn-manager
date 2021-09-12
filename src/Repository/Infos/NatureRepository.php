@@ -33,9 +33,18 @@ class NatureRepository extends AbstractRepository
     }
 
     /**
+     * @param string $code
      * @return Nature[]
      */
-    public function findAll(): array {
-        return $this->queryAll()->getResult();
+    public function findAllByLanguageCode(string $code): array {
+        return $this->createQueryBuilder('nature')
+            ->select('nature')
+            ->join('nature.language', 'language')
+            ->where('language.code = :code')
+            ->setParameter('code', $code)
+            ->orderBy('nature.name', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

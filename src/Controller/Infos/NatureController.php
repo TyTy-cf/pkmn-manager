@@ -29,12 +29,13 @@ class NatureController extends AbstractController
     }
 
     /**
-     * @Route (path="/nature", name="nature_index")
+     * @Route (path="{code}/nature", name="nature_index")
+     * @param string $code
      * @return Response
      */
-    public function displayNatures(): Response {
+    public function displayNatures(string $code): Response {
         return $this->render('Nature/index.html.twig', [
-            'natures' => $this->natureRepository->findAll(),
+            'natures' => $this->natureRepository->findAllByLanguageCode($code),
         ]);
     }
 }
