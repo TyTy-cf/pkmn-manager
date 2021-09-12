@@ -54,8 +54,12 @@
             {% endif %}
         </tbody>
     </table>
+    <div class="form-group">
+        {{ form_label(formStats.level) }}
+        {{ form_widget(formStats.level) }}
+    </div>
     <button type="submit"
-            class="btn btn-primary ml-1 btn-search-pokemon"
+            class="btn btn-primary ml-1 btn-search-pokemon mt-2"
             title="Mettre à jour"
     >
         {{ 'pokemon_sheet.show.stats.update'|trans }}
