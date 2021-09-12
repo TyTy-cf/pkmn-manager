@@ -35,12 +35,12 @@
             {% for move in pokemonSheet.moves %}
                 <tr>
                     <td>
-                        <a class="bold-link fs-100" href="{{ path('move_detail', {slug_move: move.slug }) }}">
+                        <a class="bold-link fs-100" href="{{ path('move_detail', {'code': code, 'slug': move.slug }) }}">
                             {{ move.name }}
                         </a>
                     </td>
                     <td class="text-center">
-                        <a href="{{ path('type_detail', {slug_type: move.type.slug }) }}">
+                        <a href="{{ path('type_detail', {'code': move.type.language.code, 'slug': move.type.slug }) }}">
                             <img class="size-50"
                                  title="{{ move.type.name }}"
                                  src="{{ move.type.img }}"

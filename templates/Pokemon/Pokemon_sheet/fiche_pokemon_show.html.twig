@@ -62,7 +62,7 @@
                                 <tr>
                                     <th>{{ 'pokemon_sheet.show.nature'|trans }}</th>
                                     <td>
-                                        <a href="{{ path('nature_index') }}">
+                                        <a href="{{ path('nature_index', {'code': code}) }}">
                                             {{ pokemonSheet.nature.name }}
                                         </a>
                                     </td>

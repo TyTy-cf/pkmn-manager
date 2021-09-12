@@ -55,16 +55,14 @@ class PokemonSheetController extends AbstractController
     }
 
     /**
-     * @Route(path="/mes-pokemons", name="my_pokemons")
+     * @Route(path="{code}/mes-pokemons", name="my_pokemons")
      *
      * @param Request $request
      * @param PaginatorInterface $paginator
+     * @param string $code
      * @return Response
      */
-    public function myPokemons(
-        Request $request,
-       PaginatorInterface $paginator
-    ): Response {
+    public function myPokemons(Request $request, PaginatorInterface $paginator, string $code): Response {
         $pokemonsQuery = $this->pokemonSheetRepository->findAllWithRelations();
 
         $pokemons = $paginator->paginate(
@@ -78,11 +76,12 @@ class PokemonSheetController extends AbstractController
 
         return $this->render('Pokemon/Pokemon_sheet/pokemon_index.html.twig', [
             'pokemonsSheet' => $pokemons,
+            'code' => $code,
         ]);
     }
 
     /**
-     * @Route(path="/mes-pokemons/ajouter", name="pokemon_create")
+     * @Route(path="{code}/mes-pokemons/ajouter", name="pokemon_create")
      *
      * @param Request $request
      * @return Response
@@ -115,13 +114,14 @@ class PokemonSheetController extends AbstractController
     }
 
     /**
-     * @Route(path="/mes-pokemons/detail/{id}", name="pokemon_sheet_show")
+     * @Route(path="{code}/mes-pokemons/detail/{id}", name="pokemon_sheet_show")
      *
      * @param Request $request
+     * @param string $code
      * @return Response
      * @throws NonUniqueResultException
      */
-    public function show(Request $request): Response {
+    public function show(Request $request, string $code): Response {
         $pokemonSheet = $this->pokemonSheetRepository->findByIdWithRelations($request->get('id'));
 
         $form = $this->createForm(PokemonSheetMoveFormType::class, $pokemonSheet);
@@ -150,6 +150,7 @@ class PokemonSheetController extends AbstractController
             'abilities' => $this->pokemonAbilityRepository->findBy(['pokemon' => $pokemonSheet->getPokemon()]),
             'form' => $form->createView(),
             'formStats' => $formStats->createView(),
+            'code' => $code,
         ]);
     }
 

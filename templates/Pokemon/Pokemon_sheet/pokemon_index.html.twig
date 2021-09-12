@@ -5,7 +5,7 @@
         <div class="container">
             <h1>{{ 'pokemon_sheet.index.title'|trans }}</h1>
             <div class="col-8 mx-auto">
-                <a class="btn" href="{{ path('pokemon_create') }}">
+                <a class="btn" href="{{ path('pokemon_create', {'code': code}) }}">
                     {{ 'pokemon_sheet.index.add'|trans }}
                 </a>
                 <table class="table table-striped text-center my-4">
@@ -71,7 +71,7 @@
                                         {% if pokemonSheet.gender.image is not empty %}
                                             <img class="img-gender-smaller ml-1" src="{{ pokemonSheet.gender.image }}" alt="{{ pokemonSheet.gender.name }}">
                                         {% endif %}
-                                        <a class="ml-1" href="{{ path('profile_pokemon', {slug_pokemon: pokemonSheet.pokemon.slug }) }}">
+                                        <a class="ml-1" href="{{ path('profile_pokemon', {'code': code, 'slug': pokemonSheet.pokemon.slug }) }}">
                                             {{ pokemonSheet.pokemon.name }}
                                         </a>
                                     </td>
@@ -79,12 +79,12 @@
                                         {{ pokemonSheet.level }}
                                     </td>
                                     <td>
-                                        <a href="{{ path('nature_index') }}">
+                                        <a href="{{ path('nature_index', {'code': code }) }}">
                                             {{ pokemonSheet.nature.name }}
                                         </a>
                                     </td>
                                     <td>
-                                        <a href="{{ path('ability_show', {slug_ability: pokemonSheet.ability.slug}) }}"
+                                        <a href="{{ path('ability_show', {'code': code, 'slug': pokemonSheet.ability.slug}) }}"
                                            title="{{ pokemonSheet.ability.description|capitalize }}"
                                         >
                                             {{ pokemonSheet.ability.name|capitalize }}
@@ -100,7 +100,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a class="btn" href="{{ path('pokemon_sheet_show', {'id': pokemonSheet.id}) }}">
+                                        <a class="btn" href="{{ path('pokemon_sheet_show', {'code': code, 'id': pokemonSheet.id}) }}">
                                             <i class="fas fa-arrow-circle-right"></i>
                                         </a>
                                     </td>
