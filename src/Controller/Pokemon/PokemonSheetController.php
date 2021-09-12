@@ -163,18 +163,19 @@ class PokemonSheetController extends AbstractController
     public function changeAbility(Request $request): JsonResponse {
         $json = json_decode($request->get('datas'), true);
         $pokemonSheet = $this->pokemonSheetRepository->findOneBy(['id' => $json['pokemonSheetId']]);
-        $ability = $this->abilityRepository->findOneBy(['id' => $json['selectedAbilityId']]);
+        $ability = $this->abilityRepository->findOneBy(['id' => $json['inputDataId']]);
         $pokemonSheet->setAbility($ability);
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($pokemonSheet);
         $entityManager->flush();
 
-        return (new JsonResponse())->setData([
+        return (new JsonResponse())->setData(
             $data = [
                 'html' => $this->renderView('Pokemon/Pokemon_sheet/partials/_pokemon_sheet_ability.html.twig', [
                     'ability' => $ability,
+                    'code' => $ability->getLanguage()->getCode(),
                 ])
             ]
-        ]);
+        );
     }
 }

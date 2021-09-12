@@ -14,3 +14,4 @@ import './script/pokemon_sheet/_ability';
 import './script/pokemon_sheet/_move';
 
 import './script/libs/form_collection';
+import './script/libs/hidden_ajax_form';
