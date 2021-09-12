@@ -45,6 +45,7 @@ class EggGroupService extends AbstractService
      * @param Language $language
      * @param $apiEggGroup
      * @throws TransportExceptionInterface
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function createFromApiResponse(Language $language, $apiEggGroup)
     {
@@ -54,11 +55,12 @@ class EggGroupService extends AbstractService
         $slug = $languageCode . '-' . $this->textService->slugify($eggGroupName);
         $isNew = false;
 
-        if (null === $eggGroup = $this->eggGroupRepository->findOneBySlug($slug))
+        if (null === $eggGroup = $this->eggGroupRepository->findOneBySlugAndLanguage($slug, $languageCode))
         {
             $eggGroup = (new EggGroup())->setLanguage($language);
             $isNew = true;
         }
+        $slug = $this->textService->slugify($eggGroupName);
         $eggGroup
             ->setName(ucfirst($eggGroupName))
             ->setSlug($slug)

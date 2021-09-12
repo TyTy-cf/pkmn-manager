@@ -12,27 +12,40 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class MoveController
+ * @package App\Controller\Moves
+ *
+ * @property MoveRepository $moveRepository,
+ * @property MoveMachineRepository $moveMachineRepository
+ */
 class MoveController extends AbstractController
 {
 
     /**
-     * @Route(path="/attaque/{slug_move}", name="move_detail", requirements={"slug_move": ".+"})
-     *
-     * @param Request $request
+     * MoveController constructor.
      * @param MoveRepository $moveRepository
      * @param MoveMachineRepository $moveMachineRepository
+     */
+    public function __construct(MoveRepository $moveRepository, MoveMachineRepository $moveMachineRepository)
+    {
+        $this->moveRepository = $moveRepository;
+        $this->moveMachineRepository = $moveMachineRepository;
+    }
+
+    /**
+     * @Route(path="{code}/attaque/{slug}", name="move_detail")
+     *
+     * @param string $code
+     * @param string $slug
      * @return Response
      * @throws NonUniqueResultException
      */
-    public function index(
-        Request $request,
-        MoveRepository $moveRepository,
-        MoveMachineRepository $moveMachineRepository
-    ): Response {
-        $move = $moveRepository->getMoveBySlugWithRelation($request->get('slug_move'));
+    public function index(string $code, string $slug): Response {
+        $move = $this->moveRepository->getMoveBySlugWithRelation($slug, $code);
         return $this->render('Moves/detail.html.twig', [
             'move' => $move,
-            'moveMachine' => $moveMachineRepository->getMoveMachineByMove($move),
+            'moveMachine' => $this->moveMachineRepository->getMoveMachineByMove($move),
         ]);
     }
 

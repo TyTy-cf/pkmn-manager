@@ -6,7 +6,7 @@
         </td>
     {% endif %}
     <td>
-        <a class="bold-link fs-100" href="{{ path('move_detail', {slug_move: moveLearnMethod.move.slug }) }}">
+        <a class="bold-link fs-100" href="{{ path('move_detail', {'code': moveLearnMethod.move.language.code, 'slug': moveLearnMethod.move.slug }) }}">
             {{ moveLearnMethod.move.name }}
         </a>
     </td>

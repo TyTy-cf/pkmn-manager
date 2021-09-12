@@ -41,14 +41,16 @@ class MoveRepository extends AbstractRepository
 
     /**
      * @param string $slug
+     * @param string $code
      * @return int|mixed|string
      * @throws NonUniqueResultException
      */
-    public function getMoveBySlugWithRelation(string $slug)
+    public function getMoveBySlugWithRelation(string $slug, string $code)
     {
         return $this->createQueryBuilder('move')
             ->select('move', 'type', 'pokemon_moves_learn_version', 'pokemon', 'types', 'pokemon_sprites', 'moves_description', 'versionGroup')
             ->join('move.type', 'type')
+            ->join('move.language', 'language')
             ->join('move.movesDescription', 'moves_description')
             ->join('moves_description.versionGroup', 'versionGroup')
             ->join('move.pokemonMovesLearnVersion', 'pokemon_moves_learn_version')
@@ -56,7 +58,9 @@ class MoveRepository extends AbstractRepository
             ->join('pokemon.types', 'types')
             ->join('pokemon.pokemonSprites', 'pokemon_sprites')
             ->where('move.slug = :slug')
+            ->andWhere('language.code = :code')
             ->setParameter('slug', $slug)
+            ->setParameter('code', $code)
             ->groupBy('pokemon', 'versionGroup')
             ->orderBy('versionGroup.displayedOrder', 'DESC')
             ->getQuery()

@@ -4,7 +4,7 @@
         {{ moveMachine.name }}
     </td>
     <td class="ml-1">
-        <a class="bold-link fs-100" href="{{ path('move_detail', {slug_move: moveMachine.move.slug }) }}">
+        <a class="bold-link fs-100" href="{{ path('move_detail', {'code': moveMachine.move.language.code, 'slug': moveMachine.move.slug }) }}">
             {{ moveMachine.move.name }}
         </a>
     </td>

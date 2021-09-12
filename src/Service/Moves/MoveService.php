@@ -101,11 +101,11 @@ class MoveService extends AbstractService
             // Get the Types
             $codeLanguage = $language->getCode();
             $moveName = $this->apiService->getNameBasedOnLanguageFromArray($language->getCode(), $urlDetailedMove);
-            $slug = $codeLanguage. '-' . $this->textService->slugify($moveName);
+            $slug = $this->textService->slugify($moveName);
 
             $isNew = false;
             if (null === $move = $this->movesRepository->findOneBySlug($slug)) {
-                $move = new Move();
+                $move = (new Move())->setLanguage($language);
                 $isNew = true;
             }
 
@@ -119,13 +119,8 @@ class MoveService extends AbstractService
                 )
             );
 
-            if ($isNew) {
-                $move->setLanguage($language);
-                $this->entityManager->persist($move);
-            }
-
             $typeNameLang = $this->apiService->getNameBasedOnLanguage($codeLanguage, $urlDetailedMove['type']['url']);
-            $slugType = $codeLanguage. '-' . $this->textService->slugify($typeNameLang);
+            $slugType = $this->textService->slugify($typeNameLang);
             $type = $this->typeRepository->findOneBySlug($slugType);
 
             $move->setType($type)
@@ -144,6 +139,10 @@ class MoveService extends AbstractService
                 $move,
                 $urlDetailedMove['flavor_text_entries']
             );
+
+            if ($isNew) {
+                $this->entityManager->persist($move);
+            }
         }
     }
 
