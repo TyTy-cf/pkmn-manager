@@ -69,27 +69,22 @@ class AbilityService extends AbstractService
 
         if (!empty($urlDetailed['pokemon']))
         {
-            //Check if the data exist in databases
-            $slug = $this->textService->generateSlugFromClassWithLanguage(
-                $language, Ability::class, $apiResponse['name']
-            );
-
-            $isNew = false;
-            if (null === $ability = $this->abilitiesRepository->findOneBySlug($slug)) {
-                $ability = new Ability();
-                $isNew = true;
-            }
-
+            $codeLanguage = $language->getCode();
             // Fetch name & description according the language
-            $abilityNameLang = $this->apiService->getNameBasedOnLanguageFromArray(
-                $language->getCode(), $urlDetailed
-            );
+            $abilityNameLang = $this->apiService->getNameBasedOnLanguageFromArray($codeLanguage, $urlDetailed);
 
             if (null !== $abilityNameLang)
             {
+                $slug = $codeLanguage . '-' . $this->textService->slugify($abilityNameLang);
+
+                $isNew = false;
+                if (null === $ability = $this->abilitiesRepository->findOneBySlug($slug)) {
+                    $ability = (new Ability())->setLanguage($language);
+                    $isNew = true;
+                }
                 $abilityEffectEntries = $this->textService->removeReturnLineFromText(
                     $this->apiService->getFieldContentFromLanguage(
-                        $language->getCode(),
+                        $codeLanguage,
                         $urlDetailed,
                         'effect_entries',
                         'effect'
@@ -99,12 +94,10 @@ class AbilityService extends AbstractService
                 $ability
                     ->setName($abilityNameLang)
                     ->setDescription($abilityEffectEntries)
+                    ->setSlug($slug)
                 ;
+
                 if ($isNew) {
-                    $ability
-                        ->setSlug($slug)
-                        ->setLanguage($language)
-                    ;
                     $this->entityManager->persist($ability);
                 }
 
@@ -114,8 +107,6 @@ class AbilityService extends AbstractService
                     $ability,
                     $urlDetailed['flavor_text_entries']
                 );
-
-                $this->entityManager->flush();
             }
         }
     }

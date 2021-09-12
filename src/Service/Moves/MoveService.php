@@ -91,9 +91,6 @@ class MoveService extends AbstractService
      */
     public function createFromApiResponse(Language $language, $apiResponse)
     {
-        $slug = $this->textService->generateSlugFromClassWithLanguage(
-            $language, Move::class, $apiResponse['name']
-        );
         $urlDetailedMove = $this->apiService->apiConnect($apiResponse['url'])->toArray();
 
         if (($urlDetailedMove['pp'] !== null
@@ -101,14 +98,17 @@ class MoveService extends AbstractService
          || $urlDetailedMove['accuracy'] !== null)
          && isset($urlDetailedMove['damage_class'])
         ) {
+            // Get the Types
+            $codeLanguage = $language->getCode();
+            $moveName = $this->apiService->getNameBasedOnLanguageFromArray($language->getCode(), $urlDetailedMove);
+            $slug = $codeLanguage. '-' . $this->textService->slugify($moveName);
+
             $isNew = false;
             if (null === $move = $this->movesRepository->findOneBySlug($slug)) {
                 $move = new Move();
                 $isNew = true;
             }
 
-            $codeLanguage = $language->getCode();
-            $moveName = $this->apiService->getNameBasedOnLanguageFromArray($language->getCode(), $urlDetailedMove);
 
             // Get the DamageClass
             $damageClass = $this->damageClassRepository->findOneBySlug(
@@ -119,17 +119,15 @@ class MoveService extends AbstractService
                 )
             );
 
-            // Get the Type
-            $typeNameLang = $this->apiService->getNameBasedOnLanguage($codeLanguage, $urlDetailedMove['type']['url']);
-            $slugType = $codeLanguage. '-' . $this->textService->slugify($typeNameLang);
-            $type = $this->typeRepository->findOneBySlug($slugType);
-
             if ($isNew) {
                 $move->setLanguage($language);
                 $this->entityManager->persist($move);
             }
 
-            $slug = $codeLanguage. '-' . $this->textService->slugify($moveName);
+            $typeNameLang = $this->apiService->getNameBasedOnLanguage($codeLanguage, $urlDetailedMove['type']['url']);
+            $slugType = $codeLanguage. '-' . $this->textService->slugify($typeNameLang);
+            $type = $this->typeRepository->findOneBySlug($slugType);
+
             $move->setType($type)
                 ->setSlug($slug)
                 ->setName($moveName)
