@@ -104,7 +104,7 @@ index:
         pokemons: "Pokémons avec cette capacité"
     type:
         damage_relation: "Relation du type avec les autres types"
-        pokemons: "Pokemons ayant le type %type%"
+        pokemons: "Pokémons ayant le type %type%"
         to: "Offensif"
         from: "Défensif"
     egg_group:
@@ -117,15 +117,15 @@ index:
 
 pokedex:
     listing:
-        title: "Pokedex - %number%"
+        title: "Pokédex - %number%"
     all:
-        title: "Tous les pokedex"
+        title: "Tous les Pokédex"
     description:
         goto: "Aller au : "
-        listing: "Pokemons du %pokedex%"
+        listing: "Pokémons du %pokedex%"
     selection_header:
         title: "Pokédex par Génération"
-        indication: "Selectionnez votre Pokédex "
+        indication: "Sélectionnez votre Pokédex "
 
 move:
     title:
@@ -133,7 +133,7 @@ move:
         datas: "Détail de l'attaque"
         description: "Description"
         machine: "Capsule technique par versions"
-        pokemons: "Pokemons pouvant apprendre l'attaque"
+        pokemons: "Pokémons pouvant apprendre l'attaque"
     move:
         type: "Type"
         category: "Catégorie"
@@ -207,14 +207,14 @@ pokemon_sheet:
             iv: "IV"
             update: "Mettre à jour les stats"
     index:
-        title: "Mes pokemons"
-        empty: "Ajouter des pokemons à votre liste"
+        title: "Mes Pokémons"
+        empty: "Ajouter des Pokémons à votre liste"
         table:
-            pokemon: "Pokemon"
+            pokemon: "Pokémon"
             level: "Niveau"
             nature: "Nature"
             gender: "Genre"
             ability: "Ability"
             evs_ok: "EVS"
             moveset: "Moveset"
-        add: "Ajouter un pokemon"
+        add: "Ajouter un Pokémon"
