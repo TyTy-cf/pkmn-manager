@@ -18,6 +18,7 @@ class MoveLearnMethod
 {
 
     const CODE_MACHINE = "machine";
+    const CODE_LEVEL = 'level-up';
 
     /**
      * @ORM\Id()
