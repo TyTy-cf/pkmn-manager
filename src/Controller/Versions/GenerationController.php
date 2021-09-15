@@ -45,17 +45,19 @@ class GenerationController extends AbstractController
      * @Route(path="/{code}/pokedex", name="generation_index")
      *
      * @param Request $request
+     * @param string $code
      * @return Response
      */
-    public function generationIndex(Request $request): Response {
-        $language = $this->languageManager->getLanguageByCode($request->get('code'));
+    public function generationIndex(Request $request, string $code): Response {
+        $language = $this->languageManager->getLanguageByCode($code);
         $form = $this->createForm(SearchPokemonType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $selectedPokemon = $this->pokemonRepository->findOneBy(['name' => $form->getData()['name_pokemon']]);
             return $this->redirectToRoute('profile_pokemon', [
-                'slug_pokemon' => $selectedPokemon->getSlug()
+                'code' => $code,
+                'slug' => $selectedPokemon->getSlug(),
             ]);
         }
 
