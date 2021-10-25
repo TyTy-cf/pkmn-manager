@@ -3,11 +3,7 @@
         <tr>
             <th>{{ 'pokemon.type'|trans }}</th>
             <td>
-                {% for type in pokemon.types %}
-                    <a href="{{ path('type_detail', {slug_type: type.slug }) }}">
-                        <img class="size-20" src="{{ type.img }}" alt="Type {{ type.name|lower }}"  title="{{ type.name|lower }}"/>
-                    </a>
-                {% endfor %}
+                {% include 'Type/_card_pokemon_types.html.twig' with {'pokemon' : pokemon} %}
             </td>
         </tr>
         {% if pokemon.pokemonSpecies is defined %}
@@ -28,7 +24,7 @@
             <th>{{ 'pokemon.abilities'|trans }}</th>
             <td>
                 {% for pokemon_ability in pokemon.pokemonsAbility %}
-                    <a href="{{ path('ability_detail', {slug_ability: pokemon_ability.ability.slug}) }}"
+                    <a href="{{ path('ability_show', {'code': pokemon_ability.ability.language.code , 'slug': pokemon_ability.ability.slug}) }}"
                        title="{{ pokemon_ability.ability.description|capitalize }}"
                     >
                         {{ pokemon_ability.ability.name|capitalize }}
@@ -56,7 +52,7 @@
             <th>{{ 'pokemon.egg_group'|trans }}</th>
             <td>
                 {% for eggGroup in pokemon.pokemonSpecies.eggGroup %}
-                    <a href="{{ path('egg_group_detail', {slug_egg: eggGroup.slug}) }}">
+                    <a href="{{ path('egg_group_detail', {'code': eggGroup.language.code, 'slug': eggGroup.slug}) }}">
                         {{ eggGroup.name }}
                     </a>
                 {% endfor %}

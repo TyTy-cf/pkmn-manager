@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
  * Class PokemonAbility
  * @package App\Entity\Infos
  * @ORM\Entity(repositoryClass="App\Repository\Infos\PokemonAbilityRepository")
+ *
  */
 class PokemonAbility
 {

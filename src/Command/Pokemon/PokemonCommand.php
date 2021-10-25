@@ -58,7 +58,7 @@ class PokemonCommand extends AbstractCommand
      * @throws TransportExceptionInterface
      * @throws Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('');
         $output->writeln('<info>Fetching all pokemons...');

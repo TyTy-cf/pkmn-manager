@@ -15,6 +15,7 @@ use App\Service\TextService;
 use App\Repository\Infos\AbilityRepository;
 use App\Service\Versions\VersionGroupService;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class AbilityService extends AbstractService
@@ -62,6 +63,7 @@ class AbilityService extends AbstractService
      * @param Language $language
      * @param $apiResponse
      * @throws TransportExceptionInterface
+     * @throws NonUniqueResultException
      */
     public function createFromApiResponse(Language $language, $apiResponse) {
         //Fetch URL details type
@@ -69,27 +71,21 @@ class AbilityService extends AbstractService
 
         if (!empty($urlDetailed['pokemon']))
         {
-            //Check if the data exist in databases
-            $slug = $this->textService->generateSlugFromClassWithLanguage(
-                $language, Ability::class, $apiResponse['name']
-            );
-
-            $isNew = false;
-            if (null === $ability = $this->abilitiesRepository->findOneBySlug($slug)) {
-                $ability = new Ability();
-                $isNew = true;
-            }
-
-            // Fetch name & description according the language
-            $abilityNameLang = $this->apiService->getNameBasedOnLanguageFromArray(
-                $language->getCode(), $urlDetailed
-            );
+            $codeLanguage = $language->getCode();
+            $abilityNameLang = $this->apiService->getNameBasedOnLanguageFromArray($codeLanguage, $urlDetailed);
 
             if (null !== $abilityNameLang)
             {
+                $slug = $this->textService->slugify($abilityNameLang);
+
+                $isNew = false;
+                if (null === $ability = $this->abilitiesRepository->findOneBySlugAndLanguage($slug, $codeLanguage)) {
+                    $ability = (new Ability())->setLanguage($language);
+                    $isNew = true;
+                }
                 $abilityEffectEntries = $this->textService->removeReturnLineFromText(
                     $this->apiService->getFieldContentFromLanguage(
-                        $language->getCode(),
+                        $codeLanguage,
                         $urlDetailed,
                         'effect_entries',
                         'effect'
@@ -99,23 +95,17 @@ class AbilityService extends AbstractService
                 $ability
                     ->setName($abilityNameLang)
                     ->setDescription($abilityEffectEntries)
+                    ->setSlug($slug)
                 ;
+
                 if ($isNew) {
-                    $ability
-                        ->setSlug($slug)
-                        ->setLanguage($language)
-                    ;
                     $this->entityManager->persist($ability);
+                    $this->createAbilityDescription(
+                        $language,
+                        $ability,
+                        $urlDetailed['flavor_text_entries']
+                    );
                 }
-
-                // Create the Description by VersionGroup
-                $this->createAbilityDescription(
-                    $language,
-                    $ability,
-                    $urlDetailed['flavor_text_entries']
-                );
-
-                $this->entityManager->flush();
             }
         }
     }
@@ -125,11 +115,7 @@ class AbilityService extends AbstractService
      * @param Ability $ability
      * @param $urlDetailed
      */
-    private function createAbilityDescription(
-        Language $language,
-        Ability $ability,
-        $urlDetailed
-    ) {
+    private function createAbilityDescription(Language $language, Ability $ability, $urlDetailed) {
         foreach($urlDetailed as $descriptionDetailed) {
             if ($descriptionDetailed['language']['name'] === $language->getCode()) {
                 $slugVersion = $this->textService->generateSlugFromClassWithLanguage(
@@ -163,7 +149,6 @@ class AbilityService extends AbstractService
                     ;
                     $this->entityManager->persist($abilityVersionGroup);
                 }
-                $this->entityManager->persist($abilityVersionGroup);
             }
         }
     }

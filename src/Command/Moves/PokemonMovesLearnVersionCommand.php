@@ -5,7 +5,6 @@ namespace App\Command\Moves;
 
 
 use App\Command\AbstractCommand;
-use App\Entity\Moves\MoveLearnMethod;
 use App\Service\Api\ApiService;
 use App\Service\Moves\MoveLearnMethodService;
 use App\Service\Moves\PokemonMovesLearnVersionService;
@@ -21,28 +20,17 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Class PokemonMovesLearnVersionCommand
+ * @package App\Command\Moves
+ *
+ * @property VersionGroupService $versionGroupManager
+ * @property TextService $textManager
+ * @property MoveLearnMethodService $moveLearnMethodManager
+ * @property PokemonService $pokemonManager
+ */
 class PokemonMovesLearnVersionCommand extends AbstractCommand
 {
-
-    /**
-     * @var VersionGroupService $versionGroupManager
-     */
-    private VersionGroupService $versionGroupManager;
-
-    /**
-     * @var TextService $textManager
-     */
-    private TextService $textManager;
-
-    /**
-     * @var MoveLearnMethodService $moveLearnMethodManager
-     */
-    private MoveLearnMethodService $moveLearnMethodManager;
-
-    /**
-     * @var PokemonService $pokemonManager
-     */
-    private PokemonService $pokemonManager;
 
     /**
      * ExcecCommand constructor
@@ -139,6 +127,8 @@ class PokemonMovesLearnVersionCommand extends AbstractCommand
                 );
                 $progressBar->advance();
             }
+
+            $this->em->flush();
 
             //End of the progressBar
             $progressBar->finish();

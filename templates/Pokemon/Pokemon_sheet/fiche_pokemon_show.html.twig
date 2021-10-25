@@ -1,0 +1,136 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'pokemon.profile'|trans({'%pokemon%': pokemonSheet.pokemon.name}) }}
+{% endblock %}
+
+{% block body %}
+
+    <div class="pkmnProfile">
+        <div class="pkmnProfile-mainContent">
+            <div class="pkmnProfile-colSprite col-lg-6 col-md-12 col-sm-12">
+                <div class="pkmnProfile-colSpriteContainer">
+                    <img class="pkmnProfile_sprite" src="{{ pokemonSheet.pokemon.pokemonSprites.spriteOfficial }}"
+                         alt="{{ pokemonSheet.pokemon.name|capitalize }}"
+                    >
+                    <p class="pkmnProfile_bckgrdNumber lighten-profil">
+                        <small>N. </small>
+                        {{ pokemonSheet.level }}
+                    </p>
+                </div>
+            </div>
+            <div class="pkmnProfile-colDatas col-lg-6 col-md-12 col-sm-12">
+                <div class="pkmnProfile-colDatasContainer">
+                    <div class="pkmnProfile-datasHeader">
+                        <h1 class="pkmnProfile-datasMainTitle">
+                            {% if pokemonSheet.gender.image is not empty %}
+                                <img class="img-gender" src="{{ pokemonSheet.gender.image }}" alt="{{ pokemonSheet.gender.name }}">
+                            {% endif %}
+                            <span>
+                                {{ pokemonSheet.pokemon.name }}
+                            </span>
+                            <div class="ml-1 d-block d-xs-block d-sm-block d-lg-none">
+                                <small>N. </small>
+                                {{ pokemonSheet.level }}
+                            </div>
+                        </h1>
+                    </div>
+                    <div class="pkmnProfile-datasTabWrapper row">
+                        <div class="pkmnProfile-datasTab col-lg-12 col-md-12 col-sm-12">
+                            <table class="table table-striped profile-table w-100">
+                                <tbody>
+                                <tr>
+                                    <th>{{ 'pokemon_sheet.show.type'|trans }}</th>
+                                    <td>
+                                        {% include 'Type/_card_pokemon_types.html.twig' with {'pokemon' : pokemonSheet.pokemon} %}
+                                    </td>
+                                </tr>
+                                {% if pokemonSheet.nickname is not empty %}
+                                <tr>
+                                    <th>{{ 'pokemon_sheet.show.nickname'|trans }}</th>
+                                    <td>
+                                        {{ pokemonSheet.nickname }}
+                                    </td>
+                                </tr>
+                                {% endif %}
+                                <tr>
+                                    <th>{{ 'pokemon_sheet.show.ability'|trans }}</th>
+                                    <td>
+                                        {% include 'Pokemon/Pokemon_sheet/partials/_form_pokemon_sheet_ability.html.twig' %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'pokemon_sheet.show.nature'|trans }}</th>
+                                    <td>
+                                        <a href="{{ path('nature_index', {'code': code}) }}">
+                                            {{ pokemonSheet.nature.name }}
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'pokemon_sheet.show.moveSetName'|trans }}</th>
+                                    <td>
+                                        {% include 'Pokemon/Pokemon_sheet/partials/_form_pokemon_sheet_moveset.html.twig' %}
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="pkmnProfile-colDatas col-lg-12 col-md-12 col-sm-12">
+                            <ul class="pkmnProfile-datasNavigation nav" id="pills-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="pkmnProfile-datasTabLink nav-link active"
+                                       id="section-moves-tab"
+                                       data-toggle="pill"
+                                       href="#section-moves"
+                                       role="tab"
+                                       aria-controls="section-moves"
+                                       aria-selected="true"
+                                    >
+                                        {{ 'pokemon_sheet.show.tabpan.moves'|trans }}
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="pkmnProfile-datasTabLink nav-link"
+                                       id="section-stats-tab"
+                                       data-toggle="pill"
+                                       href="#section-stats"
+                                       role="tab"
+                                       aria-controls="section-stats"
+                                       aria-selected="true"
+                                    >
+                                        {{ 'pokemon_sheet.show.tabpan.stats'|trans }}
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="pkmnProfile-datasTabWrapper tab-content" id="pills-tabContent">
+                                <div class="pkmnProfile-datasTab tab-pane fade show active"
+                                     id="section-moves"
+                                     role="tabpanel"
+                                     aria-labelledby="section-moves-tab"
+                                >
+                                    {% include '/Pokemon/Pokemon_sheet/partials/_pokemon_sheet_tabpan_moves.html.twig' %}
+                                </div>
+                                <div class="pkmnProfile-datasTab tab-pane fade"
+                                     id="section-stats"
+                                     role="tabpanel"
+                                     aria-labelledby="section-stats-tab"
+                                >
+                                    {% include '/Pokemon/Pokemon_sheet/partials/_pokemon_sheet_tabpan_stats.html.twig' %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pkmnProfile-background">
+                <div class="pkmnProfile-backgroundSprite col-10"></div>
+                <div class="pkmnProfile-backgroundDatas col-2"></div>
+            </div>
+        </div>
+    </div>
+    <p data-entity-id hidden>{{ pokemonSheet.id }}</p>
+
+{% endblock %}
+

@@ -15,30 +15,19 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Class AbstractCommand
+ * @package App\Command
+ *
+ * @property AbstractService $manager
+ * @property LanguageService $languageManager
+ * @property ApiService $apiManager
+ * @property EntityManagerInterface $em
+ */
 abstract class AbstractCommand extends Command
 {
 
     protected array $supportedLanguages = ['fr', 'en'];
-
-    /**
-     * @var AbstractService $manager
-     */
-    protected AbstractService $manager;
-
-    /**
-     * @var LanguageService $languageManager
-     */
-    protected LanguageService $languageManager;
-
-    /**
-     * @var ApiService $apiManager ;
-     */
-    protected ApiService $apiManager;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    protected EntityManagerInterface $em;
 
     /**
      * AbstractCommand constructor.
@@ -117,6 +106,7 @@ abstract class AbstractCommand extends Command
                 $this->manager->createFromApiResponse($language, $apiResponse);
                 $progressBar->advance();
             }
+            $this->em->flush();
 
             //End of the progressBar
             $progressBar->finish();

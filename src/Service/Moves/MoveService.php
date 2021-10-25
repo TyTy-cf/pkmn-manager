@@ -2,12 +2,14 @@
 
 namespace App\Service\Moves;
 
-use App\Entity\Infos\Type\Type;
 use App\Entity\Moves\DamageClass;
 use App\Entity\Moves\Move;
+use App\Entity\Pokemon\Pokemon;
 use App\Entity\Users\Language;
 use App\Repository\Infos\Type\TypeRepository;
 use App\Repository\Moves\DamageClassRepository;
+use App\Repository\Pokedex\EvolutionChainLinkRepository;
+use App\Repository\Pokemon\PokemonRepository;
 use App\Service\AbstractService;
 use App\Service\Api\ApiService;
 use App\Service\TextService;
@@ -16,27 +18,18 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
+/**
+ * Class MoveService
+ * @package App\Service\Moves
+ *
+ * @property MoveRepository $movesRepository
+ * @property MoveDescriptionService $moveDescriptionManager
+ * @property TypeRepository $typeRepository
+ * @property DamageClassRepository damageClassRepository
+ * @property PokemonRepository $pokemonRepository
+ */
 class MoveService extends AbstractService
 {
-    /**
-     * @var MoveRepository $movesRepository
-     */
-    private MoveRepository $movesRepository;
-
-    /**
-     * @var MoveDescriptionService
-     */
-    private MoveDescriptionService $moveDescriptionManager;
-
-    /**
-     * @var TypeRepository $typeRepository
-     */
-    private TypeRepository $typeRepository;
-
-    /**
-     * @var DamageClassRepository $damageClassRepository
-     */
-    private DamageClassRepository $damageClassRepository;
 
     /**
      * MoveService constructor
@@ -47,6 +40,7 @@ class MoveService extends AbstractService
      * @param MoveDescriptionService $moveDescriptionService
      * @param MoveRepository $moveRepository
      * @param TypeRepository $typeRepository
+     * @param PokemonRepository $pokemonRepository
      */
     public function __construct (
         EntityManagerInterface $em,
@@ -55,12 +49,14 @@ class MoveService extends AbstractService
         DamageClassRepository $damageClassRepository,
         MoveDescriptionService $moveDescriptionService,
         MoveRepository $moveRepository,
-        TypeRepository $typeRepository
+        TypeRepository $typeRepository,
+        PokemonRepository $pokemonRepository
     ) {
         $this->movesRepository = $moveRepository;
         $this->typeRepository = $typeRepository;
         $this->damageClassRepository = $damageClassRepository;
         $this->moveDescriptionManager = $moveDescriptionService;
+        $this->pokemonRepository = $pokemonRepository;
         parent::__construct($em, $apiService, $textService);
     }
 
@@ -74,6 +70,20 @@ class MoveService extends AbstractService
     }
 
     /**
+     * @param Pokemon $pokemon
+     * @return array
+     */
+    public function findMovesByPokemon(Pokemon $pokemon): array {
+        $evolutionChain = $pokemon->getPokemonSpecies()->getEvolutionChain();
+        if ($evolutionChain === null) {
+            return $this->movesRepository->getMovesByPokemons([$pokemon]);
+        }
+        return $this->movesRepository->getMovesByPokemons(
+            $this->pokemonRepository->findByPokemonSpeciesEvolutionChain($evolutionChain)
+        );
+    }
+
+    /**
      * If not exist, save the moves in database
      * @param Language $language
      * @param $apiResponse
@@ -81,9 +91,6 @@ class MoveService extends AbstractService
      */
     public function createFromApiResponse(Language $language, $apiResponse)
     {
-        $slug = $this->textService->generateSlugFromClassWithLanguage(
-            $language, Move::class, $apiResponse['name']
-        );
         $urlDetailedMove = $this->apiService->apiConnect($apiResponse['url'])->toArray();
 
         if (($urlDetailedMove['pp'] !== null
@@ -91,16 +98,17 @@ class MoveService extends AbstractService
          || $urlDetailedMove['accuracy'] !== null)
          && isset($urlDetailedMove['damage_class'])
         ) {
+            // Get the Types
+            $codeLanguage = $language->getCode();
+            $moveName = $this->apiService->getNameBasedOnLanguageFromArray($language->getCode(), $urlDetailedMove);
+            $slug = $this->textService->slugify($moveName);
+
             $isNew = false;
             if (null === $move = $this->movesRepository->findOneBySlug($slug)) {
-                $move = new Move();
+                $move = (new Move())->setLanguage($language);
                 $isNew = true;
             }
 
-            $moveName = $this->apiService->getNameBasedOnLanguageFromArray(
-                $language->getCode(),
-                $urlDetailedMove
-            );
 
             // Get the DamageClass
             $damageClass = $this->damageClassRepository->findOneBySlug(
@@ -111,24 +119,12 @@ class MoveService extends AbstractService
                 )
             );
 
-            // Get the Type
-            $type = $this->typeRepository->findOneBySlug(
-                $this->textService->generateSlugFromClassWithLanguage(
-                    $language,
-                    Type::class,
-                    $urlDetailedMove['type']['name']
-                )
-            );
-
-            if ($isNew) {
-                $move
-                    ->setSlug($slug)
-                    ->setLanguage($language)
-                ;
-                $this->entityManager->persist($move);
-            }
+            $typeNameLang = $this->apiService->getNameBasedOnLanguage($codeLanguage, $urlDetailedMove['type']['url']);
+            $slugType = $this->textService->slugify($typeNameLang);
+            $type = $this->typeRepository->findOneBySlug($slugType);
 
             $move->setType($type)
+                ->setSlug($slug)
                 ->setName($moveName)
                 ->setPp($urlDetailedMove['pp'])
                 ->setDamageClass($damageClass)
@@ -143,7 +139,10 @@ class MoveService extends AbstractService
                 $move,
                 $urlDetailedMove['flavor_text_entries']
             );
-            $this->entityManager->flush();
+
+            if ($isNew) {
+                $this->entityManager->persist($move);
+            }
         }
     }
 

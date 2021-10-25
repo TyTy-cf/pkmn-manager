@@ -89,6 +89,10 @@ $pokedex-radius: 8px;
 	}
 }
 
+.lighten-profil {
+	color: lighten( $primary, 70% );
+}
+
 .pkmnProfile-colDatas {
 	position: relative;
 
@@ -434,4 +438,24 @@ $pokedex-radius: 8px;
 .pkmnProfile-backgroundDatas {
 	background: linear-gradient( 270deg, darken( $white, 8% ) 0%, $white 80% );
 	background-color: $white;
+}
+
+.result-calculator {
+	background-color: $background-lighter;
+	padding: 0.5em;
+	span {
+		font-weight: bold;
+	}
+}
+
+.error-calculator {
+	color: $red;
+}
+
+.close-calculator {
+	color: black;
+	&:hover {
+		cursor: pointer;
+		color: dimgrey;
+	}
 }

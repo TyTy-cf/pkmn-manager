@@ -1,0 +1,61 @@
+.pagination {
+  padding-top: 3rem;
+  justify-content: center;
+  align-items: center;
+
+  .page-item:first-child, .page-item:last-child {
+    .page-link {
+      border-radius: 0;
+    }
+  }
+
+  .page-item {
+    &.active {
+      .page-link {
+        color: #FFF;
+        background-color: $background-title;
+      }
+    }
+  }
+
+  .page-link {
+    font-size: 1.5rem;
+    border: none;
+    background-color: transparent;
+    color: $background-title;
+
+    &:hover {
+      color: $red;
+    }
+
+    &[rel=next], &[rel=prev] {
+      visibility: hidden;
+      font-size: 2rem;
+    }
+
+    &[rel=next]:before {
+      visibility: visible;
+      content: '\f105';
+    }
+
+    &[rel=prev]:after {
+      visibility: visible;
+      content: '\f104';
+    }
+  }
+
+  .disabled {
+    display: none;
+  }
+
+  &[rel='prev'] {
+    content: '\f104';
+  }
+}
+
+.filter-action {
+  border: none;
+  color: $gray-700;
+  font-size: 1rem;
+  background: unset;
+}

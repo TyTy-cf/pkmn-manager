@@ -13,20 +13,18 @@ use App\Service\Api\ApiService;
 use App\Service\TextService;
 use App\Repository\Infos\Type\TypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
+/**
+ * Class TypeService
+ * @package App\Service\Infos\Type
+ *
+ * @property TypeDamageRelationTypeService $typeDamageFromTypeManager
+ * @property TypeRepository $typeRepository
+ */
 class TypeService extends AbstractService
 {
-
-    /**
-     * @var TypeDamageRelationTypeService $typeDamageFromTypeManager
-     */
-    private TypeDamageRelationTypeService $typeDamageFromTypeManager;
-
-    /**
-     * @var TypeRepository
-     */
-    private TypeRepository $typeRepository;
 
     /**
      * PokemonService constructor.
@@ -56,8 +54,7 @@ class TypeService extends AbstractService
      * @param string $lang
      * @return Type[]|object[]
      */
-    public function getAllTypeByLanguage(string $lang)
-    {
+    public function getAllTypeByLanguage(string $lang): array {
         return $this->typeRepository->getAllTypeByLanguage($lang);
     }
 
@@ -66,37 +63,34 @@ class TypeService extends AbstractService
      * @param Language $language
      * @param mixed $type
      * @throws TransportExceptionInterface
+     * @throws NonUniqueResultException
      */
     public function createFromApiResponse(Language $language, $type)
     {
-        $slug = $this->textService->generateSlugFromClassWithLanguage(
-            $language, Type::class, $type['name']
-        );
-
-        if (null === $this->typeRepository->findOneBySlug($slug))
-        {
-            //Fetch URL details type
+        if ($type['name'] !== "shadow" && $type['name'] !== "unknown") {
             $urlType = $type['url'];
+            $codeLanguage = $language->getCode();
+            $typeNameLang = $this->apiService->getNameBasedOnLanguage($codeLanguage, $urlType);
+            $slug = $this->textService->slugify($typeNameLang);
 
-            //Fetch name according the language
-            $typeNameLang = $this->apiService->getNameBasedOnLanguage($language->getCode(), $urlType);
-            $codeApi = $this->apiService->getIdFromUrl($urlType);
-
-            //Check if the data exist in databases
-            $newType = $this->typeRepository->findOneBy(['name' => $typeNameLang]);
-
-            //If database is null, create type
-            if (empty($newType) && $type['name'] !== "shadow" && $type['name'] !== "unknown") {
-                $urlImg = '/images/types/';
-                //Create new object and save in databases
+            if (null === $newType = $this->typeRepository->findOneBySlugAndLanguage($slug, $codeLanguage)) {
                 $newType = new Type();
+            }
+
+            if ($newType !== null) {
+                //Fetch URL details type
+                //Fetch name according the language
+                $codeApi = $this->apiService->getIdFromUrl($urlType);
+
+                //If database is null, create type
+                $urlImg = '/images/types/' . $codeLanguage . '/' . strtolower($this->apiService->getNameBasedOnLanguage('en', $urlType));
+                //Create new object and save in databases
                 $newType->setName($typeNameLang);
                 $newType->setSlug($slug);
                 $newType->setLanguage($language);
-                $newType->setImg($urlImg . $slug . '.png');
+                $newType->setImg($urlImg . '.png');
                 $newType->setCodeApi($codeApi);
                 $this->entityManager->persist($newType);
-                $this->entityManager->flush();
             }
         }
     }

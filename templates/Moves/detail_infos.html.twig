@@ -4,7 +4,7 @@
         <tr>
             <th>{{ 'move.move.type'|trans }}</th>
             <td>
-                <a href="{{ path('type_detail', {slug_type: move.type.slug }) }}">
+                <a href="{{ path('type_detail', {'code': move.type.language.code, 'slug': move.type.slug }) }}">
                     <img class="size-40" src="{{ move.type.img }}"
                          alt="Type {{ move.type.name|lower }}"
                          title="{{ move.type.name|lower }}"

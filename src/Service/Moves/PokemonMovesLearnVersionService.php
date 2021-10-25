@@ -19,28 +19,17 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
+/**
+ * Class PokemonMovesLearnVersionService
+ * @package App\Service\Moves
+ *
+ * @property PokemonMovesLearnVersionRepository $repoPokemonMoves
+ * @property VersionGroupService $versionGroupService
+ * @property GenerationService $generationService
+ * @property MoveRepository $movesRepository
+ */
 class PokemonMovesLearnVersionService extends AbstractService
 {
-
-    /**
-     * @var PokemonMovesLearnVersionRepository $repoPokemonMoves
-     */
-    private PokemonMovesLearnVersionRepository $repoPokemonMoves;
-
-    /**
-     * @var VersionGroupService $versionGroupService
-     */
-    private VersionGroupService $versionGroupService;
-
-    /**
-     * @var GenerationService $generationService
-     */
-    private GenerationService $generationService;
-
-    /**
-     * @var MoveRepository $movesRepository
-     */
-    private MoveRepository $movesRepository;
 
     /**
      * MoveService constructor
@@ -81,15 +70,6 @@ class PokemonMovesLearnVersionService extends AbstractService
     }
 
     /**
-     * @param Move|null $move
-     * @return int|mixed|string
-     */
-    public function getMoveLearnByPokemon(?Move $move)
-    {
-        return $this->repoPokemonMoves->getMoveLearnByMove($move);
-    }
-
-    /**
      * @return int|mixed|string
      */
     public function getLastPokemonIdInDataBase()
@@ -113,20 +93,17 @@ class PokemonMovesLearnVersionService extends AbstractService
         array $arrayMoveLearnMethod
     )
     {
-        $urlDetailed = json_decode(
-            $this->apiService->getPokemonFromName($pokemon->getNameApi())->getContent(),
-            true
-        );
+        $urlDetailed = json_decode($this->apiService->getPokemonFromName($pokemon->getNameApi())->getContent(),true);
 
         // Fetchs all moves
         foreach ($urlDetailed['moves'] as $detailedMove)
         {
             // Fetch the move from data
-            $moveName = $detailedMove['move']['name'];
             $codeLang = $language->getCode();
-            $move = $this->movesRepository->findOneBySlug(
-                $codeLang . '/move-'.$moveName
-            );
+            $moveName = $this->apiService->getNameBasedOnLanguage($codeLang, $detailedMove['move']['url']);
+            $slug = $codeLang. '-' . $this->textService->slugify($moveName);
+            $move = $this->movesRepository->findOneBySlug($slug);
+
             foreach ($detailedMove['version_group_details'] as $detailGroup)
             {
                 $versionGroupName = $detailGroup['version_group']['name'];

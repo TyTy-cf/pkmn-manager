@@ -26,11 +26,13 @@
 .stats-very-low {
 	background: linear-gradient(180deg, lighten($stats-very-low, 14%) 0%, $stats-very-low 85%, darken($stats-very-low, 10%) 90%, darken($stats-very-low, 10%) 100%);
 	background-color: $stats-very-low;
+	color: $white;
 }
 
 .stats-low {
 	background: linear-gradient( 180deg, lighten( $stats-low, 14% ) 0%, $stats-low 85%, darken( $stats-low, 10% ) 90%, darken( $stats-low, 10% ) 100% );
 	background-color: $stats-low;
+	color: $white;
 }
 
 .stats-average-low {

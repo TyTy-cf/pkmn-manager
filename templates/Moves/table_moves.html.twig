@@ -6,12 +6,12 @@
         </td>
     {% endif %}
     <td>
-        <a class="bold-link fs-100" href="{{ path('move_detail', {slug_move: moveLearnMethod.move.slug }) }}">
+        <a class="bold-link fs-100" href="{{ path('move_detail', {'code': moveLearnMethod.move.language.code, 'slug': moveLearnMethod.move.slug }) }}">
             {{ moveLearnMethod.move.name }}
         </a>
     </td>
     <td class="text-center">
-        <a href="{{ path('type_detail', {slug_type: moveLearnMethod.move.type.slug }) }}">
+        <a href="{{ path('type_detail', {'code': moveLearnMethod.move.type.language.code, 'slug': moveLearnMethod.move.type.slug }) }}">
             {% if title is same as ('pokemon.moves.method.levelup'|trans) %}
                 <img class="size-75"
                      title="{{ moveLearnMethod.move.type.name }}"

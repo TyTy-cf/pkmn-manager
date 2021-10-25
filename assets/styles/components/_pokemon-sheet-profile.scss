@@ -1,0 +1,55 @@
+
+.pokemon-sheet-edit-button {
+  color: $blue;
+  padding: 0;
+
+  &:hover {
+    color: lighten($blue, 30%);
+  }
+}
+
+.pokemon-sheet-add-button {
+  color: $green;
+  padding: 0;
+
+  &:hover {
+    color: lighten($green, 30%);
+  }
+}
+
+.pokemon-sheet-cancel-button {
+  color: $red;
+  padding: 0;
+
+  &:hover {
+    color: lighten($red, 30%);
+  }
+}
+
+.field-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.img-gender {
+  margin-top: 0.3em;
+  margin-right: 0.5em;
+  width: 5% !important;
+  height: 5% !important;
+
+  &-smaller {
+    width: 3% !important;
+    height: 3% !important;
+  }
+}
+
+.evs-empty {
+  color: $red;
+  font-weight: bold;
+}
+
+.evs-ok {
+  color: $green;
+  font-weight: bold;
+}

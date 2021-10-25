@@ -3,8 +3,11 @@
 namespace App\Repository\Infos;
 
 use App\Entity\Infos\Ability;
+use App\Entity\Pokemon\Pokemon;
+use App\Entity\Users\Language;
 use App\Repository\AbstractRepository;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -21,11 +24,27 @@ class AbilityRepository extends AbstractRepository
     }
 
     /**
+     * @param Language $language
+     * @return QueryBuilder
+     */
+    public function queryAll(Language $language): QueryBuilder
+    {
+        return $this->createQueryBuilder('ability')
+            ->select('ability', 'pokemons_ability')
+            ->join('ability.pokemonsAbility', 'pokemons_ability')
+            ->where('ability.language = :language')
+            ->setParameter('language', $language)
+            ->orderBy('ability.name', 'ASC')
+        ;
+    }
+
+    /**
      * @param string $slug
+     * @param string $code
      * @return int|mixed|object|string|null
      * @throws NonUniqueResultException
      */
-    public function findOneBySlugWithRelation(string $slug)
+    public function findOneBySlugWithRelation(string $slug, string $code)
     {
         return $this->createQueryBuilder('ability')
             ->select('ability', 'pokemons_ability', 'pokemon', 'pokemon_sprites', 'types')
@@ -33,10 +52,35 @@ class AbilityRepository extends AbstractRepository
             ->join('pokemons_ability.pokemon', 'pokemon')
             ->join('pokemon.pokemonSprites', 'pokemon_sprites')
             ->join('pokemon.types', 'types')
+            ->join('pokemon.pokemonSpecies', 'pokemonSpecies')
+            ->join('ability.language', 'language')
+            ->innerJoin('pokemonSpecies.pokedexSpecies', 'pokedexSpecies')
+            ->innerJoin('pokedexSpecies.pokedex', 'pokedex')
             ->where('ability.slug = :slug')
+            ->andWhere('pokedex.generation = 9')
+            ->andWhere('language.code = :code')
             ->setParameter('slug', $slug)
+            ->setParameter('code', $code)
+            ->orderBy('pokedexSpecies.number', 'ASC')
             ->getQuery()
             ->getOneOrNullResult()
         ;
+    }
+
+    /**
+     * @param Pokemon $pokemon
+     * @return Ability[]|null
+     */
+    public function getAbilitysByPokemon(Pokemon $pokemon): ?array {
+        return $this->createQueryBuilder('ability')
+            ->select('ability')
+            ->join('ability.pokemonsAbility', 'pokemons_ability')
+            ->join('pokemons_ability.pokemon', 'pokemon')
+            ->where('pokemon = :pokemon')
+            ->setParameter('pokemon', $pokemon)
+            ->orderBy('ability.name', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
     }
 }

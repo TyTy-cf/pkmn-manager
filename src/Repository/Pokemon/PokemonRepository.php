@@ -2,6 +2,7 @@
 
 namespace App\Repository\Pokemon;
 
+use App\Entity\Pokedex\EvolutionChain;
 use App\Entity\Pokedex\Pokedex;
 use App\Entity\Pokemon\Pokemon;
 use App\Entity\Pokemon\PokemonSpecies;
@@ -31,6 +32,7 @@ class PokemonRepository extends AbstractRepository
             ->select('pokemon')
             ->where('pokemon.language = :lang')
             ->setParameter('lang', $language)
+            ->orderBy('pokemon.name')
             ->getQuery()
             ->getResult()
         ;
@@ -61,7 +63,7 @@ class PokemonRepository extends AbstractRepository
      * @return int|mixed|string|null
      * @throws NonUniqueResultException
      */
-    public function getPokemonProfileBySlug(string $slug) {
+    public function getPokemonProfileBySlug(string $slug, string $code) {
         return $this->createQueryBuilder('pokemon')
             ->select('pokemon',
                 'pokemon_species', 'egg_group',
@@ -77,8 +79,11 @@ class PokemonRepository extends AbstractRepository
             ->leftJoin('pokemon_species.pokemons', 'pokemons')
             ->join('pokemon.pokemonSprites', 'pokemon_sprites')
             ->join('pokemon.types', 'types')
-            ->andWhere('pokemon.slug = :slug')
+            ->join('pokemon.language', 'language')
+            ->where('pokemon.slug = :slug')
+            ->andWhere('language.code = :code')
             ->setParameter('slug', $slug)
+            ->setParameter('code', $code)
             ->getQuery()
             ->getOneOrNullResult()
         ;
@@ -135,6 +140,22 @@ class PokemonRepository extends AbstractRepository
             ->andWhere('pokemon.name LIKE :approxName')
             ->setParameter('approxName', '%'.$approxName.'%')
             ->setParameter('language', $language)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @param EvolutionChain $evolutionChain
+     * @return array
+     */
+    public function findByPokemonSpeciesEvolutionChain(EvolutionChain $evolutionChain): array
+    {
+        return $this->createQueryBuilder('pokemon')
+            ->select('pokemon')
+            ->join('pokemon.pokemonSpecies', 'pokemon_species')
+            ->where('pokemon_species.evolutionChain = :evolutionChain')
+            ->setParameter('evolutionChain', $evolutionChain)
             ->getQuery()
             ->getResult()
         ;

@@ -22,18 +22,22 @@ class EggGroupRepository extends AbstractRepository
 
     /**
      * @param string $slug
+     * @param string $code
      * @return int|mixed|string
      * @throws NonUniqueResultException
      */
-    public function findOneBySlugWithRelation(string $slug) {
+    public function findOneBySlugWithRelation(string $slug, string $code) {
         return $this->createQueryBuilder('egg_group')
             ->select('egg_group', 'pokemon_species', 'pokemons', 'types', 'pokemon_sprites')
             ->join('egg_group.pokemonSpecies', 'pokemon_species')
             ->join('pokemon_species.pokemons', 'pokemons')
             ->join('pokemons.types', 'types')
             ->join('pokemons.pokemonSprites', 'pokemon_sprites')
+            ->join('egg_group.language', 'language')
             ->where('egg_group.slug = :slug')
+            ->andWhere('language.code = :code')
             ->setParameter('slug', $slug)
+            ->setParameter('code', $code)
             ->getQuery()
             ->getOneOrNullResult()
         ;

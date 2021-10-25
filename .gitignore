@@ -6,6 +6,8 @@
 /public/bundles/
 /var/
 /vendor/
+composer.lock
+symfony.lock
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
@@ -23,8 +25,11 @@ yarn-error.log
 
 ### Autres
 .idea
+.idea/*
 .DS_Store
 
 ###> liip/imagine-bundle ###
 /public/media/cache/
 ###< liip/imagine-bundle ###
+.idea/pkmn-management.iml
+.idea/php.xml

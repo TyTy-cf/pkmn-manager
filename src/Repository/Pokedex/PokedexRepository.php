@@ -3,7 +3,6 @@
 namespace App\Repository\Pokedex;
 
 use App\Entity\Pokedex\Pokedex;
-use App\Entity\Users\Language;
 use App\Entity\Versions\Generation;
 use App\Repository\AbstractRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -23,21 +22,17 @@ class PokedexRepository extends AbstractRepository
 
     /**
      * @param Generation $generation
-     * @param Language $language
      * @return int|mixed|string
      */
-    public function getPokedexByGeneration(Generation $generation, Language $language)
+    public function getPokedexByGeneration(Generation $generation)
     {
         return $this->createQueryBuilder('pokedex')
             ->select('pokedex', 'versionGroup')
+            ->join('pokedex.language', 'language')
+            ->join('pokedex.generation', 'generation')
             ->leftJoin('pokedex.versionGroup', 'versionGroup')
-
-            ->where('pokedex.generation = :generation')
-            ->andwhere('pokedex.language = :language')
-
+            ->where('generation = :generation')
             ->setParameter('generation', $generation)
-            ->setParameter('language', $language)
-
             ->getQuery()
             ->getResult()
         ;

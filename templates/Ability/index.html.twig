@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="container">
+        <h1 class="text-center bordered-title">{{ 'ability.title'|trans }}</h1>
+        {{ form_start(filters) }}
+        <table class="table table-striped col-8 col-md-8 mx-auto">
+            <thead>
+                <tr>
+                    <th scope="col">
+                        {{ knp_pagination_sortable(
+                            abilities,
+                            'ability.table.header.name' | trans,
+                            'ability.name')|raw }}
+                        {{ form_widget(filters.name) }}
+                    </th>
+                    <th scope="col">
+                        {{ knp_pagination_sortable(
+                            abilities,
+                            'ability.table.header.description' | trans,
+                            'ability.description')|raw }}
+                        {{ form_widget(filters.description) }}
+                    </th>
+                    <th scope="col">
+                        {{ 'ability.table.header.nb_pokemon'|trans }}
+                    </th>
+                    <th scope="col">
+                        <div>
+                            <button type="submit" class="filter-action">
+                                <i class="fas fa-filter"></i>
+                            </button>
+                            <a class="filter-action" href="{{ path('ability_index', {'code': codeLanguage}) }}">
+                                <i class="fas fa-times"></i>
+                            </a>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ability in abilities %}
+                <tr>
+                    <td>
+                        <a href="{{ path('ability_show', {'code': ability.language.code , 'slug': ability.slug}) }}">
+                            {{ ability.name }}
+                        </a>
+                    </td>
+                    <td>
+                        {{ ability|last_description }}
+                    </td>
+                    <td colspan="2">
+                        {{ ability.pokemonsAbility.count }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {{ form_end(filters) }}
+
+        <div class="pagination pt-0">
+            {{ knp_pagination_render(abilities) }}
+        </div>
+
+    </div>
+
+{% endblock %}

@@ -68,7 +68,7 @@ class Generation
         5 => 'BW',
         6 => 'XY',
         7 => 'SM',
-        8 => 'SS'
+        8 => 'SS',
     ];
 
     /**
@@ -184,9 +184,8 @@ class Generation
         }
     }
 
-    public function __toString()
+    public function __toString(): ?string
     {
         return $this->getName();
     }
-
 }

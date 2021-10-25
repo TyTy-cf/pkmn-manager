@@ -50,63 +50,70 @@ class PokemonSheet
     /**
      * @var string|null $nickname le surnom du pokemon
      *
-     * @ORM\Column(name="nickname", type="string", length=20, nullable=true)
+     * @ORM\Column(name="nickname", type="string", length=24, nullable=true)
      */
     private ?string $nickname;
 
     /**
-     * @var integer $level le niveau du pokemon
+     * @var integer|null $level le niveau du pokemon
      *
-     * @ORM\Column(name="level", type="integer", length=3)
+     * @ORM\Column(name="level", type="integer", length=3, nullable=true)
      */
-    private int $level;
+    private ?int $level;
 
     /**
-     * @var Gender $gender le genre du pokemon
+     * @var Gender|null $gender le genre du pokemon
      *
-     * @OneToOne(targetEntity="App\Entity\Infos\Gender")
-     * @JoinColumn(name="gender_id", referencedColumnName="id")
+     * @ManyToOne(targetEntity="App\Entity\Infos\Gender")
+     * @JoinColumn(name="gender_id", referencedColumnName="id", nullable=true)
      */
-    private Gender $gender;
+    private ?Gender $gender;
 
     /**
      * @ManyToOne(targetEntity="App\Entity\Infos\Nature")
-     * @JoinColumn(name="nature_id", referencedColumnName="id")
+     * @JoinColumn(name="nature_id", referencedColumnName="id", nullable=true)
      */
-    private Nature $nature;
+    private ?Nature $nature;
 
     /**
      * @ManyToOne(targetEntity="App\Entity\Infos\Ability")
-     * @JoinColumn(name="ability_id", referencedColumnName="id")
+     * @JoinColumn(name="ability_id", referencedColumnName="id", nullable=true)
      */
-    private Ability $ability;
+    private ?Ability $ability;
 
     /**
      * @OneToOne(targetEntity="App\Entity\Stats\StatsIv")
-     * @JoinColumn(name="ivs_id", referencedColumnName="id")
+     * @JoinColumn(name="ivs_id", referencedColumnName="id", nullable=true)
      */
-    private StatsIv $ivs;
+    private ?StatsIv $ivs;
 
     /**
      * @OneToOne(targetEntity="App\Entity\Stats\StatsEv")
-     * @JoinColumn(name="evs_id", referencedColumnName="id")
+     * @JoinColumn(name="evs_id", referencedColumnName="id", nullable=true)
      */
-    private StatsEv $evs;
+    private ?StatsEv $evs;
 
     /**
      * @OneToOne(targetEntity="App\Entity\Stats\Stats")
-     * @JoinColumn(name="stats_id", referencedColumnName="id")
+     * @JoinColumn(name="stats_id", referencedColumnName="id", nullable=true)
      */
-    private Stats $stats;
+    private ?Stats $stats;
 
     /**
      * @ManyToMany(targetEntity="App\Entity\Moves\Move")
      * @JoinTable(name="pokemon_sheet_moves",
      *      joinColumns={@JoinColumn(name="pokemon_sheet_id", referencedColumnName="id")},
      *      inverseJoinColumns={@JoinColumn(name="move_id", referencedColumnName="id")}
-     *      )
+     * )
      */
     private Collection $moves;
+
+    /**
+     * @var string|null $moveSetName
+     *
+     * @ORM\Column(name="move_set_name", type="string", length=60, nullable=true)
+     */
+    private ?string $moveSetName;
 
     /**
      * @var User|null
@@ -141,19 +148,21 @@ class PokemonSheet
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getNamePokemon()
+    public function getMoveSetName(): string
     {
-        return $this->namePokemon;
+        return $this->moveSetName;
     }
 
     /**
-     * @param mixed $namePokemon
+     * @param string $moveSetName
+     * @return PokemonSheet
      */
-    public function setNamePokemon($namePokemon): void
+    public function setMoveSetName(string $moveSetName): PokemonSheet
     {
-        $this->namePokemon = $namePokemon;
+        $this->moveSetName = $moveSetName;
+        return $this;
     }
 
     /**
@@ -189,17 +198,17 @@ class PokemonSheet
     }
 
     /**
-     * @return Ability
+     * @return Ability|null
      */
-    public function getAbility(): Ability
+    public function getAbility(): ?Ability
     {
         return $this->ability;
     }
 
     /**
-     * @param Ability $ability
+     * @param Ability|null $ability
      */
-    public function setAbility(Ability $ability): void
+    public function setAbility(?Ability $ability): void
     {
         $this->ability = $ability;
     }
@@ -239,7 +248,7 @@ class PokemonSheet
     /**
      * @return mixed
      */
-    public function getIvs()
+    public function getIvs(): ?StatsIv
     {
         return $this->ivs;
     }
@@ -253,17 +262,17 @@ class PokemonSheet
     }
 
     /**
-     * @return mixed
+     * @return StatsEv
      */
-    public function getEvs()
+    public function getEvs(): ?StatsEv
     {
         return $this->evs;
     }
 
     /**
-     * @param mixed $evs
+     * @param StatsEv $evs
      */
-    public function setEvs($evs): void
+    public function setEvs(StatsEv $evs): void
     {
         $this->evs = $evs;
     }

@@ -56,36 +56,35 @@ class NatureService extends AbstractService
         );
         $codeLang = $language->getCode();
 
-        if (null === $this->natureRepository->findOneBySlug($slug))
-        {
-            $urlContent = $this->apiService->apiConnect($urlContent['url'])->toArray();
-            $decreasedStat = $this->getModifiedStat($codeLang, $urlContent['decreased_stat']);
-            $increasedStat = $this->getModifiedStat($codeLang, $urlContent['increased_stat']);
+        if (null === $nature = $this->natureRepository->findOneBySlug($slug)) {
             $nature = (new Nature())
                 ->setSlug($slug)
                 ->setName($this->apiService->getNameBasedOnLanguageFromArray($codeLang, $urlContent))
                 ->setLanguage($language)
-                ->setStatDecreased($decreasedStat)
-                ->setStatIncreased($increasedStat)
             ;
-            $this->entityManager->persist($nature);
-            $this->entityManager->flush();
         }
-    }
 
-    /**
-     * @param $codeLang
-     * @param $urlContent
-     * @return string|null
-     * @throws TransportExceptionInterface
-     */
-    public function getModifiedStat($codeLang, $urlContent): ?string
-    {
-        if (!empty($urlContent))
-        {
-            return $this->apiService->getNameBasedOnLanguage($codeLang, $urlContent['url']);
+        $urlContent = $this->apiService->apiConnect($urlContent['url'])->toArray();
+
+        $tmpStats[Nature::$ATK_API] = 1;
+        $tmpStats[Nature::$DEF_API] = 1;
+        $tmpStats[Nature::$SPA_API] = 1;
+        $tmpStats[Nature::$SPD_API] = 1;
+        $tmpStats[Nature::$SPE_API] = 1;
+        if (isset($urlContent['decreased_stat'])) {
+            $tmpStats[$urlContent['decreased_stat']['name']] = 0.9;
         }
-        return null;
+        if (isset($urlContent['increased_stat'])) {
+            $tmpStats[$urlContent['increased_stat']['name']] = 1.1;
+        }
+        $nature->setAtk($tmpStats[Nature::$ATK_API]);
+        $nature->setDef($tmpStats[Nature::$DEF_API]);
+        $nature->setSpa($tmpStats[Nature::$SPA_API]);
+        $nature->setSpd($tmpStats[Nature::$SPD_API]);
+        $nature->setSpe($tmpStats[Nature::$SPE_API]);
+
+        $this->entityManager->persist($nature);
+        $this->entityManager->flush();
     }
 
 }

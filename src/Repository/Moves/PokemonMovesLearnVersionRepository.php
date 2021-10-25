@@ -57,7 +57,7 @@ class PokemonMovesLearnVersionRepository extends ServiceEntityRepository
      */
     public function getMovesLearnBy(Pokemon $pokemon, MoveLearnMethod $moveLearnMethod, VersionGroup $versionGroup)
     {
-        return $this->createQueryBuilder('pmlv')
+        $qb = $this->createQueryBuilder('pmlv')
             ->select('pmlv', 'versionGroup', 'moveLearnMethod', 'move', 'type', 'damage_class')
             ->join('pmlv.moveLearnMethod', 'moveLearnMethod')
             ->join('pmlv.move', 'move')
@@ -71,7 +71,29 @@ class PokemonMovesLearnVersionRepository extends ServiceEntityRepository
             ->setParameter('moveLearnMethod', $moveLearnMethod)
             ->setParameter('pokemon', $pokemon)
             ->setParameter('versionGroup', $versionGroup)
-            ->orderBy('pmlv.level', 'ASC')
+        ;
+        if ($moveLearnMethod->getCodeMethod() === MoveLearnMethod::CODE_LEVEL) {
+            $qb->orderBy('pmlv.level', 'ASC');
+        } else {
+            $qb->orderBy('move.name', 'ASC');
+        }
+        return $qb->getQuery()
+                ->getResult();
+    }
+
+    /**
+     * @param Pokemon $pokemon
+     * @return PokemonMovesLearnVersion[]
+     */
+    public function getMovesLearnByPokemon(Pokemon $pokemon): array
+    {
+        return $this->createQueryBuilder('pmlv')
+            ->select('DISTINCT move')
+            ->join('pmlv.move', 'move')
+            ->join('pmlv.pokemon', 'pokemon')
+            ->where('pokemon = :pokemon')
+            ->setParameter('pokemon', $pokemon)
+            ->orderBy('move.name', 'ASC')
             ->getQuery()
             ->getResult()
         ;

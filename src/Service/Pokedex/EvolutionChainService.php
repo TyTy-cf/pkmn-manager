@@ -31,67 +31,25 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
+/**
+ * Class EvolutionChainService
+ * @package App\Service\Pokedex
+ *
+ * @property EvolutionChainRepository $evolutionChainRepository
+ * @property EvolutionChainLinkRepository $evolutionChainLinkRepository
+ * @property GenderRepository $genderRepository
+ * @property EvolutionTriggerRepository $evolutionTriggerRepository
+ * @property PokemonSpeciesService $pokemonSpeciesService
+ * @property LocationRepository $locationRepository
+ * @property ItemService $itemService
+ * @property MoveService $moveManager
+ * @property TypeService $typeService
+ * @property TypeRepository $typeRepository
+ * @property PokemonService $pokemonService
+ * @property ItemRepository $itemRepo
+ */
 class EvolutionChainService extends AbstractService
 {
-    /**
-     * @var EvolutionChainRepository $evolutionChainRepository
-     */
-    private EvolutionChainRepository $evolutionChainRepository;
-
-    /**
-     * @var EvolutionChainLinkRepository $evolutionChainLinkRepository
-     */
-    private EvolutionChainLinkRepository $evolutionChainLinkRepository;
-
-    /**
-     * @var GenderRepository $genderRepository
-     */
-    private GenderRepository $genderRepository;
-
-    /**
-     * @var EvolutionTriggerRepository $evolutionTriggerRepository
-     */
-    private EvolutionTriggerRepository $evolutionTriggerRepository;
-
-    /**
-     * @var PokemonSpeciesService $pokemonSpeciesService
-     */
-    private PokemonSpeciesService $pokemonSpeciesService;
-
-    /**
-     * @var LocationRepository $locationRepository
-     */
-    private LocationRepository $locationRepository;
-
-    /**
-     * @var ItemService $itemService
-     */
-    private ItemService $itemService;
-
-    /**
-     * @var MoveService $moveManager
-     */
-    private MoveService $moveManager;
-
-    /**
-     * @var TypeService $typeService
-     */
-    private TypeService $typeService;
-
-    /**
-     * @var PokemonService $pokemonService
-     */
-    private PokemonService $pokemonService;
-
-    /**
-     * @var TypeRepository $typeRepository
-     */
-    private TypeRepository $typeRepository;
-
-    /**
-     * @var ItemRepository $itemRepo
-     */
-    private ItemRepository $itemRepo;
 
     /**
      * EvolutionChainService constructor.
@@ -259,9 +217,7 @@ class EvolutionChainService extends AbstractService
                     $arrayChainEvolveTo = $arrayChainEvolveTo[$index]['evolves_to'];
                 }
             }
-            $this->entityManager->flush();
         }
-
     }
 
     /**

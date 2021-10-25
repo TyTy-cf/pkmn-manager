@@ -69,6 +69,34 @@ pokemon:
         default: "Normal"
         shiny: "Shiny"
 
+form_stats:
+    title:
+        main: 'Outil pour la stratégie'
+        iv: "Calculateur d'IV"
+        stats: 'Calculateur de stats'
+    level: 'Niveau'
+    stats:
+        hp: 'Stat HP'
+        atk: 'Stat ATK'
+        def: 'Stat DEF'
+        spa: 'Stat SPA'
+        spd: 'Stat SPD'
+        spe: 'Stat SPE'
+    ev:
+        hp: 'EV HP'
+        atk: 'EV ATK'
+        def: 'EV DEF'
+        spa: 'EV SPA'
+        spd: 'EV SPD'
+        spe: 'EV SPE'
+    iv:
+        hp: 'IV HP'
+        atk: 'IV ATK'
+        def: 'IV DEF'
+        spa: 'IV SPA'
+        spd: 'IV SPD'
+        spe: 'IV SPE'
+
 index:
     ability:
         description: "Effet"
@@ -76,7 +104,7 @@ index:
         pokemons: "Pokémons avec cette capacité"
     type:
         damage_relation: "Relation du type avec les autres types"
-        pokemons: "Pokemons ayant le type %type%"
+        pokemons: "Pokémons ayant le type %type%"
         to: "Offensif"
         from: "Défensif"
     egg_group:
@@ -89,15 +117,15 @@ index:
 
 pokedex:
     listing:
-        title: "Pokedex - %number%"
+        title: "Pokédex - %number%"
     all:
-        title: "Tous les pokedex"
+        title: "Tous les Pokédex"
     description:
         goto: "Aller au : "
-        listing: "Pokemons du %pokedex%"
+        listing: "Pokémons du %pokedex%"
     selection_header:
         title: "Pokédex par Génération"
-        indication: "Selectionnez votre Pokédex "
+        indication: "Sélectionnez votre Pokédex "
 
 move:
     title:
@@ -105,7 +133,7 @@ move:
         datas: "Détail de l'attaque"
         description: "Description"
         machine: "Capsule technique par versions"
-        pokemons: "Pokemons pouvant apprendre l'attaque"
+        pokemons: "Pokémons pouvant apprendre l'attaque"
     move:
         type: "Type"
         category: "Catégorie"
@@ -117,3 +145,76 @@ move:
             no: "Non"
             yes: "Oui"
 
+ability:
+    title: "Liste des capacités"
+    table:
+        header:
+            name: 'Nom'
+            nb_pokemon: 'Pokémon'
+            description: 'Description'
+
+nature:
+    title: 'Liste des natures'
+    table:
+        header:
+            label: 'Natures'
+            atk: 'Attaque'
+            def: 'Défense'
+            spa: 'Attaque spé.'
+            spd: 'Défense spé.'
+            spe: 'Vitesse'
+
+pokemon_sheet:
+    title:
+        add: "Ajouter un Pokémon"
+        add_move: "Création de %pokemon%"
+    form:
+        submit: "Créer"
+        add: "Ajouter"
+        field:
+            nickname: "Nickname"
+            ability: "Talent"
+            moves: "Attaques"
+            moveSetName: "Nom moveset"
+            level: "Niveau"
+            add: "Ajouter une attaque"
+            remove: "Enlever attaque"
+        move:
+            title: "Attaque "
+    show:
+        type: "Type"
+        nickname: "Surnom"
+        level: "Niveau"
+        ability: "Talent"
+        nature: "Nature"
+        gender: "Genre"
+        moveSetName: "Moveset"
+        moves: "Attaques"
+        empty: "Aucune attaque pour le moment, ajoutez en"
+        tabpan:
+            moves: "Attaques"
+            stats: "Stats"
+        stats:
+            hp: "HP"
+            atk: "ATK"
+            def: "DEF"
+            spa: "SPA"
+            spd: "SPD"
+            spe: "SPE"
+            base_stats: "Base stats"
+            stats: "Stats"
+            ev: "EV"
+            iv: "IV"
+            update: "Mettre à jour les stats"
+    index:
+        title: "Mes Pokémons"
+        empty: "Ajouter des Pokémons à votre liste"
+        table:
+            pokemon: "Pokémon"
+            level: "Niveau"
+            nature: "Nature"
+            gender: "Genre"
+            ability: "Ability"
+            evs_ok: "EVS"
+            moveset: "Moveset"
+        add: "Ajouter un Pokémon"
