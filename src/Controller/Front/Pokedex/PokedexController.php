@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Controller\Pokedex;
+namespace App\Controller\Front\Pokedex;
 
 
 use App\Entity\Versions\Generation;

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Controller\Infos\Type;
+namespace App\Controller\Front\Infos\Type;
 
 
 use App\Repository\Infos\Type\TypeRepository;

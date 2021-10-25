@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Controller\Infos;
+namespace App\Controller\Front\Infos;
 
 
 use App\Form\Filters\AbilityFormFilterType;

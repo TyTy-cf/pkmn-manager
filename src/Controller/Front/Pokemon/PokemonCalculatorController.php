@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Controller\Pokemon;
+namespace App\Controller\Front\Pokemon;
 
 
 use App\Entity\Infos\Nature;

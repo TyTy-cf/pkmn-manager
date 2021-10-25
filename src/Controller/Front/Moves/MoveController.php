@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Controller\Moves;
+namespace App\Controller\Front\Moves;
 
 
 use App\Repository\Moves\MoveMachineRepository;

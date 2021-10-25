@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Controller\Versions;
+namespace App\Controller\Front\Versions;
 
 use App\Form\SearchPokemonType;
 use App\Repository\Pokemon\PokemonRepository;

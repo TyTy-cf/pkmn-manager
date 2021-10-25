@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Controller\Pokemon;
+namespace App\Controller\Front\Pokemon;
 
 use App\Form\CalculateIvFormType;
 use App\Form\CalculateStatsFormType;
