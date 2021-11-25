@@ -6,6 +6,7 @@ namespace App\Form;
 
 use App\Entity\Infos\Nature;
 use App\Repository\Infos\NatureRepository;
+use App\Repository\Users\LanguageRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
@@ -21,14 +22,20 @@ class CalculateStatsFormType extends AbstractType
 {
 
     private NatureRepository $natureRepository;
+    private LanguageRepository $languageRepository;
 
     /**
      * StageType constructor.
      * @param NatureRepository $natureRepository
+     * @param LanguageRepository $languageRepository
      */
-    public function __construct(NatureRepository $natureRepository)
+    public function __construct(
+        NatureRepository $natureRepository,
+        LanguageRepository $languageRepository
+    )
     {
         $this->natureRepository = $natureRepository;
+        $this->languageRepository = $languageRepository;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -128,7 +135,10 @@ class CalculateStatsFormType extends AbstractType
             ->add('nature', EntityType::class, [
                 'label' => false,
                 'class' => Nature::class,
-                'choices' => $this->natureRepository->findAll(),
+                'choices' => $this->natureRepository->findBy(
+                    ['language' => $this->languageRepository->findOneBy(['code' => 'fr'])],
+                    ['name' => 'ASC']
+                ),
                 'choice_label' => 'name',
                 'choice_value' => 'id',
             ])
