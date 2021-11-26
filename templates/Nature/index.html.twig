@@ -6,56 +6,54 @@
     <div class="container mt-2">
         <h1 class="text-center bordered-title">{{ 'nature.title'|trans }}</h1>
         <hr>
-        <div class="grid-col ">
-            <table class="table table-striped w-100 text-center">
-                <thead>
+        <table class="table table-striped w-50 text-center mx-auto">
+            <thead>
+                <tr>
+                    <th>
+                        {{ 'nature.table.header.label'|trans }}
+                    </th>
+                    <th>
+                        {{ 'nature.table.header.atk'|trans }}
+                    </th>
+                    <th>
+                        {{ 'nature.table.header.def'|trans }}
+                    </th>
+                    <th>
+                        {{ 'nature.table.header.spa'|trans }}
+                    </th>
+                    <th>
+                        {{ 'nature.table.header.spd'|trans }}
+                    </th>
+                    <th>
+                        {{ 'nature.table.header.spe'|trans }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for nature in natures %}
                     <tr>
-                        <th>
-                            {{ 'nature.table.header.label'|trans }}
-                        </th>
-                        <th>
-                            {{ 'nature.table.header.atk'|trans }}
-                        </th>
-                        <th>
-                            {{ 'nature.table.header.def'|trans }}
-                        </th>
-                        <th>
-                            {{ 'nature.table.header.spa'|trans }}
-                        </th>
-                        <th>
-                            {{ 'nature.table.header.spd'|trans }}
-                        </th>
-                        <th>
-                            {{ 'nature.table.header.spe'|trans }}
-                        </th>
+                        <td class="nature-name">
+                            {{ nature.name }}
+                        </td>
+                        <td class="{{ nature.atk|statsNatureCss }}">
+                            {{ nature.atk|statsNatureStatsDisplay }}
+                        </td>
+                        <td class="{{ nature.def|statsNatureCss }}">
+                            {{ nature.def|statsNatureStatsDisplay }}
+                        </td>
+                        <td class="{{ nature.spa|statsNatureCss }}">
+                            {{ nature.spa|statsNatureStatsDisplay }}
+                        </td>
+                        <td class="{{ nature.spd|statsNatureCss }}">
+                            {{ nature.spd|statsNatureStatsDisplay }}
+                        </td>
+                        <td class="{{ nature.spe|statsNatureCss }}">
+                            {{ nature.spe|statsNatureStatsDisplay }}
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    {% for nature in natures %}
-                        <tr>
-                            <td class="nature-name">
-                                {{ nature.name }}
-                            </td>
-                            <td class="{{ nature.atk|statsNatureCss }}">
-                                {{ nature.atk|statsNatureStatsDisplay }}
-                            </td>
-                            <td class="{{ nature.def|statsNatureCss }}">
-                                {{ nature.def|statsNatureStatsDisplay }}
-                            </td>
-                            <td class="{{ nature.spa|statsNatureCss }}">
-                                {{ nature.spa|statsNatureStatsDisplay }}
-                            </td>
-                            <td class="{{ nature.spd|statsNatureCss }}">
-                                {{ nature.spd|statsNatureStatsDisplay }}
-                            </td>
-                            <td class="{{ nature.spe|statsNatureCss }}">
-                                {{ nature.spe|statsNatureStatsDisplay }}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 
 {% endblock %}
