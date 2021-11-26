@@ -3,21 +3,36 @@
     <a class="navbar-brand" href="{{ path('generation_index', {'code': 'fr'}) }}">
         Catch 'em all !
     </a>
-    <div class="dropdown mx-auto">
+    <div class="dropdown ml-5">
         <button class="btn btn-secondary dropdown-toggle"
                 type="button"
                 id="dropdownMenuButton1"
                 data-toggle="dropdown"
                 aria-expanded="false"
         >
-            Menu
+            <i class="fas fa-bars"></i>
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <li><a class="dropdown-item" href="{{ path('nature_index', {'code': 'fr'} ) }}">Natures</a></li>
-            <li><a class="dropdown-item" href="{{ path('ability_index', {'code': 'fr'} ) }}">Talents</a></li>
-            <li><a class="dropdown-item" href="{{ path('my_pokemons', {'code': 'fr'} ) }}">Mes Pokémons</a></li>
+            <li>
+                <a class="dropdown-item" href="{{ path('nature_index', {'code': 'fr'} ) }}">
+                    Natures
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" href="{{ path('ability_index', {'code': 'fr'} ) }}">
+                    Talents
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" href="{{ path('my_pokemons', {'code': 'fr'} ) }}">
+                    Mes Pokémons
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" href="{{ path('pokemon_create', {'code': 'fr'} ) }}">
+                    Ajouter un Pokémon
+                </a>
+            </li>
         </ul>
-    </div>
-    <div class="float-right">
     </div>
 </nav>
