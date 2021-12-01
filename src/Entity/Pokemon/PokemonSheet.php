@@ -12,6 +12,7 @@ use App\Entity\Stats\StatsEv;
 use App\Entity\Stats\StatsIv;
 use App\Entity\Stats\Stats;
 use App\Entity\Users\User;
+use App\Entity\Versions\Version;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -122,6 +123,12 @@ class PokemonSheet
      * @JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
      */
     private ?User $user;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Versions\Version")
+     * @JoinColumn(name="version", referencedColumnName="id", nullable=true)
+     */
+    private Version $version;
 
     /**
      * PokemonSheet constructor.
@@ -355,6 +362,24 @@ class PokemonSheet
     public function setPokemon(Pokemon $pokemon): PokemonSheet
     {
         $this->pokemon = $pokemon;
+        return $this;
+    }
+
+    /**
+     * @return Version
+     */
+    public function getVersion(): Version
+    {
+        return $this->version;
+    }
+
+    /**
+     * @param Version $version
+     * @return PokemonSheet
+     */
+    public function setVersion(Version $version): PokemonSheet
+    {
+        $this->version = $version;
         return $this;
     }
 
