@@ -21,22 +21,27 @@
                                    href="{{ path('pokedex_list_generation', {'slug': generation.slug, 'code': language.code }) }}"
                                 >
                                     {{ generation }}
+                                    <div class="detailed">
+                                        ({{ generation.mainRegion.name }})
+                                    </div>
                                 </a>
                                 {% if generation.versionsGroup|length != 0 %}
                                     <div class="ml-3 light-detailed-italic">
-                                        (
                                         {% for versionGroup in generation.versionsGroup %}
-                                            {% if loop.index != 1  %}
-                                                -
-                                            {% endif %}
-                                            {{ versionGroup.name }}
+                                            {% for version in versionGroup.versions %}
+                                                <img class="size-{% if generation.number == 1 or generation.number == 2 %}20{% else %}15{% endif %}"
+                                                     src="{{ version.logo }}"
+                                                     alt="Type {{ version.name|lower }}"
+                                                     title="{{ version.name|lower }}"
+                                                />
+{#                                                {% if loop.index != 1  %}#}
+{#                                                    -#}
+{#                                                {% endif %}#}
+{#                                                {{ versionGroup.name }}#}
+                                            {% endfor %}
                                         {% endfor %}
-                                        )
                                     </div>
                                 {% endif %}
-                            </div>
-                            <div class="detailed">
-                                ({{ generation.mainRegion.name }})
                             </div>
                         </span>
                     </td>
