@@ -71,7 +71,7 @@ class ItemHeldPokemonService extends AbstractService
 
             // Récupère les versions
             foreach($pokemonInfos['version_details'] as $versionDetail) {
-                $versions = $this->versionService->getArrayVersions($language);
+                $versions = $this->versionService->getVersionsByLanguage($language);
                 $itemHeldPokemonVersion = (new ItemHeldPokemonVersion())
                     ->setRarity($versionDetail['rarity'])
                     ->setItemHeldByPokemon($itemHeldPokemon)

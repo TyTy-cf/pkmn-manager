@@ -3,6 +3,7 @@
 namespace App\Entity\Versions;
 
 use App\Entity\Pokedex\Pokedex;
+use App\Entity\Traits\TraitDisable;
 use App\Entity\Traits\TraitNomenclature;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -24,6 +25,14 @@ class VersionGroup
     private int $id;
 
     use TraitNomenclature;
+    use TraitDisable;
+
+    /**
+     * @var string $apiName
+     *
+     * @ORM\Column(name="api_name", type="string", length=255, nullable=true)
+     */
+    private string $apiName;
 
     /**
      * @var Collection
@@ -59,6 +68,11 @@ class VersionGroup
     public static array $avoidList = [
         1 => 'colosseum',
         2 => 'xd',
+        3 => 'lets-go',
+        4 => 'sword',
+        5 => 'shield',
+        6 => 'lets-go-pikachu',
+        7 => 'lets-go-eevee',
     ];
 
     /**
@@ -68,6 +82,7 @@ class VersionGroup
     {
         $this->pokedex = new ArrayCollection();
         $this->versions = new ArrayCollection();
+        $this->isDisable = 0;
     }
 
     /**
@@ -171,6 +186,24 @@ class VersionGroup
     public function setDisplayedOrder(int $displayedOrder): self
     {
         $this->displayedOrder = $displayedOrder;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getApiName(): string
+    {
+        return $this->apiName;
+    }
+
+    /**
+     * @param string $apiName
+     * @return VersionGroup
+     */
+    public function setApiName(string $apiName): VersionGroup
+    {
+        $this->apiName = $apiName;
         return $this;
     }
 

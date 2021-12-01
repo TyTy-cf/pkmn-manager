@@ -42,7 +42,7 @@ function sendAjaxDatasAndAddHtml(
     const evSpa = (<HTMLInputElement>document.getElementById('calculate_'+toCalculate+'_form_evSpa')).value;
     const evSpd = (<HTMLInputElement>document.getElementById('calculate_'+toCalculate+'_form_evSpd')).value;
     const evSpe = (<HTMLInputElement>document.getElementById('calculate_'+toCalculate+'_form_evSpe')).value;
-    const nature = (<HTMLInputElement>document.getElementById('calculate_'+toCalculate+'_form_nature')).value
+    const nature = (<HTMLInputElement>document.getElementById('calculate_'+toCalculate+'_form_nature')).value;
     const idPokemon = document.getElementById('pokemonProfileId').innerText;
 
     let datas = {

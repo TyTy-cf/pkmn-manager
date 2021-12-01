@@ -167,7 +167,7 @@ class PokemonSpeciesService extends AbstractService
             $language,
             $urlDetailed['flavor_text_entries'],
             $pokemonSpecies,
-            $this->versionService->getArrayVersions($language)
+            $this->versionService->getVersionsByLanguage($language)
         );
     }
 }

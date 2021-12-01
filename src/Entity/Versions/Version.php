@@ -4,12 +4,9 @@
 namespace App\Entity\Versions;
 
 
-use App\Entity\Traits\TraitLanguage;
-use App\Entity\Traits\TraitNames;
+use App\Entity\Traits\TraitApi;
+use App\Entity\Traits\TraitDisable;
 use App\Entity\Traits\TraitNomenclature;
-use App\Entity\Traits\TraitSlug;
-use App\Entity\Users\Language;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\JoinColumn;
@@ -30,6 +27,14 @@ class Version
      */
     private int $id;
 
+    /**
+     * @var string $logo
+     *
+     * @ORM\Column(name="logo", type="string", length=255, nullable=true)
+     */
+    private string $logo;
+
+    use TraitDisable;
     use TraitNomenclature;
 
     /**
@@ -39,6 +44,14 @@ class Version
      * @JoinColumn(name="version_group_id", referencedColumnName="id")
      */
     private VersionGroup $versionGroup;
+
+    /**
+     * Version constructor.
+     */
+    public function __construct()
+    {
+        $this->isDisable = 0;
+    }
 
     /**
      * @return int
@@ -63,5 +76,24 @@ class Version
     {
         $this->versionGroup = $versionGroup;
     }
+
+    /**
+     * @return string
+     */
+    public function getLogo(): string
+    {
+        return $this->logo;
+    }
+
+    /**
+     * @param string $logo
+     * @return Version
+     */
+    public function setLogo(string $logo): Version
+    {
+        $this->logo = $logo;
+        return $this;
+    }
+
 
 }
