@@ -190,6 +190,8 @@ pokemon_sheet:
         gender: "Genre"
         moveSetName: "Moveset"
         moves: "Attaques"
+        version: "Version"
+        version_empty: "Choisir une version"
         empty: "Aucune attaque pour le moment, ajoutez en"
         tabpan:
             moves: "Attaques"
@@ -217,4 +219,5 @@ pokemon_sheet:
             ability: "Ability"
             evs_ok: "EVS"
             moveset: "Moveset"
+            version: "Version"
         add: "Ajouter un Pokémon"

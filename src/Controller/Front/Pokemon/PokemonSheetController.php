@@ -13,6 +13,7 @@ use App\Form\PokemonSheet\PokemonSheetStatsFormType;
 use App\Repository\Infos\AbilityRepository;
 use App\Repository\Infos\PokemonAbilityRepository;
 use App\Repository\Pokemon\PokemonSheetRepository;
+use App\Repository\Versions\VersionRepository;
 use App\Service\Pokemon\StatsCalculatorService;
 use Doctrine\ORM\NonUniqueResultException;
 use Knp\Component\Pager\PaginatorInterface;
@@ -31,6 +32,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @property PokemonSheetRepository $pokemonSheetRepository
  * @property AbilityRepository $abilityRepository
  * @property StatsCalculatorService $statsCalculatorService
+ * @property VersionRepository $versionRepository
  */
 class PokemonSheetController extends AbstractController
 {
@@ -41,17 +43,20 @@ class PokemonSheetController extends AbstractController
      * @param PokemonSheetRepository $pokemonSheetRepository
      * @param AbilityRepository $abilityRepository
      * @param StatsCalculatorService $statsCalculatorService
+     * @param VersionRepository $versionRepository
      */
     public function __construct(
         PokemonAbilityRepository $pokemonAbilityRepository,
         PokemonSheetRepository $pokemonSheetRepository,
         AbilityRepository $abilityRepository,
-        StatsCalculatorService $statsCalculatorService
+        StatsCalculatorService $statsCalculatorService,
+        VersionRepository $versionRepository
     ) {
         $this->pokemonAbilityRepository = $pokemonAbilityRepository;
         $this->pokemonSheetRepository = $pokemonSheetRepository;
         $this->abilityRepository = $abilityRepository;
         $this->statsCalculatorService = $statsCalculatorService;
+        $this->versionRepository = $versionRepository;
     }
 
     /**
@@ -149,6 +154,7 @@ class PokemonSheetController extends AbstractController
         return $this->render('Pokemon/Pokemon_sheet/fiche_pokemon_show.html.twig', [
             'pokemonSheet' => $pokemonSheet,
             'abilities' => $this->pokemonAbilityRepository->findBy(['pokemon' => $pokemonSheet->getPokemon()]),
+            'versions' => $this->versionRepository->findByLanguageCode($code),
             'form' => $form->createView(),
             'formStats' => $formStats->createView(),
             'code' => $code,
@@ -196,6 +202,28 @@ class PokemonSheetController extends AbstractController
             $data = [
                 'html' => $pokemonSheet->getMoveSetName(),
            ]
+        );
+    }
+    /**
+     * @Route(path="/pokemonSheet/changeVersion/{datas}", name="change_version")
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function changeVersion(Request $request): JsonResponse {
+        $json = json_decode($request->get('datas'), true);
+        $pokemonSheet = $this->pokemonSheetRepository->findOneBy(['id' => $json['pokemonSheetId']]);
+        $version = $this->versionRepository->findOneBy(['id' => $json['inputData']]);
+        $pokemonSheet->setVersion($version);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->flush();
+
+        return (new JsonResponse())->setData(
+            $data = [
+                'html' => $this->renderView('Pokemon/Pokemon_sheet/partials/_pokemon_sheet_version.html.twig', [
+                    'pokemonSheet' => $pokemonSheet,
+                ])
+            ]
         );
     }
 

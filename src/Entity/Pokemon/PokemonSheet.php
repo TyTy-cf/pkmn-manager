@@ -126,9 +126,9 @@ class PokemonSheet
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Versions\Version")
-     * @JoinColumn(name="version", referencedColumnName="id", nullable=true)
+     * @JoinColumn(name="version_id", referencedColumnName="id", nullable=true)
      */
-    private Version $version;
+    private ?Version $version;
 
     /**
      * PokemonSheet constructor.
@@ -359,25 +359,25 @@ class PokemonSheet
      * @param Pokemon $pokemon
      * @return PokemonSheet
      */
-    public function setPokemon(Pokemon $pokemon): PokemonSheet
+    public function setPokemon(Pokemon $pokemon): self
     {
         $this->pokemon = $pokemon;
         return $this;
     }
 
     /**
-     * @return Version
+     * @return Version|null
      */
-    public function getVersion(): Version
+    public function getVersion(): ?Version
     {
         return $this->version;
     }
 
     /**
-     * @param Version $version
+     * @param Version|null $version
      * @return PokemonSheet
      */
-    public function setVersion(Version $version): PokemonSheet
+    public function setVersion(?Version $version): self
     {
         $this->version = $version;
         return $this;

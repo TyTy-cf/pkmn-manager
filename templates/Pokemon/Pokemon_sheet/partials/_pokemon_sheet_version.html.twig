@@ -1,0 +1,5 @@
+{% if pokemonSheet.version != null %}
+    {{ pokemonSheet.version.name }}
+{% else %}
+    {{ 'pokemon_sheet.show.version_empty'|trans }}
+{% endif %}

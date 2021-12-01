@@ -13,6 +13,14 @@
                         <tr>
                             <th>
                                 {{
+                                knp_pagination_sortable(
+                                    pokemonsSheet,
+                                    'pokemon_sheet.index.table.version'|trans,
+                                    'version.name')|raw
+                                }}
+                            </th>
+                            <th>
+                                {{
                                     knp_pagination_sortable(
                                     pokemonsSheet,
                                     'pokemon_sheet.index.table.pokemon'|trans,
@@ -56,6 +64,17 @@
                         {% if pokemonsSheet|length > 0 %}
                             {% for pokemonSheet in pokemonsSheet %}
                                 <tr>
+                                    <td>
+                                        {% if pokemonSheet.version != null %}
+                                            <img class="size-65"
+                                                 src="{{ pokemonSheet.version.logo }}"
+                                                 alt="Type {{ pokemonSheet.version.name|lower }}"
+                                                 title="{{ pokemonSheet.version.name|lower }}"
+                                            />
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
                                     <td class="text-center">
                                         {% if pokemonSheet.pokemon.pokemonSprites.spriteFrontDefault is not null %}
                                             <img class="pkmnCard-pict"

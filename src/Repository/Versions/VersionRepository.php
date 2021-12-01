@@ -21,4 +21,16 @@ class VersionRepository  extends AbstractRepository
         parent::__construct($registry, Version::class);
     }
 
+    public function findByLanguageCode(string $code)
+    {
+        return $this->createQueryBuilder('version')
+            ->join('version.language', 'language')
+            ->where('language.code = :code')
+            ->andWhere('version.isDisable = 0')
+            ->setParameter('code', $code)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 }
